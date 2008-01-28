@@ -184,6 +184,8 @@ void ProtoMolApp::read() {
 }
 
 void ProtoMolApp::build() {
+
+#if 0
   // Create topology
   string errMsg;  
 
@@ -270,5 +272,5 @@ void ProtoMolApp::build() {
   }
   report << plain << "Actual start temperature : "
          << temperature(topology, &velocities) << "K" << endr;
-
+#endif
 }
