@@ -1,0 +1,41 @@
+#!/bin/sh
+
+filter=(
+  '________*' '________________________________________'
+  '"stringutilities.h"' '<protomol/util/StringUtilities.h>'
+  '"mathutilities.h"' '<protomol/util/MathUtilities.h>'
+  '"Vector3DBlock.h"' '<protomol/types/Vector3DBlock.h>'
+)
+
+buildFilter() {
+  SED=
+  for i in $(seq 0 $((${#filter[@]} / 2 - 1))); do
+      search=${filter[$(($i * 2))]}
+      replace=${filter[$(($i * 2 + 1))]}
+
+      SEDFILTER='s/\([\\\/()]\)/\\\1/g'
+
+      search="$(echo -n "$search" | sed $SEDFILTER)"
+      replace="$(echo -n "$replace" | sed $SEDFILTER)"
+
+      if [ "$SED" != "" ]; then
+          SED+=";"
+      fi
+      SED+="s/$search/$replace/g"
+  done
+}
+
+buildFilter
+
+for i in $@; do
+    BASE=$(basename $i)
+    if [ "$BASE" == "$i" ]; then
+        echo "ERROR $i is a local file."
+        continue
+    fi
+
+    echo $BASE
+    sed "$SED" <$i>$BASE
+    uncrustify --replace -q $BASE
+    rm "$BASE"*~
+done

@@ -1,0 +1,28 @@
+Import('*')
+
+subdirs = [
+    "topology",
+    "debug",
+    "base",
+    "config",
+    "util",
+    "factory",
+    "frontend",
+    "io",
+    "types",
+    "modules",
+]
+
+
+# Include protomol
+env.Append(CPPPATH = '#')
+
+
+# Import subdir build files
+allsrc = []
+for subdir in subdirs:
+    src = SConscript(subdir + '/SConscript')
+    for s in src:
+        allsrc.append(subdir + '/' + s)
+
+Return('allsrc')
