@@ -17,6 +17,10 @@
 #include <protomol/io/PSFReader.h>
 #include <protomol/io/PARReader.h>
 
+#include <protomol/topology/GenericTopology.h>
+#include <protomol/topology/TopologyFactory.h>
+#include <protomol/topology/TopologyModule.h>
+
 using namespace std;
 using namespace ProtoMol;
 using namespace ProtoMol::Report;
@@ -41,6 +45,13 @@ bool ProtoMolApp::configure(int argc, char *argv[]) {
 
   //  Set report level
   report << reportlevel((int)config[InputDebug::keyword]);
+
+  // Fix for old topology definition
+  if (!config[GenericTopology::keyword].valid()) {
+    config[GenericTopology::keyword] =
+      config[InputBoundaryConditions::keyword].getString() +
+      config[InputCellManager::keyword].getString();
+  }
 
   // Check if configuration is complete
   string errMsg;
@@ -184,12 +195,10 @@ void ProtoMolApp::read() {
 }
 
 void ProtoMolApp::build() {
-
-#if 0
   // Create topology
   string errMsg;  
 
-  if (!(topology = TopologyFactory::make(errMsg, config))) {
+  if (!(topology = TopologyFactory::make(errMsg, &config))) {
     // Try to get some defaults with the postions known ...
     const GenericTopology *prototype =
       TopologyFactory::find(config.get(GenericTopology::getKeyword()).
@@ -197,21 +206,25 @@ void ProtoMolApp::build() {
 
     if (prototype != NULL) {
       vector<Parameter> parameters = prototype->getDefaults(positions);
+
       for (unsigned int i = 0; i < parameters.size(); i++) {
         if (!config.valid(parameters[i].keyword) &&
             parameters[i].value.valid()) {
+
           config.set(parameters[i].keyword,parameters[i].value);
           report << hint << parameters[i].keyword << " undefined, using "
                  << parameters[i].value.getString() << "." << endr;
         }
       }
+
       topology = TopologyFactory::make(errMsg, &config);
     }
-    if (topology == NULL)
-      report << error << errMsg <<endr;
+
+    if (!topology) THROW(errMsg);
   }
 
 
+#if 0
     // Build topology
   if ((bool)config[InputDoSCPISM::keyword]) {
     cout << (bool)config[InputDoSCPISM::keyword]  << endl;

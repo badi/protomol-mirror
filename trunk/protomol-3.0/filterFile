@@ -1,11 +1,29 @@
 #!/bin/sh
 
+TOP=$(dirname $0)
+
 filter=(
   '________*' '________________________________________'
-  '"stringutilities.h"' '<protomol/util/StringUtilities.h>'
-  '"mathutilities.h"' '<protomol/util/MathUtilities.h>'
-  '"Vector3DBlock.h"' '<protomol/types/Vector3DBlock.h>'
+  'stringutilities' 'StringUtilities'
+  'mathutilities' 'MathUtilities'
+  'systemutilities' 'SystemUtilities'
+  'pmconstants' 'PMConstants'
+  'simpleTypes' 'SimpleTypes'
+  'Array_Fastest' 'ArrayFastest'
+  'Array_NoPartialSpecialization' 'ArrayNoPartialSpecialization'
+  'CellListEnumerator_periodicBoundaries' 'CellListEnumeratorPeriodicBoundaries'
+  'CellListEnumerator_standard' 'CellListEnumeratorStandard'
+  'topologyutilities' 'TopologyUtilities'
+  'Matrix3by3' 'Matrix3By3'
 )
+
+addHeaderFilter() {
+  for i in $TOP/protomol/$1/*.h; do
+      NAME=$(basename $i .h)
+      if [ "$NAME" == "*" ]; then continue; fi
+      SED+=";s/\"$NAME\.h\"/<protomol\/$1\/$NAME.h>/g"
+  done
+}
 
 buildFilter() {
   SED=
@@ -13,7 +31,7 @@ buildFilter() {
       search=${filter[$(($i * 2))]}
       replace=${filter[$(($i * 2 + 1))]}
 
-      SEDFILTER='s/\([\\\/()]\)/\\\1/g'
+      SEDFILTER='s/\([\\\/().]\)/\\\1/g'
 
       search="$(echo -n "$search" | sed $SEDFILTER)"
       replace="$(echo -n "$replace" | sed $SEDFILTER)"
@@ -23,9 +41,27 @@ buildFilter() {
       fi
       SED+="s/$search/$replace/g"
   done
+
+  for i in $(find $TOP/protomol -maxdepth 1 -mindepth 1 -type d); do
+      NAME=$(basename $i)
+      if [ "$NAME" == ".svn" ]; then continue; fi
+      addHeaderFilter "$NAME"
+  done
 }
 
+for i in $@; do
+    BASE=$(basename $i)
+    if [ "$BASE" == "$i" ]; then
+        echo "ERROR $i is a local file."
+        continue
+    fi
+
+    touch $BASE
+done
+
 buildFilter
+#echo "$SED"
+#exit 0
 
 for i in $@; do
     BASE=$(basename $i)

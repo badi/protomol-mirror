@@ -16,7 +16,7 @@ namespace ProtoMol {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Constructors, destructors, assignment
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-public:
+  public:
     Parameter();
 
     Parameter(const std::string & k, const Value & val);
@@ -51,19 +51,11 @@ public:
       text(t.text) {
       defaultValue.set(def);
     }
-//      template<typename T>
-//      Parameter(const std::string& k, T val):keyword(k),value(val),defaultValue(val,Value::undefined) {}
-//      template<typename T>
-//      Parameter(const std::string& k, T val, T def):keyword(k),value(val),defaultValue(def) {}
-//      template<typename T, typename C>
-//      Parameter(const std::string& k, T val, const C& con):keyword(k),value(val,con),defaultValue(val,con,Value::undefined) {}
-//      template<typename T, typename C>
-//      Parameter(const std::string& k, T val, T def, const C& con):keyword(k),value(val,con),defaultValue(def,con) {}
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // data members
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-public:
+  public:
     /// the keyword of the parameter
     std::string keyword;
     /// the value of the parameter
