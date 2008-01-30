@@ -13,13 +13,22 @@ buildFilter() {
     done
 }
 
-findBackup() {
+makeBackup() {
     C=0
     while true; do
         BACKUP="$1.$C.bak~"
         if [ ! -e "$BACKUP" ]; then break; fi
         C=$(($C + 1))
     done
+
+    cp "$1" "$BACKUP"
+}
+
+cleanBackup() {
+    diff "$1" "$BACKUP" 2>&1 >/dev/null
+    if [ $? -eq 0 ]; then
+        rm -f "$BACKUP"
+    fi
 }
 
 if [ "$1" == "" ]; then
@@ -31,6 +40,7 @@ FILTER_FILE=
 FILES=
 uncrustify=false
 fixnamespace=false
+cleancommas=false
 
 while [ "$1" != "" ]; do
     case "$1" in
@@ -38,6 +48,10 @@ while [ "$1" != "" ]; do
         "--fix-ending-namepace")
             uncrustify=true
             fixnamespace=true
+            ;;
+        "--clean-commas")
+            uncrustify=true
+            cleancommas=true
             ;;
 
         *)
@@ -73,30 +87,34 @@ for i  in "${FILES[@]}"; do
         continue
     fi
 
-    findBackup "$i"
-
-    cp "$i" "$BACKUP"
+    makeBackup "$i"
 
     echo $i
     sed "$SED" <"$BACKUP">"$i"
 
-    diff "$i" "$BACKUP" 2>&1 >/dev/null
-    if [ $? -eq 0 ]; then
-        rm -f "$BACKUP"
-    fi
-
-    if $uncrustify; then
-        uncrustify --replace -q "$i"
-    fi
+    cleanBackup "$i"
 
     if $fixnamespace; then
-        findBackup "$i"
-        cp "$i" "$BACKUP"
+        makeBackup "$i"
         
         if [ $(tail -2 "$i" | grep '^}$' | wc -l) -eq 2 ]; then
             LEN=$(wc -l <"$i")
 
             head -$(($LEN - 1)) "$BACKUP" >"$i"
         fi
+
+        cleanBackup "$i"
+    fi
+
+    if $cleancommas; then
+        makeBackup "$i"
+
+        awk '{if ($0 ~ /^.*,$/) printf($0); else print}' "$BACKUP" >"$i"
+
+        cleanBackup "$i"
+    fi
+
+    if $uncrustify; then
+        uncrustify --replace -q "$i"
     fi
 done

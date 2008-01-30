@@ -10,19 +10,10 @@ PDB::Atom::Atom() :
   chainID(""), residueNum(0), insertionCode(""), occupancy(0.0), tempFactor(0.0),
   segID(""), symbol(""), charge(""), hvyAtomGrpsize(0) {}
 
-PDB::Atom::Atom(string etype,
-                int anum,
-                string ename,
-                string altloc,
-                string rname,
-                string chain,
-                int rnum,
-                string insertion,
-                Real occ,
-                Real tf,
-                string segname,
-                string symname,
-                string c,
+PDB::Atom::Atom(string etype, int anum, string ename, string altloc,
+                string rname, string chain, int rnum, string insertion,
+                Real occ, Real tf,
+                string segname, string symname, string c,
                 int ha) :
   elementType(etype), elementNum(anum), elementName(ename), altLoc(altloc),
   residueName(rname), chainID(chain), residueNum(rnum), insertionCode(insertion),
@@ -33,11 +24,7 @@ PDB::Ter::Ter() :
   elementType(""), elementNum(0), residueName(""), chainID(""), residueNum(0),
   insertionCode("") {}
 
-PDB::Ter::Ter(string etype,
-              int anum,
-              string rname,
-              string chain,
-              int rnum,
+PDB::Ter::Ter(string etype, int anum, string rname, string chain, int rnum,
               string insertion) :
   elementType(etype), elementNum(anum), residueName(rname), chainID(chain),
   residueNum(rnum), insertionCode(insertion) {}
