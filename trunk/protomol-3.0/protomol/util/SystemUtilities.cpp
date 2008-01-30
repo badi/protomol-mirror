@@ -5,7 +5,7 @@
 
 #ifdef _WIN32
 
-// Define the missing symbols from <unistd.h> for M$ ....
+//____ Define the missing symbols from <unistd.h> for M$ ....
 #include <direct.h>
 #define CHDIR _chdir
 #define PATHSEP '\\'
@@ -36,10 +36,10 @@
 #include <libgen.h>
 #endif
 
-using std::string;
+using namespace std;
 
 namespace ProtoMol {
-  //____________________________________________________________ changeDirectory
+//____ changeDirectory
   bool changeDirectory(const string &fileName) {
     char *confFile = (char *)fileName.c_str();
     char *currentdir = confFile;
@@ -50,8 +50,8 @@ namespace ProtoMol {
     for (tmp = confFile; *tmp; ++tmp)
       if (*tmp == '/')
         *tmp = '\\';
-
 #endif
+
 
     for (tmp = confFile; *tmp; ++tmp) ;
 
@@ -68,17 +68,15 @@ namespace ProtoMol {
       if (CHDIR(PATHSEPSTR))
         return false;
 
-
     return true;
   }
 
-  //_______________________________________________________________ isAccessible
+//____ isAccessible
   bool isAccessible(const string &fileName) {
     return ::access(fileName.c_str(), F_OK) == 0;
   }
 
-
-  //______________________________________________________________ protomolAbort
+//____ protomolAbort
 
   static void (*myAbortFunction)() = NULL;
 
@@ -88,12 +86,12 @@ namespace ProtoMol {
     THROW("EXIT");
   }
 
-  //___________________________________________________________ setProtomolAbort
+//____ setProtomolAbort
   void setProtomolAbort(void (*abortFunction)()) {
     myAbortFunction = abortFunction;
   }
 
-  //_______________________________________________________________ protomolExit
+//____ protomolExit
 
   static void (*myExitFunction)() = NULL;
 
@@ -103,49 +101,48 @@ namespace ProtoMol {
     THROW("EXIT");
   }
 
-  //____________________________________________________________ setProtomolExit
+//____ setProtomolExit
   void setProtomolExit(void (*exitFunction)()) {
     myExitFunction = exitFunction;
   }
 
-
-  //________________________________________________________ protomolStartSerial
-  static void (*myStartSerial)(bool)= NULL;
+//____ protomolStartSerial
+  static void (*myStartSerial)(bool) = NULL;
 
   void protomolStartSerial(bool exludeMaster) {
     if (myStartSerial != NULL)
       (*myStartSerial)(exludeMaster);
   }
 
-  //____________________________________________________________ setProtomolExit
+//____ setProtomolExit
   void setProtomolStartSerial(void (*startSerialFunction)(bool)) {
     myStartSerial = startSerialFunction;
   }
 
-  //__________________________________________________________ protomolEndSerial
-  static void (*myEndSerial)(bool)= NULL;
+//____ protomolEndSerial
+  static void (*myEndSerial)(bool) = NULL;
 
   void protomolEndSerial(bool exludeMaster) {
     if (myEndSerial != NULL)
       (*myEndSerial)(exludeMaster);
   }
 
-  //____________________________________________________________ setProtomolExit
+//____ setProtomolExit
   void setProtomolEndSerial(void (*endSerialFunction)(bool)) {
     myEndSerial = endSerialFunction;
   }
 
-  //_____________________________________________________________ ISLITTLEENDIAN
+//____ ISLITTLEENDIAN
   struct Endian {
     // Helper class to make sure that we get endianess correct ... M$
     static bool isLittleEndian() {
       unsigned int tmp = 1;
-      return 0 != *(reinterpret_cast<const char *> (&tmp));
+      return 0 != *(reinterpret_cast<const char *> ( &tmp));
     }
   };
   const bool ISLITTLEENDIAN = Endian::isLittleEndian();
 
-  //________________________________________________________________ getUserName
+//____ getUserName
   string getUserName() {
 #ifdef _WIN32
     return "Win32";
@@ -157,7 +154,7 @@ namespace ProtoMol {
 #endif
   }
 
-  string getCanonicalPath(const std::string &path) {
+  string getCanonicalPath(const string &path) {
     char buf[4096];
 
 #ifdef _WIN32
@@ -170,14 +167,14 @@ namespace ProtoMol {
 
 #else
     char tmp[path.length() + 3];
-    
+
     // The file might not exist yet but its directory must.
     strcpy(tmp, path.c_str());
     char *dir = dirname(tmp);
 
     if (!realpath(dir, buf))
       THROW(string("realpath '") + path + "' failed.");
-    
+
     strcpy(tmp, path.c_str());
 
     return string(buf) + "/" + basename(tmp);

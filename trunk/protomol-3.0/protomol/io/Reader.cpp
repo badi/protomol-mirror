@@ -1,26 +1,30 @@
 #include "Reader.h"
 
-using std::string;
+using namespace std;
+using namespace ProtoMol;
 
-namespace ProtoMol {
-  //_________________________________________________________________ Reader
-  Reader::Reader() : File(std::ios::in) {}
+//____ Reader
+Reader::Reader() :
+  File(ios::in) {}
 
-  Reader::Reader(const string &filename) : File(std::ios::in, filename) {
-    File::open();
-  }
-
-  Reader::Reader(std::ios::openmode mode) : File(std::ios::in | mode) {}
-
-  Reader::Reader(std::ios::openmode mode,
-                 const string &filename) : File(std::ios::in | mode,
-                                                filename) {
-    File::open();
-  }
-
-  Reader::~Reader() {}
-
-  const string &Reader::getComment() const {
-    return myComment;
-  }
+Reader::Reader(const string &filename) :
+  File(ios::in, filename) {
+  File::open();
 }
+
+Reader::Reader(ios::openmode mode) :
+  File(ios::in | mode) {}
+
+Reader::Reader(ios::openmode mode,
+               const string &filename) :
+  File(ios::in | mode,
+       filename) {
+  File::open();
+}
+
+Reader::~Reader() {}
+
+const string &Reader::getComment() const {
+  return myComment;
+}
+

@@ -1,13 +1,12 @@
 #include <protomol/force/MetaForce.h>
 #include <protomol/force/ForceGroup.h>
 
-using std::vector;
-using std::string;
+using namespace std;
 using namespace ProtoMol::Report;
-namespace ProtoMol {
-  //________________________________________ MetaForce
+using namespace ProtoMol;
+//____ MetaForce
 
-  void MetaForce::addToForceGroup(ForceGroup *forceGroup) {
-    forceGroup->addMetaForce(this);
-  }
+void MetaForce::addToForceGroup(ForceGroup *forceGroup) {
+  forceGroup->addMetaForce(this);
 }
+

@@ -26,16 +26,15 @@ using namespace ProtoMol;
 using namespace ProtoMol::Report;
 using namespace ProtoMol::Constant;
 
-
 ProtoMolApp::ProtoMolApp(ModuleManager *modManager) :
-  modManager(modManager), cmdLine(&config) {
+  modManager(modManager), cmdLine(&config), outputs(0), integrator(0),
+  topology(0) {
   modManager->init(this);
 
   topologyFactory.registerAllExemplarsConfiguration(&config);
 }
 
-ProtoMolApp::~ProtoMolApp() {
-}
+ProtoMolApp::~ProtoMolApp() {}
 
 bool ProtoMolApp::configure(int argc, char *argv[]) {
   // Parse command line
@@ -55,39 +54,37 @@ void ProtoMolApp::read() {
   // Positions
   PosVelReader reader;
   if (!reader.open(config[InputPositions::keyword]))
-    THROW(string("Can't open position file '") + 
-          config[InputPositions::keyword].getString() + "'.");
+    THROW(string("Can't open position file '") +
+      config[InputPositions::keyword].getString() + "'.");
 
   if (reader.tryFormat(PosVelReaderType::PDB)) {
     PDB pdb;
     if (!(reader >> pdb))
       THROW(string("Could not parse PDB position file '") +
-            config[InputPositions::keyword].getString() + "'.");
+        config[InputPositions::keyword].getString() + "'.");
 
     swap(positions, pdb.coords);
-
   } else if (!(reader >> positions))
     THROW(string("Could not parse position file '") +
-          config[InputPositions::keyword].getString() +
-          "'. Supported formats are : " +
-          PosVelReaderType::getPossibleValues(", ") + ".");
+      config[InputPositions::keyword].getString() +
+      "'. Supported formats are : " +
+      PosVelReaderType::getPossibleValues(", ") + ".");
 
   report << plain << "Using " << reader.getType() << " posfile '"
          << config[InputPositions::keyword] << "' ("
          << positions.size() << ")." << endr;
 
-
   // Velocities
   if (config.valid(InputVelocities::keyword)) {
     if (!reader.open(config[InputVelocities::keyword]))
       THROW(string("Can't open velocity file '") +
-            config[InputVelocities::keyword].getString() + "'.");
+        config[InputVelocities::keyword].getString() + "'.");
 
     if (!(reader >> velocities))
       THROW(string("Could not parse velocity file '") +
-            config[InputVelocities::keyword].getString() +
-            "'. Supported formats are : " +
-            PosVelReaderType::getPossibleValues(", ") + ".");
+        config[InputVelocities::keyword].getString() +
+        "'. Supported formats are : " +
+        PosVelReaderType::getPossibleValues(", ") + ".");
 
     report << plain << "Using " << reader.getType() << " velfile '"
            << config[InputVelocities::keyword] << "' ("
@@ -96,19 +93,17 @@ void ProtoMolApp::read() {
     if (reader.getType() == "PDB" && (bool)config[InputPDBScaling::keyword]) {
       for (unsigned int i = 0; i < velocities.size(); i++)
         velocities[i] /= PDBVELSCALINGFACTOR;
+
       report << plain << "PDB velocities scaled." << endr;
     }
-
-  } else if (config.valid(InputTemperature::keyword)) {    
+  } else if (config.valid(InputTemperature::keyword)) {
     velocities.resize(positions.size());
 
     report << plain << "Using temperature "
            << config[InputTemperature::keyword] << "K for the velocities  ("
            << velocities.size() << ")." << endr;
     // Create velocities later, we need the topology for that ...
-
   } else THROW("Neither temperature nor velocity file specified.");
-
 
   // Eigenvectors/values
   if (config.valid(InputEigenVectors::keyword)) {
@@ -116,52 +111,50 @@ void ProtoMolApp::read() {
 
     if (!evReader.open(config[InputEigenVectors::keyword]))
       THROW(string("Can't open eigenvector file '") +
-            config[InputEigenVectors::keyword].getString() + "'.");
+        config[InputEigenVectors::keyword].getString() + "'.");
 
     if (!(evReader >> eigenInfo)) {
       if (eigenInfo.myEigenvectorLength != (double)positions.size())
         THROW(string("Eigenvector length is wrong, should be ") +
-              String(positions.size()) + " got " +
-              String(eigenInfo.myEigenvectorLength) + ".");
+          String(positions.size()) + " got " +
+          String(eigenInfo.myEigenvectorLength) + ".");
 
       if (eigenInfo.myNumEigenvectors < 1 ||
           eigenInfo.myNumEigenvectors > (double)positions.size())
         THROW(string("Wrong number of eigenvectors (") +
-              String(eigenInfo.myNumEigenvectors) + ").");
+          String(eigenInfo.myNumEigenvectors) + ").");
     }
     report << plain << "Using " << reader.getType() << " eigfile '"
            << config[InputEigenVectors::keyword] << "' ("
            << eigenInfo.myEigenvectorLength << ")." << endr;
   }
 
-
   // PSF
   PSFReader psfReader;
   if (!psfReader.open(config[InputPSF::keyword]))
     THROW(string("Can't open PSF file '") +
-          config[InputPSF::keyword].getString() + "'.");
+      config[InputPSF::keyword].getString() + "'.");
 
   if (!(psfReader >> psf))
     THROW(string("Could not parse PSF file '") +
-          config[InputPSF::keyword].getString() + "'.");
+      config[InputPSF::keyword].getString() + "'.");
 
   report << plain << "Using PSF file '" << config[InputPSF::keyword]
          << "' (" << psf.atoms.size() << ")." << endr;
-
 
   // PAR
   PARReader parReader;
   if (!parReader.open(config[InputPAR::keyword]))
     THROW(string("Can't open PAR file '") +
-          config[InputPAR::keyword].getString() + "'.");
+      config[InputPAR::keyword].getString() + "'.");
 
   if (!(parReader >> par))
     THROW(string("Could not parse PAR file '") +
-          config[InputPAR::keyword].getString() + "'.");
+      config[InputPAR::keyword].getString() + "'.");
 
   report << plain << "Using PAR file '" << config[InputPAR::keyword]
          << "', " << (parReader.getCharmmTypeDetected() != PAR::CHARMM28 ?
-                    "old":"new") << " charmm force field.";
+                      "old" : "new") << " charmm force field.";
 
   if (!config[InputDihedralMultPSF::keyword].valid())
     config[InputDihedralMultPSF::keyword] =
@@ -170,7 +163,6 @@ void ProtoMolApp::read() {
   if (config[InputDihedralMultPSF::keyword])
     report << " Dihedral multiplictity defined by PSF.";
   report << endr;
-      
 
   // Test input
   if (positions.size() != velocities.size() ||
@@ -183,24 +175,21 @@ void ProtoMolApp::build() {
   // Create topology
   try {
     topology = topologyFactory.make(&config);
-
   } catch (const Exception &e) {
     // Try to get some defaults with the postions known ...
     const GenericTopology *prototype =
       topologyFactory.find(config[GenericTopology::keyword].getString());
-    
+
     if (prototype) {
       vector<Parameter> parameters = prototype->getDefaults(positions);
 
-      for (unsigned int i = 0; i < parameters.size(); i++) {
+      for (unsigned int i = 0; i < parameters.size(); i++)
         if (!config.valid(parameters[i].keyword) &&
             parameters[i].value.valid()) {
-
           config.set(parameters[i].keyword, parameters[i].value);
           report << hint << parameters[i].keyword << " undefined, using "
                  << parameters[i].value.getString() << "." << endr;
         }
-      }
 
       topology = topologyFactory.make(&config);
     }
@@ -214,10 +203,11 @@ void ProtoMolApp::build() {
 
   topoMod->buildTopology(this);
 
-
   // Register Forces
-  modManager->registerForces(this);  
+  modManager->registerForces(this);
 
-  integrator = integratorFactory.make(config[InputIntegrator::keyword],
-                                      &forceFactory);
+  // Build the integrators and forces
+  integrator =
+    integratorFactory.make(config[InputIntegrator::keyword], &forceFactory);
 }
+

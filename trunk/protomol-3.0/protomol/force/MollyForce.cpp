@@ -1,13 +1,12 @@
 #include <protomol/force/MollyForce.h>
 #include <protomol/force/ForceGroup.h>
 
-using std::vector;
-using std::string;
+using namespace std;
 using namespace ProtoMol::Report;
-namespace ProtoMol {
-  //________________________________________ MollyForce
+using namespace ProtoMol;
+//____ MollyForce
 
-  void MollyForce::addToForceGroup(ForceGroup *forceGroup) {
-    forceGroup->addMollyForce(this);
-  }
+void MollyForce::addToForceGroup(ForceGroup *forceGroup) {
+  forceGroup->addMollyForce(this);
 }
+

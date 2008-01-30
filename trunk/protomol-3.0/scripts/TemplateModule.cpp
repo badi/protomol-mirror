@@ -3,7 +3,7 @@
 using namespace std;
 using namespace ProtoMol;
 
-//defineInputValueAndText(Input, "", "");
+//____defineInputValueAndText(Input, "", "");
 
 void TemplateModule::init(ProtoMolApp *app) {
 }

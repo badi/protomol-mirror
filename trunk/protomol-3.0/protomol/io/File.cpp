@@ -3,79 +3,79 @@
 #include <protomol/util/SystemUtilities.h>
 
 #if defined (__SUNPRO_CC)
-// Sun WorkShop CC does not properly read more than one char ...
+//____ Sun WorkShop CC does not properly read more than one char ...
 #define FSTREAM_READ_1BY1
 #endif
 
-using std::string;
-using std::fstream;
-namespace ProtoMol {
-  //_________________________________________________________________ File
-  File::File(std::ios::openmode mode) : myMode(mode), myFilename(""),
-    myComment("") {}
+using namespace std;
+using namespace ProtoMol;
 
-  File::File(std::ios::openmode mode,
-             const string &filename) : myMode(mode), myFilename(filename),
-    myComment("") {}
+//____ File
+File::File(ios::openmode mode) :
+  myMode(mode), myFilename(""), myComment("") {}
 
-  File::~File() {
-    if (myFile.is_open())
-      close();
-    //std::cout<<"Open file is closed"<<endl;
-  }
+File::File(ios::openmode mode,
+           const string &filename) :
+  myMode(mode), myFilename(filename), myComment("") {}
 
-  bool File::open() {
-    if (myFile.is_open())
-      close();
-    myFile.clear();
-    myFile.open(myFilename.c_str(), myMode);
+File::~File() {
+  if (myFile.is_open())
+    close();
+  //cout<<"Open file is closed"<<endl;
+}
 
-    return !myFile.fail();
-  }
+bool File::open() {
+  if (myFile.is_open())
+    close();
+  myFile.clear();
+  myFile.open(myFilename.c_str(), myMode);
 
-  bool File::open(const string &filename) {
-    setFilename(filename);
-    return open();
-  }
+  return !myFile.fail();
+}
 
-  bool File::open(const char *filename) {
-    return open(string(filename));
-  }
+bool File::open(const string &filename) {
+  setFilename(filename);
+  return open();
+}
 
+bool File::open(const char *filename) {
+  return open(string(filename));
+}
 
-  void File::close() {
-    if (myFile.is_open())
-      myFile.close();
-  }
+void File::close() {
+  if (myFile.is_open())
+    myFile.close();
+}
 
-  bool File::isAccessible() {
-    return ProtoMol::isAccessible(myFilename);
-  }
+bool File::isAccessible() {
+  return ProtoMol::isAccessible(myFilename);
+}
 
-  File::operator void*() const {
-    return myFile.fail() ? 0 : const_cast<File *>(this);
-  }
+File::operator void*() const {
+  return myFile.fail() ? 0 : const_cast<File *>(this);
+}
 
-  bool File::operator!() const {
-    return myFile.fail();
-  }
+bool File::operator!() const {
+  return myFile.fail();
+}
 
-  std::fstream &File::read(char *c, std::streamsize count) {
+fstream &File::read(char *c, streamsize count) {
 #ifdef FSTREAM_READ_1BY1
-    for (std::streamsize i = 0; i < count; ++i)
-      myFile.get(c[i]);
+  for (streamsize i = 0; i < count; ++i)
+    myFile.get(c[i]);
 
 #else
-    myFile.read(c, count);
+  myFile.read(c, count);
 #endif
-    return myFile;
-  }
-  std::string File::getline() {
-    string res;
-    bool ok = (!myFile.fail()) && (!myFile.eof());
-    std::getline(myFile, res);
-    if (ok && !myFile.bad() && myFile.fail() && myFile.eof())
-      myFile.clear(myFile.rdstate() & (~std::ios::failbit));
-    return res;
-  }
+  return myFile;
 }
+
+string File::getline() {
+  string res;
+  bool ok = (!myFile.fail()) && (!myFile.eof());
+  std::getline(myFile, res);
+  if (ok && !myFile.bad() && myFile.fail() && myFile.eof())
+    myFile.clear(myFile.rdstate() & (~ios::failbit));
+  return res;
+}
+

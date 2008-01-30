@@ -35,16 +35,16 @@ defineInputValue(InputBoundaryConditions, "boundaryConditions");
 defineInputValue(InputCellManager, "cellManager");
 defineInputValue(InputDoSCPISM, "doscpism");
 defineInputValue(InputReducedImage, "reducedImage");
-defineInputValue(InputTemperature,"temperature");
+defineInputValue(InputTemperature, "temperature");
 defineInputValueWithAliasesAndText
 (InputRemoveLinearMomentum, "removeLinearMomentum", ("comMotion"),
- "removes linear momentum, where -1 for never, 0 at initialization or at STS "
- "frequency <n>");
+  "removes linear momentum, where -1 for never, 0 at initialization or at STS "
+  "frequency <n>");
 defineInputValueWithAliasesAndText
-(InputRemoveAngularMomentum, "removeAngularMomentum", ("angularMomentum"),
- "removes angular momentum, where -1 for never, 0 at initialization or at STS "
- "frequency <n>");
-
+(
+  InputRemoveAngularMomentum, "removeAngularMomentum", ("angularMomentum"),
+  "removes angular momentum, where -1 for never, 0 at initialization or at STS "
+  "frequency <n>");
 
 void TopologyModule::init(ProtoMolApp *app) {
   Configuration *config = &app->getConfiguration();
@@ -53,12 +53,11 @@ void TopologyModule::init(ProtoMolApp *app) {
 
   // Vacuum or normal boundary conditions
   topo = new Topology<VacuumBoundaryConditions, CubicCellManager>();
-  factory->registerExemplar(topo, Vector<std::string>("NormalCubic"));
+  factory->registerExemplar(topo, Vector<string>("NormalCubic"));
 
   // Periodic boundary conditions
   topo = new Topology<PeriodicBoundaryConditions, CubicCellManager>();
   factory->registerExemplar(topo);
-
 
   // Register input values
   InputBoundaryConditions::registerConfiguration(config);
@@ -74,11 +73,10 @@ void TopologyModule::configure(ProtoMolApp *app) {
   Configuration &config = app->getConfiguration();
 
   // Fix for old topology definition
-  if (!config[GenericTopology::keyword].valid()) {
+  if (!config[GenericTopology::keyword].valid())
     config[GenericTopology::keyword] =
       config[InputBoundaryConditions::keyword].getString() +
       config[InputCellManager::keyword].getString();
-  }
 }
 
 void TopologyModule::buildTopology(ProtoMolApp *app) {
@@ -92,11 +90,10 @@ void TopologyModule::buildTopology(ProtoMolApp *app) {
     topo->doSCPISM = true;
 
   buildTopology(topo, app->psf, app->par,
-                config[InputDihedralMultPSF::keyword]);
+    config[InputDihedralMultPSF::keyword]);
 
   topo->minimalMolecularDistances =
     topo->checkMoleculePairDistances(*positions);
-
 
   // Reduce image
   if ((bool)config[InputReducedImage::keyword] &&
@@ -109,50 +106,48 @@ void TopologyModule::buildTopology(ProtoMolApp *app) {
       *positions = tmp;
       report << plain << "Fixed minimal molecule distances." << endr;
       topo->minimalMolecularDistances = true;
-
     } else {
       report << plain << "Could not fixed minimal molecule distances." << endr;
       topo->minimalMolecularDistances = false;
-    }      
+    }
   }
 
   // Fix velocities
   if (!config.valid(InputVelocities::keyword)) {
     randomVelocity(config[InputTemperature::keyword],
-                   topo, velocities, config[InputSeed::keyword]);
+      topo, velocities, config[InputSeed::keyword]);
     report << plain << "Random temperature : "
            << temperature(topo, velocities) << "K" << endr;
   }
 
   // Remove Linear Momentum
-  if ((int)config[InputRemoveLinearMomentum::keyword] >= 0) {
+  if ((int)config[InputRemoveLinearMomentum::keyword] >= 0)
     report
       << plain << "Removed linear momentum: "
       << removeLinearMomentum(velocities, topo) * Constant::INV_TIMEFACTOR
       << endr;
 
-  } else
+  else
     report << plain << "Linear momentum : "
            << linearMomentum(velocities, topo) * Constant::INV_TIMEFACTOR
            << endr;
 
   // Remove Angular Momentum
-  if ((int)config[InputRemoveAngularMomentum::keyword] >= 0){
+  if ((int)config[InputRemoveAngularMomentum::keyword] >= 0)
     report << plain << "Removed angular momentum : "
            << removeAngularMomentum(positions, velocities, topo) *
-      Constant::INV_TIMEFACTOR << endr;
+    Constant::INV_TIMEFACTOR << endr;
 
-  } else {
+  else
     report << plain << "Angular momentum : "
            << angularMomentum(positions, velocities, topo) *
-      Constant::INV_TIMEFACTOR << endr;
-  }
+    Constant::INV_TIMEFACTOR << endr;
 
   report << plain << "Actual start temperature : "
          << temperature(topo, velocities) << "K" << endr;
 }
 
-//________________________________________findNextNeighbor
+//____findNextNeighbor
 void findNextNeighbor(int a, vector<int> &v, vector<PairInt> &p,
                       vector<char> &unused, const vector<vector<int> > &graph,
                       set<PairInt> &pairs) {
@@ -173,7 +168,8 @@ void findNextNeighbor(int a, vector<int> &v, vector<PairInt> &p,
 }
 
 void TopologyModule::buildTopology(GenericTopology *topo, const PSF &psf,
-                                   const PAR &par, bool dihedralMultPSF) {
+                                   const PAR &par,
+                                   bool dihedralMultPSF) {
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // First, generate the array of atomtypes
   // Each time a new atom comes up, we need to check if it is
@@ -209,7 +205,6 @@ void TopologyModule::buildTopology(GenericTopology *topo, const PSF &psf,
   // loop over all atoms in the PSF object
   for (vector<PSF::Atom>::const_iterator atom = psf.atoms.begin();
        atom != psf.atoms.end(); ++atom) {
-
     // Two data members for AtomType, name and mass
     Atom tempatom;
     AtomType tempatomtype;
@@ -294,7 +289,6 @@ void TopologyModule::buildTopology(GenericTopology *topo, const PSF &psf,
   // they will be subtracted later by ModifierShake
   topo->degreesOfFreedom = 3 * topo->atoms.size() - 3;
 
-
   if (topo->doSCPISM) delete mySCPISM;
 
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -320,7 +314,8 @@ void TopologyModule::buildTopology(GenericTopology *topo, const PSF &psf,
     string bond1(topo->atomTypes[topo->atoms[atom1].type].name);
     string bond2(topo->atomTypes[topo->atoms[atom2].type].name);
 
-    map<string, vector<PAR::Bond>::const_iterator>::const_iterator currentbond =
+    map<string,
+        vector<PAR::Bond>::const_iterator>::const_iterator currentbond =
       bondLookUpTable.find(bond1 + "," + bond2);
 
     if (currentbond == bondLookUpTable.end())
@@ -389,7 +384,7 @@ void TopologyModule::buildTopology(GenericTopology *topo, const PSF &psf,
     string angle3(topo->atomTypes[topo->atoms[atom3].type].name);
 
     map<string, vector<PAR::Angle>::const_iterator>::const_iterator
-      currentangle =
+    currentangle =
       angleLookUpTable.find(angle1 + "," + angle2 + "," + angle3);
 
     if (currentangle == angleLookUpTable.end())
@@ -400,7 +395,7 @@ void TopologyModule::buildTopology(GenericTopology *topo, const PSF &psf,
     // error
     if (currentangle == angleLookUpTable.end())
       THROWS("Could not find angle '" << angle1 << "'-'"
-             << angle2 << "'-'" << angle3 << "'.");
+                                      << angle2 << "'-'" << angle3 << "'.");
 
     // if we have found this angle type then copy the angle parameters
     // into the topology
@@ -413,7 +408,6 @@ void TopologyModule::buildTopology(GenericTopology *topo, const PSF &psf,
     if (currentangle->second->ub_flag) {       // do we want defaults for these
       tempangle.ureyBradleyConstant = currentangle->second->k_ub;
       tempangle.ureyBradleyRestLength = currentangle->second->r_ub;
-
     } else { // no Urey-Bradley term specified
       tempangle.ureyBradleyConstant = 0.0;
       tempangle.ureyBradleyRestLength = 0.0;
@@ -427,7 +421,6 @@ void TopologyModule::buildTopology(GenericTopology *topo, const PSF &psf,
     report << hint << "Systems contains " << ignoredAngles <<
     " angles with zero force constants." << endr;
 
-
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Get the dihedrals
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -436,7 +429,6 @@ void TopologyModule::buildTopology(GenericTopology *topo, const PSF &psf,
   // once in the .psf file regardless of it's multiplicity.  The
   // multiplicity should be handled in the .par file.
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 
   // First create look-up-table
   map<string, vector<PAR::Dihedral>::const_iterator> dihedralLookUpTable;
@@ -485,8 +477,10 @@ void TopologyModule::buildTopology(GenericTopology *topo, const PSF &psf,
     // if we still have not found this dihedral type in the PAR object, report
     // an error
     if (currentdihedral == dihedralLookUpTable.end())
-      THROWS("Could not find dihedral '" << dihedral1 << "'-'" << dihedral2
-             << "'-'" << dihedral3 << "'-'" << dihedral4 << "'.");
+      THROWS(
+        "Could not find dihedral '" << dihedral1 << "'-'" << dihedral2
+                                    << "'-'" << dihedral3 << "'-'" <<
+        dihedral4 << "'.");
 
     // if we have found this dihedral type then copy the
     // dihedral parameters into the topology
@@ -505,7 +499,6 @@ void TopologyModule::buildTopology(GenericTopology *topo, const PSF &psf,
         topo->dihedrals[topo->dihedrals.size() - 1].atom2 != atom2 ||
         topo->dihedrals[topo->dihedrals.size() - 1].atom3 != atom3 ||
         topo->dihedrals[topo->dihedrals.size() - 1].atom4 != atom4) {
-
       if (dihedralMultPSF) {
         torsion.periodicity.resize(1);
         torsion.forceConstant.resize(1);
@@ -513,15 +506,17 @@ void TopologyModule::buildTopology(GenericTopology *topo, const PSF &psf,
         torsion.multiplicity = 1;
       }
       topo->dihedrals.push_back(torsion);
-
     } else if (dihedralMultPSF) {
       Torsion &tmp = topo->dihedrals[topo->dihedrals.size() - 1];
       if (tmp.multiplicity > torsion.multiplicity)
-        THROWS("PSF multiplicity definition of dihedral (" << dihedral1 << ","
-               << dihedral2 << "," << dihedral3 << "," << dihedral4
-               << ") exceeded PAR definition.")
+        THROWS(
+          "PSF multiplicity definition of dihedral (" << dihedral1 << ","
+                                                      << dihedral2 <<
+          "," << dihedral3 << "," << dihedral4
+                                                      <<
+          ") exceeded PAR definition.")
 
-      tmp.periodicity.push_back(torsion.periodicity[tmp.multiplicity]);
+        tmp.periodicity.push_back(torsion.periodicity[tmp.multiplicity]);
       tmp.forceConstant.push_back(torsion.forceConstant[tmp.multiplicity]);
       tmp.phaseShift.push_back(torsion.phaseShift[tmp.multiplicity]);
       tmp.multiplicity++;
@@ -558,9 +553,9 @@ void TopologyModule::buildTopology(GenericTopology *topo, const PSF &psf,
   // ( A - B - C - D = D - C - B - A).
   //
   //         The periodicity value for dihedrals and improper dihedral terms
-  // must be an integer. If it is positive, then a cosine functional form is 
-  // used. Only positive values of 1,2,3,4,5 and 6 are allowed for the vector, 
-  // parallel vector and cray routines. Slow and scalar routines can use any 
+  // must be an integer. If it is positive, then a cosine functional form is
+  // used. Only positive values of 1,2,3,4,5 and 6 are allowed for the vector,
+  // parallel vector and cray routines. Slow and scalar routines can use any
   // positive integer and thus dihedral constrains can be of any periodicity.
   // Reference angle 0.0 and 180.0 degree correspond to minimum in staggered
   // and eclipsed respectively. Any reference angle is allowed. The value
@@ -569,7 +564,6 @@ void TopologyModule::buildTopology(GenericTopology *topo, const PSF &psf,
   // FIRST dihdral in a multiple dihedral set, then a the amplitude is a
   // constant added to the energy. This is needed to effect the
   // Ryckaert-Bellemans potential for hydrocarbons (see below).
-
 
   // First create look-up-table
   map<string, vector<PAR::Improper>::const_iterator> improperLookUpTable;
@@ -594,11 +588,10 @@ void TopologyModule::buildTopology(GenericTopology *topo, const PSF &psf,
     string improper3 = topo->atomTypes[topo->atoms[atom3].type].name;
     string improper4 = topo->atomTypes[topo->atoms[atom4].type].name;
 
-
     map<string, vector<PAR::Improper>::const_iterator>::const_iterator
-      currentimproper = 
+    currentimproper =
       improperLookUpTable.find(improper1 + "," + improper2 + "," + improper3 +
-                               "," + improper4);
+        "," + improper4);
     if (currentimproper == improperLookUpTable.end())
       currentimproper = improperLookUpTable.find(
         improper4 + "," + improper3 + "," + improper2 + "," + improper1);
@@ -782,12 +775,11 @@ void TopologyModule::buildTopology(GenericTopology *topo, const PSF &psf,
   buildExclusionTable(topo, topo->exclude);
 }
 
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//
-//  buildMoleculeTable
-//
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//____~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//____
+//____  buildMoleculeTable
+//____
+//____~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 void TopologyModule::buildMoleculeTable(GenericTopology *topo) {
   // *** First we clear all molecules ***
@@ -921,7 +913,6 @@ void TopologyModule::buildMoleculeTable(GenericTopology *topo) {
   // to molecules.
   vector<char> unused(numAtoms, 1);
 
-
   // Recursively finding the atoms beloning to a molecule
   for (unsigned int i = 0; i < numAtoms; i++) {
     vector<int> v;
@@ -987,17 +978,15 @@ void TopologyModule::buildMoleculeTable(GenericTopology *topo) {
 #endif
 }
 
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//
-//  buildExclusionTable
-//
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//____~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//____
+//____  buildExclusionTable
+//____
+//____~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void TopologyModule::buildExclusionTable(GenericTopology *topo,
                                          const ExclusionType &exclusionType) {
   if (!exclusionType.valid())
     THROW("[buildExclusionTable()] Exclusion type not defined/valid.");
-
 
   topo->exclude = exclusionType;
 
@@ -1007,16 +996,14 @@ void TopologyModule::buildExclusionTable(GenericTopology *topo,
   //  If exclusionType is equal to NONE, return.
   if (exclusionType == ExclusionType::NONE) return;
 
-
   const int numBonds = topo->bonds.size(),
-    numAngles = topo->angles.size(),
-    numDihedrals = topo->dihedrals.size();
-  
+            numAngles = topo->angles.size(),
+            numDihedrals = topo->dihedrals.size();
 
   //  Add excluded bonds.
   for (int i = 0; i < numBonds; i++)
     topo->exclusions.add(topo->bonds[i].atom1, topo->bonds[i].atom2,
-                         EXCLUSION_FULL);
+      EXCLUSION_FULL);
 
   if (exclusionType != ExclusionType::ONE2) {
     //  Add excluded angles.
@@ -1040,3 +1027,4 @@ void TopologyModule::buildExclusionTable(GenericTopology *topo,
 
   topo->exclusions.optimize();
 }
+

@@ -56,7 +56,6 @@ void ModuleManager::init(ProtoMolApp *app) {
   for (it = modules.begin(); it != modules.end(); it++)
     (*it)->init(app);
 
-
   // Register command line option
   // TODO: This should probably go in a module.
   CommandLineOption::ActionBase *action =
@@ -64,14 +63,14 @@ void ModuleManager::init(ProtoMolApp *app) {
                                                  &ModuleManager::listAction);
 
   app->getCommandLine().add(0, "modules", action,
-                            "List all registered modules and exit.");
+    "List all registered modules and exit.");
 }
 
 void ModuleManager::configure(ProtoMolApp *app) {
   modules_t::iterator it;
 
   for (it = modules.begin(); it != modules.end(); it++)
-    (*it)->configure(app);  
+    (*it)->configure(app);
 }
 
 void ModuleManager::registerForces(ProtoMolApp *app) {
@@ -96,3 +95,4 @@ int ModuleManager::listAction() {
 
   return -1;
 }
+

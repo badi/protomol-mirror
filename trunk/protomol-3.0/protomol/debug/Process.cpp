@@ -12,7 +12,7 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
              GNU General Public License for more details.
 
-  You should have received a copy of the GNU General Public License
+   You should have received a copy of the GNU General Public License
      along with this program; if not, write to the Free Software
       Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
                            02111-1307, USA.
@@ -44,7 +44,6 @@ void PipeProcessFunctor::child() {
   if (direction == Process::TO_CHILD) {
     pipe.closeIn();
     if (fd >= 0) pipe.moveOutFD(fd);
-
   } else {
     pipe.closeOut();
     if (fd >= 0) pipe.moveInFD(fd);
@@ -56,16 +55,13 @@ void PipeProcessFunctor::parent() {
   else pipe.closeIn();
 }
 
-
 void FDReplaceProcessFunctor::child() {
   if (dup2(replacement, fd) != fd)
     THROW("Error replacing file descriptor in child process!");
 }
 
-
-
-Process::Process() : pid(0), running(false), returnCode(0) {
-}
+Process::Process() :
+  pid(0), running(false), returnCode(0) {}
 
 Process::~Process() {
   if (isRunning()) {
@@ -84,8 +80,9 @@ void Process::exec(list<string> &args) {
 
   for (i = 0, it = args.begin(); it != args.end(); i++, it++)
     argv[i] = (char *)it->c_str();
+
   argv[i] = 0;
-  
+
   exec(argv.get());
 }
 
@@ -110,24 +107,24 @@ void Process::exec(char *argv[]) {
   if (pid == 0) {
     try {
       for (unsigned int i = 0; i < functors.size(); i++)
-	functors[i]->child();
+        functors[i]->child();
     } catch (const Exception &e) {
       perror(e.getMessage().c_str());
     }
 
     execvp(argv[0], argv);
-    
+
     // Execution failed!
     string errorStr = "Process() executing '";
     for (unsigned i = 0; argv[i]; i++) {
       if (i) errorStr += " ";
       errorStr += argv[i];
     }
+
     errorStr += "'";
 
     perror(errorStr.c_str());
     exit(1);
-
   } else if (pid == -1)
     THROW("Failed to spawn child!");
 
@@ -139,69 +136,70 @@ void Process::exec(char *argv[]) {
 
 void Process::parseArgs(char *args, int &argc, char *argv[], int n) {
   if (args) {
-
     bool inArg = false;
     bool inSQuote = false;
     bool inDQuote = false;
     bool addChar;
     int i = 0;
-    
+
     for (char *ptr = args; *ptr; ptr++) {
       addChar = false;
-      
+
       switch (*ptr) {
       case '\\':
-	if (ptr[1] != '\0') {
-	  ptr++;
-	  switch (*ptr) {
-	  case 'n': *ptr = '\n'; break;
-	  case 't': *ptr = '\t'; break;
-	  case 'r': *ptr = '\r'; break;
-	  default: break;
-	  }
-	  addChar = true;
-	} 
-	break;
-	
+        if (ptr[1] != '\0') {
+          ptr++;
+          switch (*ptr) {
+          case 'n': *ptr = '\n';
+            break;
+          case 't': *ptr = '\t';
+            break;
+          case 'r': *ptr = '\r';
+            break;
+          default: break;
+          }
+
+          addChar = true;
+        }
+        break;
+
       case '\'':
-	if (inDQuote) addChar = true;
-	else {
-	  if (inSQuote) inSQuote = false;
-	  else inSQuote = true;
-	}
-	break;
-	
+        if (inDQuote) addChar = true;
+        else
+        if (inSQuote) inSQuote = false;
+        else inSQuote = true;
+        break;
+
       case '"':
-	if (inSQuote) addChar = true;
-	else {
-	  if (inDQuote) inDQuote = false;
-	  else inDQuote = true;
-	}
-	break;
-	
+        if (inSQuote) addChar = true;
+        else
+        if (inDQuote) inDQuote = false;
+        else inDQuote = true;
+        break;
+
       case '\t':
       case ' ':
       case '\n':
       case '\r':
-	if (inArg) {
-	  if (inSQuote || inDQuote) addChar = true;
-	  else {
-	    args[i++] = 0;
-	    inArg = false;
-	  }
-	}
-	break;
-	
-      default: addChar = true; break;
+        if (inArg)
+          if (inSQuote || inDQuote) addChar = true;
+          else {
+            args[i++] = 0;
+            inArg = false;
+          }
+        break;
+
+      default: addChar = true;
+        break;
       }
-    
+
       if (addChar) {
-	if (!inArg) {
-	  ASSERT_OR_THROW("Too many arguments!", argc < n - 1);
-	  argv[argc++] = &args[i];
-	  inArg = true;
-	}
-	args[i++] = *ptr;
+        if (!inArg) {
+          ASSERT_OR_THROW("Too many arguments!", argc < n - 1);
+          argv[argc++] = &args[i];
+          inArg = true;
+        }
+        args[i++] = *ptr;
       }
     }
 
@@ -227,10 +225,9 @@ void Process::replaceChildFD(int fd, int replacement) {
 void Process::kill(int sig) {
   ASSERT_OR_THROW("Process not running!", running);
 
-  if (::kill(pid, sig) != 0) {
-    THROW(string("Failed to kill process ") + String(pid) + ":" + 
-	  strerror(errno));
-  }
+  if (::kill(pid, sig) != 0)
+    THROW(string("Failed to kill process ") + String(pid) + ":" +
+      strerror(errno));
 }
 
 int Process::wait(int options) {
@@ -241,19 +238,17 @@ int Process::wait(int options) {
 
   if (retVal == -1) {
     running = false;
-    THROW(string("Failed to wait on process ") + String(pid) + ":" + 
-	  strerror(errno));
+    THROW(string("Failed to wait on process ") + String(pid) + ":" +
+      strerror(errno));
   }
 
   if (retVal) {
     if (WIFEXITED(status)) {
       returnCode = WEXITSTATUS(status);
       running = false;
-
-    } else if (WIFSIGNALED(status)) {
+    } else if (WIFSIGNALED(status))
       // TODO report on signal
       running = false;
-    }
   }
 
   return status;
@@ -263,3 +258,4 @@ bool Process::isRunning() {
   if (running) wait(WNOHANG);
   return running;
 }
+

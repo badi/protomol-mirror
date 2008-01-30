@@ -7,37 +7,30 @@
 
 #include "Report.h"
 
-using std::endl;
-using std::ostream;
-using std::find;
-using std::vector;
-using std::string;
-using std::stringstream;
-using std::transform;
+using namespace std;
 using namespace ProtoMol::Report;
 
 namespace ProtoMol {
-
-  //__________________________________________________________________ uppercase
+//____ uppercase
   string uppercase(const string &word) {
     string tmp(word);
-    transform(word.begin(), word.end(), tmp.begin(), toupper);
+    transform(word.begin(), word.end(), tmp.begin(), (int(*)(int))toupper);
     return tmp;
   }
 
-  //__________________________________________________________________ lowercase
+//____ lowercase
   string lowercase(const string &word) {
     string tmp(word);
-    transform(word.begin(), word.end(), tmp.begin(), tolower);
+    transform(word.begin(), word.end(), tmp.begin(), (int(*)(int))tolower);
     return tmp;
   }
 
-  //__________________________________________________________________ equal
+//____ equal
   bool equal(const string &s1, const string &s2) {
     return s1 == s2;
   }
 
-  //________________________________________________________________ equalNocase
+//____ equalNocase
   bool equalNocase(const string &s1, const string &s2) {
     const string::size_type i1 = s1.size();
     if (i1 != s2.size())
@@ -49,7 +42,7 @@ namespace ProtoMol {
     return true;
   }
 
-  //_________________________________________________________________ equalBegin
+//____ equalBegin
   bool equalBegin(const string &s1, const string &s2) {
     const string::size_type i1 = s1.size();
     const string::size_type i2 = s2.size();
@@ -59,13 +52,12 @@ namespace ProtoMol {
       return s1.substr(0, i2) == s2;
   }
 
-  //___________________________________________________________ equalBeginNocase
+//____ equalBeginNocase
   bool equalBeginNocase(const string &s1, const string &s2) {
     return equalBegin(uppercase(s1), uppercase(s2));
   }
 
-
-  //_________________________________________________________________ equalStart
+//____ equalStart
   bool equalStart(const string &s1, const string &s2) {
     const string::size_type i1 = s1.size();
     if (i1 <= s2.size())
@@ -74,12 +66,12 @@ namespace ProtoMol {
       return false;
   }
 
-  //___________________________________________________________ equalStartNocase
+//____ equalStartNocase
   bool equalStartNocase(const string &s1, const string &s2) {
     return equalStart(uppercase(s1), uppercase(s2));
   }
 
-  //___________________________________________________________________ equalEnd
+//____ equalEnd
   bool equalEnd(const string &s1, const string &s2) {
     string::size_type i1 = s1.size();
     string::size_type i2 = s2.size();
@@ -89,12 +81,12 @@ namespace ProtoMol {
       return s1.substr(i1 - i2) == s2;
   }
 
-  //_____________________________________________________________ equalEndNocase
+//____ equalEndNocase
   bool equalEndNocase(const string &s1, const string &s2) {
     return equalEnd(uppercase(s1), uppercase(s2));
   }
 
-  //_____________________________________________________________ equalTerminate
+//____ equalTerminate
   bool equalTerminate(const string &s1, const string &s2) {
     string::size_type i1 = s1.size();
     string::size_type i2 = s2.size();
@@ -104,13 +96,12 @@ namespace ProtoMol {
       return false;
   }
 
-  //_______________________________________________________ equalTerminateNocase
+//____ equalTerminateNocase
   bool equalTerminateNocase(const string &s1, const string &s2) {
     return equalTerminate(uppercase(s1), uppercase(s2));
   }
 
-
-  //____________________________________________________________ toStringGeneric
+//____ toStringGeneric
   template<class T>
   inline string toStringGeneric(T x) {
     // http://www.bespecific.com/dialog/becodetalk/archive/980405/0058.html
@@ -119,7 +110,7 @@ namespace ProtoMol {
     return string(ss.str());
   }
 
-  //___________________________________________________________________ toString
+//____ toString
   string toString(Real x) {
     stringstream ss;
     ss.precision(sizeof(Real) > sizeof(float) ? 15 : 9);
@@ -127,18 +118,17 @@ namespace ProtoMol {
     return string(ss.str());
   }
 
-  //___________________________________________________________________ toString
+//____ toString
   string toString(Real x, unsigned int n, unsigned int m) {
     stringstream ss;
-    ss.setf(std::ios::showpoint | std::ios::fixed);
+    ss.setf(ios::showpoint | ios::fixed);
     ss.precision(m);
     ss.width(n + m + 1);
     ss << x;
     return string(ss.str());
   }
 
-
-  //___________________________________________________________________ toString
+//____ toString
   string toString(bool x) {
     if (x)
       return "true";
@@ -146,12 +136,12 @@ namespace ProtoMol {
       return "false";
   }
 
-  //___________________________________________________________________ toString
+//____ toString
   string toString(const Vector3D &c) {
     return string(toString(c.x) + " " + toString(c.y) + " " + toString(c.z));
   }
 
-  //___________________________________________________________________ toString
+//____ toString
   string toString(const vector<Real> &v) {
     string res;
     for (unsigned int i = 0; i < v.size(); ++i)
@@ -160,47 +150,47 @@ namespace ProtoMol {
     return res;
   }
 
-  //___________________________________________________________________ isReal
+//____ isReal
   bool isReal(const string &word) {
     Real r = 0.0;
     return toReal(word, r);
   }
 
-  //___________________________________________________________________ toReal
+//____ toReal
   Real toReal(const string &word) {
     Real r = 0.0;
     toReal(word, r);
     return r;
   }
 
-  //___________________________________________________________________ toReal
-  // http://www.dinkumware.com/htm_cpl/stdlib.html#strtod
+//____ toReal
+//____ http://www.dinkumware.com/htm_cpl/stdlib.html#strtod
   bool toReal(const string &word, Real &r) {
     char *endptr = NULL;
     double d = strtod(word.c_str(), &endptr);
     r = static_cast<Real> (d);
     return !word.empty() &&
-      ((fabs(d) >= Constant::MINREAL &&
-        fabs(d) <= Constant::MAXREAL) ||
-       fabs(d) == 0.0) && errno != ERANGE &&
-      (endptr == NULL || isBlank(string(endptr))) && isPrintable(word);
+           ((fabs(d) >= Constant::MINREAL &&
+             fabs(d) <= Constant::MAXREAL) ||
+            fabs(d) == 0.0) && errno != ERANGE &&
+           (endptr == NULL || isBlank(string(endptr))) && isPrintable(word);
   }
 
-  //___________________________________________________________________ isInt
+//____ isInt
   bool isInt(const string &word) {
     int i = 0;
     return toInt(word, i);
   }
 
-  //___________________________________________________________________ toInt
+//____ toInt
   int toInt(const string &word) {
     int i = 0;
     toInt(word, i);
     return i;
   }
 
-  //___________________________________________________________________ toInt
-  // http://www.dinkumware.com/htm_cpl/stdlib.html#strtol
+//____ toInt
+//____ http://www.dinkumware.com/htm_cpl/stdlib.html#strtol
   bool toInt(const string &word, int &i) {
     char *endptr = NULL;
     long l = strtol(word.c_str(), &endptr, 10);
@@ -217,21 +207,21 @@ namespace ProtoMol {
     return false;
   }
 
-  //___________________________________________________________________ isUInt
+//____ isUInt
   bool isUInt(const string &word) {
     unsigned int i = 0;
     return toUInt(word, i);
   }
 
-  //___________________________________________________________________ toUInt
+//____ toUInt
   unsigned int toUInt(const string &word) {
     unsigned int i = 0;
     toUInt(word, i);
     return i;
   }
 
-  //___________________________________________________________________ toUInt
-  // http://www.dinkumware.com/htm_cpl/stdlib.html#strtol
+//____ toUInt
+//____ http://www.dinkumware.com/htm_cpl/stdlib.html#strtol
   bool toUInt(const string &word, unsigned int &i) {
     char *endptr = NULL;
     unsigned long l = strtoul(word.c_str(), &endptr, 10);
@@ -248,20 +238,20 @@ namespace ProtoMol {
     return false;
   }
 
-  //___________________________________________________________________ isBool
+//____ isBool
   bool isBool(const string &word) {
     bool b = false;
     return toBool(word, b);
   }
 
-  //___________________________________________________________________ toBool
+//____ toBool
   bool toBool(const string &word) {
     bool b = false;
     toBool(word, b);
     return b;
   }
 
-  //___________________________________________________________________ toBool
+//____ toBool
   bool toBool(const string &word, bool &b) {
     string s = removeBeginEndBlanks(word);
     if (equalNocase(s, "true") ||
@@ -277,20 +267,20 @@ namespace ProtoMol {
       return false;
   }
 
-  //_________________________________________________________________ isVector3D
+//____ isVector3D
   bool isVector3D(const string &word) {
     Vector3D c(0.0, 0.0, 0.0);
     return toVector3D(word, c);
   }
 
-  //_________________________________________________________________ toVector3D
+//____ toVector3D
   Vector3D toVector3D(const string &word) {
     Vector3D c(0.0, 0.0, 0.0);
     toVector3D(word, c);
     return c;
   }
 
-  //_________________________________________________________________ toVector3D
+//____ toVector3D
   bool toVector3D(const string &word, Vector3D &c) {
     string s = removeBeginEndBlanks(word);
     stringstream ss(s);
@@ -303,20 +293,20 @@ namespace ProtoMol {
     return ss.eof() && bx && by && bz;
   }
 
-  //___________________________________________________________________ isVector
+//____ isVector
   bool isVector(const string &word) {
     vector<Real> v;
     return toVector(word, v);
   }
 
-  //___________________________________________________________________ toVector
-  vector<Real> toVector(const string & word) {
+//____ toVector
+  vector<Real> toVector(const string &word) {
     vector<Real> v;
     toVector(word, v);
     return v;
   }
 
-  //___________________________________________________________________ toVector
+//____ toVector
   bool toVector(const string &word, vector<Real> &v) {
     string s = removeBeginEndBlanks(word);
     stringstream is(s);
@@ -337,7 +327,7 @@ namespace ProtoMol {
         if (!(is >> str))
           return false;
         if (!isReal(str)) {
-          is.seekg((-1) * static_cast<int> (str.size()), std::ios::cur);
+          is.seekg((-1) * static_cast<int> (str.size()), ios::cur);
           is.clear();
           return false;
         }
@@ -346,39 +336,41 @@ namespace ProtoMol {
 
       return true;
     }
-    is.seekg((-1) * static_cast<int> (str.size()), std::ios::cur);
+    is.seekg((-1) * static_cast<int> (str.size()), ios::cur);
     is.clear();
     return true;
   }
 
-  //___________________________________________________________________ isBlank
+//____ isBlank
   bool isBlank(const string &word) {
-    return word.begin() == std::
-      find_if(word.begin(), word.end(), ProtoMol::isblankchar);
+    return word.begin() ==
+           find_if(word.begin(), word.end(), ProtoMol::isblankchar);
   }
 
-  //________________________________________________________________ isblankchar
+//____ isblankchar
   bool isblankchar(char c) {
     return c == ' ' || c == '\t' || c == '\n' || c == '\r';
   }
 
-  //________________________________________________________________ isPrintable
+//____ isPrintable
   bool isPrintable(const string &word) {
-    return word.begin() == std::
-      find_if(word.begin(), word.end(), isprintablechar);
+    return word.begin() ==
+           find_if(word.begin(), word.end(), isprintablechar);
   }
-  //___________________________________________________________________ isprintablechar
+
+//____ isprintablechar
   bool isprintablechar(char c) {
     return isblankchar(c) || isprint(c);
   }
 
-  //___________________________________________________________________ getBegin
+//____ getBegin
   string getBegin(const string &s, string::size_type n) {
     if (s.size() <= n)
       return s;
     return s.substr(0, n);
   }
-  //___________________________________________________________________ getEnd
+
+//____ getEnd
   string getEnd(const string &s, string::size_type n) {
     const string::size_type i = s.size();
     if (i <= n)
@@ -386,14 +378,15 @@ namespace ProtoMol {
     return s.substr(i - n);
   }
 
-  //_______________________________________________________________ getRightFill
+//____ getRightFill
   string getRightFill(const string &s, string::size_type n) {
     const string::size_type i = s.size();
     if (i < n)
       return s + string(n - i, ' ');
     return s.substr(0, n);
   }
-  //________________________________________________________________ getLeftFill
+
+//____ getLeftFill
   string getLeftFill(const string &s, string::size_type n) {
     const string::size_type i = s.size();
     if (i < n)
@@ -401,7 +394,7 @@ namespace ProtoMol {
     return s.substr(0, n);
   }
 
-  //_______________________________________________________ removeBeginEndBlanks
+//____ removeBeginEndBlanks
   string removeBeginEndBlanks(const string &s) {
     string::size_type a = s.find_first_not_of(" \t\n\r");
     if (a == string::npos)
@@ -409,17 +402,17 @@ namespace ProtoMol {
     return string(&s[a], &s[s.find_last_not_of(" \t\n\r") + 1]);
   }
 
-  //________________________________________________________________ ltstrNocase
+//____ ltstrNocase
   bool ltstrNocase::operator()(const string &s1, const string &s2) const {
     return strcmp(uppercase(s1).c_str(), uppercase(s2).c_str()) < 0;
   }
 
-  //______________________________________________________________ ltstrNocaseOp
+//____ ltstrNocaseOp
   bool ltstrNocaseOp(const string &s1, const string &s2) {
     return strcmp(uppercase(s1).c_str(), uppercase(s2).c_str()) < 0;
   }
 
-  //______________________________________________________________ equalWildcard
+//____ equalWildcard
   int equalWildcard(const string &wildcard, const string &name) {
     // Match with no wildcards
     if (wildcard == name)
@@ -468,15 +461,15 @@ namespace ProtoMol {
         int ok = 0;
         for (unsigned int i = pos; i <= name.size(); i++)
           if (equalWildcard(string(wildcard.begin() + pos + 1, wildcard.end()),
-                            string(name.begin() + i, name.end())) > 0)
+                string(name.begin() + i, name.end())) > 0)
             ok = 1;
 
         return ok;
       } else if (wildcard[pos] == '%')
         if (pos < name.size() &&
             equalWildcard(string(wildcard.begin() + pos + 1,
-                                 wildcard.end()),
-                          string(name.begin() + pos + 1, name.end())) > 0)
+                wildcard.end()),
+              string(name.begin() + pos + 1, name.end())) > 0)
           return 1;
         else
           return 0;
@@ -484,7 +477,7 @@ namespace ProtoMol {
         int ok = 0;
         for (unsigned int i = pos; i <= name.size(); i++) {
           if (equalWildcard(string(wildcard.begin() + pos + 1, wildcard.end()),
-                            string(name.begin() + i, name.end())) > 0)
+                string(name.begin() + i, name.end())) > 0)
             ok = 1;
           if (i < name.size() && !isdigit(name[i]))
             break;
@@ -494,17 +487,16 @@ namespace ProtoMol {
       } else if (wildcard[pos] == '+')
         if (pos < name.size() && isdigit(name[pos]) &&
             equalWildcard(string(wildcard.begin() + pos + 1, wildcard.end()),
-                          string(name.begin() + pos + 1, name.end())) > 0)
+              string(name.begin() + pos + 1, name.end())) > 0)
           return 1;
         else
           return 0;
-
     }
     return 0;
   }
 
-  //________________________________________________________________ splitString
-  vector<string> splitString(const string & id) {
+//____ splitString
+  vector<string> splitString(const string &id) {
     stringstream ss(id);
     vector<string> res;
     string str;
@@ -515,7 +507,7 @@ namespace ProtoMol {
     return res;
   }
 
-  //________________________________________________________________ mergeString
+//____ mergeString
   string mergeString(const vector<string> &id) {
     string res;
     for (unsigned int i = 0; i < id.size(); i++)
@@ -524,7 +516,7 @@ namespace ProtoMol {
     return res;
   }
 
-  //____________________________________________________________ normalizeString
+//____ normalizeString
   string normalizeString(const string &word) {
     stringstream ss(word);
     string res, str;
@@ -534,14 +526,16 @@ namespace ProtoMol {
 
     return res;
   }
-  //_________________________________________________________________ headString
+
+//____ headString
   string headString(const string &word) {
     stringstream ss(word);
     string str;
     ss >> str;
     return str;
   }
-  //_________________________________________________________________ tailString
+
+//____ tailString
   string tailString(const string &word) {
     stringstream ss(word);
     string res, str;
@@ -571,7 +565,6 @@ namespace ProtoMol {
         }
 
         if (str[i] == '\n') linefeeds++;
-
       } else if (start == -1) start = i;
     }
 
@@ -590,7 +583,6 @@ namespace ProtoMol {
         stream << endl;
         eol = true;
         i++;
-      
       } else if (firstWord || pos + tokens[i].length() + 1 < maxColumn) {
         if (!firstWord) {
           stream << " ";
@@ -600,7 +592,6 @@ namespace ProtoMol {
         firstWord = false;
         pos += tokens[i].length();
         i++;
-
       } else eol = true;
 
       if (eol) {
@@ -612,5 +603,4 @@ namespace ProtoMol {
 
     if (pos) stream << endl;
   }
-
 }

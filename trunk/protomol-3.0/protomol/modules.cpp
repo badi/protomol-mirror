@@ -13,3 +13,4 @@ void moduleInitFunction(ModuleManager *manager) {
   manager->add(new ConfigurationModule());
   manager->add(new TopologyModule());
 }
+

@@ -12,7 +12,7 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
              GNU General Public License for more details.
 
-  You should have received a copy of the GNU General Public License
+   You should have received a copy of the GNU General Public License
      along with this program; if not, write to the Free Software
       Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
                            02111-1307, USA.
@@ -33,8 +33,8 @@
 
 using namespace std;
 
-
-Pipe::Pipe() : outStream(0), inStream(0) {
+Pipe::Pipe() :
+  outStream(0), inStream(0) {
   if (pipe(pipeFDs)) THROW("Error creating pipe!");
   fdOpen[0] = fdOpen[1] = true;
 }
@@ -68,7 +68,7 @@ void Pipe::moveOutFD(int newFD) {
   duplicateOutFD(newFD);
 
   if (close(pipeFDs[0])) THROW("Error closing old file descriptor!");
-  
+
   pipeFDs[0] = newFD;
 }
 
@@ -81,16 +81,14 @@ void Pipe::moveInFD(int newFD) {
   duplicateInFD(newFD);
 
   if (close(pipeFDs[1])) THROW("Error closing old file descriptor!");
-  
+
   pipeFDs[1] = newFD;
 }
-
 
 istream *Pipe::getOutStream() {
   ASSERT_OR_THROW("Pipe output not open!", fdOpen[0]);
 
   if (!outStream) {
-
     // C file descriptor to C++ streams magic
     // NOTE: This only works in GCC 3.2 and newer
     //       Hopefully they will leave the API alone now!
@@ -101,7 +99,6 @@ istream *Pipe::getOutStream() {
     // FIXME There are two leaks above.  fdopen must be closed
     //       and the stdio_filebuf must be freed.
     //       Also in the getInStream()
-
 
     outStream = new istream(pipeBuf);
   }
@@ -119,9 +116,10 @@ ostream *Pipe::getInStream() {
     __c_file *pipeFile = fdopen(pipeFDs[1], "w");
     __gnu_cxx::stdio_filebuf<char> *pipeBuf =
       new __gnu_cxx::stdio_filebuf<char>(pipeFile, ios::out);
-    
+
     inStream = new ostream(pipeBuf);
   }
 
   return inStream;
 }
+

@@ -14,14 +14,11 @@
 #include <set>
 
 using namespace ProtoMol::Report;
-using std::string;
-using std::vector;
-using std::set;
+using namespace std;
 
 namespace ProtoMol {
-  //________________________________________randomVelocity
-  void randomVelocity(Real temperature,
-                      const GenericTopology *topology,
+//____randomVelocity
+  void randomVelocity(Real temperature, const GenericTopology *topology,
                       Vector3DBlock *velocities,
                       unsigned int seed) {
     // Argument tests
@@ -38,7 +35,6 @@ namespace ProtoMol {
 
     Real kbToverM;
 
-
     // Make sure that the velocitie array has the right size ...
     velocities->resize(nAtoms);
 
@@ -53,18 +49,16 @@ namespace ProtoMol {
     }
   }
 
-  //________________________________________randomVelocity
-  void randomVelocity(Real temperatureFrom,
-                      Real temperatureTo,
+//____randomVelocity
+  void randomVelocity(Real temperatureFrom, Real temperatureTo,
                       const GenericTopology *topology,
                       const Vector3DBlock *positions,
-                      Vector3DBlock *velocities,
-                      bool removeLinear,
+                      Vector3DBlock *velocities, bool removeLinear,
                       bool removeAngular,
                       unsigned int seed) {
     // Make sure temperatureFrom <= temperatureTo
     if (temperatureFrom > temperatureTo)
-      std::swap(temperatureFrom, temperatureTo);
+      swap(temperatureFrom, temperatureTo);
 
     // Argument tests
     if (temperatureFrom < 0) {
@@ -104,22 +98,22 @@ namespace ProtoMol {
         (*velocities)[i] *= scale;
     }
   }
-  //________________________________________temperature
+
+//____temperature
   Real temperature(const GenericTopology *topology,
                    const Vector3DBlock *velocities) {
     return temperature(kineticEnergy(topology,
         velocities), topology->degreesOfFreedom);
   }
 
-  //________________________________________temperature
+//____temperature
   Real temperature(Real kineticEnergy, unsigned int degreesOfFreedom) {
     return 2.0 * kineticEnergy / (Constant::BOLTZMANN *degreesOfFreedom);
   }
 
-  //________________________________________temperatureForAtomType
+//____temperatureForAtomType
   Real temperatureForAtomType(const GenericTopology *topology,
-                              const Vector3DBlock *velocities,
-                              int atomType,
+                              const Vector3DBlock *velocities, int atomType,
                               waterOption option) {
     // The number of atoms
     int count;
@@ -133,7 +127,7 @@ namespace ProtoMol {
     return temperature(KE, 3 * count);
   }
 
-  //________________________________________temperatureForWater
+//____temperatureForWater
   Real temperatureForWater(const GenericTopology *topology,
                            const Vector3DBlock *velocities) {
     // The number of waters
@@ -144,7 +138,7 @@ namespace ProtoMol {
     return temperature(KE, 3 * count);
   }
 
-  //________________________________________temperatureForNonWater
+//____temperatureForNonWater
   Real temperatureForNonWater(const GenericTopology *topology,
                               const Vector3DBlock *velocities) {
     // The number of non-water molecules
@@ -155,7 +149,7 @@ namespace ProtoMol {
     return temperature(KE, 3 * count);
   }
 
-  //________________________________________getNonWaterAtoms
+//____getNonWaterAtoms
   int getNonWaterAtoms(const GenericTopology *topology) {
     // The number of non-water molecules
     int atomcount = 0;
@@ -166,7 +160,7 @@ namespace ProtoMol {
     return atomcount;
   }
 
-  //________________________________________kineticEnergy
+//____kineticEnergy
   Real kineticEnergy(const GenericTopology *topology,
                      const Vector3DBlock *velocities) {
     Real kineticEnergy = 0.0;
@@ -177,10 +171,9 @@ namespace ProtoMol {
     return kineticEnergy * 0.5;
   }
 
-  //________________________________________kineticEnergyForAtomType
+//____kineticEnergyForAtomType
   Real kineticEnergyForAtomType(const GenericTopology *topology,
-                                const Vector3DBlock *velocities,
-                                int atomType,
+                                const Vector3DBlock *velocities, int atomType,
                                 waterOption option) {
     Real kineticEnergy = 0.0;
     for (unsigned int i = 0; i < topology->atoms.size(); i++)
@@ -205,8 +198,7 @@ namespace ProtoMol {
   }
 
   Real kineticEnergyForAtomType(const GenericTopology *topology,
-                                const Vector3DBlock *velocities,
-                                int atomType,
+                                const Vector3DBlock *velocities, int atomType,
                                 waterOption option,
                                 int &atomCount) {
     Real kineticEnergy = 0.0;
@@ -234,7 +226,7 @@ namespace ProtoMol {
     return kineticEnergy * 0.5;
   }
 
-  //________________________________________kineticEnergyForWater
+//____kineticEnergyForWater
   Real kineticEnergyForWater(const GenericTopology *topology,
                              const Vector3DBlock *velocities) {
     Real kineticEnergy = 0.0;
@@ -261,7 +253,7 @@ namespace ProtoMol {
     return kineticEnergy * 0.5;
   }
 
-  //________________________________________kineticEnergyForNonWater
+//____kineticEnergyForNonWater
   Real kineticEnergyForNonWater(const GenericTopology *topology,
                                 const Vector3DBlock *velocities) {
     Real kineticEnergy = 0.0;
@@ -288,7 +280,7 @@ namespace ProtoMol {
     return kineticEnergy * 0.5;
   }
 
-  //________________________________________molecularKineticEnergy
+//____molecularKineticEnergy
   Real molecularKineticEnergy(const GenericTopology *topology,
                               const Vector3DBlock *velocities) {
     Real kineticEnergy = 0.0;
@@ -306,7 +298,7 @@ namespace ProtoMol {
     return kineticEnergy * 0.5;
   }
 
-  //________________________________________velocityVirial
+//____velocityVirial
   ScalarStructure velocityVirial(const GenericTopology *topology,
                                  const Vector3DBlock *velocities) {
     ScalarStructure res;
@@ -315,7 +307,7 @@ namespace ProtoMol {
     return res;
   }
 
-  //________________________________________addVelocityVirial
+//____addVelocityVirial
   void addVelocityVirial(ScalarStructure *energies,
                          const GenericTopology *topology,
                          const Vector3DBlock *velocities) {
@@ -324,7 +316,7 @@ namespace ProtoMol {
         topology->atoms[i].scaledMass);
   }
 
-  //________________________________________atomTypeToSymbolName
+//____atomTypeToSymbolName
   string atomTypeToSymbolName(const string &type) {
     if (equalBeginNocase(type, "SOD"))
       return string("NA");
@@ -364,8 +356,7 @@ namespace ProtoMol {
       return type;
   }
 
-
-  //________________________________________linearMomentum
+//____linearMomentum
   Vector3D linearMomentum(const Vector3DBlock *velocities,
                           const GenericTopology *topo) {
     if (velocities->empty())
@@ -388,7 +379,7 @@ namespace ProtoMol {
     return sumMomentum;
   }
 
-  //________________________________________linearMomentumSolute
+//____linearMomentumSolute
   Vector3D linearMomentumSolute(const Vector3DBlock *velocities,
                                 const GenericTopology *topo) {
     if (velocities->empty())
@@ -416,8 +407,7 @@ namespace ProtoMol {
     return sumMomentum;
   }
 
-
-  //________________________________________removeLinearMomentum
+//____removeLinearMomentum
   Vector3D removeLinearMomentum(Vector3DBlock *velocities,
                                 const GenericTopology *topo) {
     // UPDATE FRI APR 13th 2007 by PRB
@@ -443,7 +433,7 @@ namespace ProtoMol {
     return momentum;
   }
 
-  //________________________________________centerOfMass
+//____centerOfMass
   Vector3D centerOfMass(const Vector3DBlock *positions,
                         const GenericTopology *topo) {
     if (positions->empty())
@@ -471,7 +461,7 @@ namespace ProtoMol {
     return centerOfMass / sumM;
   }
 
-  //________________________________________angularMomentum
+//____angularMomentum
   Vector3D angularMomentum(const Vector3DBlock *positions,
                            const Vector3DBlock *velocities,
                            const GenericTopology *topo) {
@@ -482,7 +472,7 @@ namespace ProtoMol {
       centerOfMass(positions, topo));
   }
 
-  //________________________________________angularMomentum
+//____angularMomentum
   Vector3D angularMomentum(const Vector3DBlock *positions,
                            const Vector3DBlock *velocities,
                            const GenericTopology *topo,
@@ -509,7 +499,7 @@ namespace ProtoMol {
     return momentum;
   }
 
-  //________________________________________angularMomentumSolute
+//____angularMomentumSolute
   Vector3D angularMomentumSolute(const Vector3DBlock *positions,
                                  const Vector3DBlock *velocities,
                                  const GenericTopology *topo,
@@ -537,7 +527,7 @@ namespace ProtoMol {
     return momentum;
   }
 
-  //________________________________________inertiaMomentum
+//____inertiaMomentum
   Matrix3By3 inertiaMomentum(const Vector3DBlock *positions,
                              const GenericTopology *topo,
                              const Vector3D &centerOfMass) {
@@ -556,7 +546,7 @@ namespace ProtoMol {
     return inertia;
   }
 
-  //________________________________________inertiaMomentumSolute
+//____inertiaMomentumSolute
   Matrix3By3 inertiaMomentumSolute(const Vector3DBlock *positions,
                                    const GenericTopology *topo,
                                    const Vector3D &centerOfMass) {
@@ -576,7 +566,7 @@ namespace ProtoMol {
     return inertia;
   }
 
-  //________________________________________removeAngularMomentum
+//____removeAngularMomentum
   Vector3D removeAngularMomentum(const Vector3DBlock *positions,
                                  Vector3DBlock *velocities,
                                  const GenericTopology *topo) {
@@ -604,7 +594,7 @@ namespace ProtoMol {
 
     if (!inertia.invert())
       return Vector3D(0.0, 0.0, 0.0);
-     // Remove angular momentum
+    // Remove angular momentum
     Vector3D w(inertia * momentum);
     for (unsigned int i = 0; i < topo->atoms.size(); i++)
       if (topo->molecules[topo->atoms[i].molecule].water == false) {
@@ -615,8 +605,7 @@ namespace ProtoMol {
     return momentum;
   }
 
-
-  //________________________________________computePressure
+//____computePressure
   Real computePressure(const GenericTopology *topology,
                        const Vector3DBlock *positions,
                        const Vector3DBlock *velocities,
@@ -625,24 +614,21 @@ namespace ProtoMol {
         *positions), kineticEnergy(topology, velocities));
   }
 
-  //________________________________________computePressure
-  Real computePressure(const ScalarStructure *energies,
-                       Real volume,
+//____computePressure
+  Real computePressure(const ScalarStructure *energies, Real volume,
                        Real kineticEnergy) {
     return energies->pressure(volume) + kineticEnergy * 2.0 / 3.0 / volume *
            Constant::PRESSUREFACTOR;
   }
 
-  //________________________________________computeMolecularPressure
-  Real computeMolecularPressure(const ScalarStructure *energies,
-                                Real volume,
+//____computeMolecularPressure
+  Real computeMolecularPressure(const ScalarStructure *energies, Real volume,
                                 Real kineticEnergy) {
     return energies->molecularPressure(volume) + kineticEnergy * 2.0 / 3.0 /
            volume * Constant::PRESSUREFACTOR;
   }
 
-
-  //________________________________________molecularMomentum
+//____molecularMomentum
   Vector3D molecularMomentum(const vector<int> &atomList,
                              const Vector3DBlock *velocities,
                              const GenericTopology *topo) {
@@ -664,7 +650,8 @@ namespace ProtoMol {
 
     return sumMomentum;
   }
-  //________________________________________molecularCenterOfMass
+
+//____molecularCenterOfMass
   Vector3D molecularCenterOfMass(const vector<int> &atomList,
                                  const Vector3DBlock *positions,
                                  const GenericTopology *topo) {
@@ -695,7 +682,7 @@ namespace ProtoMol {
     return center / sumMass;
   }
 
-  //________________________________________buildMolecularCenterOfMass
+//____buildMolecularCenterOfMass
   void buildMolecularCenterOfMass(const Vector3DBlock *positions,
                                   GenericTopology *topo) {
     for (unsigned int i = 0; i < topo->molecules.size(); ++i)
@@ -705,7 +692,7 @@ namespace ProtoMol {
         topo);
   }
 
-  //________________________________________buildMolecularMomentum
+//____buildMolecularMomentum
   void buildMolecularMomentum(const Vector3DBlock *velocities,
                               GenericTopology *topo) {
     for (unsigned int i = 0; i < topo->molecules.size(); ++i)
@@ -714,10 +701,8 @@ namespace ProtoMol {
         topo);
   }
 
-
   void buildRattleShakeBondConstraintList(
-    GenericTopology *topology,
-    vector<Bond::Constraint> &
+    GenericTopology *topology, vector<Bond::Constraint> &
     bondConstraints) {
     // here we go through the bond list first, then the angle list to extract the possible
     // third pair if they are both hydrogen. Thus, all bond lengths plus the third pair in
@@ -752,8 +737,8 @@ namespace ProtoMol {
         // ... properly retrieve the right length!
         int b1 = -1;
         int b2 = -1;
-        const std::vector<int> &mybonds1 = topology->atoms[a1].mybonds;
-        const std::vector<int> &mybonds3 = topology->atoms[a3].mybonds;
+        const vector<int> &mybonds1 = topology->atoms[a1].mybonds;
+        const vector<int> &mybonds3 = topology->atoms[a3].mybonds;
 
         for (unsigned int j = 0; j < mybonds1.size(); j++) {
           PairIntSorted s1(topology->bonds[mybonds1[j]].atom1,
@@ -770,7 +755,6 @@ namespace ProtoMol {
                   b1 = mybonds1[j];
                   b2 = mybonds3[k];
                 }
-
             }
 
         }
@@ -795,12 +779,11 @@ namespace ProtoMol {
       "No additional H-X-H SHAKE/RATTLE constraint contributions." << endr;
   }
 
-  //________________________________________getAtomsBondedtoDihedral
-  // this function gets all the atoms bonded to ONE side of the dihedral
-  void getAtomsBondedtoDihedral(const GenericTopology *topology,
-                                set<int, std::less<int> > *atomSet,
-                                const int atomID,
-                                const int inAtomID,
+//____getAtomsBondedtoDihedral
+//____ this function gets all the atoms bonded to ONE side of the dihedral
+  void getAtomsBondedtoDihedral(const GenericTopology *topology, set<int,
+                                                                     less<int> >
+                                *atomSet, const int atomID, const int inAtomID,
                                 const int outAtomID,
                                 const int exclAtomID) {
     atomSet->insert(atomID);
@@ -822,7 +805,7 @@ namespace ProtoMol {
               inAtomID,
               outAtomID,
               exclAtomID);
-        else
+          else
           if (atomSet->find(atom1) == atomSet->end())
             getAtomsBondedtoDihedral(topology,
               atomSet,
@@ -830,14 +813,11 @@ namespace ProtoMol {
               inAtomID,
               outAtomID,
               exclAtomID);
-
     }
   }
 
-  void rotateDihedral(const GenericTopology *topology,
-                      Vector3DBlock *positions,
-                      Vector3DBlock *velocities,
-                      const int dihedralID,
+  void rotateDihedral(const GenericTopology *topology, Vector3DBlock *positions,
+                      Vector3DBlock *velocities, const int dihedralID,
                       Real angle) {
     int exclusionAtomID = topology->dihedrals[dihedralID].atom1;
     int innerAtomID1 = topology->dihedrals[dihedralID].atom2;
@@ -855,8 +835,7 @@ namespace ProtoMol {
     general_rotation(innerAtomID1, innerAtomID2, positions, velocities, &angles);
   }
 
-  void rotateDihedral(const GenericTopology *topology,
-                      Vector3DBlock *positions,
+  void rotateDihedral(const GenericTopology *topology, Vector3DBlock *positions,
                       const int dihedralID,
                       Real angle) {
     int exclusionAtomID = topology->dihedrals[dihedralID].atom1;
@@ -875,8 +854,7 @@ namespace ProtoMol {
     general_rotation(innerAtomID1, innerAtomID2, positions, &angles);
   }
 
-  void set_angles(Stack<unsigned int> *nodeStack,
-                  vector<AngleInfo> *angles,
+  void set_angles(Stack<unsigned int> *nodeStack, vector<AngleInfo> *angles,
                   bool lastIsInnerAtom,
                   Real wholeAngle) {
     Real startAngle = 0.0;
@@ -916,13 +894,10 @@ namespace ProtoMol {
     }
   }
 
-
-  void build_angle_list(const GenericTopology *topo,
-                        const unsigned int atomID,
+  void build_angle_list(const GenericTopology *topo, const unsigned int atomID,
                         const unsigned int inAtomID,
                         const unsigned int outAtomID,
-                        const unsigned int exclAtomID,
-                        Real rotAngle,
+                        const unsigned int exclAtomID, Real rotAngle,
                         vector<AngleInfo> *angles) {
     Stack<unsigned int> nodeStack, indexStack;
     unsigned int curElement;
@@ -1033,7 +1008,7 @@ namespace ProtoMol {
     }
   }
 
-  //________________________________________
+//____
   Real computePhiDihedral(const GenericTopology *topo,
                           const Vector3DBlock *positions,
                           int index) {
@@ -1063,9 +1038,8 @@ namespace ProtoMol {
     return -atan2(sinPhi, cosPhi);
   }
 
-  //________________________________________
-  Real computePhiDihedralEnergy(const GenericTopology *topo,
-                                int index,
+//____
+  Real computePhiDihedralEnergy(const GenericTopology *topo, int index,
                                 Real phi) {
     Torsion currTorsion = topo->dihedrals[index];
     Real energy = 0.0;
@@ -1077,10 +1051,6 @@ namespace ProtoMol {
                                                     currTorsion.periodicity[i]
                                                     * phi
                                                     + currTorsion.phaseShift[i]));
-        //report << "force constant = " << currTorsion.forceConstant[i] << endr;
-        //report << "periodicity    = " << currTorsion.periodicity[i] << endr;
-        //report << "trial angle    = " << phi << endr;
-        //report << "phase shift    = " << currTorsion.phaseShift[i] << endr;
 
       else {
         Real diff = phi - currTorsion.phaseShift[i];
@@ -1096,8 +1066,7 @@ namespace ProtoMol {
     return energy;
   }
 
-  void general_rotation(unsigned int innerAtom1,
-                        unsigned int innerAtom2,
+  void general_rotation(unsigned int innerAtom1, unsigned int innerAtom2,
                         Vector3DBlock *positions,
                         vector<AngleInfo> *angles) {
     unsigned int numAtoms;
@@ -1148,7 +1117,8 @@ namespace ProtoMol {
           sinTheta = sin(angle);
           temp[0] = (*positions)[c].x - (*positions)[innerAtom1].x;
           temp[1] = (*positions)[c].y - (*positions)[innerAtom1].y;
-          temp[8] = (*positions)[c].z - (*positions)[innerAtom1].z;;
+          temp[8] = (*positions)[c].z - (*positions)[innerAtom1].z;
+          ;
           temp[2] = d * temp[0] + - a.x * ((temp[1] * a.y + temp[8] * a.z) / d);
           temp[3] = (temp[1] * a.z - temp[8] * a.y) / d;
           temp[4] = (cosTheta * temp[2] - sinTheta * temp[3]);
@@ -1170,11 +1140,8 @@ namespace ProtoMol {
     return;
   }
 
-
-  void general_rotation(unsigned int innerAtom1,
-                        unsigned int innerAtom2,
-                        Vector3DBlock *positions,
-                        Vector3DBlock *velocities,
+  void general_rotation(unsigned int innerAtom1, unsigned int innerAtom2,
+                        Vector3DBlock *positions, Vector3DBlock *velocities,
                         vector<AngleInfo> *angles) {
     unsigned int numAtoms;
     Vector3D a;

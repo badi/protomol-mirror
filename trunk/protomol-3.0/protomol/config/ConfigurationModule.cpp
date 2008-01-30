@@ -23,16 +23,16 @@ void ConfigurationModule::init(ProtoMolApp *app) {
 
   // Keywords
   action = new CommandLineOption::
-    Action<ConfigurationModule>(this, &ConfigurationModule::listKeywords);
+             Action<ConfigurationModule>(this,
+                                         &ConfigurationModule::listKeywords);
   option = cmdLine.add(0, "keywords", action,
-                       "List all available keywords and exit.");
+    "List all available keywords and exit.");
 
   // Config
   action = new CommandLineOption::
-    Action<ConfigurationModule>(this, &ConfigurationModule::configure);
+             Action<ConfigurationModule>(this, &ConfigurationModule::configure);
   option = cmdLine.add(0, "config", action, "Set the configuration file.");
   option->addRequiredArg("filename");
-
 
   // Add system keywords
   InputConfig::registerConfiguration(config);
@@ -60,17 +60,18 @@ int ConfigurationModule::configure(const vector<string> &args) {
 
   if (config->valid(InputConfig::keyword))
     THROW(string("Configuration file already set to '") +
-          config->get(InputConfig::keyword).getString() + "'.");
+      config->get(InputConfig::keyword).getString() + "'.");
 
   config->set(InputConfig::keyword, configfile);
 
   // Read configuration file
   ConfigurationReader configReader;
   if (!configReader.open(configfile))
-    THROW(string("Can't open configuration file '") + configfile +  "'.");
+    THROW(string("Can't open configuration file '") + configfile + "'.");
 
   if (!(configReader >> *config))
-    THROW(string("Could not read configuration file '") + configfile +  "'.");
+    THROW(string("Could not read configuration file '") + configfile + "'.");
 
   return 0;
 }
+

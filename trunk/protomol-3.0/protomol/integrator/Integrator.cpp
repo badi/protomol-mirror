@@ -6,45 +6,41 @@
 #include <protomol/topology/GenericTopology.h>
 #include <protomol/topology/TopologyUtilities.h>
 #include <protomol/modifier/Modifier.h>
+#include <protomol/debug/Zap.h>
 
 using namespace std;
 using namespace ProtoMol;
 using namespace ProtoMol::Report;
 
-//________________________________________ Integrator
+//____ Integrator
 
-//  Initialize static members.
+//____  Initialize static members.
 const string Integrator::scope("Integrator");
 Real Integrator::myBeta = 0.;
 
 Integrator::Integrator() :
-  Makeable(), myPotEnergy(0), myTopo(NULL), myPositions(NULL),
-  myVelocities(NULL), myForces(NULL), myEnergies(NULL),
-  myForcesToEvaluate(NULL), myForward(true), myOldForces(NULL) {}
+  Makeable(), myPotEnergy(0), mhQ(0), myTopo(0), myPositions(0), myVelocities(0),
+  myForces(0), myEnergies(0), myForcesToEvaluate(0), myForward(true),
+  myOldForces(0) {}
 
 Integrator::Integrator(ForceGroup *forceGroup) :
-  Makeable(), myPotEnergy(0), myTopo(NULL), myPositions(NULL),
-  myVelocities(NULL), myForces(new Vector3DBlock), myEnergies(NULL),
-  myForcesToEvaluate(forceGroup), myForward(true),
-  myOldForces(new Vector3DBlock) {}
-
+  Makeable(), myPotEnergy(0), mhQ(0), myTopo(0), myPositions(0), myVelocities(0),
+  myForces(new Vector3DBlock), myEnergies(0), myForcesToEvaluate(forceGroup),
+  myForward(true), myOldForces(new Vector3DBlock) {}
 
 Integrator::~Integrator() {
-  delete myForces;
-  delete myOldForces;
-  delete myForcesToEvaluate;
+  zap(myForces);
+  zap(myOldForces);
+  zap(myForcesToEvaluate);
+
   for (set<Modifier *>::iterator i = myListModifiers.begin();
-       i != myListModifiers.end();
-       ++i)
+       i != myListModifiers.end(); ++i)
     delete (*i);
 }
 
-void Integrator::initialize(GenericTopology *topo,
-                            Vector3DBlock   *positions,
+void Integrator::initialize(GenericTopology *topo, Vector3DBlock   *positions,
                             Vector3DBlock   *velocities,
                             ScalarStructure *energies) {
-  //Report::report <<"[Integrator::initialize]"<<Report::endr;
-
   myTopo = topo;
   myPositions = positions;
   myVelocities = velocities;
@@ -65,35 +61,35 @@ void Integrator::initialize(GenericTopology *topo,
 
 Integrator *Integrator::top() {
   Integrator *i = this;
-  for (; i->previous() != NULL; i = i->previous()) ;
+  for (; i->previous() != 0; i = i->previous()) ;
 
   return i;
 }
 
 const Integrator *Integrator::top() const {
   const Integrator *i = this;
-  for (; i->previous() != NULL; i = i->previous()) ;
+  for (; i->previous() != 0; i = i->previous()) ;
 
   return i;
 }
 
 Integrator *Integrator::bottom() {
   Integrator *i = this;
-  for (; i->next() != NULL; i = i->next()) ;
+  for (; i->next() != 0; i = i->next()) ;
 
   return i;
 }
 
 const Integrator *Integrator::bottom() const {
   const Integrator *i = this;
-  for (; i->next() != NULL; i = i->next()) ;
+  for (; i->next() != 0; i = i->next()) ;
 
   return i;
 }
 
 int Integrator::level() const {
   int n = 0;
-  for (const Integrator *i = this; i->next() != NULL; i = i->next())
+  for (const Integrator *i = this; i->next() != 0; i = i->next())
     n++;
 
   return n;
@@ -107,7 +103,7 @@ IntegratorDefinition Integrator::getIntegratorDefinition() const {
   this->getParameters(tmp.integrator.parameters);
 
   // Force definitions
-  if (myForcesToEvaluate != NULL)
+  if (myForcesToEvaluate != 0)
     myForcesToEvaluate->getDefinition(tmp.forces);
 
   return tmp;
@@ -115,34 +111,33 @@ IntegratorDefinition Integrator::getIntegratorDefinition() const {
 
 vector<IntegratorDefinition> Integrator::getIntegratorDefinitionAll() const {
   vector<IntegratorDefinition> res;
-  for (const Integrator *i = bottom(); i != NULL; i = i->previous())
+  for (const Integrator *i = bottom(); i != 0; i = i->previous())
     res.push_back(i->getIntegratorDefinition());
 
   return res;
 }
 
 void Integrator::uncache() {
-  for (Integrator *i = top(); i != NULL; i = i->next()) {
-    if (i->myForcesToEvaluate != NULL)
+  for (Integrator *i = top(); i != 0; i = i->next()) {
+    if (i->myForcesToEvaluate != 0)
       i->myForcesToEvaluate->uncache();
     i->doUncache();
   }
 }
 
-
 void Integrator::forward() {
-  for (Integrator *i = top(); i != NULL; i = i->next())
+  for (Integrator *i = top(); i != 0; i = i->next())
     i->myForward = true;
 }
+
 void Integrator::backward() {
-  for (Integrator *i = top(); i != NULL; i = i->next())
+  for (Integrator *i = top(); i != 0; i = i->next())
     i->myForward = false;
 }
 
-
 void Integrator::preStepModify() {
-  Report::report << Report::debug(10) << "[Integrator::preStepModify] (" <<
-  (long)this << ") " << (myTopo != NULL ? myTopo->time : 0.0) << Report::endr;
+  report << debug(10) << "[Integrator::preStepModify] (" <<
+  (long)this << ") " << (myTopo != 0 ? myTopo->time : 0.0) << endr;
   for (set<Modifier *>::iterator i = myPreStepModifiers.begin();
        i != myPreStepModifiers.end();
        ++i)
@@ -150,9 +145,9 @@ void Integrator::preStepModify() {
 }
 
 void Integrator::preDriftOrNextModify() {
-  Report::report << Report::debug(10) <<
+  report << debug(10) <<
   "[Integrator::preDriftOrNextModify] (" << (long)this << ") " <<
-  (myTopo != NULL ? myTopo->time : 0.0) << Report::endr;
+  (myTopo != 0 ? myTopo->time : 0.0) << endr;
   for (set<Modifier *>::iterator i = myPreDriftOrNextModifiers.begin();
        i != myPreDriftOrNextModifiers.end();
        ++i)
@@ -160,9 +155,9 @@ void Integrator::preDriftOrNextModify() {
 }
 
 void Integrator::postDriftOrNextModify() {
-  Report::report << Report::debug(10) <<
+  report << debug(10) <<
   "[Integrator::postDriftOrNextModify] (" << (long)this << ") " <<
-  (myTopo != NULL ? myTopo->time : 0.0) << Report::endr;
+  (myTopo != 0 ? myTopo->time : 0.0) << endr;
   for (set<Modifier *>::iterator i = myPostDriftOrNextModifiers.begin();
        i != myPostDriftOrNextModifiers.end();
        ++i)
@@ -170,8 +165,8 @@ void Integrator::postDriftOrNextModify() {
 }
 
 void Integrator::preForceModify() {
-  Report::report << Report::debug(10) << "[Integrator::preForceModify] (" <<
-  (long)this << ") " << (myTopo != NULL ? myTopo->time : 0.0) << Report::endr;
+  report << debug(10) << "[Integrator::preForceModify] (" <<
+  (long)this << ") " << (myTopo != 0 ? myTopo->time : 0.0) << endr;
   for (set<Modifier *>::iterator i = myPreForceModifiers.begin();
        i != myPreForceModifiers.end();
        ++i)
@@ -179,8 +174,8 @@ void Integrator::preForceModify() {
 }
 
 void Integrator::mediForceModify() {
-  Report::report << Report::debug(10) << "[Integrator::mediForceModify] (" <<
-  (long)this << ") " << (myTopo != NULL ? myTopo->time : 0.0) << Report::endr;
+  report << debug(10) << "[Integrator::mediForceModify] (" <<
+  (long)this << ") " << (myTopo != 0 ? myTopo->time : 0.0) << endr;
   for (set<Modifier *>::iterator i = myMediForceModifiers.begin();
        i != myMediForceModifiers.end();
        ++i)
@@ -188,8 +183,8 @@ void Integrator::mediForceModify() {
 }
 
 void Integrator::postForceModify() {
-  Report::report << Report::debug(10) << "[Integrator::postForceModify] (" <<
-  (long)this << ") " << (myTopo != NULL ? myTopo->time : 0.0) << Report::endr;
+  report << debug(10) << "[Integrator::postForceModify] (" <<
+  (long)this << ") " << (myTopo != 0 ? myTopo->time : 0.0) << endr;
   for (set<Modifier *>::iterator i = myPostForceModifiers.begin();
        i != myPostForceModifiers.end();
        ++i)
@@ -197,22 +192,22 @@ void Integrator::postForceModify() {
 }
 
 void Integrator::postStepModify() {
-  Report::report << Report::debug(10) << "[Integrator::postStepModify] (" <<
-  (long)this << ") " << (myTopo != NULL ? myTopo->time : 0.0) << Report::endr;
+  report << debug(10) << "[Integrator::postStepModify] (" <<
+  (long)this << ") " << (myTopo != 0 ? myTopo->time : 0.0) << endr;
   for (set<Modifier *>::iterator i = myPostStepModifiers.begin();
        i != myPostStepModifiers.end();
        ++i)
     (*i)->execute();
 }
 
-//  ---------------------------------------------------------------------  //
+//____  ---------------------------------------------------------------------  //
 
 void Integrator::adoptPreStepModifier(Modifier *modifier) {
-  Report::report << Report::debug(10) <<
+  report << debug(10) <<
   "[Integrator::adoptPreStepModifier] " << modifier->print() << "(" <<
   (long)modifier << ") " <<
-  (myTopo != NULL ? myTopo->time : 0.0) << Report::endr;
-  if (myTopo != NULL)
+  (myTopo != 0 ? myTopo->time : 0.0) << endr;
+  if (myTopo != 0)
     modifier->initialize(myTopo,
       myPositions,
       myVelocities,
@@ -223,11 +218,11 @@ void Integrator::adoptPreStepModifier(Modifier *modifier) {
 }
 
 void Integrator::adoptPreDriftOrNextModifier(Modifier *modifier) {
-  Report::report << Report::debug(10) <<
+  report << debug(10) <<
   "[Integrator::adoptPreDriftOrNextModifier] " << modifier->print() << "(" <<
   (long)modifier << ") " <<
-  (myTopo != NULL ? myTopo->time : 0.0) << Report::endr;
-  if (myTopo != NULL)
+  (myTopo != 0 ? myTopo->time : 0.0) << endr;
+  if (myTopo != 0)
     modifier->initialize(myTopo,
       myPositions,
       myVelocities,
@@ -238,12 +233,12 @@ void Integrator::adoptPreDriftOrNextModifier(Modifier *modifier) {
 }
 
 void Integrator::adoptPostDriftOrNextModifier(Modifier *modifier) {
-  Report::report << Report::debug(10) <<
+  report << debug(10) <<
   "[Integrator::adoptPostDriftOrNextModifier] " << modifier->print() <<
   "(" <<
   (long)modifier << ") " <<
-  (myTopo != NULL ? myTopo->time : 0.0) << Report::endr;
-  if (myTopo != NULL)
+  (myTopo != 0 ? myTopo->time : 0.0) << endr;
+  if (myTopo != 0)
     modifier->initialize(myTopo,
       myPositions,
       myVelocities,
@@ -254,11 +249,11 @@ void Integrator::adoptPostDriftOrNextModifier(Modifier *modifier) {
 }
 
 void Integrator::adoptPreForceModifier(Modifier *modifier) {
-  Report::report << Report::debug(10) <<
+  report << debug(10) <<
   "[Integrator::adoptPreForceModifier] " << modifier->print() << "(" <<
   (long)modifier << ") " <<
-  (myTopo != NULL ? myTopo->time : 0.0) << Report::endr;
-  if (myTopo != NULL)
+  (myTopo != 0 ? myTopo->time : 0.0) << endr;
+  if (myTopo != 0)
     modifier->initialize(myTopo,
       myPositions,
       myVelocities,
@@ -269,11 +264,11 @@ void Integrator::adoptPreForceModifier(Modifier *modifier) {
 }
 
 void Integrator::adoptMediForceModifier(Modifier *modifier) {
-  Report::report << Report::debug(10) <<
+  report << debug(10) <<
   "[Integrator::adoptMediForceModifier] " << modifier->print() << "(" <<
   (long)modifier << ") " <<
-  (myTopo != NULL ? myTopo->time : 0.0) << Report::endr;
-  if (myTopo != NULL)
+  (myTopo != 0 ? myTopo->time : 0.0) << endr;
+  if (myTopo != 0)
     modifier->initialize(myTopo,
       myPositions,
       myVelocities,
@@ -284,11 +279,11 @@ void Integrator::adoptMediForceModifier(Modifier *modifier) {
 }
 
 void Integrator::adoptPostForceModifier(Modifier *modifier) {
-  Report::report << Report::debug(10) <<
+  report << debug(10) <<
   "[Integrator::adoptPostForceModifier] " << modifier->print() << "(" <<
   (long)modifier << ") " <<
-  (myTopo != NULL ? myTopo->time : 0.0) << Report::endr;
-  if (myTopo != NULL)
+  (myTopo != 0 ? myTopo->time : 0.0) << endr;
+  if (myTopo != 0)
     modifier->initialize(myTopo,
       myPositions,
       myVelocities,
@@ -299,11 +294,11 @@ void Integrator::adoptPostForceModifier(Modifier *modifier) {
 }
 
 void Integrator::adoptPostStepModifier(Modifier *modifier) {
-  Report::report << Report::debug(10) <<
+  report << debug(10) <<
   "[Integrator::adoptPostStepModifier] " << modifier->print() << "(" <<
   (long)modifier << ") " <<
-  (myTopo != NULL ? myTopo->time : 0.0) << Report::endr;
-  if (myTopo != NULL)
+  (myTopo != 0 ? myTopo->time : 0.0) << endr;
+  if (myTopo != 0)
     modifier->initialize(myTopo,
       myPositions,
       myVelocities,
@@ -313,10 +308,10 @@ void Integrator::adoptPostStepModifier(Modifier *modifier) {
   addModifier(modifier);
 }
 
-//  ---------------------------------------------------------------------  //
+//____  ---------------------------------------------------------------------  //
 
 void Integrator::deleteInternalModifiers() {
-  Report::report << Report::debug(10) <<
+  report << debug(10) <<
   "[Integrator::deleteInternalModifiers]" << endr;
   for (set<Modifier *>::iterator i = myPreStepModifiers.begin();
        i != myPreStepModifiers.end();
@@ -375,10 +370,10 @@ void Integrator::deleteInternalModifiers() {
     }
 }
 
-//  ---------------------------------------------------------------------  //
+//____  ---------------------------------------------------------------------  //
 
 void Integrator::deleteExternalModifiers() {
-  Report::report << Report::debug(10) <<
+  report << debug(10) <<
   "[Integrator::deleteExternalModifiers] size=" << myListModifiers.size() <<
   endr;
   for (set<Modifier *>::iterator i = myPreStepModifiers.begin();
@@ -437,15 +432,15 @@ void Integrator::deleteExternalModifiers() {
       deleteModifier(*i);
     }
 
-  Report::report << Report::debug(10) <<
+  report << debug(10) <<
   "[Integrator::deleteExternalModifiers] end size=" <<
   myListModifiers.size() << endr;
 }
 
-//  ---------------------------------------------------------------------  //
+//____  ---------------------------------------------------------------------  //
 
 bool Integrator::removeModifier(const Modifier *modifier) {
-  Report::report << Report::debug(10) << "[Integrator::removeModifier]" <<
+  report << debug(10) << "[Integrator::removeModifier]" <<
   endr;
   bool ok = false;
   for (set<Modifier *>::iterator i = myPreStepModifiers.begin();
@@ -514,54 +509,53 @@ bool Integrator::removeModifier(const Modifier *modifier) {
   return ok;
 }
 
-//  ---------------------------------------------------------------------  //
+//____  ---------------------------------------------------------------------  //
 
 void Integrator::initializeModifiers() {
-  Report::report << Report::debug(10) <<
+  report << debug(10) <<
   "[Integrator::initializeModifiers] " <<
-  (myTopo != NULL ? myTopo->time : 0.0) << Report::endr;
+  (myTopo != 0 ? myTopo->time : 0.0) << endr;
   for (set<Modifier *>::iterator i = myListModifiers.begin();
        i != myListModifiers.end();
        ++i)
     (*i)->initialize(myTopo, myPositions, myVelocities, myForces, myEnergies);
 }
 
-//  ---------------------------------------------------------------------  //
+//____  ---------------------------------------------------------------------  //
 
 void Integrator::addModifier(Modifier *modifier) {
-  Report::report << Report::debug(10) << "[Integrator::addModifier] size=";
+  report << debug(10) << "[Integrator::addModifier] size=";
   myListModifiers.insert(modifier);
-  Report::report << myListModifiers.size() << endr;
+  report << myListModifiers.size() << endr;
 }
 
-//  ---------------------------------------------------------------------  //
+//____  ---------------------------------------------------------------------  //
 
 void Integrator::deleteModifier(Modifier *modifier) {
-  Report::report << Report::debug(10) <<
+  report << debug(10) <<
   "[Integrator::deleteModifier] size=" << myListModifiers.size() << "," <<
   modifier->isInternal() << endr;
   set<Modifier *>::iterator i = myListModifiers.find(modifier);
   if (i != myListModifiers.end()) {
-    Report::report << Report::debug(10) <<
+    report << debug(10) <<
     "[Integrator::deleteModifier] delete" << (long)(modifier) << endr;
     delete modifier;
     myListModifiers.erase(i);
   }
-  Report::report << Report::debug(10) <<
+  report << debug(10) <<
   "[Integrator::deleteModifier] end size=" << myListModifiers.size() << endr;
 }
 
-
-//  --------------------------------------------------------------------  //
-//  The last modifier found with modifierName, is removed.                //
-//  --------------------------------------------------------------------  //
+//____  --------------------------------------------------------------------  //
+//____  The last modifier found with modifierName, is removed.                //
+//____  --------------------------------------------------------------------  //
 
 bool Integrator::removeModifier(const string modifierName) {
-  Report::report << Report::debug(10) << "[Integrator::removeModifier]" <<
+  report << debug(10) << "[Integrator::removeModifier]" <<
   endr;
 
   bool found = false;
-  Modifier *foundMod = NULL;
+  Modifier *foundMod = 0;
 
   for (set<Modifier *>::iterator i = myPostStepModifiers.begin();
        i != myPostStepModifiers.end();
@@ -644,12 +638,11 @@ bool Integrator::removeModifier(const string modifierName) {
   return found;
 }
 
-
-//  --------------------------------------------------------------------  //
-//  These methods will save/restore the forces.  This is probably only    //
-//  going to be used by *MCIntegrator methods, so it may one day be       //
-//  moved to a more appropriate position.                                 //
-//  --------------------------------------------------------------------  //
+//____  --------------------------------------------------------------------  //
+//____  These methods will save/restore the forces.  This is probably only    //
+//____  going to be used by *MCIntegrator methods, so it may one day be       //
+//____  moved to a more appropriate position.                                 //
+//____  --------------------------------------------------------------------  //
 
 void Integrator::saveForces() {
   (*myOldForces) = (*myForces);

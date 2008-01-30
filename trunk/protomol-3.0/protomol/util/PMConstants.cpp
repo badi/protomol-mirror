@@ -10,7 +10,7 @@
 
 #include "StringUtilities.h"
 
-using std::string;
+using namespace std;
 
 namespace ProtoMol {
   namespace Constant {
@@ -30,18 +30,19 @@ namespace ProtoMol {
     const int MAX_INT_2 = MAXINT / 2;
 
 #else /* HAVE_NO_LIMITS */
-    const Real MAXREAL = std::numeric_limits<Real>::max();
-    const Real MINREAL = std::numeric_limits<Real>::min();
+    const Real MAXREAL = numeric_limits<Real>::max();
+    const Real MINREAL = numeric_limits<Real>::min();
     const Real REAL_INFINITY =
-      (std::numeric_limits<Real>::has_infinity ? std::numeric_limits<Real>::
-      infinity() : 2.0 * MAXREAL);
+      (numeric_limits<Real>::has_infinity ? numeric_limits<Real>::
+         infinity() :
+       2.0 * MAXREAL);
     const Real REAL_NAN =
-      (std::numeric_limits<Real>::has_quiet_NaN ? std::numeric_limits<Real>::
-      quiet_NaN() : REAL_INFINITY);
-    const int MAX_INT = std::numeric_limits<int>::max();
-    const int MAX_INT_2 = std::numeric_limits<int>::max() / 2;
+      (numeric_limits<Real>::has_quiet_NaN ? numeric_limits<Real>::
+         quiet_NaN() :
+       REAL_INFINITY);
+    const int MAX_INT = numeric_limits<int>::max();
+    const int MAX_INT_2 = numeric_limits<int>::max() / 2;
 #endif /* HAVE_NO_LIMITS */
-
 
     const Real EPSILON = 1.0e-14;
     const Real TINY = 1.0e-20;
@@ -53,8 +54,6 @@ namespace ProtoMol {
 
     const Real EPS_GOURAUD_THRESHOLD = 0.1;
     const Real EPS_SMOOTH_LINE_FACTOR = 0.06;
-
-
 
     const string PROTOMOL_HR(
       "=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=");

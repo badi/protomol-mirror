@@ -13,8 +13,7 @@ using namespace std;
 using namespace ProtoMol;
 
 CommandLine::CommandLine(Configuration *config) :
-  config(config), name("ProtoMol") {
-}
+  config(config), name("ProtoMol") {}
 
 void CommandLine::add(CommandLineOption *option) {
   if (!option) THROW("option is NULL");
@@ -48,7 +47,7 @@ int CommandLine::parse(int argc, char *argv[]) {
     string optionStr = argv[i];
     CommandLineOption *option = optionMap[optionStr];
 
-    if (option) {  
+    if (option) {
       vector<string> args;
 
       // Self arg
@@ -74,7 +73,6 @@ int CommandLine::parse(int argc, char *argv[]) {
         int ret = (*option->action)(args);
         if (ret == -1) return -1;
       }
-
     } else if (argv[i][0] == '-' && argv[i][1] == '-') {
       string key = &argv[i++][2];
 
@@ -86,7 +84,7 @@ int CommandLine::parse(int argc, char *argv[]) {
       if (it->second.getType() == ValueType::VECTOR ||
           it->second.getType() == ValueType::VECTOR3D)
         THROW(string("Keyword '") + key +
-              "' with Vector type cannot be set from the command line.");
+          "' with Vector type cannot be set from the command line.");
 
       if (i == argc)
         THROW(string("Missing argument for keyword '") + key + "'.");
@@ -94,7 +92,6 @@ int CommandLine::parse(int argc, char *argv[]) {
 
       if (!config->set(key, val))
         THROW(string("Invalid value '") + val + "' for keyword '" + key + "'.");
-
     } else if (!configSet) {
       vector<string> args;
 
@@ -103,7 +100,6 @@ int CommandLine::parse(int argc, char *argv[]) {
 
       (*optionMap["--config"]->action)(args);
       configSet = true;
-
     } else THROW(string("Invalid argument '") + argv[i] + "'");
   }
 
@@ -115,7 +111,7 @@ int CommandLine::usageAction(const vector<string> &args) {
   return -1;
 }
 
-void CommandLine::usage(std::ostream &stream, const std::string &name) {
+void CommandLine::usage(ostream &stream, const string &name) {
   stream
     << "Usage: " << name << " [--config] <filename> [--option args]..." << endl
     << "Options:" << endl;
@@ -128,11 +124,13 @@ void CommandLine::usage(std::ostream &stream, const std::string &name) {
     bool first = true;
     for (CommandLineOption::names_t::iterator it = options[i]->names.begin();
          it != options[i]->names.end(); it++) {
-
       if ((*it)[0] == '-' && (*it)[1] == '-') continue;
 
       if (first) first = false;
-      else {stream << "|"; count++;}
+      else {
+        stream << "|";
+        count++;
+      }
 
       stream << *it;
       count += (*it).length();
@@ -141,11 +139,13 @@ void CommandLine::usage(std::ostream &stream, const std::string &name) {
     // Long option names
     for (CommandLineOption::names_t::iterator it = options[i]->names.begin();
          it != options[i]->names.end(); it++) {
-
       if ((*it)[0] == '-' && (*it)[1] != '-') continue;
 
       if (first) first = false;
-      else {stream << "|"; count++;}
+      else {
+        stream << "|";
+        count++;
+      }
 
       stream << *it;
       count += (*it).length();
@@ -174,10 +174,10 @@ void CommandLine::usage(std::ostream &stream, const std::string &name) {
 
 #ifdef DEBUG
 int CommandLine::enableStackTraceAction(const vector<string> &args) {
-  
   Debugger::initStackTrace(getCanonicalPath(name));
   Exception::enableStackTraces = true;
 
   return 0;
 }
+
 #endif

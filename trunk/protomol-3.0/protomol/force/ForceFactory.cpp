@@ -14,9 +14,10 @@ using namespace std;
 using namespace ProtoMol;
 using namespace ProtoMol::Report;
 
+//____ ForceFactory
+ForceFactory::ForceFactory() :
+  lastCompareForce(NULL) {}
 
-//________________________________________ ForceFactory
-ForceFactory::ForceFactory() : lastCompareForce(NULL) {}
 ForceFactory::~ForceFactory() {}
 
 Force *ForceFactory::make(const string &idInput, vector<Value> values) const {
@@ -161,15 +162,12 @@ Force *ForceFactory::make(const string &idInput, vector<Value> values) const {
         bool found = false;
         bool retry = true;
         if (!(ssp)) {
-          //report <<"R0,";
           ssp.str(parametersString);
           ssp.clear();
           ssp.seekg(ios::beg);
         }
         while (ssp >> strp || retry) {
-          //report << strp <<",";
           if (!(ssp) && retry) {
-            //report <<"R1,";
             ssp.str(parametersString);
             ssp.clear();
             ssp.seekg(ios::beg);
@@ -179,12 +177,10 @@ Force *ForceFactory::make(const string &idInput, vector<Value> values) const {
           }
           if (equalNocase(strp, parameters[i].keyword) &&
               !parameters[i].keyword.empty()) {
-            //report <<"A,";
             ssp >> values[i];
             found = true;
             break;
           } else if (foundLast && parameters[i].keyword.empty()) {
-            //report <<"B,"<<strp<<",";
             ssp.seekg((-1) * static_cast<int>(strp.size()), ios::cur);
             ssp.clear();
             ssp >> values[i];
@@ -201,7 +197,6 @@ Force *ForceFactory::make(const string &idInput, vector<Value> values) const {
       }
 
       id = newId;
-
     } else if (itr != forceTypes.end()) {
       string errMsg;
 
@@ -215,7 +210,6 @@ Force *ForceFactory::make(const string &idInput, vector<Value> values) const {
         errMsg += string("\n") + itr->first + string(" ") + (*j);
 
       THROW(errMsg);
-
     } else {
       string errMsg;
 
@@ -280,7 +274,6 @@ string ForceFactory::print() const {
 
   return res;
 }
-
 
 void ForceFactory::updateCache() const {
   forceTypes.clear();
@@ -370,3 +363,4 @@ string ForceFactory::uniqueForceString(const string &id) const {
 
   return res;
 }
+

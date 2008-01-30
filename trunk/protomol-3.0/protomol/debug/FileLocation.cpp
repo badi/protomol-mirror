@@ -12,7 +12,7 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
              GNU General Public License for more details.
 
-  You should have received a copy of the GNU General Public License
+   You should have received a copy of the GNU General Public License
      along with this program; if not, write to the Free Software
       Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
                            02111-1307, USA.
@@ -22,7 +22,6 @@
 
 \*******************************************************************/
 
-
 #include "FileLocation.h"
 
 #include <iostream>
@@ -30,7 +29,6 @@
 using namespace std;
 
 ostream &operator<<(ostream &stream, const FileLocation &fl) {
-
   if (!fl.isEmpty()) {
     stream << fl.filename;
     if (fl.line >= 0) {
@@ -44,3 +42,4 @@ ostream &operator<<(ostream &stream, const FileLocation &fl) {
 
   return stream;
 }
+

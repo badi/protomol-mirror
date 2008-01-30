@@ -17,8 +17,9 @@ void CommandLineModule::init(ProtoMolApp *app) {
 
 #ifdef DEBUG
   action = new CommandLineOption::
-    Action<CommandLine>(&cmdLine, &CommandLine::enableStackTraceAction);
+             Action<CommandLine>(&cmdLine, &CommandLine::enableStackTraceAction);
   cmdLine.add('X', "enable-stack-trace", action,
-              "Enable stack trace output on exceptions.");
+    "Enable stack trace output on exceptions.");
 #endif
 }
+

@@ -30,9 +30,10 @@ Integrator *IntegratorFactory::make(const string &definition,
 
     const Integrator *prototype = getPrototype(integrator);
     if (prototype == NULL)
-      THROW(string(" Could not find any match for \'") + integrator + "\' in " +
-            Integrator::scope + "Factory. Possible integrators are:\n" +
-            print());
+      THROW(string(
+          " Could not find any match for \'") + integrator + "\' in " +
+        Integrator::scope + "Factory. Possible integrators are:\n" +
+        print());
 
     // Read first integrator parameters and then force definitions
     string parameterStr, forceStr;
@@ -55,7 +56,7 @@ Integrator *IntegratorFactory::make(const string &definition,
     // Return if already defined
     if (integratorInput[level].prototype != NULL)
       THROW(" Level " + toString(level) + " already defined with " +
-            integratorInput[level].prototype->getId() + ".");
+        integratorInput[level].prototype->getId() + ".");
 
     // Parse integrator parameter
     vector<Parameter> parameters;
@@ -75,14 +76,14 @@ Integrator *IntegratorFactory::make(const string &definition,
       bool retry = true;
       if (!(ssp)) {
         ssp.str(parameterStr);
-        ssp.seekg(std::ios::beg);
+        ssp.seekg(ios::beg);
         ssp.clear();
       }
 
       while (ssp >> strp || retry) {
         if (!(ssp) && retry) {
           ssp.str(parameterStr);
-          ssp.seekg(std::ios::beg);
+          ssp.seekg(ios::beg);
           ssp.clear();
           retry = false;
           strp = "";
@@ -94,7 +95,7 @@ Integrator *IntegratorFactory::make(const string &definition,
           found = true;
           break;
         } else if (foundLast && parameters[i].keyword.empty()) {
-          ssp.seekg((-1) * static_cast<int>(strp.size()), std::ios::cur);
+          ssp.seekg((-1) * static_cast<int>(strp.size()), ios::cur);
           ssp.clear();
           ssp >> integratorInput[level].values[i];
           found = true;
@@ -214,7 +215,8 @@ string IntegratorFactory::print() const {
                getRightFill(parameter[k].keyword, Constant::PRINTMAXWIDTH);
       res += " " +
              (parameter[k].defaultValue.valid() ? parameter[k].defaultValue.
-                getDefinitionTypeString() : parameter[k].value.
+                getDefinitionTypeString() :
+              parameter[k].value.
                 getDefinitionTypeString());
       if (!parameter[k].text.empty())
         res += "\t # " + parameter[k].text;
@@ -257,3 +259,4 @@ void IntegratorFactory::registerHelpText() const {
       }
   }
 }
+

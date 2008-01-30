@@ -9,29 +9,26 @@
 using namespace std;
 using namespace ProtoMol;
 
-//________________________________________ MTSIntegrator
+//____ MTSIntegrator
 
 MTSIntegrator::MTSIntegrator() :
-  StandardIntegrator(), myNextIntegrator(NULL),
-  myCycleLength(0) {}
+  StandardIntegrator(), myNextIntegrator(NULL), myCycleLength(0) {}
 
 MTSIntegrator::MTSIntegrator(int cycles, ForceGroup *overloadedForces,
-                             StandardIntegrator *nextIntegrator)
-  : StandardIntegrator(overloadedForces), myNextIntegrator(nextIntegrator),
-    myCycleLength(cycles) {
+                             StandardIntegrator *nextIntegrator) :
+  StandardIntegrator(overloadedForces), myNextIntegrator(nextIntegrator),
+  myCycleLength(cycles) {
   // The plan for this constructor:
   //  We make sure that we get a non-zero pointer to ForceGroup object.
   //  In some cases (for test purpose) we may not have any forces to evaluate,
   //  but the force evaluation is still call ...
-  
+
   myNextIntegrator->myPreviousIntegrator = this;
 }
-
 
 MTSIntegrator::~MTSIntegrator() {
   delete myNextIntegrator;
 }
-
 
 void MTSIntegrator::doDriftOrNextIntegrator() {
   preDriftOrNextModify();
@@ -39,9 +36,7 @@ void MTSIntegrator::doDriftOrNextIntegrator() {
   postDriftOrNextModify();
 }
 
-
-void MTSIntegrator::initialize(GenericTopology *topo,
-                               Vector3DBlock *positions,
+void MTSIntegrator::initialize(GenericTopology *topo, Vector3DBlock *positions,
                                Vector3DBlock *velocities,
                                ScalarStructure *energies) {
   myNextIntegrator->initialize(topo, positions, velocities, energies);
@@ -50,12 +45,12 @@ void MTSIntegrator::initialize(GenericTopology *topo,
 
 void MTSIntegrator::getParameters(vector<Parameter> &parameters) const {
   parameters.push_back(Parameter("cyclelength",
-                                 Value(myCycleLength, ConstraintValueType::Positive())));
+      Value(myCycleLength, ConstraintValueType::Positive())));
 }
 
 MTSIntegrator *MTSIntegrator::
-make(const vector<Value> &values, ForceGroup *fg,
-     StandardIntegrator *nextIntegrator) const {
+  make(const vector<Value> &values, ForceGroup *fg,
+       StandardIntegrator *nextIntegrator) const {
   string errMsg;
 
   if (!checkParameters(errMsg, values))
@@ -63,3 +58,4 @@ make(const vector<Value> &values, ForceGroup *fg,
 
   return adjustAlias(doMake(values, fg, nextIntegrator));
 }
+

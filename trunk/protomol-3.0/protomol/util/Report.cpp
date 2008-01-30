@@ -4,11 +4,10 @@
 
 #include "SystemUtilities.h"
 
-using std::ostream;
-using std::string;
+using namespace std;
 
 namespace ProtoMol {
-  //________________________________________________________ Report
+//____ Report
   namespace Report {
     MyStreamer &debug::operator()(MyStreamer &stream) const {
       stream.setLevel(myLevel);
@@ -16,17 +15,16 @@ namespace ProtoMol {
       return stream;
     }
 
-
     MyStreamer &reportlevel::operator()(MyStreamer &stream) const {
       stream.setReportLevel(myReportlevel);
       return stream;
     }
 
-    //___________________________________________________________
-    // Currently defaulting to std::cerr
-    MyStreamer report(&(std::cerr));
+    //
+    // Currently defaulting to cerr
+    MyStreamer report(&(cerr));
 
-    //_________________________________________ MyStreamer
+    // MyStreamer
     MyStreamer::MyStreamer(ostream *a) {
       setStream(a);
     }
@@ -34,7 +32,7 @@ namespace ProtoMol {
     // Allows the changing of the stream
     ostream *MyStreamer::setStream(ostream *a) {
       ostream *tmp = myStream;
-      myStream = (a != NULL) ? a : &(std::cerr);
+      myStream = (a != NULL) ? a : &(cerr);
       myResetFlags = myStream->flags();
       myAbort = false;
       myQuit = false;
@@ -57,11 +55,11 @@ namespace ProtoMol {
       myAllNodes = flag;
     }
 
-    void MyStreamer::setf(std::ios::fmtflags flag) {
+    void MyStreamer::setf(ios::fmtflags flag) {
       myStream->setf(flag);
     }
 
-    void MyStreamer::setf(std::ios::fmtflags flag, std::ios::fmtflags mask) {
+    void MyStreamer::setf(ios::fmtflags flag, ios::fmtflags mask) {
       myStream->setf(flag, mask);
     }
 
@@ -77,9 +75,7 @@ namespace ProtoMol {
       myStream->flags(myResetFlags);
     }
 
-
-
-    //_________________________________________________________________________ MyStreamer
+    // MyStreamer
     //                                                                          Standard Overloads
 
     MyStreamer &MyStreamer::operator<<(bool a) {
@@ -213,13 +209,13 @@ namespace ProtoMol {
       return *this;
     }
 
-    MyStreamer &MyStreamer::operator<<(std::ios &(*f)(std::ios &)) {
+    MyStreamer &MyStreamer::operator<<(ios & (*f)(ios &)) {
       if (print())
         (*f)(*myStream);
       return *this;
     }
 
-    MyStreamer &MyStreamer::operator<<(ostream &(*f)(ostream &)) {
+    MyStreamer &MyStreamer::operator<<(ostream & (*f)(ostream &)) {
       if (print())
         (*f)(*myStream);
       return *this;
@@ -231,14 +227,12 @@ namespace ProtoMol {
       return *this;
     }
 
-    MyStreamer &MyStreamer::operator<<(MyStreamer &(*f)(MyStreamer &)) {
+    MyStreamer &MyStreamer::operator<<(MyStreamer & (*f)(MyStreamer &)) {
       (*f)(*this);
       return *this;
     }
 
-
-
-    //___________________________________________________________ Our Output Levels
+    // Our Output Levels
     MyStreamer &plain(MyStreamer &stream) {
       stream.myLevel = -4;
       return stream;
@@ -275,10 +269,10 @@ namespace ProtoMol {
       return stream;
     }
 
-//     MyStreamer& debug(MyStreamer& stream){
-//       stream << debug(1);
-//       return stream;
-//     }
+//____     MyStreamer& debug(MyStreamer& stream){
+//____       stream << debug(1);
+//____       return stream;
+//____     }
 
     MyStreamer &operator<<(MyStreamer &stream, const reportlevel &rl) {
       return rl(stream);
@@ -288,7 +282,7 @@ namespace ProtoMol {
       return d(stream);
     }
 
-    //___________________________________________________________
+    //
     MyStreamer &allnodes(MyStreamer &stream) {
       stream.myAllNodes = true;
       return stream;
@@ -304,7 +298,6 @@ namespace ProtoMol {
       return stream;
     }
 
-
     MyStreamer &dohint(MyStreamer &stream) {
       stream.myDoHint = true;
       return stream;
@@ -315,11 +308,11 @@ namespace ProtoMol {
       return stream;
     }
 
-    //___________________________________________________________ Our Output Controll
+    // Our Output Controll
     MyStreamer &allnodesserial(MyStreamer &stream) {
       stream.myAllNodes = true;
       stream.myAllNodesSerial = true;
-      stream << std::flush;
+      stream << flush;
       protomolStartSerial(false);
       return stream;
     }
@@ -327,16 +320,16 @@ namespace ProtoMol {
     MyStreamer &allslavesserial(MyStreamer &stream) {
       stream.myAllNodes = true;
       stream.myAllSlavesSerial = true;
-      stream << std::flush;
+      stream << flush;
       protomolStartSerial(true);
       return stream;
     }
 
     MyStreamer &endr(MyStreamer &stream) {
       //if(stream.print())
-      stream << std::endl;
+      stream << endl;
       if (!stream.myDoHint)
-        stream.mySilentHint = std::max(stream.mySilentHint - 1, 0);
+        stream.mySilentHint = max(stream.mySilentHint - 1, 0);
       if (stream.myQuit)
         if (!stream.myAllNodesSerial || !stream.myAllSlavesSerial)
           protomolExit();

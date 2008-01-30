@@ -4,6 +4,8 @@ TOP=$(dirname $0)/..
 
 filter=(
   '________*' '________________________________________'
+  '\/\/[Rr]eport.*$' ''
+  'NULL', '0'
   'stringutilities' 'StringUtilities'
   'mathutilities' 'MathUtilities'
   'systemutilities' 'SystemUtilities'
@@ -35,10 +37,10 @@ buildFilter() {
       search=${filter[$(($i * 2))]}
       replace=${filter[$(($i * 2 + 1))]}
 
-      SEDFILTER='s/\([\\\/().]\)/\\\1/g'
+      #SEDFILTER='s/\([\\\/().]\)/\\\1/g'
 
-      search="$(echo -n "$search" | sed $SEDFILTER)"
-      replace="$(echo -n "$replace" | sed $SEDFILTER)"
+      #search="$(echo -n "$search" | sed $SEDFILTER)"
+      #replace="$(echo -n "$replace" | sed $SEDFILTER)"
 
       if [ "$SED" != "" ]; then
           SED+=";"

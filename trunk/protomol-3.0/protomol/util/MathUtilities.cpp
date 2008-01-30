@@ -1,9 +1,10 @@
 #include "MathUtilities.h"
 #include "Timer.h"
-using std::vector;
+
+using namespace std;
 
 namespace ProtoMol {
-  //_____________________________________________________________________ erf
+//____ erf
   Real myerf(Real x) {
     // This function returns the error function ERF(x) with fractional
     // error everywhere less than 1.2*10-7.
@@ -18,10 +19,10 @@ namespace ProtoMol {
               exp(-z * z - 1.26551223 + t *
         (1.00002368 + t *
          (.37409196 + t *
-       (.09678418 + t *
-       (-.18628806 + t *
-       (.27886807 + t *
-       (-1.13520398 + t * (1.48851587 + t * (-.82215223 + t * .17087277)))))))));
+          (.09678418 + t *
+         (-.18628806 + t *
+          (.27886807 + t *
+           (-1.13520398 + t * (1.48851587 + t * (-.82215223 + t * .17087277)))))))));
       if (x < 0.0)
         erfcc = 2.0 - erfcc;
     }
@@ -29,7 +30,7 @@ namespace ProtoMol {
     return 1.0 - erfcc;
   }
 
-  //_____________________________________________________________________ poly
+//____ poly
   const Real E1 = 0.254829592;      // Polynomial Constants used in
   const Real E2 = -0.284496736;      // Evaluation of the complementary
   const Real E3 = 1.421413741;      // Error function.
@@ -41,7 +42,8 @@ namespace ProtoMol {
     Real t = 1.0 / (1.0 + PP * ar);
     return (t) * (E1 + (t) * (E2 + (t) * (E3 + (t) * (E4 + (t) * E5))));
   }
-  //_____________________________________________________________________ lowerboundExp2
+
+//____ lowerboundExp2
   Real lowerboundExp2(Real r) {
     Real res = 1.0;
     while (res < r)
@@ -53,7 +55,7 @@ namespace ProtoMol {
     return res;
   }
 
-  //__________________________________________________________ Radians <-> Degrees
+//____ Radians <-> Degrees
 
   vector<Real> rtod(const vector<Real> &rad) {
     vector<Real> deg(rad.size());
@@ -70,33 +72,39 @@ namespace ProtoMol {
 
     return rad;
   }
-  //_____________________________________________________________________ sincos
-  //
-  // Copied from lsys by Jonathan P. Leech.
-  //
-  // Computes sine and cosine of angle similar to the
-  // sincos(Real, Real*, Real*) function. Checkes if
-  // the results are close to -1, 0, 1 and rounds
-  // appropriately.
-  //
+
+//____ sincos
+//____
+//____ Copied from lsys by Jonathan P. Leech.
+//____
+//____ Computes sine and cosine of angle similar to the
+//____ sincos(Real, Real*, Real*) function. Checkes if
+//____ the results are close to -1, 0, 1 and rounds
+//____ appropriately.
+//____
 
   void sincos(Real alpha, Real &sinAlpha, Real &cosAlpha) {
     sinAlpha = sin(alpha);
     cosAlpha = cos(alpha);
 
     if (cosAlpha > 1 - Constant::EPSILON) {
-      cosAlpha = 1.; sinAlpha = 0.;
+      cosAlpha = 1.;
+      sinAlpha = 0.;
     } else if (cosAlpha < -1 + Constant::EPSILON) {
-      cosAlpha = -1.; sinAlpha = 0.;
+      cosAlpha = -1.;
+      sinAlpha = 0.;
     }
 
     if (sinAlpha > 1 - Constant::EPSILON) {
-      cosAlpha = 0.; sinAlpha = 1.;
+      cosAlpha = 0.;
+      sinAlpha = 1.;
     } else if (sinAlpha < -1 + Constant::EPSILON) {
-      cosAlpha = 0.; sinAlpha = -1.;
+      cosAlpha = 0.;
+      sinAlpha = -1.;
     }
   }
-  //_______________________________________________________________ power
+
+//____ power
 
   Real power(Real x, int n) {
     // Simple and fast way to compute the int-power
@@ -120,7 +128,7 @@ namespace ProtoMol {
     return z;
   }
 
-  //_____________________________________________________________________ norm()
+//____ norm()
   Real norm(Real a, Real b) {
     Real absa = fabs(a);
     Real absb = fabs(b);
@@ -128,10 +136,10 @@ namespace ProtoMol {
     if (absa > absb)
       return absa *sqrt(1.0 + power<2>(absb / absa));
     else
-      return absb == 0.0 ? 0.0 : absb * sqrt(1.0 + power<2>(absa / absb));
+      return absb == 0.0 ? 0.0 : absb *sqrt(1.0 + power<2>(absa / absb));
   }
 
-  //_____________________________________________________________________ randomNumber()
+//____ randomNumber()
   Real randomNumber(unsigned int seed) {
     static bool first = true;
 
@@ -151,13 +159,13 @@ namespace ProtoMol {
 #endif
   }
 
-  //_____________________________________________________________________ randomGaussian()
-  //  This section generates a Gaussian random
-  //  deviate of 0.0 mean and standard deviation RFD for
-  //  each of the three spatial dimensions.
-  //  The algorithm is a "sum of uniform deviates algorithm"
-  //  which may be found in Abramowitz and Stegun,
-  //  "Handbook of Mathematical Functions", pg 952.
+//____ randomGaussian()
+//____  This section generates a Gaussian random
+//____  deviate of 0.0 mean and standard deviation RFD for
+//____  each of the three spatial dimensions.
+//____  The algorithm is a "sum of uniform deviates algorithm"
+//____  which may be found in Abramowitz and Stegun,
+//____  "Handbook of Mathematical Functions", pg 952.
   Real randomGaussian(Real sdv, unsigned int seed) {
     Real rnd = 0.0;
     Real sdv2 = 2 * sdv;
@@ -168,7 +176,7 @@ namespace ProtoMol {
     return rnd;
   }
 
-  //_____________________________________________________________________ randomGaussianNumber()
+//____ randomGaussianNumber()
   Real randomGaussianNumber(unsigned int seed) {
     static bool iset = false;
 
@@ -204,8 +212,7 @@ namespace ProtoMol {
     }
   }
 
-
-  //_____________________________________________________________________ randomGaussianNumber()
+//____ randomGaussianNumber()
   Real randomGaussianNumber(Real mean, Real stdev, unsigned int iseed) {
     //------------------------------------------------------------
     //  FUNCTION: gauss
@@ -236,7 +243,6 @@ namespace ProtoMol {
     // value of gaussian
     Real gaussian = 0.0;
 
-
     // if the function call flag is equal to one generate two
     // random numbers, save one and calculate the gaussian else
     // calculate the gaussian
@@ -265,16 +271,15 @@ namespace ProtoMol {
     return gaussian;
   }
 
-  //_____________________________________________________________________ getTimerSeed()
+//____ getTimerSeed()
   int getTimerSeed() {
     Real currentTime = Timer::getCurrentTime().getRealTime();
     return static_cast<int>((currentTime * 10000 -
                              floor(currentTime * 10000)) * 100000);
   }
-  //_____________________________________________________________________ splitRangeQuadratic()
-  void splitRangeQuadratic(unsigned int p,
-                           unsigned int from,
-                           unsigned int to,
+
+//____ splitRangeQuadratic()
+  void splitRangeQuadratic(unsigned int p, unsigned int from, unsigned int to,
                            vector<PairUInt> &fromRange,
                            vector<PairUInt> &toRange) {
     fromRange.clear();
@@ -315,10 +320,8 @@ namespace ProtoMol {
 
   }
 
-  //_____________________________________________________________________ splitRangeArea()
-  void splitRangeArea(unsigned int p,
-                      unsigned int from,
-                      unsigned int to,
+//____ splitRangeArea()
+  void splitRangeArea(unsigned int p, unsigned int from, unsigned int to,
                       vector<PairUInt> &fromRange,
                       vector<PairUInt> &toRange) {
     fromRange.clear();

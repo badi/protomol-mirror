@@ -14,9 +14,9 @@ defineInputValue(InputSeed, "seed");
 defineInputValue(InputFirststep, "firststep");
 defineInputValue(InputNumsteps, "numsteps");
 defineInputValueAndText(InputDebug, "debug", "report level, suppresses all "
-                        "output with higher output level");
+                                             "output with higher output level");
 defineInputValueWithAliases(InputPositions, "posfile",
-                            ("coords")("coordinates"));
+  ("coords")("coordinates"));
 defineInputValue(InputVelocities, "velfile");
 defineInputValue(InputEigenVectors, "eigfile");
 defineInputValueWithAliases(InputPSF, "psffile", ("structure"));
@@ -36,7 +36,7 @@ void MainModule::init(ProtoMolApp *app) {
 #else
   InputDebug::registerConfiguration(config, 0);
 #endif
-  
+
   InputPositions::registerConfiguration(config);
   InputVelocities::registerConfiguration(config);
   InputEigenVectors::registerConfiguration(config);
@@ -55,12 +55,13 @@ void MainModule::configure(ProtoMolApp *app) {
 
   // Check if configuration is complete
   string errMsg;
-  if (!config.validConfiguration(errMsg)) 
+  if (!config.validConfiguration(errMsg))
     report << plain << endl << errMsg << endr;
-  
+
   if (!config[InputFirststep::keyword].valid())
     THROW("Firststep undefined.");
 
   if (!config[InputNumsteps::keyword].valid())
     THROW("Numsteps undefined.");
 }
+

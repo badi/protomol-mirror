@@ -12,7 +12,7 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
              GNU General Public License for more details.
 
-  You should have received a copy of the GNU General Public License
+   You should have received a copy of the GNU General Public License
      along with this program; if not, write to the Free Software
       Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
                            02111-1307, USA.
@@ -61,66 +61,66 @@ String::String(const double x) {
   *this = buf;
 }
 
-unsigned char String::parseUByte(const std::string s) {
+unsigned char String::parseUByte(const string s) {
   unsigned int v = parseUInteger(s);
   ASSERT_OR_THROW(string("Byte value '") + s + "'out of range!", v < 256);
 
   return (unsigned char)v;
 }
 
-char String::parseByte(const std::string s) {
+char String::parseByte(const string s) {
   int v = parseUInteger(s);
   ASSERT_OR_THROW(string("Byte value '") + s + "'out of range!",
-		  -128 < v  && v < 128);
+    -128 < v && v < 128);
 
   return (char)v;
 }
 
-unsigned short String::parseUShort(const std::string s) {
+unsigned short String::parseUShort(const string s) {
   unsigned int v = parseUInteger(s);
   ASSERT_OR_THROW(string("Short value '") + s + "'out of range!", v < 65536);
 
   return (unsigned short)v;
 }
 
-short String::parseShort(const std::string s) {
+short String::parseShort(const string s) {
   int v = parseUInteger(s);
   ASSERT_OR_THROW(string("Byte value '") + s + "'out of range!",
-		  -32768 < v  && v < 32768);
+    -32768 < v && v < 32768);
 
   return (short)v;
 }
 
-unsigned int String::parseUInteger(const std::string s) {
+unsigned int String::parseUInteger(const string s) {
   errno = 0;
   unsigned long v = strtol(s.c_str(), 0, 10);
   ASSERT_OR_THROW(string("parseUInteger() Invalid unsigned integer '") + s +
-		  "'!", errno == 0 && v >= 0);
+    "'!", errno == 0 && v >= 0);
 
   return (unsigned int)v;
 }
 
-int String::parseInteger(const std::string s) {
+int String::parseInteger(const string s) {
   errno = 0;
   long v = strtol(s.c_str(), 0, 10);
   ASSERT_OR_THROW(string("parseInteger() Invalid integer '") + s +
-		  "'!", errno == 0);
+    "'!", errno == 0);
 
   return (int)v;
 }
 
-double String::parseDouble(const std::string s) {
+double String::parseDouble(const string s) {
   errno = 0;
   double v = strtod(s.c_str(), 0);
   ASSERT_OR_THROW(string("parseDouble() Invalid double '") + s +
-		  "'!", errno == 0);  
+    "'!", errno == 0);
   return v;
 }
 
-bool String::parseBool(const std::string s) {
+bool String::parseBool(const string s) {
   string v = toLower(trim(s));
   if (v == "true") return true;
-  if (v == "false") return false;  
+  if (v == "false") return false;
   THROW(string("parseBool() Invalid bool '") + s + "'!");
 }
 
@@ -153,3 +153,4 @@ string String::toLower(const string s) {
 
   return v;
 }
+

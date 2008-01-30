@@ -7,9 +7,9 @@ using namespace std;
 using namespace ProtoMol;
 using namespace ProtoMol::Report;
 
-//________________________________________ TopologyFactory
+//____ TopologyFactory
 void TopologyFactory::
-registerAllExemplarsConfiguration(Configuration *config) const {
+  registerAllExemplarsConfiguration(Configuration *config) const {
   for (const_iterator i = begin(); i != end(); ++i) {
     vector<Parameter> parameter = (*i)->getParameters();
     for (unsigned int i = 0; i < parameter.size(); i++)
@@ -17,7 +17,7 @@ registerAllExemplarsConfiguration(Configuration *config) const {
   }
 
   config->registerKeyword(GenericTopology::getKeyword(),
-                          Value(string(""), ConstraintValueType::NotEmpty()));
+    Value(string(""), ConstraintValueType::NotEmpty()));
   cache = false;
 }
 
@@ -26,7 +26,7 @@ GenericTopology *TopologyFactory::make(const Configuration *config) const {
   const GenericTopology *prototype = getPrototype(id);
 
   return make(id, config->get(prototype != NULL ? prototype->getParameters() :
-                              vector<Parameter>()));
+      vector<Parameter>()));
 }
 
 GenericTopology *TopologyFactory::make(const string &id,
@@ -35,12 +35,12 @@ GenericTopology *TopologyFactory::make(const string &id,
 
   if (!prototype)
     THROW(string(" Could not find any match for '") + id + "' in " +
-          GenericTopology::scope + "Factory.\nPossible topologies are:\n" +
-          print());
+      GenericTopology::scope + "Factory.\nPossible topologies are:\n" +
+      print());
 
   // Make
   GenericTopology *newObj = prototype->make(values);
-  if (newObj == NULL) return NULL;
+  if (!newObj) THROW("Could not make topology from prototype.");
 
   // Adjust external alias
   newObj->setAlias(id);
@@ -59,7 +59,7 @@ string TopologyFactory::print() const {
     for (unsigned int k = 0; k < parameter.size(); k++) {
       if (!parameter[k].keyword.empty())
         res += "\n" + Constant::PRINTINDENT + Constant::PRINTINDENT +
-          getRightFill(parameter[k].keyword, Constant::PRINTMAXWIDTH);
+               getRightFill(parameter[k].keyword, Constant::PRINTMAXWIDTH);
 
       res +=
         (parameter[k].defaultValue.valid() ?
@@ -75,7 +75,7 @@ string TopologyFactory::print() const {
   for (exemplars_t::const_iterator j = aliasExemplars.begin();
        j != aliasExemplars.end(); ++j)
     res += "\n" + j->first + " : " + j->second->getId() + " (" +
-      j->second->getIdNoAlias() + ")";
+           j->second->getIdNoAlias() + ")";
 
   return res;
 }
@@ -101,3 +101,4 @@ void TopologyFactory::registerHelpText() const {
       }
   }
 }
+

@@ -10,7 +10,7 @@ extern void moduleInitFunction(ModuleManager *);
 
 int main(int argc, char *argv[]) {
   try {
-    ModuleManager modManager;   
+    ModuleManager modManager;
     moduleInitFunction(&modManager);
     ProtoMolApp app(&modManager);
 
@@ -20,7 +20,6 @@ int main(int argc, char *argv[]) {
     app.build();
 
     return 0;
-
   } catch (const Exception &e) {
     cerr << "ERROR: " << e.getMessage() << endl;
 #ifdef DEBUG
@@ -30,3 +29,4 @@ int main(int argc, char *argv[]) {
 
   return 1;
 }
+

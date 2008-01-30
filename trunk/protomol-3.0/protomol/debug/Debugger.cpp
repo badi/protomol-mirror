@@ -12,7 +12,7 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
              GNU General Public License for more details.
 
-  You should have received a copy of the GNU General Public License
+   You should have received a copy of the GNU General Public License
      along with this program; if not, write to the Free Software
       Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
                            02111-1307, USA.
@@ -65,7 +65,7 @@ bool Debugger::printStackTrace(ostream &stream) {
 
 #define BUF_SIZE 2048
 
-bool Debugger::_getStackTrace(std::list<std::string> &trace) {
+bool Debugger::_getStackTrace(list<string> &trace) {
   if (executableName == "") {
     trace.push_back("Stack Trace Error: Stack dumper not initialized!");
     return false;
@@ -74,7 +74,7 @@ bool Debugger::_getStackTrace(std::list<std::string> &trace) {
   numTraces++;
   if (maxTraces && numTraces > maxTraces) {
     trace.push_back("Stack Trace Error: Exceeded maxTraces of " +
-                    String(maxTraces));
+      String(maxTraces));
     return false;
   }
 
@@ -84,21 +84,18 @@ bool Debugger::_getStackTrace(std::list<std::string> &trace) {
   coreLimit.rlim_cur = coreLimit.rlim_max;
   setrlimit(RLIMIT_CORE, &coreLimit);
 
-
   int pid = fork();
-  
+
   // Fork child and dump core
   if (pid == 0) {
     abort(); // Dump core
     exit(0);
-
   } else if (pid == -1) {
     trace.push_back("Stack Trace Error: Creating abort process!");
     return false;
   }
 
   waitpid(pid, 0, 0);
-
 
   // Check for core file
   string coreFilename = "core";
@@ -109,16 +106,15 @@ bool Debugger::_getStackTrace(std::list<std::string> &trace) {
 
     if (coreFD == -1) {
       trace.push_back(string("Stack Trace Error: creating core file!\n") +
-                      "This can occur if you do not have write permission\n" +
-                      "in the current directory or if the core file limit\n" +
-                      "is set to zero.  On many Unix systems the core file\n" +
-                      "limit can be set with 'ulimit -c unlimited'.");
+        "This can occur if you do not have write permission\n" +
+        "in the current directory or if the core file limit\n" +
+        "is set to zero.  On many Unix systems the core file\n" +
+        "limit can be set with 'ulimit -c unlimited'.");
 
       return false;
     }
   }
   close(coreFD);
-
 
   // Spawn gdb process
   int argc = 0;
@@ -142,7 +138,6 @@ bool Debugger::_getStackTrace(std::list<std::string> &trace) {
       string("set width ") + String(BUF_SIZE - 1) + "\nwhere\nquit\n";
     write(inPipe->getInFD(), debugCmd.c_str(), debugCmd.length());
 
-
     // Read output
     FILE *out = fdopen(outPipe->getOutFD(), "r");
     FILE *err = fdopen(errPipe->getOutFD(), "r");
@@ -155,12 +150,11 @@ bool Debugger::_getStackTrace(std::list<std::string> &trace) {
     char buf[BUF_SIZE + 1];
     int offset = 0;
     int count = 0;
-    while (fgets(buf, BUF_SIZE, out)) {
+    while (fgets(buf, BUF_SIZE, out))
       if (buf[0] == '#') {
-        
         if (traceFiltering) {
           count++;
-      
+
           if (strstr(buf, "Debugger::") ||
               strstr(buf, "Exception::init") ||
               strstr(buf, "Exception (")) {
@@ -177,7 +171,6 @@ bool Debugger::_getStackTrace(std::list<std::string> &trace) {
         if (buf[len - 1] == '\n' || buf[len - 1] == '\r') buf[len - 1] = 0;
         trace.push_back(string("#") + String(line) + start);
       }
-    }
 
 #ifdef DEBUGGER_PRINT_ERROR_STREAM
     while (fgets(buf, BUF_SIZE, err)) {
@@ -186,6 +179,7 @@ bool Debugger::_getStackTrace(std::list<std::string> &trace) {
       if (buf[0] != 0) trace.push_back(buf);
     }
 #endif
+
 
     // Clean up
     fclose(out);
@@ -201,7 +195,6 @@ bool Debugger::_getStackTrace(std::list<std::string> &trace) {
     }
 
     return true;
-
   } catch (Exception &e) {
     trace.push_back(string("Stack Trace Error: ") + e.getMessage());
   }
@@ -209,20 +202,19 @@ bool Debugger::_getStackTrace(std::list<std::string> &trace) {
   return false;
 }
 
-bool Debugger::getStackTrace(std::list<std::string> &trace) {
+bool Debugger::getStackTrace(list<string> &trace) {
   static bool inStackTrace = false;
   bool ret;
 
   if (inStackTrace) {
     trace.push_back("Stack Trace Error: Already in stack trace!");
-    return false;    
+    return false;
   }
 
   inStackTrace = true;
 
   try {
     ret = _getStackTrace(trace);
-
   } catch (...) {
     inStackTrace = false;
     throw;
@@ -235,7 +227,7 @@ bool Debugger::getStackTrace(std::list<std::string> &trace) {
 #ifdef DEBUGGER_TEST
 #include <iostream>
 
-void b (int x) {
+void b(int x) {
   THROW("Test cause!");
 }
 
@@ -244,21 +236,19 @@ void a(char *x) {
     b(10);
   } catch (Exception &e) {
     THROWC("Test exception!", e);
-  } 
+  }
 }
-
 
 int main(int argc, char *argv[]) {
   Debugger::initStackTrace(argv[0]);
 
   try {
-    
     a("test");
-
   } catch (Exception &e) {
     cerr << "Exception: " << e << endl;
   }
 
   return 0;
 }
+
 #endif // DEBUGGER_TEST
