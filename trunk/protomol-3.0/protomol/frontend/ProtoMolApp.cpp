@@ -30,6 +30,8 @@ using namespace ProtoMol::Constant;
 ProtoMolApp::ProtoMolApp(ModuleManager *modManager) :
   modManager(modManager), cmdLine(&config) {
   modManager->init(this);
+
+  topologyFactory.registerAllExemplarsConfiguration(&config);
 }
 
 ProtoMolApp::~ProtoMolApp() {
@@ -178,8 +180,41 @@ void ProtoMolApp::read() {
 }
 
 void ProtoMolApp::build() {
+  // Create topology
+  try {
+    topology = topologyFactory.make(&config);
+
+  } catch (const Exception &e) {
+    // Try to get some defaults with the postions known ...
+    const GenericTopology *prototype =
+      topologyFactory.find(config[GenericTopology::keyword].getString());
+    
+    if (prototype) {
+      vector<Parameter> parameters = prototype->getDefaults(positions);
+
+      for (unsigned int i = 0; i < parameters.size(); i++) {
+        if (!config.valid(parameters[i].keyword) &&
+            parameters[i].value.valid()) {
+
+          config.set(parameters[i].keyword, parameters[i].value);
+          report << hint << parameters[i].keyword << " undefined, using "
+                 << parameters[i].value.getString() << "." << endr;
+        }
+      }
+
+      topology = topologyFactory.make(&config);
+    }
+
+    if (!topology) throw e;
+  }
+
+  // Build topology
   Module *topoMod = modManager->find("Topology");
   if (!topoMod) THROW("Topology module not found");
 
-  topology = topoMod->buildTopology(this);
+  topoMod->buildTopology(this);
+
+
+  // Register Forces
+  modManager->registerForces(this);  
 }

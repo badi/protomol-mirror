@@ -23,8 +23,6 @@ namespace ProtoMol {
   declareInputValue(InputRemoveLinearMomentum, INT, NOCONSTRAINTS);
 
   class TopologyModule : public Module {
-    GenericTopology *topo;
-
   public:
     const std::string getName() const {return "Topology";}
     int getPriority() const {return 0;}
@@ -35,11 +33,13 @@ namespace ProtoMol {
     // Module interface
     void init(ProtoMolApp *app);
     void configure(ProtoMolApp *app);
-    GenericTopology *buildTopology(ProtoMolApp *app);
+    void buildTopology(ProtoMolApp *app);
 
-    void buildExclusionTable(const ExclusionType &exclusionType);
-    void buildTopology(const PSF &psf, const PAR &par, bool dihedralMultPSF);
-    void buildMoleculeTable();
+    void buildExclusionTable(GenericTopology *topo,
+                             const ExclusionType &exclusionType);
+    void buildTopology(GenericTopology *topo, const PSF &psf, const PAR &par,
+                       bool dihedralMultPSF);
+    void buildMoleculeTable(GenericTopology *topo);
   };
 };
 

@@ -1,5 +1,6 @@
 #include <protomol/topology/PeriodicBoundaryConditions.h>
 
+#include <protomol/debug/Exception.h>
 #include <protomol/util/MathUtilities.h>
 #include <protomol/util/Report.h>
 #include <algorithm>
@@ -18,31 +19,18 @@ namespace ProtoMol {
   //________________________________________ PeriodicBoundaryConditions
   const string PeriodicBoundaryConditions::keyword("Periodic");
 
-  PeriodicBoundaryConditions::PeriodicBoundaryConditions() : myE1(0, 0,
-                                                                  0),
-    myE2(0, 0,
-         0),
-    myE3(0, 0,
-         0),
-    myE1r(0, 0,
-          0),
-    myE2r(0, 0,
-          0),
-    myE3r(0, 0,
-          0),
-    myOrigin(0, 0,
-             0), myMin(0, 0, 0), myMax(0, 0, 0), myV(0), myOrthogonal(true) {}
+  PeriodicBoundaryConditions::PeriodicBoundaryConditions() :
+    myE1(0, 0, 0), myE2(0, 0, 0), myE3(0, 0, 0), myE1r(0, 0, 0), myE2r(0, 0, 0),
+    myE3r(0, 0, 0), myOrigin(0, 0, 0), myMin(0, 0, 0), myMax(0, 0, 0),
+    myV(0), myOrthogonal(true) {}
 
-  PeriodicBoundaryConditions::PeriodicBoundaryConditions(const Vector3D &e1,
-                                                         const Vector3D &e2,
-                                                         const Vector3D &e3,
-                                                         const Vector3D &origin)
-  {
+  PeriodicBoundaryConditions::
+  PeriodicBoundaryConditions(const Vector3D &e1, const Vector3D &e2,
+                             const Vector3D &e3, const Vector3D &origin) {
     set(e1, e2, e3, origin);
   }
 
-  void PeriodicBoundaryConditions::set(const Vector3D &e1,
-                                       const Vector3D &e2,
+  void PeriodicBoundaryConditions::set(const Vector3D &e1, const Vector3D &e2,
                                        const Vector3D &e3,
                                        const Vector3D &origin) {
     myE1 = e1;
@@ -90,8 +78,8 @@ namespace ProtoMol {
   }
 
 
-  vector<Vector3D>  PeriodicBoundaryConditions::buildLatticeVectors(Real cutoff)
-  const {
+  vector<Vector3D> PeriodicBoundaryConditions::
+  buildLatticeVectors(Real cutoff) const {
     vector<Vector3D> lattice;
     if (myV >= Constant::REAL_INFINITY)
       return lattice;
@@ -117,8 +105,8 @@ namespace ProtoMol {
     return lattice;
   }
 
-  void PeriodicBoundaryConditions::getParameters(vector<Parameter> &parameters)
-  const {
+  void PeriodicBoundaryConditions::
+  getParameters(vector<Parameter> &parameters) const {
     parameters.push_back(Parameter("cellBasisVector1",
         Value(myE1, ConstraintValueType::NotZero())));
     parameters.push_back(Parameter("cellBasisVector2",
@@ -129,10 +117,8 @@ namespace ProtoMol {
         Value(myOrigin, Value::undefined)));
   }
 
-  PeriodicBoundaryConditions PeriodicBoundaryConditions::make(
-    string &errMsg,
-    vector<Value>
-    values) {
+  PeriodicBoundaryConditions PeriodicBoundaryConditions::
+  make(vector<Value> values) {
     Vector3D e1, e2, e3, o;
     values[0].get(e1);
     values[1].get(e2);
@@ -140,16 +126,17 @@ namespace ProtoMol {
     values[3].get(o);
     if (!values[0].valid() || !values[1].valid() || !values[2].valid() ||
         !values[3].valid()) {
-      errMsg += keyword + " boundary conditions not valid: " +
-                values[0].getString() + "," + values[1].getString() + "," +
-                values[2].getString() + "," + values[3].getString() + ".";
-      return PeriodicBoundaryConditions();
+
+      THROW(keyword + " boundary conditions not valid: " +
+            values[0].getString() + "," + values[1].getString() + "," +
+            values[2].getString() + "," + values[3].getString() + ".");
     }
+
     return PeriodicBoundaryConditions(e1, e2, e3, o);
   }
 
-  vector<Parameter> PeriodicBoundaryConditions::getDefaults(
-    const Vector3DBlock &positions) const {
+  vector<Parameter> PeriodicBoundaryConditions::
+  getDefaults(const Vector3DBlock &positions) const {
     Vector3D a, b;
     Vector3D d(Constant::PERIODIC_BOUNDARY_TOLERANCE / 2.0,
                Constant::PERIODIC_BOUNDARY_TOLERANCE / 2.0,

@@ -80,13 +80,11 @@ namespace ProtoMol {
       if (p == NULL) return false;
 
       // Remove pointers
-      for (typename std::map<std::string, const Type *,
-             ltstrNocase>::iterator i = exemplars.begin();
+      for (typename exemplars_t::iterator i = exemplars.begin();
            i != exemplars.end(); i++)
         if (i->second == p) exemplars.erase(i);
 
-      for (typename std::map<std::string, const Type *,
-             ltstrNocase>::iterator i = aliasExemplars.begin();
+      for (typename exemplars_t::iterator i = aliasExemplars.begin();
            i != aliasExemplars.end(); i++)
         if (i->second == p) aliasExemplars.erase(i);
 
@@ -100,8 +98,7 @@ namespace ProtoMol {
     }
 
     void unregisterAllExemplars() {
-      for (typename std::set<const Type *>::iterator i = pointers.begin();
-           i != pointers.end(); ++i)
+      for (typename pointers_t::iterator i = begin(); i != end(); ++i)
         delete (*i);
 
       exemplars.clear();

@@ -50,8 +50,7 @@ namespace ProtoMol {
     return vector<Vector3D>();
   }
 
-  VacuumBoundaryConditions VacuumBoundaryConditions::make(string &,
-                                                          vector<Value> ) {
+  VacuumBoundaryConditions VacuumBoundaryConditions::make(vector<Value>) {
     return VacuumBoundaryConditions();
   }
 }

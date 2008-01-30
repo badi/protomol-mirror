@@ -60,8 +60,6 @@ void TopologyModule::init(ProtoMolApp *app) {
   factory->registerExemplar(topo);
 
 
-  factory->registerAllExemplarsConfiguration(config);
-
   // Register input values
   InputBoundaryConditions::registerConfiguration(config);
   InputCellManager::registerConfiguration(config);
@@ -83,45 +81,18 @@ void TopologyModule::configure(ProtoMolApp *app) {
   }
 }
 
-GenericTopology *TopologyModule::buildTopology(ProtoMolApp *app) {
+void TopologyModule::buildTopology(ProtoMolApp *app) {
   Configuration &config = app->getConfiguration();
   Vector3DBlock *velocities = &app->velocities;
   Vector3DBlock *positions = &app->positions;
-  TopologyFactory *factory = &app->topologyFactory;
-
-  // Create topology
-  string errMsg;
-
-  if (!(topo = factory->make(errMsg, &config))) {
-    // Try to get some defaults with the postions known ...
-    const GenericTopology *prototype =
-      factory->find(config[GenericTopology::keyword].getString());
-
-    if (prototype != NULL) {
-      vector<Parameter> parameters = prototype->getDefaults(*positions);
-
-      for (unsigned int i = 0; i < parameters.size(); i++) {
-        if (!config.valid(parameters[i].keyword) &&
-            parameters[i].value.valid()) {
-
-          config.set(parameters[i].keyword, parameters[i].value);
-          report << hint << parameters[i].keyword << " undefined, using "
-                 << parameters[i].value.getString() << "." << endr;
-        }
-      }
-
-      topo = factory->make(errMsg, &config);
-    }
-
-    if (!topo) THROW(errMsg);
-  }
-
+  GenericTopology *topo = app->topology;
 
   // Build topology
   if ((bool)config[InputDoSCPISM::keyword])
     topo->doSCPISM = true;
 
-  buildTopology(app->psf, app->par, config[InputDihedralMultPSF::keyword]);
+  buildTopology(topo, app->psf, app->par,
+                config[InputDihedralMultPSF::keyword]);
 
   topo->minimalMolecularDistances =
     topo->checkMoleculePairDistances(*positions);
@@ -179,9 +150,6 @@ GenericTopology *TopologyModule::buildTopology(ProtoMolApp *app) {
 
   report << plain << "Actual start temperature : "
          << temperature(topo, velocities) << "K" << endr;
-
-
-  return topo;
 }
 
 //________________________________________findNextNeighbor
@@ -204,8 +172,8 @@ void findNextNeighbor(int a, vector<int> &v, vector<PairInt> &p,
   }
 }
 
-void TopologyModule::buildTopology(const PSF &psf, const PAR &par,
-                                   bool dihedralMultPSF) {
+void TopologyModule::buildTopology(GenericTopology *topo, const PSF &psf,
+                                   const PAR &par, bool dihedralMultPSF) {
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // First, generate the array of atomtypes
   // Each time a new atom comes up, we need to check if it is
@@ -810,8 +778,8 @@ void TopologyModule::buildTopology(const PSF &psf, const PAR &par,
   // end loop over NbFix types
 
   // store the molecule information
-  buildMoleculeTable();
-  buildExclusionTable(topo->exclude);
+  buildMoleculeTable(topo);
+  buildExclusionTable(topo, topo->exclude);
 }
 
 
@@ -821,7 +789,7 @@ void TopologyModule::buildTopology(const PSF &psf, const PAR &par,
 //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-void TopologyModule::buildMoleculeTable() {
+void TopologyModule::buildMoleculeTable(GenericTopology *topo) {
   // *** First we clear all molecules ***
   topo->molecules.clear();
 
@@ -1025,7 +993,8 @@ void TopologyModule::buildMoleculeTable() {
 //  buildExclusionTable
 //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void TopologyModule::buildExclusionTable(const ExclusionType &exclusionType) {
+void TopologyModule::buildExclusionTable(GenericTopology *topo,
+                                         const ExclusionType &exclusionType) {
   if (!exclusionType.valid())
     THROW("[buildExclusionTable()] Exclusion type not defined/valid.");
 

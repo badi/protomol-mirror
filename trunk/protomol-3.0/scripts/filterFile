@@ -15,6 +15,10 @@ filter=(
   'CellListEnumerator_standard' 'CellListEnumeratorStandard'
   'topologyutilities' 'TopologyUtilities'
   'Matrix3by3' 'Matrix3By3'
+  'ForceFactoryDetails' 'ForceFactory'
+  'FORCEFACTORYDETAILS' 'FORCE_FACTORY'
+  'IntegratorFactoryDetails' 'IntegratorFactory'
+  'INTEGRATORFACTORYDETAILS' 'INTEGRATOR_FACTORY'
 )
 
 addHeaderFilter() {

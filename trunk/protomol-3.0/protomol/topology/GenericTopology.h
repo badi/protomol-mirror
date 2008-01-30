@@ -111,14 +111,12 @@ namespace ProtoMol {
 
     virtual std::string print(const Vector3DBlock *positions = NULL) const = 0;
 
-    GenericTopology *make(std::string &errMsg,
-                          const std::vector<Value> &values) const;
+    GenericTopology *make(const std::vector<Value> &values) const;
 
     static const std::string &getKeyword() {return keyword;}
 
   private:
-    virtual GenericTopology *doMake(std::string &errMsg,
-                                    std::vector<Value> values) const = 0;
+    virtual GenericTopology *doMake(std::vector<Value> values) const = 0;
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // From class Makable
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

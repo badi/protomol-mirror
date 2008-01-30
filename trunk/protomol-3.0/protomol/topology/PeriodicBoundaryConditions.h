@@ -13,7 +13,8 @@ namespace ProtoMol {
   /**
    * Implements periodic boundary conditions, defining how we measure distances
    * and accounting the wrapping-around effect.
-   * The class use a couple of shorts cut's to avoid rint and to many div's and mul's.
+   * The class use a couple of shorts cut's to avoid rint and to many div's and
+   * mul's.
    */
   class PeriodicBoundaryConditions {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -21,19 +22,15 @@ namespace ProtoMol {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
     PeriodicBoundaryConditions();
-    PeriodicBoundaryConditions(const Vector3D &e1,
-                               const Vector3D &e2,
-                               const Vector3D &e3,
-                               const Vector3D &origin);
+    PeriodicBoundaryConditions(const Vector3D &e1, const Vector3D &e2,
+                               const Vector3D &e3, const Vector3D &origin);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // New methods of class PeriodicBoundaryConditions
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
     /// Set method for the dimensions of the (original) simulation box.
-    void set(const Vector3D &e1,
-             const Vector3D &e2,
-             const Vector3D &e3,
+    void set(const Vector3D &e1, const Vector3D &e2, const Vector3D &e3,
              const Vector3D &origin);
 
     /// Perform a minimal-image subtraction.
@@ -72,8 +69,7 @@ namespace ProtoMol {
     }
 
     // Perform a minimal-image subtraction and computes the squared distance
-    Vector3D minimalDifference(const Vector3D &c1,
-                               const Vector3D &c2,
+    Vector3D minimalDifference(const Vector3D &c1, const Vector3D &c2,
                                Real &distSquared) const {
       Vector3D diff(c2);
       diff -= c1;
@@ -218,11 +214,11 @@ namespace ProtoMol {
     /// Returns the keyword of the boundary conditions
     const std::string &getKeyword() const {return keyword;}
     void getParameters(std::vector<Parameter> &parameters) const;
-    static PeriodicBoundaryConditions make(std::string &errMsg,
-                                           std::vector<Value> values);
+    static PeriodicBoundaryConditions make(std::vector<Value> values);
     static unsigned int getParameterSize() {return 4;}
 
-    /// Returns possible default values for the parameters based on the positions
+    /// Returns possible default values for the parameters based on the
+    /// positions
     std::vector<Parameter> getDefaults(const Vector3DBlock &positions) const;
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // My data members
@@ -243,13 +239,13 @@ namespace ProtoMol {
     Real myDX;
     Real myDY;
     Real myDZ;
-    Real myD;  ///< maximal distance between two positions where plain subtraction if safe
+    /// maximal distance between two positions where plain subtraction if safe
+    Real myD;  
     Vector3D myH;
     Vector3D myH2;
 
     Real myV;
     bool myOrthogonal;
   };
-  //________________________________________ INLINES
 }
 #endif /* PERODICBOUNDARYCONDITIONS_H */

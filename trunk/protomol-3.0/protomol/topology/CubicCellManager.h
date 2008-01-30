@@ -59,7 +59,7 @@ namespace ProtoMol {
 
     void getParameters(std::vector<Parameter> &parameters) const;
     unsigned int getParameterSize() const {return 1;}
-    static CubicCellManager make(std::string &errMsg, std::vector<Value> values);
+    static CubicCellManager make(std::vector<Value> values);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // My data members

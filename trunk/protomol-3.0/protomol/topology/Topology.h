@@ -7,12 +7,13 @@
 #include <protomol/topology/CubicCellManager.h>
 #include <protomol/util/StringUtilities.h>
 #include <protomol/util/PMConstants.h>
+#include <protomol/debug/Exception.h>
 
 namespace ProtoMol {
   //________________________________________ Topology
   /**
-   * Implementation of the topology of a systems with a given boundary conditions
-   * and cell manager.
+   * Implementation of the topology of a systems with a given boundary 
+   * conditions and cell manager.
    */
 
   template<class TBoundaryConditions, class TCellManager>
@@ -26,9 +27,7 @@ namespace ProtoMol {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
     Topology() : SemiGenericTopology<TBoundaryConditions>() {}
-    Topology(Real csf,
-             const ExclusionType &e,
-             const TBoundaryConditions &b,
+    Topology(Real csf, const ExclusionType &e, const TBoundaryConditions &b,
              const TCellManager &c) : SemiGenericTopology<TBoundaryConditions>(
         csf, e, b), cellManager(c) {}
 
@@ -55,9 +54,10 @@ namespace ProtoMol {
 
         Vector3D delta(this->boundaryConditions.origin() - min);
 
-        /* TODO this use of CubicCellManager locks in the CellManager implementation for
-           this template.  Either the code below should be changed to be more generic
-           or the template parameter should be removed.
+        /* TODO this use of CubicCellManager locks in the CellManager 
+           implementation for this template.  Either the code below should be
+           changed to be more generic or the template parameter should be
+           removed.
          */
         CubicCellManager::Cell myCell;
         CubicCellManager::CellListStructure::iterator myCellList;
@@ -70,7 +70,8 @@ namespace ProtoMol {
 
           myCellList = cellLists.find(myCell);
           if (myCellList == end) {
-            // This atom is the first on its cell list, so make a new list for it.
+            // This atom is the first on its cell list, so make a new list for
+            // it.
             this->atoms[i].cellListNext = -1;
             cellLists[myCell] = i;
           } else {
@@ -211,32 +212,29 @@ namespace ProtoMol {
     }
 
   private:
-    virtual GenericTopology *doMake(std::string &errMsg,
-                                    std::vector<Value> values) const {
+    virtual GenericTopology *doMake(std::vector<Value> values) const {
       Real csf;
       if (!values[0].get(csf))
-        errMsg += " coulombScalingFactor \'" + values[0].getString() +
-                  "\' not valid.";
+        THROW(string(" coulombScalingFactor \'") + values[0].getString() +
+              "\' not valid.");
+
       ExclusionType e(values[1].getString());
       if (!e.valid())
-        errMsg += " Exclusion \'" + values[1].getString() +
-                  "\' not recognized, possible values are: " +
-                  ExclusionType::getPossibleValues(",") + ".";
-
-      if (!errMsg.empty())
-        return NULL;
-
+        THROW(string(" Exclusion '") + values[1].getString() +
+              "' not recognized, possible values are: " +
+              ExclusionType::getPossibleValues(",") + ".");
+      
       unsigned int n = TBoundaryConditions::getParameterSize();
-      return new Topology<TBoundaryConditions, TCellManager>(
-               csf,
-               e,
-               TBoundaryConditions
-                 ::make(errMsg,
-                 std::vector<Value>(values.begin() + 2, values.begin() + n + 2)),
-               TCellManager::make(
-                 errMsg, std::vector<Value>(values.begin() + n + 2, values.end())));
-    }
+      
+      TBoundaryConditions BC = 
+        TBoundaryConditions::make(std::vector<Value>(values.begin() + 2,
+                                                     values.begin() + n + 2));
+      TCellManager CM =
+        TCellManager::make(std::vector<Value>(values.begin() + n + 2,
+                                              values.end()));
 
+      return new Topology<TBoundaryConditions, TCellManager>(csf, e, BC, CM);
+    }
 
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

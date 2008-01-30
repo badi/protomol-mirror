@@ -18,38 +18,35 @@ namespace ProtoMol {
   public:
 
     /// Set method for the dimensions of the (original) simulation box.
-    void set(const Vector3D &,
-             const Vector3D &,
-             const Vector3D &,
+    void set(const Vector3D &, const Vector3D &, const Vector3D &,
              const Vector3D &) const {};
+
     /// Perform a minimal-image subtraction.
-    Vector3D minimalDifference(const Vector3D &c1,
-                               const Vector3D &c2) const {Vector3D diff(c2);
-                                                          diff -= c1;
-                                                          return diff;}
+    Vector3D minimalDifference(const Vector3D &c1, const Vector3D &c2) const {
+      Vector3D diff(c2);
+      diff -= c1;
+      return diff;
+    }
+
     // Perform a minimal-image subtraction and computes the squared distance
-    Vector3D minimalDifference(const Vector3D &c1,
-                               const Vector3D &c2,
-                               Real &distSquared) const {Vector3D diff(c2);
-                                                         diff -= c1;
-                                                         distSquared =
-                                                           diff.normSquared();
-                                                         return diff;}
+    Vector3D minimalDifference(const Vector3D &c1, const Vector3D &c2,
+                               Real &distSquared) const {
+      Vector3D diff(c2);
+      diff -= c1;
+      distSquared = diff.normSquared();
+      return diff;
+    }
     /// Find the position in the basis/original cell/image.
     Vector3D minimalPosition(const Vector3D &c) const {return c;}
     /// Find the lattice vector difference between two positions
     Vector3D minimalTranslationDifference(const Vector3D &,
-                                          const Vector3D &) const {return
-                                                                          Vector3D(
-                                                                     0.0,
-                                                                     0.0,
-                                                                     0.0);}
+                                          const Vector3D &) const {
+      return Vector3D(0.0, 0.0, 0.0);
+    }
     /// Find the lattice translation relative to the original cell/image
-    Vector3D minimalTranslationPosition(const Vector3D &) const {return
-                                                                        Vector3D(
-                                                                   0.0,
-                                                                   0.0,
-                                                                   0.0);}
+    Vector3D minimalTranslationPosition(const Vector3D &) const {
+      return Vector3D(0.0, 0.0, 0.0);
+    }
 
 
     /// basis/unit vector e1
@@ -77,20 +74,19 @@ namespace ProtoMol {
     enum {PERIODIC = 0, VACUUM = 1};
 
     /**
-     * Builds the lattice vector for a given cutoff. Since vacuum boundary conditions have
-     * no replications and (0,0,0) always is excluded, there is no need for any lattice vectors.
+     * Builds the lattice vector for a given cutoff. Since vacuum boundary 
+     * conditions have no replications and (0,0,0) always is excluded, there 
+     * is no need for any lattice vectors.
      */
     std::vector<Vector3D> buildLatticeVectors(Real cutoff) const;
 
     const std::string &getKeyword() const {return keyword;}
     void getParameters(std::vector<Parameter> &) const {};
-    static VacuumBoundaryConditions make(std::string &errMsg,
-                                         std::vector<Value> values);
+    static VacuumBoundaryConditions make(std::vector<Value> values);
     static unsigned int getParameterSize() {return 0;}
-    std::vector<Parameter> getDefaults(const Vector3DBlock &) const {return std
-                                                                              ::
-                                                                              vector
-                                                                            <Parameter>();}
+    std::vector<Parameter> getDefaults(const Vector3DBlock &) const {
+      return std::vector<Parameter>();
+    }
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // My data members
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

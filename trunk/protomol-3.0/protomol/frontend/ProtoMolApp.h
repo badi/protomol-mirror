@@ -6,6 +6,8 @@
 #include <protomol/frontend/CommandLine.h>
 
 #include <protomol/topology/TopologyFactory.h>
+#include <protomol/force/ForceFactory.h>
+#include <protomol/integrator/IntegratorFactory.h>
 
 #include <protomol/types/Vector3DBlock.h>
 #include <protomol/types/EigenvectorInfo.h>
@@ -33,6 +35,8 @@ namespace ProtoMol {
     ScalarStructure scalar;
 
     TopologyFactory topologyFactory;
+    ForceFactory forceFactory;
+    IntegratorFactory integratorFactory;
 
     OutputCollection *outputs;
     Integrator *integrator;

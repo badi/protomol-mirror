@@ -52,7 +52,6 @@ void ModuleManager::init(ProtoMolApp *app) {
     THROW(errStr);
   }
 
-
   // Initialize modules
   for (it = modules.begin(); it != modules.end(); it++)
     (*it)->init(app);
@@ -73,6 +72,13 @@ void ModuleManager::configure(ProtoMolApp *app) {
 
   for (it = modules.begin(); it != modules.end(); it++)
     (*it)->configure(app);  
+}
+
+void ModuleManager::registerForces(ProtoMolApp *app) {
+  modules_t::iterator it;
+
+  for (it = modules.begin(); it != modules.end(); it++)
+    (*it)->registerForces(app);
 }
 
 int ModuleManager::listAction() {

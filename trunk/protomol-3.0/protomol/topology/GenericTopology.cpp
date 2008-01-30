@@ -1,6 +1,10 @@
 #include <protomol/topology/GenericTopology.h>
+
+#include <protomol/debug/Exception.h>
+
 using std::string;
 using std::vector;
+
 namespace ProtoMol {
   //________________________________________ GenericTopology
 
@@ -21,11 +25,11 @@ namespace ProtoMol {
     doSCPISM(false), minimalMolecularDistances(false) {}
     
 
-  GenericTopology *GenericTopology::make(string &errMsg,
-                                         const vector<Value> &values) const {
-    errMsg = "";
-    if (!checkParameters(errMsg, values)) return NULL;
+  GenericTopology *GenericTopology::make(const vector<Value> &values) const {
+    string errMsg;
 
-    return adjustAlias(doMake(errMsg, values));
+    if (!checkParameters(errMsg, values)) THROW(errMsg);
+
+    return adjustAlias(doMake(values));
   }
 }

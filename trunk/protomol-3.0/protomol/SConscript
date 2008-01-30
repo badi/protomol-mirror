@@ -1,6 +1,8 @@
 Import('*')
 
 subdirs = [
+    "modifier",
+    "integrator",
     "force",
     "topology",
     "debug",
@@ -24,6 +26,6 @@ allsrc = []
 for subdir in subdirs:
     src = SConscript(subdir + '/SConscript')
     for s in src:
-        allsrc.append(subdir + '/' + s)
+      allsrc.append(subdir + '/' + s)
 
 Return('allsrc')

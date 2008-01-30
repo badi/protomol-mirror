@@ -25,9 +25,8 @@ namespace ProtoMol {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
     void registerAllExemplarsConfiguration(Configuration *config) const;
-    GenericTopology *make(std::string &errMsg,
-                          const Configuration *config) const;
-    GenericTopology *make(std::string &errMsg, const std::string &id,
+    GenericTopology *make(const Configuration *config) const;
+    GenericTopology *make(const std::string &id,
                           const std::vector<Value> &values) const;
   };
 }

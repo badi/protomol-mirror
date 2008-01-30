@@ -21,30 +21,25 @@ registerAllExemplarsConfiguration(Configuration *config) const {
   cache = false;
 }
 
-GenericTopology *TopologyFactory::
-make(string &errMsg, const Configuration *config) const {
+GenericTopology *TopologyFactory::make(const Configuration *config) const {
   string id = config->get(GenericTopology::getKeyword()).getString();
   const GenericTopology *prototype = getPrototype(id);
 
-  return make(errMsg, id,
-              config->get(prototype != NULL ? prototype->getParameters() :
-                          vector<Parameter>()));
+  return make(id, config->get(prototype != NULL ? prototype->getParameters() :
+                              vector<Parameter>()));
 }
 
-GenericTopology *TopologyFactory::
-make(string &errMsg, const string &id, const vector<Value> &values) const {
-  errMsg = "";
+GenericTopology *TopologyFactory::make(const string &id,
+                                       const vector<Value> &values) const {
   const GenericTopology *prototype = getPrototype(id);
 
-  if (prototype == NULL) {
-    errMsg += " Could not find any match for \'" + id + "\' in " +
-      GenericTopology::scope +
-      "Factory.\nPossible topologies are:\n" + print();
-    return NULL;
-  }
+  if (!prototype)
+    THROW(string(" Could not find any match for '") + id + "' in " +
+          GenericTopology::scope + "Factory.\nPossible topologies are:\n" +
+          print());
 
   // Make
-  GenericTopology *newObj = prototype->make(errMsg, values);
+  GenericTopology *newObj = prototype->make(values);
   if (newObj == NULL) return NULL;
 
   // Adjust external alias
