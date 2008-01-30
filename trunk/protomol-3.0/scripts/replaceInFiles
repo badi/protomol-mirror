@@ -1,0 +1,102 @@
+#!/bin/sh
+
+buildFilter() {
+    SED=
+    for i in $(seq 0 $((${#FILTER[@]} / 2 - 1))); do
+        search=${FILTER[$(($i * 2))]}
+        replace=${FILTER[$(($i * 2 + 1))]}
+        
+        if [ "$SED" != "" ]; then
+            SED+=";"
+        fi
+        SED+="s/$search/$replace/g"
+    done
+}
+
+findBackup() {
+    C=0
+    while true; do
+        BACKUP="$1.$C.bak~"
+        if [ ! -e "$BACKUP" ]; then break; fi
+        C=$(($C + 1))
+    done
+}
+
+if [ "$1" == "" ]; then
+   echo "Syntax $0 <filter file> <file>..."
+   exit 1
+fi
+
+FILTER_FILE=
+FILES=
+uncrustify=false
+fixnamespace=false
+
+while [ "$1" != "" ]; do
+    case "$1" in
+        "-u") uncrustify=true ;;
+        "--fix-ending-namepace")
+            uncrustify=true
+            fixnamespace=true
+            ;;
+
+        *)
+            if [ "$FILTER_FILE" == "" ]; then
+                FILTER_FILE="$1"
+            else
+                FILES[${#FILES[@]}]="$1"
+            fi
+            ;;
+    esac
+
+    shift
+done
+
+if [ ! -e "$FILTER_FILE" ]; then
+    echo "Filter file '$FILTER_FILE' does not exist"
+    exit 1
+fi
+
+. "$FILTER_FILE"
+
+if [ ${#FILTER[@]} -eq 0 ]; then
+    echo "FILTER not set"
+    exit 1
+fi
+
+buildFilter
+
+for i  in "${FILES[@]}"; do
+    if [ "$i" == "" ]; then continue; fi
+    if [ ! -e "$i" ]; then
+        echo "'$i' does not exist"
+        continue
+    fi
+
+    findBackup "$i"
+
+    cp "$i" "$BACKUP"
+
+    echo $i
+    sed "$SED" <"$BACKUP">"$i"
+
+    diff "$i" "$BACKUP" 2>&1 >/dev/null
+    if [ $? -eq 0 ]; then
+        rm -f "$BACKUP"
+    fi
+
+    if $uncrustify; then
+        uncrustify --replace -q "$i"
+    fi
+
+    if $fixnamespace; then
+        findBackup "$i"
+        cp "$i" "$BACKUP"
+        
+        if [ $(tail -2 "$i" | grep '^}$' | wc -l) -eq 2 ]; then
+            LEN=$(wc -l <"$i")
+
+            head -$(($LEN - 1)) "$BACKUP" >"$i"
+        fi
+    fi
+done
