@@ -18,19 +18,14 @@ static bool normVector3DOp(const Vector3D &v1, const Vector3D &v2) {
 const string PeriodicBoundaryConditions::keyword("Periodic");
 
 PeriodicBoundaryConditions::PeriodicBoundaryConditions() :
-  myE1(0, 0,
-       0), myE2(0, 0,
-                0), myE3(0, 0,
-                         0), myE1r(0, 0,
-                                   0), myE2r(0, 0,
-                                             0), myE3r(0, 0,
-                                                       0), myOrigin(0, 0,
-                                                                    0),
-  myMin(0, 0, 0), myMax(0, 0, 0), myV(0), myOrthogonal(true) {}
+  myE1(0, 0, 0), myE2(0, 0, 0), myE3(0, 0, 0), myE1r(0, 0, 0), myE2r(0, 0, 0),
+  myE3r(0, 0, 0), myOrigin(0, 0, 0), myMin(0, 0, 0), myMax(0, 0, 0), myV(0),
+  myOrthogonal(true) {}
 
 PeriodicBoundaryConditions::
   PeriodicBoundaryConditions(const Vector3D &e1, const Vector3D &e2,
-                             const Vector3D &e3, const Vector3D &origin) {
+                             const Vector3D &e3,
+                             const Vector3D &origin) {
   set(e1, e2, e3, origin);
 }
 
@@ -117,7 +112,7 @@ void PeriodicBoundaryConditions::
   parameters.push_back(Parameter("cellBasisVector3",
       Value(myE3, ConstraintValueType::NotZero())));
   parameters.push_back(Parameter("cellorigin",
-      Value(myOrigin, Value::undefined)));
+                                 Value(myOrigin, Value::undefined)));
 }
 
 PeriodicBoundaryConditions PeriodicBoundaryConditions::

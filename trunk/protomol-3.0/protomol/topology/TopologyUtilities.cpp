@@ -385,18 +385,14 @@ namespace ProtoMol {
     if (velocities->empty())
       return Vector3D(0.0, 0.0, 0.0);
 
-    //  Loop through all the solute atoms and remove the motion of center of mass
-    //  using an advanced method -- Kahan's magic addition algorithm to get
+    //  Loop through all the solute atoms and remove the motion of center of 
+    //  mass using an advanced method -- Kahan's magic addition algorithm to get
     //  rid of round-off errors: Scientific Computing pp34.
 
     Vector3D sumMomentum((*velocities)[0] * topo->atoms[0].scaledMass);
     Vector3D tempC(0.0, 0.0, 0.0);
     for (unsigned int i = 1; i < topo->atoms.size(); i++)
-      //cout << "The atom type: " << topo->atoms[i].type  << endl;
-      //cout << "The molecule number: " << topo->atoms[i].molecule  << endl;
       if (topo->molecules[topo->atoms[i].molecule].water == false) {
-        //cout << "The atom type (not water): " << topo->atoms[i].type  << endl;
-        //cout << "The molecule number: " << topo->atoms[i].molecule  << endl;
         Vector3D tempX((*velocities)[i] * topo->atoms[i].scaledMass);
         Vector3D tempY(tempX - tempC);
         Vector3D tempT(sumMomentum + tempY);
@@ -415,7 +411,6 @@ namespace ProtoMol {
     if (velocities->empty())
       return Vector3D(0.0, 0.0, 0.0);
 
-    //Vector3D momentum     = linearMomentum(velocities,topo);
     Vector3D momentum = linearMomentumSolute(velocities, topo);
 
     // Count number of solute atoms
@@ -424,7 +419,6 @@ namespace ProtoMol {
       if (topo->molecules[topo->atoms[i].molecule].water == false)
         soluteAtoms += 1;
 
-    //Vector3D avgMomentum  = momentum/velocities->size();
     Vector3D avgMomentum = momentum / soluteAtoms;
     for (unsigned int i = 0; i < topo->atoms.size(); i++)
       if (topo->molecules[topo->atoms[i].molecule].water == false)
@@ -704,10 +698,10 @@ namespace ProtoMol {
   void buildRattleShakeBondConstraintList(
     GenericTopology *topology, vector<Bond::Constraint> &
     bondConstraints) {
-    // here we go through the bond list first, then the angle list to extract the possible
-    // third pair if they are both hydrogen. Thus, all bond lengths plus the third pair in
-    // the waters will be constrained. The angles rather than H-(heavy)-H are left free
-    // of vibrations
+    // here we go through the bond list first, then the angle list to extract 
+    // the possible third pair if they are both hydrogen. Thus, all bond 
+    // lengths plus the third pair in the waters will be constrained. The 
+    // angles rather than H-(heavy)-H are left free of vibrations
 
     bondConstraints.clear();
 
@@ -731,7 +725,7 @@ namespace ProtoMol {
       // M1 or M3 should be 2 ~ 3 times heavier
       if ((M1 < 5) && (M3 < 5)) {
         // this exclude (heavy atom)-H pairs and (heavy)-(heavy) pairs
-        //           sqrt( 2 * 0.957 * 0.957 * ( 1 - cos( 104.52 * 0.017453 ) ) );
+        //           sqrt( 2 * 0.957 * 0.957 * ( 1 - cos( 104.52 * 0.017453)));
         //bondConstraints.push_back(Bond::Constraint(a1,a3,1.51356642665));
 
         // ... properly retrieve the right length!
@@ -1017,16 +1011,15 @@ namespace ProtoMol {
     int a3 = topo->dihedrals[index].atom3;
     int a4 = topo->dihedrals[index].atom4;
 
-    //Vector3D r12 = (*positions)[a1] - (*positions)[a2];  // Vector from atom 1 to atom 2
     Vector3D r12 = topo->minimalDifference((*positions)[a2], (*positions)[a1]);
-    //Vector3D r23 = (*positions)[a2] - (*positions)[a3];  // Vector from atom 2 to atom 3
     Vector3D r23 = topo->minimalDifference((*positions)[a3], (*positions)[a2]);
-    //Vector3D r34 = (*positions)[a3] - (*positions)[a4];  // Vector from atom 3 to atom 4
     Vector3D r34 = topo->minimalDifference((*positions)[a4], (*positions)[a3]);
 
-    // Cross product of r12 and r23, represents the plane shared by these two vectors
+    // Cross product of r12 and r23, represents the plane shared by these two
+    // vectors
     Vector3D a = r12.cross(r23);
-    // Cross product of r12 and r23, represents the plane shared by these two vectors
+    // Cross product of r12 and r23, represents the plane shared by these two
+    // vectors
     Vector3D b = r23.cross(r34);
 
     Vector3D c = r23.cross(a);
@@ -1047,10 +1040,9 @@ namespace ProtoMol {
       if (currTorsion.periodicity[i] > 0)
 
         // Add energy
-        energy += currTorsion.forceConstant[i] * (1.0 + cos(
-                                                    currTorsion.periodicity[i]
-                                                    * phi
-                                                    + currTorsion.phaseShift[i]));
+        energy += currTorsion.forceConstant[i] *
+          (1.0 + cos(currTorsion.periodicity[i] * phi +
+                     currTorsion.phaseShift[i]));
 
       else {
         Real diff = phi - currTorsion.phaseShift[i];
