@@ -13,7 +13,6 @@ namespace ProtoMol {
   declareInputValue(InputDebug, INT, NOCONSTRAINTS);
   declareInputValue(InputPositions, STRING, NOTEMPTY);
   declareInputValue(InputVelocities, STRING, NOTEMPTY);
-  declareInputValue(InputTemperature, REAL, NOTNEGATIVE)
   declareInputValue(InputEigenVectors, STRING, NOTEMPTY);
   declareInputValue(InputPSF, STRING, NOTEMPTY);
   declareInputValue(InputPAR, STRING, NOTEMPTY);
@@ -29,6 +28,7 @@ namespace ProtoMol {
     }
 
     void init(ProtoMolApp *app);
+    void configure(ProtoMolApp *app);
   };
 };
 

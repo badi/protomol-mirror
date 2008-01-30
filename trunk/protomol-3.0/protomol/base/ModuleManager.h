@@ -23,6 +23,7 @@ namespace ProtoMol {
     Module *find(const std::string &name);
 
     void init(ProtoMolApp *app);
+    void configure(ProtoMolApp *app);
 
     int listAction();
   };

@@ -8,6 +8,8 @@
 
 namespace ProtoMol {
   class ProtoMolApp;
+  class GenericTopology;
+  class ForceFactory;
 
   class Module {
   public:
@@ -20,6 +22,11 @@ namespace ProtoMol {
     virtual int getPriority() const {return 0;}
     virtual const std::string getHelp() const {return "";}
     virtual void getDependencies(module_deps_t &deps) const {}
+
+    virtual void configure(ProtoMolApp *app) {}
+    virtual GenericTopology *buildTopology(ProtoMolApp *app)
+    {THROW("Not implemented in this module");}
+    //virtual void registerForces(ForceFactory *factory);
 
   protected:
     virtual void init(ProtoMolApp *app) = 0;

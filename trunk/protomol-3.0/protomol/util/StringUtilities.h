@@ -163,4 +163,11 @@ namespace ProtoMol {
                   unsigned int currentColumn = 0, unsigned int indent = 0,
                   unsigned int maxColumn = 80);
 }
+
+#define THROWS(msgs) {                          \
+    std::ostringstream errMsg;                  \
+    errMsg << msgs;                             \
+    THROW(errMsg.str());                        \
+  }
+
 #endif

@@ -3,9 +3,12 @@
 #include "ProtoMolApp.h"
 
 #include <protomol/config/Configuration.h>
+#include <protomol/util/Report.h>
+#include <protomol/debug/Exception.h>
 
 using namespace std;
 using namespace ProtoMol;
+using namespace ProtoMol::Report;
 
 defineInputValue(InputSeed, "seed");
 defineInputValue(InputFirststep, "firststep");
@@ -15,12 +18,11 @@ defineInputValueAndText(InputDebug, "debug", "report level, suppresses all "
 defineInputValueWithAliases(InputPositions, "posfile",
                             ("coords")("coordinates"));
 defineInputValue(InputVelocities, "velfile");
-defineInputValue(InputTemperature,"temperature");
 defineInputValue(InputEigenVectors, "eigfile");
 defineInputValueWithAliases(InputPSF, "psffile", ("structure"));
 defineInputValueWithAliases(InputPAR, "parfile", ("parameters"));
-defineInputValue(InputPDBScaling,"pdbScaling");
-defineInputValue(InputDihedralMultPSF,"dihedralMultPSF");
+defineInputValue(InputPDBScaling, "pdbScaling");
+defineInputValue(InputDihedralMultPSF, "dihedralMultPSF");
 
 void MainModule::init(ProtoMolApp *app) {
   Configuration *config = &app->getConfiguration();
@@ -36,10 +38,27 @@ void MainModule::init(ProtoMolApp *app) {
   
   InputPositions::registerConfiguration(config);
   InputVelocities::registerConfiguration(config);
-  InputTemperature::registerConfiguration(config);
   InputEigenVectors::registerConfiguration(config);
   InputPSF::registerConfiguration(config);
   InputPAR::registerConfiguration(config);
   InputPDBScaling::registerConfiguration(config);
   InputDihedralMultPSF::registerConfiguration(config);
+}
+
+void MainModule::configure(ProtoMolApp *app) {
+  Configuration &config = app->getConfiguration();
+
+  //  Set report level
+  report << reportlevel((int)config[InputDebug::keyword]);
+
+  // Check if configuration is complete
+  string errMsg;
+  if (!config.validConfiguration(errMsg)) 
+    report << plain << endl << errMsg << endr;
+  
+  if (!config[InputFirststep::keyword].valid())
+    THROW("Firststep undefined.");
+
+  if (!config[InputNumsteps::keyword].valid())
+    THROW("Numsteps undefined.");
 }

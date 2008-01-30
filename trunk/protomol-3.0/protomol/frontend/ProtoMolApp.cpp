@@ -27,7 +27,8 @@ using namespace ProtoMol::Report;
 using namespace ProtoMol::Constant;
 
 
-ProtoMolApp::ProtoMolApp(ModuleManager *modManager) : cmdLine(&config) {
+ProtoMolApp::ProtoMolApp(ModuleManager *modManager) :
+  modManager(modManager), cmdLine(&config) {
   modManager->init(this);
 }
 
@@ -43,25 +44,7 @@ bool ProtoMolApp::configure(int argc, char *argv[]) {
     changeDirectory(config[InputConfig::keyword]);
   else THROW("Configuration file not set.");
 
-  //  Set report level
-  report << reportlevel((int)config[InputDebug::keyword]);
-
-  // Fix for old topology definition
-  if (!config[GenericTopology::keyword].valid()) {
-    config[GenericTopology::keyword] =
-      config[InputBoundaryConditions::keyword].getString() +
-      config[InputCellManager::keyword].getString();
-  }
-
-  // Check if configuration is complete
-  string errMsg;
-  if (!config.validConfiguration(errMsg)) 
-    report << plain << endl << errMsg << endr;
-  
-  if (!config[InputFirststep::keyword].valid())
-    THROW("Firststep undefined.");
-  if (!config[InputNumsteps::keyword].valid())
-    THROW("Numsteps undefined.");
+  modManager->configure(this);
 
   return true;
 }
@@ -195,95 +178,8 @@ void ProtoMolApp::read() {
 }
 
 void ProtoMolApp::build() {
-  // Create topology
-  string errMsg;  
+  Module *topoMod = modManager->find("Topology");
+  if (!topoMod) THROW("Topology module not found");
 
-  if (!(topology = TopologyFactory::make(errMsg, &config))) {
-    // Try to get some defaults with the postions known ...
-    const GenericTopology *prototype =
-      TopologyFactory::find(config.get(GenericTopology::getKeyword()).
-                            getString());
-
-    if (prototype != NULL) {
-      vector<Parameter> parameters = prototype->getDefaults(positions);
-
-      for (unsigned int i = 0; i < parameters.size(); i++) {
-        if (!config.valid(parameters[i].keyword) &&
-            parameters[i].value.valid()) {
-
-          config.set(parameters[i].keyword,parameters[i].value);
-          report << hint << parameters[i].keyword << " undefined, using "
-                 << parameters[i].value.getString() << "." << endr;
-        }
-      }
-
-      topology = TopologyFactory::make(errMsg, &config);
-    }
-
-    if (!topology) THROW(errMsg);
-  }
-
-
-#if 0
-    // Build topology
-  if ((bool)config[InputDoSCPISM::keyword]) {
-    cout << (bool)config[InputDoSCPISM::keyword]  << endl;
-    topology->doSCPISM = true;
-  }
-  buildTopology(topology, psf, par, config[InputDihedralMultPSF::keyword]);
-
-  topology->minimalMolecularDistances =
-    topology->checkMoleculePairDistances(positions);
-
-  if ((bool)config[InputReducedImage::keyword] &&
-      !topology->minimalMolecularDistances) {
-    Vector3DBlock tmp(positions);
-
-    topology->minimalImage(tmp);
-
-    if (topology->checkMoleculePairDistances(tmp)) {
-      positions = tmp;
-      report << plain << "Fixed minimal molecule distances." << endr;
-      topology->minimalMolecularDistances = true;
-
-    } else {
-      report << plain << "Could not fixed minimal molecule distances." << endr;
-      topology->minimalMolecularDistances = false;
-    }      
-  }
-
-
-  // Fix velocities
-  if (!config.valid(InputVelocities::keyword)) {
-    randomVelocity(config[InputTemperature::keyword],
-                   topology,&velocities,config[InputSeed::keyword]);
-    report << plain << "Random temperature : "
-           <<temperature(topology,&velocities)<<"K"<<endr;
-  }
-
-  if ((int)config[InputRemoveLinearMomentum::keyword] >= 0){
-    report << plain << "Removed linear momentum: "
-           << removeLinearMomentum(&velocities, topology) *
-      Constant::INV_TIMEFACTOR
-           <<endr;
-
-  } else
-    report << plain << "Linear momentum : "
-           << linearMomentum(&velocities, topology) *
-      Constant::INV_TIMEFACTOR
-           <<endr;
-
-  if ((int)config[InputRemoveAngularMomentum::keyword] >= 0){
-    report << plain << "Removed angular momentum : "
-	   <<removeAngularMomentum(&positions,&velocities, topology) *
-      Constant::INV_TIMEFACTOR << endr;
-
-  } else {
-    report << plain << "Angular momentum : "
-           << angularMomentum(&positions, &velocities, topology) *
-      Constant::INV_TIMEFACTOR << endr;
-  }
-  report << plain << "Actual start temperature : "
-         << temperature(topology, &velocities) << "K" << endr;
-#endif
+  topology = topoMod->buildTopology(this);
 }

@@ -1,6 +1,7 @@
 Import('*')
 
 subdirs = [
+    "force",
     "topology",
     "debug",
     "base",

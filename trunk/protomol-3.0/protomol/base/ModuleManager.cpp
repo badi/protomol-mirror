@@ -68,6 +68,13 @@ void ModuleManager::init(ProtoMolApp *app) {
                             "List all registered modules and exit.");
 }
 
+void ModuleManager::configure(ProtoMolApp *app) {
+  modules_t::iterator it;
+
+  for (it = modules.begin(); it != modules.end(); it++)
+    (*it)->configure(app);  
+}
+
 int ModuleManager::listAction() {
   modules_t::iterator it;
 

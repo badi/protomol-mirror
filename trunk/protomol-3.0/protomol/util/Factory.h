@@ -4,231 +4,131 @@
 
 #include <protomol/util/StringUtilities.h>
 #include <protomol/util/Report.h>
+#include <protomol/debug/Exception.h>
 
 #include <vector>
 #include <map>
 #include <set>
 
 namespace ProtoMol {
-  //________________________________________ FactoryBase
+  //________________________________________ Factory
   /**
      Base class of all factories templated with the family type.
      Container to keep pointers for each prototype exemplar and their
      aliases, where the real prototype is keep in a separate set.
    */
   template<typename Type>
-  class FactoryBase {
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // Constructors, destructors, assignment
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  protected:
-    FactoryBase() : myCache(false) {}
-    virtual ~FactoryBase() {clear();}
-
-  private:
-    FactoryBase(const FactoryBase &) {}
-    FactoryBase &operator=(const FactoryBase &) {return *this;}
-
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // New methods of class FactoryBase
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  protected:
-    const Type *getPrototype(const std::string &id) const {
-      const Type *prototype = NULL;
-
-      if (myExemplars.find(id) != myExemplars.end())
-        prototype = myExemplars.find(id)->second;
-      else if (myAliasExemplars.find(id) != myAliasExemplars.end())
-        prototype = myAliasExemplars.find(id)->second;
-
-      return prototype;
-    }
-
-    void clear() {
-      for (typename std::set<const Type *>::iterator i = myPointers.begin();
-           i != myPointers.end(); ++i)
-        delete (*i);
-
-      myExemplars.clear();
-      myAliasExemplars.clear();
-      myPointers.clear();
-      myCache = false;
-    }
-
-  protected:
-    ///< Hook method called from static method print
-    virtual std::string doPrint() const = 0;
-    ///< Hook method called from static method registerHelpText
-    virtual void doRegisterHelpText() const = 0;
-
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // private data members
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  protected:
-    typedef std::map<std::string, const Type *, ltstrNocase> myExemplars_t;
-    typedef std::set<const Type *> myPointers_t;
-
-    myExemplars_t myExemplars;
-    myExemplars_t myAliasExemplars;
-    myPointers_t myPointers;
-    mutable bool myCache;
-  };
-
-
-  //________________________________________ FactoryTraits<>
-  template<class T>
-  class FactoryTraits;
-
-  //________________________________________ Factory
-  /**
-      Concrete factory implementing the singleton pattern and
-      inheriting the implementation details by traits. The concept of three
-      levels enables to combine the singleton pattern and implementation
-      details, where the base class FactoryBase provides the essential methods
-      and data members for the implementation details.
-   */
-  template<typename Type>
-  class Factory : public FactoryTraits<Type>::Details {
+  class Factory {
   public:
-    typedef typename std::set<const Type *>::const_iterator const_iterator;
+    typedef std::map<std::string, const Type *, ltstrNocase> exemplars_t;
+    typedef std::set<const Type *> pointers_t;
+
+  protected:
+    exemplars_t exemplars;
+    exemplars_t aliasExemplars;
+    pointers_t pointers;
+    mutable bool cache;
+
+  public:
+    typedef typename pointers_t::const_iterator const_iterator;
+
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Constructors, destructors, assignment
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  protected:
-    Factory() : FactoryTraits<Type>::Details() {}
-    virtual ~Factory() {}
-
-  private:
-    Factory(const Factory &) {}
-    Factory &operator=(const Factory &) {return *this;}
-
-  private:
-    /// Call by atexit() to clean up.
-    static void kill() {
-      Factory *p = obj;
-      obj = NULL;
-      p->~Factory();
-    }
+    Factory() : cache(false) {}
+    virtual ~Factory() {unregisterAllExemplars();}
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // New methods of class Factory
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    static void registerExemplar(const Type *exemplar, std::string id = "") {
+    void registerExemplar(const Type *exemplar, std::string id = "") {
       if (id.empty()) id = exemplar->getId();
-      Factory::instance().doRegisterExemplar(id, exemplar);
-    }
 
-    static void registerExemplar(const Type *exemplar,
-                                 const std::vector<std::string> &aliases,
-                                 std::string id = "") {
-      if (id.empty()) id = exemplar->getId();
-      Factory::instance().doRegisterExemplar(id, exemplar, aliases);
-    }
-
-    static bool unregisterExemplar(const std::string &id) {
-      return Factory::instance().doUnregisterExemplar(id);
-    }
-
-    static void unregisterAllExemplars() {
-      Factory::instance().clear();
-    }
-
-    static std::string print() {
-      return Factory::instance().doPrint();
-    }
-
-    static void registerHelpText() {
-      Factory::instance().doRegisterHelpText();
-    }
-
-    static bool empty() {
-      return Factory::instance().myPointers.empty();
-    }
-
-    static Factory &instance() {
-      if (obj == NULL) {
-        obj = new Factory();
-        std::atexit(kill);
-      }
-      return *obj;
-    }
-
-    static const_iterator begin() {
-      return Factory::instance().myPointers.begin();
-    }
-
-    static const_iterator end() {
-      return Factory::instance().myPointers.end();
-    }
-
-    static const Type *find(const std::string &id) {
-      return Factory::instance().getPrototype(id);
-    }
-
-  private:
-    void doRegisterExemplar(const std::string &id, const Type *exemplar) {
-      if (this->myExemplars.find(id) != this->myExemplars.end())
+      if (exemplars.find(id) != exemplars.end())
         Report::report
-          << Report::hint << "Prototype \'" << id << "\' already registered in "
+          << Report::hint << "Prototype '" << id << "' already registered in "
           << Type::scope << "Factory" << Type::scope
           << ", overwriting." << Report::endr;
 
       if (exemplar->getParameterSize() != exemplar->getParameters().size())
-        Report::report
-          << Report::error << Type::scope << "Factory" << Type::scope
-          << " prototype \'" << id
-          << "\'  has different parameter size definitions "
-          << exemplar->getParameterSize() << " != "
-          << exemplar->getParameters().size() << ", fix it." << Report::endr;
+        THROWS(Type::scope << "Factory" << Type::scope << " prototype '" << id
+               << "' has different parameter size definitions "
+               << exemplar->getParameterSize() << " != "
+               << exemplar->getParameters().size() << ", fix it.");
 
-      this->myExemplars[id] = exemplar;
-      this->myPointers.insert(exemplar);
-      this->myCache = false;
+      exemplars[id] = exemplar;
+      pointers.insert(exemplar);
+      cache = false;
     }
 
-    void doRegisterExemplar(const std::string &id, const Type *exemplar,
-                            const std::vector<std::string> &aliases) {
-      doRegisterExemplar(id, exemplar);
+    void registerExemplar(const Type *exemplar,
+                          const std::vector<std::string> &aliases,
+                          std::string id = "") {
+      if (id.empty()) id = exemplar->getId();
+
+      registerExemplar(exemplar, id);
       for (unsigned int i = 0; i < aliases.size(); i++)
-        this->myAliasExemplars[aliases[i]] = exemplar;
+        aliasExemplars[aliases[i]] = exemplar;
 
-      this->myCache = false;
+      cache = false;
     }
 
-    bool doUnregisterExemplar(const std::string &id) {
+    bool unregisterExemplar(const std::string &id) {
       // Get object pointer
-      const Type *p = this->getPrototype(id);
+      const Type *p = getPrototype(id);
       if (p == NULL) return false;
 
       // Remove pointers
       for (typename std::map<std::string, const Type *,
-             ltstrNocase>::iterator i = this->myExemplars.begin();
-           i != this->myExemplars.end(); i++)
-        if (i->second == p) this->myExemplars.erase(i);
+             ltstrNocase>::iterator i = exemplars.begin();
+           i != exemplars.end(); i++)
+        if (i->second == p) exemplars.erase(i);
 
       for (typename std::map<std::string, const Type *,
-             ltstrNocase>::iterator i = this->myAliasExemplars.begin();
-           i != this->myAliasExemplars.end(); i++)
-        if (i->second == p) this->myAliasExemplars.erase(i);
+             ltstrNocase>::iterator i = aliasExemplars.begin();
+           i != aliasExemplars.end(); i++)
+        if (i->second == p) aliasExemplars.erase(i);
 
-      this->myPointers.erase(p);
+      pointers.erase(p);
 
       // ... and delete the object
       delete p;
 
-      this->myCache = false;
+      cache = false;
       return true;
     }
 
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // private data members
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  private:
-    static Factory *obj;
-  };
+    void unregisterAllExemplars() {
+      for (typename std::set<const Type *>::iterator i = pointers.begin();
+           i != pointers.end(); ++i)
+        delete (*i);
 
-  template<typename Type>
-  Factory<Type> *Factory<Type>::obj = NULL;
+      exemplars.clear();
+      aliasExemplars.clear();
+      pointers.clear();
+      cache = false;
+    }
+
+    virtual std::string print() const = 0;
+    virtual void registerHelpText() const = 0;
+
+    bool empty() const {return pointers.empty();}
+    const_iterator begin() const {return pointers.begin();}
+    const_iterator end() const {return pointers.end();}
+    const Type *find(const std::string &id) const {return getPrototype(id);}
+
+  protected:
+    const Type *getPrototype(const std::string &id) const {
+      const Type *prototype = NULL;
+
+      if (exemplars.find(id) != exemplars.end())
+        prototype = exemplars.find(id)->second;
+      else if (aliasExemplars.find(id) != aliasExemplars.end())
+        prototype = aliasExemplars.find(id)->second;
+
+      return prototype;
+    }
+  };
 }
 #endif /* FACTORY_H */

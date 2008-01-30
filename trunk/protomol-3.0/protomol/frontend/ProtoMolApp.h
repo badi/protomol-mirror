@@ -5,6 +5,8 @@
 #include <protomol/config/Configuration.h>
 #include <protomol/frontend/CommandLine.h>
 
+#include <protomol/topology/TopologyFactory.h>
+
 #include <protomol/types/Vector3DBlock.h>
 #include <protomol/types/EigenvectorInfo.h>
 #include <protomol/types/PSF.h>
@@ -17,6 +19,8 @@ namespace ProtoMol {
   class GenericTopology;
 
   class ProtoMolApp {
+    ModuleManager *modManager;
+
     CommandLine cmdLine;
     Configuration config;
 
@@ -27,6 +31,8 @@ namespace ProtoMol {
     PSF psf;
     PAR par;
     ScalarStructure scalar;
+
+    TopologyFactory topologyFactory;
 
     OutputCollection *outputs;
     Integrator *integrator;

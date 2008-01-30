@@ -1,9 +1,34 @@
 /* -*- c++ -*- */
-#ifndef TOPOLOGYFACTORY_H
-#define TOPOLOGYFACTORY_H
-#include <protomol/topology/TopologyFactoryDetails.h>
+#ifndef TOPOLOGYFACTORYDETAILS_H
+#define TOPOLOGYFACTORYDETAILS_H
+
+#include <protomol/util/Factory.h>
+#include <protomol/topology/GenericTopology.h>
 
 namespace ProtoMol {
-  typedef Factory<GenericTopology> TopologyFactory;
+  class Configuration;
+
+  //________________________________________ TopologyFactory
+  class TopologyFactory : public Factory<GenericTopology> {
+  public:
+    TopologyFactory() {}
+    virtual ~TopologyFactory() {}
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // From Factory<GenericTopology>
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    virtual std::string print() const;
+    virtual void registerHelpText() const;
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // New methods of class TopologyFactory
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  public:
+    void registerAllExemplarsConfiguration(Configuration *config) const;
+    GenericTopology *make(std::string &errMsg,
+                          const Configuration *config) const;
+    GenericTopology *make(std::string &errMsg, const std::string &id,
+                          const std::vector<Value> &values) const;
+  };
 }
-#endif /* TOPOLOGYFACTORY_H */
+#endif /* TOPOLOGYFACTORYDETAILS_H */
