@@ -23,6 +23,7 @@ defineInputValueWithAliases(InputPSF, "psffile", ("structure"));
 defineInputValueWithAliases(InputPAR, "parfile", ("parameters"));
 defineInputValue(InputPDBScaling, "pdbScaling");
 defineInputValue(InputDihedralMultPSF, "dihedralMultPSF");
+defineInputValue(InputIntegrator, "integrator");
 
 void MainModule::init(ProtoMolApp *app) {
   Configuration *config = &app->getConfiguration();

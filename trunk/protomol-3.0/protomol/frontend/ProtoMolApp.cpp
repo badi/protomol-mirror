@@ -217,4 +217,7 @@ void ProtoMolApp::build() {
 
   // Register Forces
   modManager->registerForces(this);  
+
+  integrator = integratorFactory.make(config[InputIntegrator::keyword],
+                                      &forceFactory);
 }

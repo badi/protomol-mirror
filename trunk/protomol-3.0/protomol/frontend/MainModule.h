@@ -18,6 +18,7 @@ namespace ProtoMol {
   declareInputValue(InputPAR, STRING, NOTEMPTY);
   declareInputValue(InputPDBScaling, BOOL, NOCONSTRAINTS);
   declareInputValue(InputDihedralMultPSF, BOOL, NOCONSTRAINTS);
+  declareInputValue(InputIntegrator, INTEGRATOR, NOTEMPTY);
 
   class MainModule : public Module {
   public:
