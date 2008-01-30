@@ -45,7 +45,8 @@ namespace ProtoMol {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     Atom() : type(-1), scaledCharge(0.0), scaledMass(0.0), hvyAtom(-1),
       atomNum(-1), cellListNext(-1), molecule(-1), mybonds(std::vector<int>()),
-      deltaM(0.0), deltaQ(0.0), Qold(0.0), Qnew(0.0), stageNumber(0) {}
+             deltaM(0.0), deltaQ(0.0), Qold(0.0), Qnew(0.0), stageNumber(0),
+             mySCPISM(0) {}
 
     // A default constructor for the atom class
 

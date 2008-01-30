@@ -42,6 +42,9 @@ namespace ProtoMol {
   /// Returns the username or user id
   std::string getUserName();
 
+  /// Return an resolved absolute path
+  std::string getCanonicalPath(const std::string &path);
+
   /// Swap function to change endianess
   template<typename T> inline
   void swapBytes(T &t) {

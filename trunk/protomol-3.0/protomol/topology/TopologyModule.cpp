@@ -193,7 +193,7 @@ void TopologyModule::buildTopology(GenericTopology *topo, const PSF &psf,
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // CoulombSCPISMParameters
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  CoulombSCPISMParameterTable *mySCPISM;
+  CoulombSCPISMParameterTable *mySCPISM = 0;
   if (topo->doSCPISM) {
     mySCPISM = new CoulombSCPISMParameterTable();
     mySCPISM->populateTable();
@@ -255,7 +255,7 @@ void TopologyModule::buildTopology(GenericTopology *topo, const PSF &psf,
     // Now, the scaled charge.  This is straightforward.
     tempatom.scaledCharge = (atom->charge) * Constant::SQRTCOULOMBCONSTANT;
     tempatom.scaledMass = atom->mass;
-    if (topo->doSCPISM) {
+    if (topo->doSCPISM && tempatom.mySCPISM) {
       tempatom.mySCPISM->R_w =
         tempatom.mySCPISM->r_cov + (atom->charge > 0 ? 0.85 : 0.35);
       tempatom.mySCPISM->R_p =

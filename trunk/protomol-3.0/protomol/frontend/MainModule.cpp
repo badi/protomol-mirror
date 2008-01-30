@@ -44,6 +44,7 @@ void MainModule::init(ProtoMolApp *app) {
   InputPAR::registerConfiguration(config);
   InputPDBScaling::registerConfiguration(config);
   InputDihedralMultPSF::registerConfiguration(config);
+  InputIntegrator::registerConfiguration(config);
 }
 
 void MainModule::configure(ProtoMolApp *app) {

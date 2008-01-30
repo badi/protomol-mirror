@@ -74,7 +74,7 @@ bool Debugger::_getStackTrace(std::list<std::string> &trace) {
   numTraces++;
   if (maxTraces && numTraces > maxTraces) {
     trace.push_back("Stack Trace Error: Exceeded maxTraces of " +
-		    String(maxTraces));
+                    String(maxTraces));
     return false;
   }
 
@@ -109,10 +109,10 @@ bool Debugger::_getStackTrace(std::list<std::string> &trace) {
 
     if (coreFD == -1) {
       trace.push_back(string("Stack Trace Error: creating core file!\n") +
-		      "This can occur if you do not have write permission\n" +
-		      "in the current directory or if the core file limit\n" +
-		      "is set to zero.  On many Unix systems the core file\n" +
-		      "limit can be set with 'ulimit -c unlimited'.");
+                      "This can occur if you do not have write permission\n" +
+                      "in the current directory or if the core file limit\n" +
+                      "is set to zero.  On many Unix systems the core file\n" +
+                      "limit can be set with 'ulimit -c unlimited'.");
 
       return false;
     }
@@ -157,32 +157,35 @@ bool Debugger::_getStackTrace(std::list<std::string> &trace) {
     int count = 0;
     while (fgets(buf, BUF_SIZE, out)) {
       if (buf[0] == '#') {
+        
+        if (traceFiltering) {
+          count++;
+      
+          if (strstr(buf, "Debugger::") ||
+              strstr(buf, "Exception::init") ||
+              strstr(buf, "Exception (")) {
+            offset = count;
+            trace.clear();
+            continue;
+          }
+        }
 
-	if (traceFiltering) {
-	  count++;
-	  
-	  if (strstr(buf, "Debugger::") ||
-	      strstr(buf, "Exception::init") ||
-	      strstr(buf, "Exception (")) {
-	    offset = count;
-	    trace.clear();
-	    continue;
-	  }
-	}
+        int line = atoi(&buf[1]) - offset;
+        char *start = strchr(buf, ' ');
+        int len = strlen(buf);
 
-	int line = atoi(&buf[1]) - offset;
-	char *start = strchr(buf, ' ');
-	int len = strlen(buf);
-
-	if (buf[len - 1] == '\n' || buf[len - 1] == '\r') buf[len - 1] = 0;
-	trace.push_back(string("#") + String(line) + start);
-	}
+        if (buf[len - 1] == '\n' || buf[len - 1] == '\r') buf[len - 1] = 0;
+        trace.push_back(string("#") + String(line) + start);
+      }
     }
+
+#ifdef DEBUGGER_PRINT_ERROR_STREAM
     while (fgets(buf, BUF_SIZE, err)) {
       int len = strlen(buf);
       if (buf[len - 1] == '\n' || buf[len - 1] == '\r') buf[len - 1] = 0;
       if (buf[0] != 0) trace.push_back(buf);
     }
+#endif
 
     // Clean up
     fclose(out);

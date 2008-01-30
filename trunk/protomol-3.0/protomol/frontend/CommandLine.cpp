@@ -5,6 +5,7 @@
 #include <protomol/config/Configuration.h>
 #include <protomol/config/ConfigurationModule.h>
 #include <protomol/util/StringUtilities.h>
+#include <protomol/util/SystemUtilities.h>
 
 #include <stdlib.h>
 
@@ -173,7 +174,8 @@ void CommandLine::usage(std::ostream &stream, const std::string &name) {
 
 #ifdef DEBUG
 int CommandLine::enableStackTraceAction(const vector<string> &args) {
-  Debugger::initStackTrace(name);
+  
+  Debugger::initStackTrace(getCanonicalPath(name));
   Exception::enableStackTraces = true;
 
   return 0;

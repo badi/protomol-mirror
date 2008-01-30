@@ -1,6 +1,7 @@
 #include "Configuration.h"
 
 #include <protomol/util/Report.h>
+#include <protomol/debug/Exception.h>
 
 using std::vector;
 using std::string;
@@ -152,8 +153,7 @@ namespace ProtoMol {
     const_iterator i = find(keyword);
 
     if (i == end())
-      report << error << "Configuration index \'" << keyword <<
-      "\' of of range." << endr;
+      THROW(string("Configuration index '") + keyword + "' out of range.");
 
 
     return i->second;
@@ -163,8 +163,7 @@ namespace ProtoMol {
     iterator i = find(keyword);
 
     if (i == end())
-      report << error << "Configuration index \'" << keyword <<
-      "\' of of range." << endr;
+      THROW(string("Configuration index '") + keyword + "' out of range.");
 
     return i->second;
   }

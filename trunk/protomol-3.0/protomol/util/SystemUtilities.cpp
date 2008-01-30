@@ -1,6 +1,7 @@
 #include "SystemUtilities.h"
 
 #include "StringUtilities.h"
+#include <protomol/debug/Exception.h>
 
 #ifdef _WIN32
 
@@ -27,10 +28,18 @@
 
 #include <sys/stat.h>
 
+#if defined (_WIN32)
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h> /* for GetFullPathName */
+
+#else
+#include <libgen.h>
+#endif
+
 using std::string;
 
 namespace ProtoMol {
-  //_____________________________________________________________________ changeDirectory
+  //____________________________________________________________ changeDirectory
   bool changeDirectory(const string &fileName) {
     char *confFile = (char *)fileName.c_str();
     char *currentdir = confFile;
@@ -63,44 +72,44 @@ namespace ProtoMol {
     return true;
   }
 
-  //_____________________________________________________________________ isAccessible
+  //_______________________________________________________________ isAccessible
   bool isAccessible(const string &fileName) {
     return ::access(fileName.c_str(), F_OK) == 0;
   }
 
 
-  //_____________________________________________________________________ protomolAbort
+  //______________________________________________________________ protomolAbort
 
   static void (*myAbortFunction)() = NULL;
 
   void protomolAbort() {
-    if (myAbortFunction != NULL)
-      (*myAbortFunction)();
-    exit(EXIT_FAILURE);
+    if (myAbortFunction) (*myAbortFunction)();
+
+    THROW("EXIT");
   }
 
-  //_____________________________________________________________________ setProtomolAbort
+  //___________________________________________________________ setProtomolAbort
   void setProtomolAbort(void (*abortFunction)()) {
     myAbortFunction = abortFunction;
   }
 
-  //_____________________________________________________________________ protomolExit
+  //_______________________________________________________________ protomolExit
 
   static void (*myExitFunction)() = NULL;
 
   void protomolExit() {
-    if (myExitFunction != NULL)
-      (*myExitFunction)();
-    exit(EXIT_SUCCESS);
+    if (myExitFunction) (*myExitFunction)();
+
+    THROW("EXIT");
   }
 
-  //_____________________________________________________________________ setProtomolExit
+  //____________________________________________________________ setProtomolExit
   void setProtomolExit(void (*exitFunction)()) {
     myExitFunction = exitFunction;
   }
 
 
-  //_____________________________________________________________________ protomolStartSerial
+  //________________________________________________________ protomolStartSerial
   static void (*myStartSerial)(bool)= NULL;
 
   void protomolStartSerial(bool exludeMaster) {
@@ -108,12 +117,12 @@ namespace ProtoMol {
       (*myStartSerial)(exludeMaster);
   }
 
-  //_____________________________________________________________________ setProtomolExit
+  //____________________________________________________________ setProtomolExit
   void setProtomolStartSerial(void (*startSerialFunction)(bool)) {
     myStartSerial = startSerialFunction;
   }
 
-  //_____________________________________________________________________ protomolEndSerial
+  //__________________________________________________________ protomolEndSerial
   static void (*myEndSerial)(bool)= NULL;
 
   void protomolEndSerial(bool exludeMaster) {
@@ -121,12 +130,12 @@ namespace ProtoMol {
       (*myEndSerial)(exludeMaster);
   }
 
-  //_____________________________________________________________________ setProtomolExit
+  //____________________________________________________________ setProtomolExit
   void setProtomolEndSerial(void (*endSerialFunction)(bool)) {
     myEndSerial = endSerialFunction;
   }
 
-  //_____________________________________________________________________ ISLITTLEENDIAN
+  //_____________________________________________________________ ISLITTLEENDIAN
   struct Endian {
     // Helper class to make sure that we get endianess correct ... M$
     static bool isLittleEndian() {
@@ -136,7 +145,7 @@ namespace ProtoMol {
   };
   const bool ISLITTLEENDIAN = Endian::isLittleEndian();
 
-  //_____________________________________________________________________ getUserName
+  //________________________________________________________________ getUserName
   string getUserName() {
 #ifdef _WIN32
     return "Win32";
@@ -145,6 +154,33 @@ namespace ProtoMol {
       return string(getpwuid(getuid())->pw_name);
     else
       return toString(getuid());
+#endif
+  }
+
+  string getCanonicalPath(const std::string &path) {
+    char buf[4096];
+
+#ifdef _WIN32
+    char *finalpart;
+    DWORD len = GetFullPathName(path.c_str(), 4096, buf, &finalpart);
+    if (len == 0 || len > 4095)
+      THROW(string("GetFullPathName '") + path + "' failed.");
+
+    return buf;
+
+#else
+    char tmp[path.length() + 3];
+    
+    // The file might not exist yet but its directory must.
+    strcpy(tmp, path.c_str());
+    char *dir = dirname(tmp);
+
+    if (!realpath(dir, buf))
+      THROW(string("realpath '") + path + "' failed.");
+    
+    strcpy(tmp, path.c_str());
+
+    return string(buf) + "/" + basename(tmp);
 #endif
   }
 }
