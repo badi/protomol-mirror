@@ -1,0 +1,9 @@
+FILTER=(
+  '\/\/__*' '\/\/____'
+  'Report::' ''
+  'std::' ''
+  '^namespace ProtoMol {.*$' 'using namespace ProtoMol;'
+  '\/\/[Rr]eport.*$' ''
+  'NULL', '0'
+  ') :\(..*\)$' ') :\n  \1'
+)
