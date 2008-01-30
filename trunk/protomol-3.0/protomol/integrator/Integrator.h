@@ -144,15 +144,17 @@ namespace ProtoMol {
 
   public:
     // any test of modifiers
-    bool anyPreStepModify()         const {return !myPreStepModifiers.empty();};
-    bool anyPreDriftOrNextModify()  const {return !myPreDriftOrNextModifiers.
-                                                    empty();};
-    bool anyPostDriftOrNextModify() const {return !myPostDriftOrNextModifiers.
-                                                    empty();};
-    bool anyPreForceModify()        const {return !myPreForceModifiers.empty();};
-    bool anyMediForceModify()       const {return !myMediForceModifiers.empty();};
-    bool anyPostForceModify()       const {return !myPostForceModifiers.empty();};
-    bool anyPostStepModify()        const {return !myPostStepModifiers.empty();};
+    bool anyPreStepModify() const {return !myPreStepModifiers.empty();};
+    bool anyPreDriftOrNextModify() const {
+      return !myPreDriftOrNextModifiers.empty();
+    }
+    bool anyPostDriftOrNextModify() const {
+      return !myPostDriftOrNextModifiers.empty();
+    };
+    bool anyPreForceModify() const {return !myPreForceModifiers.empty();}
+    bool anyMediForceModify() const {return !myMediForceModifiers.empty();}
+    bool anyPostForceModify() const {return !myPostForceModifiers.empty();}
+    bool anyPostStepModify() const {return !myPostStepModifiers.empty();}
 
   private:
     void addModifier(Modifier *modifier);

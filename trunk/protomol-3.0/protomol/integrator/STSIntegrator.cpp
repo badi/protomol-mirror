@@ -7,6 +7,7 @@
 #include <protomol/topology/TopologyUtilities.h>
 #include <protomol/util/PMConstants.h>
 #include <protomol/modifier/ModifierIncrementTimestep.h>
+#include <protomol/debug/Exception.h>
 
 using namespace ProtoMol::Report;
 using std::string;
@@ -28,7 +29,6 @@ namespace ProtoMol {
   }
 
   void STSIntegrator::addModifierAfterInitialize() {
-    //Report::report <<"[STSIntegrator::addModifierAfterInitialize]"<<Report::endr;
     adoptPostForceModifier(new ModifierIncrementTimestep(this));
   }
 
@@ -63,12 +63,12 @@ namespace ProtoMol {
         Value(myTimestep, ConstraintValueType::Positive())));
   }
 
-  STSIntegrator *STSIntegrator::make(string &errMsg,
-                                     const vector<Value> &values,
+  STSIntegrator *STSIntegrator::make(const vector<Value> &values,
                                      ForceGroup *fg) const {
-    errMsg = "";
+    string errMsg;
     if (!checkParameters(errMsg, values))
-      return NULL;
-    return adjustAlias(doMake(errMsg, values, fg));
+      THROW(errMsg);
+
+    return adjustAlias(doMake(values, fg));
   }
 }

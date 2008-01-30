@@ -16,8 +16,8 @@ namespace ProtoMol {
   //________________________________________ ExtendedForce
 
   class ExtendedForce : virtual public Force {
-    // This class contains the definition of one extended force (a force that works
-    // on unprocessed positions and velocities)
+    // This class contains the definition of one extended force (a force 
+    // that works on unprocessed positions and velocities)
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Constructors, destructors, assignment

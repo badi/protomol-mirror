@@ -33,13 +33,10 @@ namespace ProtoMol {
     // New methods of class MTSIntegrator
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    MTSIntegrator *make(std::string &errMsg,
-                        const std::vector<Value> &values,
-                        ForceGroup *fg,
+    MTSIntegrator *make(const std::vector<Value> &values, ForceGroup *fg,
                         StandardIntegrator *nextIntegrator) const;
   private:
-    virtual MTSIntegrator *doMake(std::string &errMsg,
-                                  const std::vector<Value> &values,
+    virtual MTSIntegrator *doMake(const std::vector<Value> &values,
                                   ForceGroup *fg,
                                   StandardIntegrator *nextIntegrator) const = 0;
 
@@ -55,9 +52,8 @@ namespace ProtoMol {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
     virtual Real getTimestep() const;
-    virtual void initialize(GenericTopology *topo,
-                            Vector3DBlock   *positions,
-                            Vector3DBlock   *velocities,
+    virtual void initialize(GenericTopology *topo, Vector3DBlock *positions,
+                            Vector3DBlock *velocities,
                             ScalarStructure *energies);
 
     virtual Integrator *next();

@@ -35,7 +35,7 @@ namespace ProtoMol {
     // New methods of class DetailsIntegratorFactory
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    Integrator *make(std::string &errMsg, const std::string &definition,
+    Integrator *make(const std::string &definition,
                      ForceFactory *forceFactory) const;
   };
 }

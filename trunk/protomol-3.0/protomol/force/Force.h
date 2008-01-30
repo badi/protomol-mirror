@@ -45,9 +45,10 @@ namespace ProtoMol {
     //< and needs following virtual method:
     //< virtual std::string getKeyword() const{return keyword;}
     //<
-    //< Define all static and basics, which do not depend on templates in *ForceBase.
+    //< Define all static and basics, which do not depend on templates in
+    //< *ForceBase.
 
-    Force *make(std::string &errMsg, const std::vector<Value> &values) const;
+    Force *make(const std::vector<Value> &values) const;
     //< Factory method
 
     virtual void uncache() {};
@@ -108,21 +109,18 @@ namespace ProtoMol {
     //< update of parameter index with given value
 
   private:
-    virtual Force *doMake(std::string &errMsg,
-                          std::vector<Value> values) const = 0;
+    virtual Force *doMake(std::vector<Value> values) const = 0;
     //< implementation of make and actual instantiation of object
 
   private:
-    virtual void doSetParameters(std::string &,
-                                 std::vector<Value> ) {Report::report <<
-                                                       Report::error <<
-                                                       "setParameters not implemented for force "
-     << this->getId() <<
-                                                       Report::endr;};
+    virtual void doSetParameters(std::string &, std::vector<Value> ) {
+      Report::report
+        << Report::error << "setParameters not implemented for force "
+        << this->getId() << Report::endr;
+    }
   protected:
     template<class T>
-    void setParametersBySwapping(T *obj,
-                                 std::string &errMsg,
+    void setParametersBySwapping(T *obj, std::string &errMsg,
                                  std::vector<Value> values) {
       T *tmp = dynamic_cast<T *>(obj->make(errMsg, values));
       if (tmp != NULL) {

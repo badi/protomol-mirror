@@ -38,8 +38,8 @@ namespace ProtoMol {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // New methods of class DetailsForceFactory
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    Force *make(std::string &errMsg, const std::string &id,
-                std::vector<Value> values = std::vector<Value>()) const;
+    Force *make(const std::string &id, std::vector<Value> values =
+                std::vector<Value>()) const;
 
   private:
     void updateCache() const;

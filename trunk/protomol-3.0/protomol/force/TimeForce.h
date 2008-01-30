@@ -36,7 +36,7 @@ namespace ProtoMol {
                                         const Vector3DBlock *pos);
     virtual void uncache();
   private:
-    virtual Force *doMake(std::string &errMsg, std::vector<Value> values) const;
+    virtual Force *doMake(std::vector<Value> values) const;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // From class Makable
@@ -46,7 +46,8 @@ namespace ProtoMol {
     virtual void getParameters(std::vector<Parameter> &parameters) const;
     virtual unsigned int getParameterSize() const;
   private:
-    virtual void doSetParameters(std::string &errMsg, std::vector<Value> values);
+    virtual void doSetParameters(std::string &errMsg,
+                                 std::vector<Value> values);
 
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

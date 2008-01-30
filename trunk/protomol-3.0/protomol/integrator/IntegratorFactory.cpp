@@ -13,9 +13,8 @@ using namespace std;
 using namespace ProtoMol;
 using namespace ProtoMol::Report;
 
-Integrator *IntegratorFactory::make(string &errMsg, const string &definition,
+Integrator *IntegratorFactory::make(const string &definition,
                                     ForceFactory *forceFactory) const {
-  errMsg = "";
   string str;
   vector<IntegratorInput> integratorInput;
   stringstream ss(definition);
@@ -25,19 +24,15 @@ Integrator *IntegratorFactory::make(string &errMsg, const string &definition,
     string levelStr, integrator, d;
     ss >> levelStr >> integrator >> d;
     if (!(equalNocase(str, "level") && isUInt(levelStr) &&
-          !integrator.empty() && d == "{")) {
-      errMsg += " Integration definition mismatch, expecting \'level <number> "
-        "<integrator> { ... }.";
-      return NULL;
-    }
+          !integrator.empty() && d == "{"))
+      THROW("Integration definition mismatch, expecting \'level <number> "
+            "<integrator> { ... }.");
 
     const Integrator *prototype = getPrototype(integrator);
-    if (prototype == NULL) {
-      errMsg += " Could not find any match for \'" + integrator + "\' in " +
-                Integrator::scope + "Factory. Possible integrators are:\n" +
-                print();
-      return NULL;
-    }
+    if (prototype == NULL)
+      THROW(string(" Could not find any match for \'") + integrator + "\' in " +
+            Integrator::scope + "Factory. Possible integrators are:\n" +
+            print());
 
     // Read first integrator parameters and then force definitions
     string parameterStr, forceStr;
@@ -58,11 +53,9 @@ Integrator *IntegratorFactory::make(string &errMsg, const string &definition,
       integratorInput.resize(level + 1);
 
     // Return if already defined
-    if (integratorInput[level].prototype != NULL) {
-      errMsg += " Level " + toString(level) + " already defined with " +
-                integratorInput[level].prototype->getId() + ".";
-      return NULL;
-    }
+    if (integratorInput[level].prototype != NULL)
+      THROW(" Level " + toString(level) + " already defined with " +
+            integratorInput[level].prototype->getId() + ".");
 
     // Parse integrator parameter
     vector<Parameter> parameters;
@@ -116,10 +109,10 @@ Integrator *IntegratorFactory::make(string &errMsg, const string &definition,
         integratorInput[level].values[i].set(parameters[i].defaultValue);
     }
 
-    if (!prototype->checkParameters(errMsg, integratorInput[level].values)) {
-      errMsg = " Level " + toString(level) + " " + errMsg;
-      return NULL;
-    }
+    string errMsg;
+    if (!prototype->checkParameters(errMsg, integratorInput[level].values))
+      THROW(string(" Level " + toString(level) + " " + errMsg));
+
     // Parse forces
     stringstream ssf(forceStr);
     Value force(ValueType::Force(""));
@@ -132,18 +125,15 @@ Integrator *IntegratorFactory::make(string &errMsg, const string &definition,
 
   // Check if we have a definition for each level
   bool ok = true;
+  string errMsg;
   for (unsigned int i = 0; i < integratorInput.size(); ++i)
     if (integratorInput[i].prototype == NULL) {
-      if (ok)
-        errMsg += " Missing integrator definitions of level(s):";
+      if (ok) errMsg += " Missing integrator definitions of level(s):";
       errMsg += " " + toString(i);
       ok = false;
     }
 
-  if (!ok) {
-    errMsg += ".";
-    return NULL;
-  }
+  if (!ok) THROW(errMsg + ".");
 
   // Check if the chain is ok
   ok = true;
@@ -168,21 +158,19 @@ Integrator *IntegratorFactory::make(string &errMsg, const string &definition,
                   ") are not supported by " + Force::scope + "Factory yet.";
         ok = false;
       } else
-        report << error <<
-        "[IntegratorFactory::make] Found an integrator \'" <<
-        prototype->getId() <<
-        "\' neither a StandardIntegrator nor NonStandardIntegrator." << endr;
+        THROWS("[IntegratorFactory::make] Found an integrator \'"
+               << prototype->getId()
+               << "' neither a StandardIntegrator nor NonStandardIntegrator.");
   }
 
-  if (!ok)
-    return NULL;
+  if (!ok) THROW(errMsg);
 
   // Now make the integrator chain ... with all forces
   StandardIntegrator *integrator = NULL;
   for (unsigned int i = 0; i < integratorInput.size(); ++i) {
     ForceGroup *forceGroup = new ForceGroup();
     for (unsigned int j = 0; j < integratorInput[i].forces.size(); ++j) {
-      Force *force = forceFactory->make(errMsg, integratorInput[i].forces[j]);
+      Force *force = forceFactory->make(integratorInput[i].forces[j]);
       if (force == NULL) {
         delete forceGroup;
         if (integrator) delete integrator;
@@ -195,11 +183,11 @@ Integrator *IntegratorFactory::make(string &errMsg, const string &definition,
     if (i > 0)
       newIntegrator =
         dynamic_cast<const MTSIntegrator *>(integratorInput[i].prototype)->
-          make(errMsg, integratorInput[i].values, forceGroup, integrator);
+          make(integratorInput[i].values, forceGroup, integrator);
     else
       newIntegrator =
         dynamic_cast<const STSIntegrator *>(integratorInput[i].prototype)->
-          make(errMsg, integratorInput[i].values, forceGroup);
+          make(integratorInput[i].values, forceGroup);
 
     if (newIntegrator == NULL) {
       delete forceGroup;

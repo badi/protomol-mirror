@@ -152,8 +152,8 @@ namespace ProtoMol {
     return string(CompareForce::keyword + " " + myActualForce->getIdNoAlias());
   }
 
-  Force *CompareForce::doMake(string &errMsg, vector<Value> values) const {
-    return myActualForce->make(errMsg, values);
+  Force *CompareForce::doMake(vector<Value> values) const {
+    return myActualForce->make(values);
   }
 
   unsigned int CompareForce::numberOfBlocks(const GenericTopology *topo,

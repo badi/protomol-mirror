@@ -1,5 +1,7 @@
 #include <protomol/force/Force.h>
+
 #include <protomol/force/CompareForce.h>
+#include <protomol/debug/Exception.h>
 
 using namespace ProtoMol::Report;
 
@@ -11,11 +13,11 @@ namespace ProtoMol {
 
   const string Force::scope("Force");
 
-  Force *Force::make(string &errMsg, const vector<Value> &values) const {
-    errMsg = "";
+  Force *Force::make(const vector<Value> &values) const {
+    string errMsg;
     if (!checkParameters(errMsg, values))
-      return NULL;
-    return adjustAlias(doMake(errMsg, values));
+      THROW(errMsg);
+    return adjustAlias(doMake(values));
   }
 
   CompareForce *Force::makeCompareForce(Force *actualForce,

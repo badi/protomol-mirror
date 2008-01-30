@@ -45,7 +45,7 @@ namespace ProtoMol {
     virtual unsigned int numberOfBlocks(const GenericTopology *topo,
                                         const Vector3DBlock *pos);
   private:
-    virtual Force *doMake(std::string &errMsg, std::vector<Value> values) const;
+    virtual Force *doMake(std::vector<Value> values) const;
     virtual void uncache();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -57,7 +57,8 @@ namespace ProtoMol {
     virtual unsigned int getParameterSize() const;
 
   private:
-    virtual void doSetParameters(std::string &errMsg, std::vector<Value> values);
+    virtual void doSetParameters(std::string &errMsg,
+                                 std::vector<Value> values);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // My data members

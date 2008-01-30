@@ -83,8 +83,8 @@ namespace ProtoMol {
     return string(TimeForce::keyword + " " + myActualForce->getIdNoAlias());
   }
 
-  Force *TimeForce::doMake(string &errMsg, vector<Value> values) const {
-    return myActualForce->make(errMsg, values);
+  Force *TimeForce::doMake(vector<Value> values) const {
+    return myActualForce->make(values);
   }
 
   unsigned int TimeForce::numberOfBlocks(const GenericTopology *topo,

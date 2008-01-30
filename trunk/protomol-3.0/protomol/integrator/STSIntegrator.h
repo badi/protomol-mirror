@@ -23,15 +23,12 @@ namespace ProtoMol {
     // New methods of class STSIntegrator
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    STSIntegrator *make(std::string &errMsg,
-                        const std::vector<Value> &values,
-                        ForceGroup *fg) const;
+    STSIntegrator *make(const std::vector<Value> &values, ForceGroup *fg) const;
     virtual Real setTimestep(Real);
   protected:
     virtual void doDrift();
   private:
-    virtual STSIntegrator *doMake(std::string &errMsg,
-                                  const std::vector<Value> &values,
+    virtual STSIntegrator *doMake(const std::vector<Value> &values,
                                   ForceGroup *fg) const = 0;
 
 

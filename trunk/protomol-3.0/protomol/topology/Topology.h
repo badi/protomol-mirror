@@ -182,30 +182,26 @@ namespace ProtoMol {
       this->getBoundaryConditionsBox(a, b);
       res +=
         "Simulation box       : (" + toString(a.x) + "," + toString(a.y) +
-        "," + toString(a.z) + ")-" +
-        "(" + toString(b.x) + "," + toString(b.y) + "," + toString(b.z) +
-        ") " +
-        "(" + toString(b.x - a.x) + "," + toString(b.y - a.y) + "," + toString(
-          b.z - a.z) + ")";
+        "," + toString(a.z) + ")-" + "(" + toString(b.x) + "," +
+        toString(b.y) + "," + toString(b.z) + ") " + "(" + toString(b.x - a.x) +
+        "," + toString(b.y - a.y) + "," + toString(b.z - a.z) + ")";
+
       if (positions != NULL) {
         this->getBoundingbox(*positions, a, b);
         res +=
           "\nParticle             : (" + toString(a.x) + "," + toString(a.y) +
-          "," + toString(a.z) + ")-" +
-          "(" + toString(b.x) + "," + toString(b.y) + "," + toString(b.z) +
-          ") " +
-          "(" +
-          toString(b.x - a.x) + "," + toString(b.y - a.y) + "," + toString(
-            b.z - a.z) + ")";
+          "," + toString(a.z) + ")-" + "(" + toString(b.x) + "," +
+          toString(b.y) + "," + toString(b.z) + ") " + "(" +
+          toString(b.x - a.x) + "," + toString(b.y - a.y) + "," +
+          toString( b.z - a.z) + ")";
+
         positions->boundingbox(a, b);
         res +=
           "\nParticle extended    : (" + toString(a.x) + "," + toString(a.y) +
-          "," + toString(a.z) + ")-" +
-          "(" + toString(b.x) + "," + toString(b.y) + "," + toString(b.z) +
-          ") " +
-          "(" +
-          toString(b.x - a.x) + "," + toString(b.y - a.y) + "," + toString(
-            b.z - a.z) + ")";
+          "," + toString(a.z) + ")-" + "(" + toString(b.x) + "," +
+          toString(b.y) + "," + toString(b.z) + ") " + "(" +
+          toString(b.x - a.x) + "," + toString(b.y - a.y) + "," +
+          toString(b.z - a.z) + ")";
       }
 
       return res;

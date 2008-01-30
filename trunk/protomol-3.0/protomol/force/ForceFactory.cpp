@@ -19,8 +19,7 @@ using namespace ProtoMol::Report;
 ForceFactory::ForceFactory() : lastCompareForce(NULL) {}
 ForceFactory::~ForceFactory() {}
 
-Force *ForceFactory::make(string &errMsg, const string &idInput,
-                          vector<Value> values) const {
+Force *ForceFactory::make(const string &idInput, vector<Value> values) const {
   // Just try .. and see if we can find it directly
   string id = normalizeString(idInput);
   const Force *prototype = getPrototype(id);
@@ -94,7 +93,7 @@ Force *ForceFactory::make(string &errMsg, const string &idInput,
     // ... ok final last call SK945 ... time and compare
     if (prototype == NULL && equalStartNocase(CompareForce::keyword, id)) {
       Force *actualForce =
-        make(errMsg, id.substr(CompareForce::keyword.size() + 1), values);
+        make(id.substr(CompareForce::keyword.size() + 1), values);
       if (actualForce == NULL)
         return NULL;
       CompareForce *compareForce = NULL;
@@ -120,7 +119,7 @@ Force *ForceFactory::make(string &errMsg, const string &idInput,
     } else if (prototype == NULL &&
                equalStartNocase(TimeForce::keyword, idInput)) {
       Force *actualForce =
-        make(errMsg, id.substr(TimeForce::keyword.size() + 1), values);
+        make(id.substr(TimeForce::keyword.size() + 1), values);
       if (actualForce == NULL)
         return NULL;
       TimeForce *timeForce = actualForce->makeTimeForce(actualForce);
@@ -202,9 +201,10 @@ Force *ForceFactory::make(string &errMsg, const string &idInput,
       }
 
       id = newId;
-    } else
 
-    if (itr != forceTypes.end()) {
+    } else if (itr != forceTypes.end()) {
+      string errMsg;
+
       errMsg += " Could not find a complete match for \'" + idInput +
                 "\' in " +
                 Force::scope + "Factory of force \'" + keyword +
@@ -213,29 +213,33 @@ Force *ForceFactory::make(string &errMsg, const string &idInput,
              itr->second.policies.begin();
            j != itr->second.policies.end(); ++j)
         errMsg += string("\n") + itr->first + string(" ") + (*j);
+
+      THROW(errMsg);
+
     } else {
+      string errMsg;
+
       errMsg += " Could not find any match for \'" + idInput + "\' in " +
                 Force::scope + "Factory. Possible forces are:";
       for (forceTypes_t::const_iterator i =
              forceTypes.begin(); i != forceTypes.end(); ++i)
         errMsg += string("\n") + i->first;
+
+      THROW(errMsg);
     }
   }
 
   // Make
   Force *newObj = NULL;
+
   if (prototype != NULL) {
     // Check parameter list
+    string errMsg;
     if (!prototype->checkParameters(errMsg, values))
-      return NULL;
+      THROW(errMsg);
 
-    newObj = prototype->make(errMsg, values);
-    if (!errMsg.empty()) {
-      delete newObj;
-      return NULL;
-    }
-    if (newObj != NULL)
-      newObj->setAlias(id);
+    newObj = prototype->make(values);
+    if (newObj != NULL) newObj->setAlias(id);
   }
 
   return newObj;
