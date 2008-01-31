@@ -42,6 +42,9 @@ namespace ProtoMol {
     Integrator *integrator;
     GenericTopology *topology;
 
+    int currentStep;
+    int lastStep;
+
     ProtoMolApp(ModuleManager *modManager);
     ~ProtoMolApp();
 
@@ -51,6 +54,7 @@ namespace ProtoMol {
     bool configure(int argc = 0, char *argv[] = 0);
     void read();
     void build();
+    bool step(int inc = 1);
   };
 };
 #endif // PROTOMOLAPP_H

@@ -24,11 +24,9 @@ namespace ProtoMol {
     // New methods of class LennardJonesForce
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    void operator()(Real &energy,
-                    Real &force,
+    void operator()(Real &energy, Real &force,
                     Real /*distSquared*/, Real rDistSquared, const Vector3D &,
-                    const GenericTopology *topo,
-                    int atom1, int atom2,
+                    const GenericTopology *topo, int atom1, int atom2,
                     ExclusionClass excl) const {
 #ifdef DEBUG_LJ_DISTANCE_CHECK
       if (rDistSquared < 1.0 / 0.25)
@@ -64,10 +62,9 @@ namespace ProtoMol {
       (*energies)[ScalarStructure::LENNARDJONES] += energy;
     }
 
-    static Real getEnergy(const ScalarStructure *energies) {return (*energies)[
-                                                                     ScalarStructure
-                                                                       ::
-                                                                       LENNARDJONES];}
+    static Real getEnergy(const ScalarStructure *energies) {
+      return (*energies)[ScalarStructure::LENNARDJONES];
+    }
 
     // Parsing
     static std::string getId() {return keyword;}
@@ -76,7 +73,7 @@ namespace ProtoMol {
 
     void getParameters(std::vector<Parameter> &) const {}
 
-    static LennardJonesForce make(std::string &, const std::vector<Value> &) {
+    static LennardJonesForce make(const std::vector<Value> &) {
       return LennardJonesForce();
     }
 

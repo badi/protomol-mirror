@@ -2,59 +2,7 @@
 
 TOP=$(dirname $0)/..
 
-filter=(
-  '________*' '________________________________________'
-  '\/\/[Rr]eport.*$' ''
-  'NULL', '0'
-  'stringutilities' 'StringUtilities'
-  'mathutilities' 'MathUtilities'
-  'systemutilities' 'SystemUtilities'
-  'pmconstants' 'PMConstants'
-  'simpleTypes' 'SimpleTypes'
-  'Array_Fastest' 'ArrayFastest'
-  'Array_NoPartialSpecialization' 'ArrayNoPartialSpecialization'
-  'CellListEnumerator_periodicBoundaries' 'CellListEnumeratorPeriodicBoundaries'
-  'CellListEnumerator_standard' 'CellListEnumeratorStandard'
-  'topologyutilities' 'TopologyUtilities'
-  'Matrix3by3' 'Matrix3By3'
-  'ForceFactoryDetails' 'ForceFactory'
-  'FORCEFACTORYDETAILS' 'FORCE_FACTORY'
-  'IntegratorFactoryDetails' 'IntegratorFactory'
-  'INTEGRATORFACTORYDETAILS' 'INTEGRATOR_FACTORY'
-)
-
-addHeaderFilter() {
-  for i in $TOP/protomol/$1/*.h; do
-      NAME=$(basename $i .h)
-      if [ "$NAME" == "*" ]; then continue; fi
-      SED+=";s/\"$NAME\.h\"/<protomol\/$1\/$NAME.h>/g"
-  done
-}
-
-buildFilter() {
-  SED=
-  for i in $(seq 0 $((${#filter[@]} / 2 - 1))); do
-      search=${filter[$(($i * 2))]}
-      replace=${filter[$(($i * 2 + 1))]}
-
-      #SEDFILTER='s/\([\\\/().]\)/\\\1/g'
-
-      #search="$(echo -n "$search" | sed $SEDFILTER)"
-      #replace="$(echo -n "$replace" | sed $SEDFILTER)"
-
-      if [ "$SED" != "" ]; then
-          SED+=";"
-      fi
-      SED+="s/$search/$replace/g"
-  done
-
-  for i in $(find $TOP/protomol -maxdepth 1 -mindepth 1 -type d); do
-      NAME=$(basename $i)
-      if [ "$NAME" == ".svn" ]; then continue; fi
-      addHeaderFilter "$NAME"
-  done
-}
-
+# Prepare for header filter
 for i in $@; do
     BASE=$(basename $i)
     if [ "$BASE" == "$i" ]; then
@@ -65,10 +13,7 @@ for i in $@; do
     touch $BASE
 done
 
-buildFilter
-#echo "$SED"
-#exit 0
-
+# Bring in and filter files
 for i in $@; do
     BASE=$(basename $i)
     if [ "$BASE" == "$i" ]; then
@@ -76,8 +21,10 @@ for i in $@; do
         continue
     fi
 
-    echo $BASE
-    sed "$SED" <$i>$BASE
-    uncrustify --replace -q $BASE
+    cp "$i" "$BASE"
+    cleanupFiles -u -h --clean-commas "$BASE"
+    if [ "$BASE" != "$(basename "$BASE" .cpp)" ]; then
+        cleanupFiles -f $(dirname $0)/CPP_FILTER --fix-ending-namepace "$BASE"
+    fi
     rm "$BASE"*~
 done

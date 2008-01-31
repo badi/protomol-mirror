@@ -19,6 +19,9 @@ int main(int argc, char *argv[]) {
     app.read();
     app.build();
 
+    while (app.step(100))
+      cout << "Step: " << app.currentStep << endl;
+
     return 0;
   } catch (const Exception &e) {
     cerr << "ERROR: " << e.getMessage() << endl;

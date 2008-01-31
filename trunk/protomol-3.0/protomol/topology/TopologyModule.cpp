@@ -41,8 +41,7 @@ defineInputValueWithAliasesAndText
   "removes linear momentum, where -1 for never, 0 at initialization or at STS "
   "frequency <n>");
 defineInputValueWithAliasesAndText
-(
-  InputRemoveAngularMomentum, "removeAngularMomentum", ("angularMomentum"),
+(InputRemoveAngularMomentum, "removeAngularMomentum", ("angularMomentum"),
   "removes angular momentum, where -1 for never, 0 at initialization or at STS "
   "frequency <n>");
 

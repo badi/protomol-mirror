@@ -30,23 +30,22 @@ Integrator *IntegratorFactory::make(const string &definition,
 
     const Integrator *prototype = getPrototype(integrator);
     if (prototype == NULL)
-      THROW(string(
-          " Could not find any match for \'") + integrator + "\' in " +
+      THROW(string(" Could not find any match for \'") + integrator + "\' in " +
         Integrator::scope + "Factory. Possible integrators are:\n" +
         print());
 
     // Read first integrator parameters and then force definitions
     string parameterStr, forceStr;
     while (ss >> str) {
-      if (str == "}")
-        break;
+      if (str == "}") break;
+
       if (equalNocase(str, "Force") || !forceStr.empty())
         forceStr += (forceStr.empty() ? "" : " ") + str;
-      else
-        parameterStr += (parameterStr.empty() ? "" : " ") + str;
+
+      else parameterStr += (parameterStr.empty() ? "" : " ") + str;
     }
 
-    parameterStr += " ";  // some compiler need this
+    parameterStr += " ";  // some compilers need this
 
     // Expand vector
     unsigned int level = toUInt(levelStr);
@@ -89,11 +88,13 @@ Integrator *IntegratorFactory::make(const string &definition,
           strp = "";
           continue;
         }
-        if (equalNocase(strp,
-              parameters[i].keyword) && !parameters[i].keyword.empty()) {
+
+        if (equalNocase(strp, parameters[i].keyword) &&
+            !parameters[i].keyword.empty()) {
           ssp >> integratorInput[level].values[i];
           found = true;
           break;
+
         } else if (foundLast && parameters[i].keyword.empty()) {
           ssp.seekg((-1) * static_cast<int>(strp.size()), ios::cur);
           ssp.clear();
@@ -140,7 +141,9 @@ Integrator *IntegratorFactory::make(const string &definition,
   ok = true;
   for (unsigned int i = 0; i < integratorInput.size(); ++i) {
     const Integrator *prototype = integratorInput[i].prototype;
-    if (dynamic_cast<const StandardIntegrator *>(prototype))
+    if (!prototype) THROW("null prototype");
+
+    if (dynamic_cast<const StandardIntegrator *>(prototype)) {
       if (!((i == 0 && dynamic_cast<const STSIntegrator *>(prototype)) ||
             i > 0 && dynamic_cast<const MTSIntegrator *>(prototype))) {
         if (i > 0)
@@ -148,20 +151,22 @@ Integrator *IntegratorFactory::make(const string &definition,
                     " at level " + toString(i) +
                     " is a STS integrator, expected MTS.";
         else
-
           errMsg += " Integrator " + toString(prototype->getId()) +
                     " at level " + toString(i) +
                     " is a MTS integrator, expected STS.";
         ok = false;
-      } else if (dynamic_cast<const NonStandardIntegrator *>(prototype)) {
-        errMsg += " NonStandardIntegrator (level " + toString(i) + " " +
-                  toString(prototype->getId()) +
-                  ") are not supported by " + Force::scope + "Factory yet.";
-        ok = false;
-      } else
-        THROWS("[IntegratorFactory::make] Found an integrator \'"
-               << prototype->getId()
-               << "' neither a StandardIntegrator nor NonStandardIntegrator.");
+      }
+
+    } else if (dynamic_cast<const NonStandardIntegrator *>(prototype)) {
+      errMsg += " NonStandardIntegrator (level " + toString(i) + " " +
+        toString(prototype->getId()) +
+        ") are not supported by " + Force::scope + "Factory yet.";
+      ok = false;
+
+    } else
+      THROWS("[IntegratorFactory::make] Found an integrator \'"
+             << prototype->getId()
+             << "' neither a StandardIntegrator nor NonStandardIntegrator.");
   }
 
   if (!ok) THROW(errMsg);

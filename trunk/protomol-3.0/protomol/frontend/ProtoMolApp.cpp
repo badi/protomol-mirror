@@ -209,5 +209,41 @@ void ProtoMolApp::build() {
   // Build the integrators and forces
   integrator =
     integratorFactory.make(config[InputIntegrator::keyword], &forceFactory);
+
+  // TODO this should be moved somewhere
+  // Normal mode?
+  if (((string)config[InputIntegrator::keyword]).find("NormMode", 0) !=
+      string::npos) {
+	  if (!config.valid(InputEigenVectors::keyword)) {
+        // allow no file for re-diaganalization code, trap error
+        // in NormModeInt if still no Eigenvectors        
+        integrator->mhQ = NULL;
+        integrator->maxEigval = 0;
+        integrator->numEigvects = 0;
+
+	  } else {
+        integrator->mhQ = eigenInfo.myEigenvectors;
+        integrator->maxEigval = eigenInfo.myMaxEigenvalue;
+        integrator->numEigvects = eigenInfo.myNumEigenvectors;
+	  }
+      report << plain << "Using Normal Mode integrator. " << endr;
+
+  } else report << plain << "Using MD integrator. " << endr;
+
+  // Initialize
+  integrator->initialize(topology, &positions, &velocities, &scalar);
+
+  // Setup run
+  currentStep = config[InputFirststep::keyword];
+  lastStep = currentStep + (int)config[InputNumsteps::keyword];
 }
 
+bool ProtoMolApp::step(int inc) {
+  if (currentStep >= lastStep) return false;
+
+  currentStep += inc;
+
+  integrator->run(inc);
+
+  return true;
+}

@@ -39,9 +39,6 @@ namespace ProtoMol {
     Vector3DBlock()  : Proxy(), vec() {}
     explicit Vector3DBlock(size_type n) : Proxy(), vec(n) {}
     Vector3DBlock(size_type n, const Vector3D &t) : Proxy(), vec(n, t) {}
-    //~Vector3DBlock()
-    //Vector3DBlock(const Vector3DBlock&);
-    //Vector3DBlock& operator=(const Vector3DBlock&);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //  New methods of class Vector3DBlock from std::vector
@@ -65,7 +62,6 @@ namespace ProtoMol {
     bool empty() const {return vec.empty();}
     reference operator[](size_type n)                            {return vec[n];}
     const_reference operator[](size_type n) const {return vec[n];}
-    //template <class InputIterator> Vector3DBlock(InputIterator, InputIterator)
     void reserve(size_t n)                                       {vec.reserve(n);}
     reference front()                                            {return vec.
                                                                            front();}
@@ -82,7 +78,6 @@ namespace ProtoMol {
                                                                     x.vec);}
     iterator insert(iterator pos,
                     const Vector3D &x)             {return vec.insert(pos, x);}
-    //template <class InputIterator> void insert(iterator pos,InputIterator f, InputIterator l)
     void insert(iterator pos, size_type n, const Vector3D &x)    {vec.insert(
                                                                     pos,
                                                                     n,

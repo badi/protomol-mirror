@@ -1,4 +1,11 @@
 import glob
+import os
 
-src = glob.glob('*.cpp')
+# Import subdir build files
+src = []
+for d in glob.glob('*'):
+  if os.path.isdir(d):
+    for f in glob.glob(d + '/*.cpp'): 
+      src.append(f)
+
 Return('src')

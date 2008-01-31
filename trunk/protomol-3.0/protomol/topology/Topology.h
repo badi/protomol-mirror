@@ -47,12 +47,10 @@ namespace ProtoMol {
           this->max = this->boundaryConditions.getMax();
         } else positions->boundingbox(this->min, this->max);
 
-        cellManager.initialize(cellLists,
-          min,
-          max,
-          this->boundaryConditions.PERIODIC);
+        cellManager.initialize(cellLists, this->min, this->max,
+                               this->boundaryConditions.PERIODIC);
 
-        Vector3D delta(this->boundaryConditions.origin() - min);
+        Vector3D delta(this->boundaryConditions.origin() - this->min);
 
         /* TODO this use of CubicCellManager locks in the CellManager 
            implementation for this template.  Either the code below should be
