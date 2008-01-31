@@ -22,7 +22,6 @@ namespace ProtoMol {
     }
   public:
 
-    //operator const std::vector<T>& () const{return myVector;};
     operator std::vector < T> () {return myVector;};
     friend class VectorPacker < T, N - 1 >;
     friend class Vector<T>;
@@ -45,7 +44,6 @@ namespace ProtoMol {
       myVector.push_back(elm);
     }
 
-    //operator const std::vector<T>& () const {return myVector;};
     operator std::vector < T> () {return myVector;};
 
     VectorPacker<T, 2> operator()(T elm) {

@@ -80,7 +80,6 @@ MyStreamer &ProtoMol::operator<<(MyStreamer &os, const TimeRep &time) {
   os << time.myUserTime << "[s] user, ";
   os.precision(5);
   os << time.mySystemTime << "[s] sys";
-  //os.reset();
   return os;
 }
 
@@ -215,7 +214,6 @@ TimeRep Timer::getCurrentTime() {
   t /= 10;
   realTime =
     (double)((long)(t / 1000000)) + (double)((long)(t % 1000000)) * .000001;
-  //realTime = (double)timeGetTime() / 1000.0;
   userTime = clock() / 1000.0;       // don't know how to measure user sys time
   sysTime = 0;                  // this is not a unix system.
 #else

@@ -55,8 +55,6 @@ string HelpTextFactory::keywords() {
 }
 
 HelpTextFactory &HelpTextFactory::instance() {
-  //Factory obj;
-  //return obj;
   // We have to do it ourself ... M$ problem ...
   if (obj == NULL) {
     obj = new HelpTextFactory();

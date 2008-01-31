@@ -83,7 +83,6 @@ namespace ProtoMol {
                                     const Vector3DBlock *positions,
                                     Vector3DBlock *forces,
                                     ScalarStructure *energies) {
-    //evaluate(const_cast<GenericTopology*>(static_cast<const GenericTopology*>(topo)),
     evaluate(static_cast<const GenericTopology *>(topo),
       positions, forces, energies);
   }

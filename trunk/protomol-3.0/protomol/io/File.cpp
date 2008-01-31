@@ -21,7 +21,6 @@ File::File(ios::openmode mode,
 File::~File() {
   if (myFile.is_open())
     close();
-  //cout<<"Open file is closed"<<endl;
 }
 
 bool File::open() {

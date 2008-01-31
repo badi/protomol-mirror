@@ -269,10 +269,6 @@ namespace ProtoMol {
       return stream;
     }
 
-//____     MyStreamer& debug(MyStreamer& stream){
-//____       stream << debug(1);
-//____       return stream;
-//____     }
 
     MyStreamer &operator<<(MyStreamer &stream, const reportlevel &rl) {
       return rl(stream);
@@ -282,7 +278,6 @@ namespace ProtoMol {
       return d(stream);
     }
 
-    //
     MyStreamer &allnodes(MyStreamer &stream) {
       stream.myAllNodes = true;
       return stream;
@@ -326,7 +321,6 @@ namespace ProtoMol {
     }
 
     MyStreamer &endr(MyStreamer &stream) {
-      //if(stream.print())
       stream << endl;
       if (!stream.myDoHint)
         stream.mySilentHint = max(stream.mySilentHint - 1, 0);

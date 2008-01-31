@@ -21,13 +21,6 @@ ReducedHessAngle::ReducedHessAngle(const Vector3D &atom_i,   //position of atom 
   // call the evaluate function
 }
 
-//____ copy constructor
-//____  ReducedHessAngle::ReducedHessAngle(const ReducedHessAngle& hess)
-//____  {
-//____    for(int i=0;i<3;i++)
-//____      for(int j=0;j<3;j++)
-//____       H[i][j] = hess.H[i][j];
-//____  }
 
 void ReducedHessAngle::evaluate(const Vector3D &atom_i,   //position of atom i
                                 const Vector3D &atom_j,   //position of atom j

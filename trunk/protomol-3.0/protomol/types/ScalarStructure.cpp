@@ -36,12 +36,9 @@ ScalarStructure &ScalarStructure::intoSubtract(const ScalarStructure &e) {
 void ScalarStructure::addVirial(const Vector3D &force12,
                                 const Vector3D &diff) {
   // Add virial
-  //Real xx = force12.x * diff.x;
   Real xy = force12.x * diff.y;
   Real xz = force12.x * diff.z;
   Real yz = force12.y * diff.z;
-  //Real yy = force12.y * diff.y;
-  //Real zz = force12.z * diff.z;
 
   myTable[static_cast<int>(VIRIALXX)] += force12.x * diff.x;
   myTable[static_cast<int>(VIRIALXY)] += xy;
@@ -60,12 +57,9 @@ void ScalarStructure::addMolVirial(const Vector3D &force12,
                                    const Vector3D &diff) {
   // Add molecular virial
 
-  //Real xx = force12.x * diff.x;
   Real xy = force12.x * diff.y;
   Real xz = force12.x * diff.z;
   Real yz = force12.y * diff.z;
-  //Real yy = force12.y * diff.y;
-  //Real zz = force12.z * diff.z;
 
   myTable[static_cast<int>(MOLVIRIALXX)] += force12.x * diff.x;
   myTable[static_cast<int>(MOLVIRIALXY)] += xy;
@@ -83,12 +77,9 @@ void ScalarStructure::addMolVirial(const Vector3D &force12,
 void ScalarStructure::addVirial(const Vector3D &force12, const Vector3D &diff,
                                 const Vector3D &comDiff) {
   // Add virial
-  //Real xx = force12.x * diff.x;
   Real xy = force12.x * diff.y;
   Real xz = force12.x * diff.z;
   Real yz = force12.y * diff.z;
-  //Real yy = force12.y * diff.y;
-  //Real zz = force12.z * diff.z;
 
   myTable[static_cast<int>(VIRIALXX)] += force12.x * diff.x;
   myTable[static_cast<int>(VIRIALXY)] += xy;
@@ -103,12 +94,9 @@ void ScalarStructure::addVirial(const Vector3D &force12, const Vector3D &diff,
   myTable[static_cast<int>(VIRIALZZ)] += force12.z * diff.z;
 
   // Add molecular virial
-  //xx = force12.x * comDiff.x;
   xy = force12.x * comDiff.y;
   xz = force12.x * comDiff.z;
   yz = force12.y * comDiff.z;
-  //yy = force12.y * comDiff.y;
-  //zz = force12.z * comDiff.z;
 
   myTable[static_cast<int>(MOLVIRIALXX)] += force12.x * comDiff.x;
   myTable[static_cast<int>(MOLVIRIALXY)] += xy;

@@ -60,7 +60,6 @@ bool EigenvectorReader::read(EigenvectorInfo &ei) {
                                                         + j * 3 + k]);
       }
 
-  //cout << "RETURNING TRUE: " << ei.myEigenvectors[0] << endl;
   return true;
 }
 

@@ -100,17 +100,13 @@ namespace ProtoMol {
     Real forceConstant = currentAngle.forceConstant;
     Real ureyBradleyConstant = currentAngle.ureyBradleyConstant;
     Real ureyBradleyRestLength = currentAngle.ureyBradleyRestLength;
-//     Report::report << restAngle <<","<<forceConstant<<","<<ureyBradleyConstant<<","<<ureyBradleyRestLength<<Report::endr;
 
     Vector3D atom1((*positions)[a1]);
     Vector3D atom2((*positions)[a2]);
     Vector3D atom3((*positions)[a3]);
 
-    //Vector3D r12 = atom1 - atom2;                     // Vector from atom 1 to atom 2.
     Vector3D r12(boundary.minimalDifference(atom2, atom1));
-    //Vector3D r32 = atom3 - atom2;                     // Vector from atom 3 to atom 2.
     Vector3D r32(boundary.minimalDifference(atom2, atom3));
-    //Vector3D r13 = atom1 - atom3;                     // Vector from atom 1 to atom 3.
     Vector3D r13(boundary.minimalDifference(atom3, atom1));
     Real d12 = r12.norm();                        // Distance between atom 1 and 2.
     Real d32 = r32.norm();                        // Distance between atom 3 and 2.
@@ -200,11 +196,8 @@ namespace ProtoMol {
     atom2 = (*positions)[a2];
     atom3 = (*positions)[a3];
 
-    //r12 = atom1 - atom2;                     // Vector from atom 1 to atom 2.
     r12 = boundary.minimalDifference(atom2, atom1);
-    //r32 = atom3 - atom2;                     // Vector from atom 3 to atom 2.
     r32 = boundary.minimalDifference(atom2, atom3);
-    //r13 = atom1 - atom3;                     // Vector from atom 1 to atom 3.
     r13 = boundary.minimalDifference(atom3, atom1);
     d13 = r13.norm();                        // Distance between atom 1 and 3.
 

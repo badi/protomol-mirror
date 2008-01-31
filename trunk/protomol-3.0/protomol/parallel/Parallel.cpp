@@ -263,8 +263,6 @@ Parallel::Parallel() {
 }
 
 Parallel &Parallel::instance() {
-  //static Parallel obj;
-  //return obj;
   // We have to do it ourself ... M$ problem ...
   if (obj == NULL) {
     obj = new Parallel();

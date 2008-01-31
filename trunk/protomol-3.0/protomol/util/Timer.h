@@ -48,10 +48,7 @@ namespace ProtoMol {
     friend class Timer;
 public:
     TimeRep();
-    // TimeRep(const TimeRep&);             // Use default version.
     TimeRep(double realTime, double userTime, double sysTime);
-    // ~TimeRep();                          // Use default version.
-    // TimeRep& operator=(const TimeRep&);  // Use default version.
 
     /// Elapsed time
     double getRealTime() const;
@@ -103,9 +100,6 @@ private:
   class Timer {
 public:
     Timer();
-    // Time(const Time&);             // Use default version.
-    // ~Time();                       // Use default version.
-    // Time& operator=(const Time&);  // Use default version.
 
     void start();
     void stop();

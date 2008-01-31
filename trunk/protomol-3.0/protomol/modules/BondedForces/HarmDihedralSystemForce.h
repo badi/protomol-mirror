@@ -190,7 +190,6 @@ namespace ProtoMol {
        report << debug(1) << "actual dihedral angle: " << dihedralAngle
            << "   target dihedral angle: " << myDihedralReference <<  endr;
      */
-    //report << debug(1) << "diff: " << diff << "   potential bias V: " << V << endr;
 
     // -------------------------------------------------------------
     // The atoms in the dihedral

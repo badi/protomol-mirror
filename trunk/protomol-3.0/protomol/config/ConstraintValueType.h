@@ -32,7 +32,6 @@ public:
     template<Enum e>
     struct Enum2Type {
       operator Enum() const {return e;}
-      //operator std::string() const;
       enum {value = e};
     };
 
@@ -52,10 +51,6 @@ public:
   //_____________________________________________________ ConstraintValueType
   typedef AbstractEnumType<ConstraintValueEnum> ConstraintValueType;
 
-  //template<ConstraintValueEnum::Enum e>
-  //inline ConstraintValueEnum::Enum2Type<e>::operator std::string() const{
-  //  return ConstraintValueType::getString(e);
-  //}
 }
 #endif /* CONSTRAINTVALUETYPE_H */
 

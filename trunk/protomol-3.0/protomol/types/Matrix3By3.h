@@ -134,8 +134,6 @@ namespace ProtoMol {
     static const Matrix3By3 ourIdentity;
   };
 
-  //________________________________________ friend
-  //MyStreamer& operator<< (MyStreamer& OS, const Matrix3By3& tm);
   std::ostream &operator<<(std::ostream &os, const Matrix3By3 &tm);
   Vector3D operator*(const Vector3D &point, const Matrix3By3 &tm);
   void convert(const Matrix3By3 &from, double to[9]);

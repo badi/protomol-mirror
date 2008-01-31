@@ -52,9 +52,7 @@ namespace ProtoMol {
     /// Set an element.
     void operator()(int i, int j, Matrix3By3 x);
 
-    /// H[i][j] += x;
     void accumulateTo(int i, int j, Matrix3By3 x);
-    /// H[i][j] -= x;
     void accumulateNegTo(int i, int j, Matrix3By3 x);
 
     ReducedHessAngle operator*(const ReducedHessAngle &tm);
@@ -66,7 +64,6 @@ namespace ProtoMol {
     ReducedHessAngle operator-(const ReducedHessAngle &tm);
     ReducedHessAngle &operator+=(const ReducedHessAngle &tm);
     ReducedHessAngle &operator-=(const ReducedHessAngle &tm);
-    // ReducedHessAngle& operator=(const ReducedHessAngle&);  // Use default version.
     // operator overloading
 
     ReducedHessAngle transposed(); ///< the original object unchanged

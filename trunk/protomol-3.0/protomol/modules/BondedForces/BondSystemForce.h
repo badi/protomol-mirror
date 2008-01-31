@@ -102,7 +102,6 @@ namespace ProtoMol {
     Vector3D atom1((*positions)[a1]);
     Vector3D atom2((*positions)[a2]);
 
-    //Vector3D r12 = atom1 - atom2;                       // Vector from atom 1 to atom 2.
     Vector3D r12(boundary.minimalDifference(atom2, atom1)); // Vector from atom 1 to atom 2.
     Real r = r12.norm();                            // Distance between atom 1 and 2.
 
@@ -136,7 +135,6 @@ namespace ProtoMol {
     Vector3D atom1 = (*positions)[a1];
     Vector3D atom2 = (*positions)[a2];
 
-    //Vector3D r12 = atom1 - atom2;                       // Vector from atom 1 to atom 2.
     Vector3D r12 = boundary.minimalDifference(atom2, atom1); // Vector from atom 1 to atom 2.
     Real r = r12.norm();                            // Distance between atom 1 and 2.
 

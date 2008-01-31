@@ -574,7 +574,6 @@ namespace ProtoMol {
     Vector3D center = centerOfMass(positions, topo);
 
     // Angular momentum
-    //Vector3D momentum = angularMomentum(positions,velocities,topo,center);
     Vector3D momentum = angularMomentumSolute(positions,
       velocities,
       topo,
@@ -583,7 +582,6 @@ namespace ProtoMol {
       return Vector3D(0.0, 0.0, 0.0);
 
     // Inertia moment
-    // Matrix3By3 inertia = inertiaMomentum(positions,topo,center);
     Matrix3By3 inertia = inertiaMomentumSolute(positions, topo, center);
 
     if (!inertia.invert())

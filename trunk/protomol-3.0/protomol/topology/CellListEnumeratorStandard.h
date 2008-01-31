@@ -19,7 +19,6 @@ namespace ProtoMol {
   template<>
   class CellListEnumerator<VacuumBoundaryConditions, CubicCellManager> {
   public:
-    //typedef pair<int,int> CellPair; // The first atom from each cell list in the pair
     struct CellPair {int first; int second;};
 
   public:
@@ -48,7 +47,6 @@ namespace ProtoMol {
 
         myMax = topo->cellManager.findCell(topo->max - topo->min);
 
-// 	Report::report <<"New: "<<myMax.x<<","<< myMax.y<<","<< myMax.z<<Report::endr;
         Real cutoff2 = cutoff * cutoff;
 
         CubicCellManager::Cell zero(0, 0, 0);
@@ -81,11 +79,7 @@ namespace ProtoMol {
         }
 
         std::sort(myDeltaList.begin(), myDeltaList.end());
-// 	for(unsigned int i=0;i<myDeltaList.size();i++){
-// 	  Report::report <<"Delta["<<i<<"] "<< myDeltaList[i].x<<","<< myDeltaList[i].y<<","<< myDeltaList[i].z<<Report::endr;
-// 	}
 
-        //Report::report << Report::debug(2) << "Cell list algorithm: "<< topo->cellLists.getDimX()*topo->cellLists.getDimY()*topo->cellLists.getDimZ()<<", "<<myDeltaList.size()<<", "<< topo->cellLists.getDimX()*topo->cellLists.getDimY()*topo->cellLists.getDimZ()*myCellSize.x*myCellSize.y*myCellSize.z << ", "<< myDeltaList.size()*myCellSize.x*myCellSize.y*myCellSize.z <<Report::endr;
       }
       the_last = myDeltaList.size();
     }
