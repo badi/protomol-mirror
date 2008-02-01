@@ -32,7 +32,7 @@ void Makeable::assertParameters(const vector<Value> &values) const {
   vector<Parameter> tmp;
   getParameters(tmp);
 
-  if (tmp.size() == values.size())
+  if (tmp.size() != values.size())
     err += " Expected " + toString(tmp.size()) +
       " value(s), but got " + toString(values.size()) + ".";
 
