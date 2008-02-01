@@ -8,6 +8,8 @@
 #include <protomol/topology/TopologyFactory.h>
 #include <protomol/force/ForceFactory.h>
 #include <protomol/integrator/IntegratorFactory.h>
+
+#include <protomol/output/OutputCache.h>
 #include <protomol/output/OutputFactory.h>
 
 #include <protomol/types/Vector3DBlock.h>
@@ -44,6 +46,7 @@ namespace ProtoMol {
     // Containers
     CommandLine cmdLine;
     Configuration config;
+    mutable OutputCache outputCache;
     OutputCollection *outputs;
     Integrator *integrator;
     GenericTopology *topology;
@@ -59,7 +62,7 @@ namespace ProtoMol {
     void read();
     void build();
     void print(std::ostream &stream);
-    bool step(int inc = 1);
+    bool step();
   };
 };
 #endif // PROTOMOLAPP_H

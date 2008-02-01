@@ -36,6 +36,7 @@ ProtoMolApp::ProtoMolApp(ModuleManager *modManager) :
   modManager->init(this);
 
   topologyFactory.registerAllExemplarsConfiguration(&config);
+  outputFactory.registerAllExemplarsConfiguration(&config);
 }
 
 ProtoMolApp::~ProtoMolApp() {}
@@ -245,15 +246,25 @@ void ProtoMolApp::build() {
   // Initialize
   integrator->initialize(topology, &positions, &velocities, &energies);
   outputs->initialize(this);
+  outputCache.initialize(this);
+
+  // Init cache
+  //outputs->addToCache(pdbAtoms);
+  outputCache.add(psf);
+  outputCache.add(par);
 
   // Setup run
   currentStep = config[InputFirststep::keyword];
   lastStep = currentStep + (int)config[InputNumsteps::keyword];
 }
 
-bool ProtoMolApp::step(int inc) {
+bool ProtoMolApp::step() {
   if (currentStep >= lastStep) return false;
 
+  outputs->run(currentStep);
+
+  int inc = outputs->getNext() - currentStep;
+  inc = std::min(lastStep, currentStep + inc) - currentStep;
   currentStep += inc;
 
   integrator->run(inc);

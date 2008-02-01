@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
     app.read();
     app.build();
 
-    while (app.step(100))
+    while (app.step())
       cout << "Step: " << app.currentStep << endl;
 
     return 0;

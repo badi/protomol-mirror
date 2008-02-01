@@ -46,8 +46,8 @@ namespace ProtoMol {
     bool checkParameters(const std::vector<Value> &values) const;
     bool checkParameterTypes(const std::vector<Value> &values) const;
     virtual bool adjustWithDefaultParameters(std::vector<Value> &values,
-                                             const Configuration * /*config*/)
-    const {return checkParameterTypes(values);}
+                                             const Configuration *) const
+    {return checkParameterTypes(values);}
 
     template<typename T>
     static T *copy(T *obj) {
