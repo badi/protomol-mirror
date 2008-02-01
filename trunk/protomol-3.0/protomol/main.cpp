@@ -12,6 +12,7 @@ int main(int argc, char *argv[]) {
   try {
     ModuleManager modManager;
     moduleInitFunction(&modManager);
+
     ProtoMolApp app(&modManager);
 
     if (!app.configure(argc, argv)) return 0;

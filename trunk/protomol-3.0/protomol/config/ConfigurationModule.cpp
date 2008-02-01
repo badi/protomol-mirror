@@ -15,11 +15,11 @@ using namespace ProtoMol;
 defineInputValueAndText(InputConfig, "config", "The configuration file name.");
 
 void ConfigurationModule::init(ProtoMolApp *app) {
-  config = &app->getConfiguration();
+  config = &app->config;
 
   CommandLineOption *option;
   CommandLineOption::ActionBase *action;
-  CommandLine &cmdLine = app->getCommandLine();
+  CommandLine &cmdLine = app->cmdLine;
 
   // Keywords
   action = new CommandLineOption::

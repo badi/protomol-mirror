@@ -62,7 +62,7 @@ void ModuleManager::init(ProtoMolApp *app) {
     new CommandLineOption::Action<ModuleManager>(this,
                                                  &ModuleManager::listAction);
 
-  app->getCommandLine().add(0, "modules", action,
+  app->cmdLine.add(0, "modules", action,
     "List all registered modules and exit.");
 }
 

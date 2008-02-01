@@ -4,6 +4,7 @@
 #include <protomol/frontend/CommandLineModule.h>
 #include <protomol/config/ConfigurationModule.h>
 #include <protomol/topology/TopologyModule.h>
+#include <protomol/output/OutputModule.h>
 
 #include <protomol/modules/LangevinImpulse/LangevinImpulseModule.h>
 #include <protomol/modules/BondedForces/BondedForcesModule.h>
@@ -16,6 +17,7 @@ void moduleInitFunction(ModuleManager *manager) {
   manager->add(new CommandLineModule());
   manager->add(new ConfigurationModule());
   manager->add(new TopologyModule());
+  manager->add(new OutputModule());
 
   manager->add(new LangevinImpulseModule());
   manager->add(new BondedForcesModule());

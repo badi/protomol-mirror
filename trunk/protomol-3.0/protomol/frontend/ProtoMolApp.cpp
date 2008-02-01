@@ -21,6 +21,10 @@
 #include <protomol/topology/TopologyFactory.h>
 #include <protomol/topology/TopologyModule.h>
 
+#include <protomol/output/OutputModule.h>
+#include <protomol/output/OutputFactory.h>
+#include <protomol/output/OutputCollection.h>
+
 using namespace std;
 using namespace ProtoMol;
 using namespace ProtoMol::Report;
@@ -230,8 +234,17 @@ void ProtoMolApp::build() {
 
   } else report << plain << "Using MD integrator. " << endr;
 
+
+  // Create outputs
+  // TODO if !Parallel::iAmMaster() turn off outputs
+  if (config[InputOutput::keyword])
+    outputs = outputFactory.makeCollection(&config);
+
+  else outputs = new OutputCollection; // Empty collection
+
   // Initialize
-  integrator->initialize(topology, &positions, &velocities, &scalar);
+  integrator->initialize(topology, &positions, &velocities, &energies);
+  outputs->initialize(this);
 
   // Setup run
   currentStep = config[InputFirststep::keyword];

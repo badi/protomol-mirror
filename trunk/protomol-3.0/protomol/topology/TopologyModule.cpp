@@ -46,7 +46,7 @@ defineInputValueWithAliasesAndText
   "frequency <n>");
 
 void TopologyModule::init(ProtoMolApp *app) {
-  Configuration *config = &app->getConfiguration();
+  Configuration *config = &app->config;
   GenericTopology *topo;
   TopologyFactory *factory = &app->topologyFactory;
 
@@ -69,7 +69,7 @@ void TopologyModule::init(ProtoMolApp *app) {
 }
 
 void TopologyModule::configure(ProtoMolApp *app) {
-  Configuration &config = app->getConfiguration();
+  Configuration &config = app->config;
 
   // Fix for old topology definition
   if (!config[GenericTopology::keyword].valid())
@@ -79,7 +79,7 @@ void TopologyModule::configure(ProtoMolApp *app) {
 }
 
 void TopologyModule::buildTopology(ProtoMolApp *app) {
-  Configuration &config = app->getConfiguration();
+  Configuration &config = app->config;
   Vector3DBlock *velocities = &app->velocities;
   Vector3DBlock *positions = &app->positions;
   GenericTopology *topo = app->topology;
@@ -323,16 +323,16 @@ void TopologyModule::buildTopology(GenericTopology *topo, const PSF &psf,
     // if we still have not found this bond type in the PAR object, report an
     // error
     if (currentbond == bondLookUpTable.end()) {
-      ostringstream errMsg;
+      ostringstream err;
 
-      errMsg << "Could not find bond '" << bond1 << "'-'" << bond2 << "' ("
-             << bond->atom1 << "," << bond->atom2 << ")" << endl;
+      err << "Could not find bond '" << bond1 << "'-'" << bond2 << "' ("
+          << bond->atom1 << "," << bond->atom2 << ")" << endl;
 
       for (map<string, vector<PAR::Bond>::const_iterator>::const_iterator i =
              bondLookUpTable.begin(); i != bondLookUpTable.end(); i++)
-        errMsg << i->first << endl;
+        err << i->first << endl;
 
-      THROW(errMsg.str());
+      THROW(err.str());
     }
 
     // if we have found this bond type then copy the bond parameters

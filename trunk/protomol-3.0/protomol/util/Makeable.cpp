@@ -1,6 +1,7 @@
 #include <protomol/util/Makeable.h>
 
 #include <protomol/util/StringUtilities.h>
+#include <protomol/debug/Exception.h>
 
 using namespace std;
 using namespace ProtoMol;
@@ -26,37 +27,30 @@ string Makeable::setAlias(const string &id) {
   return tmp;
 }
 
-bool Makeable::checkParameters(string &errMsg,
-                               const vector<Value> &values) const {
+void Makeable::assertParameters(const vector<Value> &values) const {
+  string err;
   vector<Parameter> tmp;
   getParameters(tmp);
-  bool ok = (tmp.size() == values.size());
-  if (!ok)
-    errMsg += getId() + ": Expected " + toString(tmp.size()) +
-              " value(s), but got " + toString(values.size()) + ".";
+
+  if (tmp.size() == values.size())
+    err += " Expected " + toString(tmp.size()) +
+      " value(s), but got " + toString(values.size()) + ".";
 
   for (unsigned int i = 0; i < values.size(); ++i) {
-    if (!values[i].valid()) {
-      if (ok)
-        errMsg += getId() + ":";
-      errMsg += " Parameter " + toString(i) + " \'" + tmp[i].keyword +
-                "\' " + tmp[i].value.getDefinitionTypeString() +
-                " undefined/missing or with non-valid value \'" +
-                values[i].getString() + "\'.";
-      ok = false;
-    }
-    if (!values[i].equalType(tmp[i].value)) {
-      if (ok)
-        errMsg += getId() + ":";
-      errMsg += " Expected type " + tmp[i].value.getDefinitionTypeString() +
-                " for parameter " + toString(i) + " \'" + tmp[i].keyword +
-                "\', but got " + values[i].getDefinitionTypeString() + ".";
-      ;
-      ok = false;
-    }
+    if (!values[i].valid())
+      err += " Parameter " + toString(i) + " '" + tmp[i].keyword +
+                "' " + tmp[i].value.getDefinitionTypeString() +
+                " undefined/missing or with non-valid value '" +
+                values[i].getString() + "'.";
+
+    if (!values[i].equalType(tmp[i].value))
+      err += " Expected type " + tmp[i].value.getDefinitionTypeString() +
+        " for parameter " + toString(i) + " '" + tmp[i].keyword +
+        "', but got " + values[i].getDefinitionTypeString() + ".";
   }
 
-  return ok;
+  if (!err.empty()) THROW(getId() + ":" + err);
+
 }
 
 bool Makeable::checkParameterTypes(const vector<Value> &values) const {

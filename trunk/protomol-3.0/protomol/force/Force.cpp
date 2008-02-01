@@ -11,9 +11,7 @@ using namespace ProtoMol;
 const string Force::scope("Force");
 
 Force *Force::make(const vector<Value> &values) const {
-  string errMsg;
-  if (!checkParameters(errMsg, values))
-    THROW(errMsg);
+  assertParameters(values);
   return adjustAlias(doMake(values));
 }
 
@@ -36,9 +34,8 @@ TimeForce *Force::makeTimeForce(Force *actualForce) const {
   return NULL;
 }
 
-void Force::setParameters(string &errMsg, vector<Value> values) {
-  errMsg = "";
-  if (checkParameters(errMsg, values))
-    doSetParameters(errMsg, values);
+void Force::setParameters(vector<Value> values) {
+  assertParameters(values);
+  doSetParameters(values);
 }
 

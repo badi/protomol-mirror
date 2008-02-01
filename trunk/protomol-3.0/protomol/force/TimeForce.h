@@ -46,8 +46,7 @@ namespace ProtoMol {
     virtual void getParameters(std::vector<Parameter> &parameters) const;
     virtual unsigned int getParameterSize() const;
   private:
-    virtual void doSetParameters(std::string &errMsg,
-                                 std::vector<Value> values);
+    virtual void doSetParameters(std::vector<Value> values);
 
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

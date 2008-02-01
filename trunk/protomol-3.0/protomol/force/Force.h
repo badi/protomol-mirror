@@ -4,6 +4,7 @@
 
 #include <protomol/util/Makeable.h>
 #include <protomol/util/MakeableDefinition.h>
+#include <protomol/debug/Exception.h>
 
 #include <vector>
 
@@ -64,12 +65,11 @@ namespace ProtoMol {
     virtual TimeForce *makeTimeForce(Force *actualForce) const;
     //< Creating the right instance of a TimeForce object.
 
-    void setParameters(std::string &errMsg, std::vector<Value> value);
+    void setParameters(std::vector<Value> value);
     //< update of parameters
 
     template<class T>
-    void setParameter(std::string &errMsg, const std::string &key, T val) {
-      errMsg = "";
+    void setParameter(const std::string &key, T val) {
       std::vector<Parameter> parameters;
       getParameters(parameters);
       std::vector<Value> values(parameters.size());
@@ -83,14 +83,12 @@ namespace ProtoMol {
         }
       }
 
-      if (update)
-        setParameters(errMsg, values);
+      if (update) setParameters(values);
     }
     //< update of parameters with given value which match the keyword
 
     template<class T>
-    void setParameter(std::string &errMsg, unsigned int index, T val) {
-      errMsg = "";
+    void setParameter(unsigned int index, T val) {
       std::vector<Parameter> parameters;
       getParameters(parameters);
       std::vector<Value> values(parameters.size());
@@ -103,8 +101,7 @@ namespace ProtoMol {
         }
       }
 
-      if (update)
-        setParameters(errMsg, values);
+      if (update) setParameters(values);
     }
     //< update of parameter index with given value
 
@@ -113,16 +110,13 @@ namespace ProtoMol {
     //< implementation of make and actual instantiation of object
 
   private:
-    virtual void doSetParameters(std::string &, std::vector<Value> ) {
-      Report::report
-        << Report::error << "setParameters not implemented for force "
-        << this->getId() << Report::endr;
+    virtual void doSetParameters(std::vector<Value> ) {
+      THROW(string("setParameters not implemented for force ") + getId());
     }
   protected:
     template<class T>
-    void setParametersBySwapping(T *obj, std::string &errMsg,
-                                 std::vector<Value> values) {
-      T *tmp = dynamic_cast<T *>(obj->make(errMsg, values));
+    void setParametersBySwapping(T *obj, std::vector<Value> values) {
+      T *tmp = dynamic_cast<T *>(obj->make(values));
       if (tmp != NULL) {
         std::swap(*obj, *tmp);
         delete tmp;

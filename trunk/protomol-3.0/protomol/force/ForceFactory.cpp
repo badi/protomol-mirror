@@ -198,28 +198,29 @@ Force *ForceFactory::make(const string &idInput, vector<Value> values) const {
 
       id = newId;
     } else if (itr != forceTypes.end()) {
-      string errMsg;
+      string err;
 
-      errMsg += " Could not find a complete match for \'" + idInput +
-                "\' in " +
-                Force::scope + "Factory of force \'" + keyword +
-                "\'. Possible definitions are:";
-      for (set<string, ltstrNocase>::const_iterator j =
-             itr->second.policies.begin();
+      err += " Could not find a complete match for \'" + idInput +
+        "\' in " + Force::scope + "Factory of force \'" + keyword +
+        "\'. Possible definitions are:";
+
+      for (policy_t::const_iterator j = itr->second.policies.begin();
            j != itr->second.policies.end(); ++j)
-        errMsg += string("\n") + itr->first + string(" ") + (*j);
+        err += string("\n") + itr->first + string(" ") + (*j);
 
-      THROW(errMsg);
+      THROW(err);
+
     } else {
-      string errMsg;
+      string err;
 
-      errMsg += " Could not find any match for \'" + idInput + "\' in " +
-                Force::scope + "Factory. Possible forces are:";
+      err += " Could not find any match for \'" + idInput + "\' in " +
+        Force::scope + "Factory. Possible forces are:";
+
       for (forceTypes_t::const_iterator i =
              forceTypes.begin(); i != forceTypes.end(); ++i)
-        errMsg += string("\n") + i->first;
+        err += string("\n") + i->first;
 
-      THROW(errMsg);
+      THROW(err);
     }
   }
 
@@ -228,13 +229,13 @@ Force *ForceFactory::make(const string &idInput, vector<Value> values) const {
 
   if (prototype != NULL) {
     // Check parameter list
-    string errMsg;
-    if (!prototype->checkParameters(errMsg, values))
-      THROW(errMsg);
+    prototype->assertParameters(values);
 
     newObj = prototype->make(values);
     if (newObj != NULL) newObj->setAlias(id);
   }
+
+  if (!newObj) THROW("Could not make force");
 
   return newObj;
 }

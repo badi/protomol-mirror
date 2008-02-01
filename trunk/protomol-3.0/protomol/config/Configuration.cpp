@@ -180,22 +180,22 @@ vector<Value> Configuration::get(const vector<Parameter> &parameters) const {
   return values;
 }
 
-bool Configuration::validConfiguration() const {
-  string tmp;
-  return validConfiguration(tmp);
+bool Configuration::hasUndefinedKeywords() const {
+  for (const_iterator i = begin(); i != end(); ++i)
+    if (!i->second.valid()) return true;
+
+  return false;
 }
 
-bool Configuration::validConfiguration(string &errMsg) const {
-  errMsg = "";
+string Configuration::printUndefinedKeywords() const {
+  string result;
+
   for (const_iterator i = begin(); i != end(); ++i)
-    if (!i->second.valid()) {
-      if (errMsg.empty()) errMsg = "Undefined keyword(s):";
+    if (!i->second.valid())
+      result += getRightFill(i->first, Constant:: PRINTMAXWIDTH) +
+        i->second.getDefinitionTypeString() + "\n";
 
-      errMsg += "\n" + getRightFill(i->first, Constant:: PRINTMAXWIDTH) +
-                i->second.getDefinitionTypeString();
-    }
-
-  return errMsg.empty();
+  return result;
 }
 
 string Configuration::print() const {

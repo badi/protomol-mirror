@@ -95,7 +95,7 @@ void TimeForce::uncache() {
   myActualForce->uncache();
 }
 
-void TimeForce::doSetParameters(string &errMsg, vector<Value> values) {
-  myActualForce->setParameters(errMsg, values);
+void TimeForce::doSetParameters(vector<Value> values) {
+  myActualForce->setParameters(values);
 }
 

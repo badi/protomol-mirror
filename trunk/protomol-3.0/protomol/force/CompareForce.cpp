@@ -163,7 +163,7 @@ void CompareForce::uncache() {
   myActualForce->uncache();
 }
 
-void CompareForce::doSetParameters(string &errMsg, vector<Value> values) {
-  myActualForce->setParameters(errMsg, values);
+void CompareForce::doSetParameters(vector<Value> values) {
+  myActualForce->setParameters(values);
 }
 

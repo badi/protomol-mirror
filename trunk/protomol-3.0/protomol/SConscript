@@ -1,6 +1,7 @@
 Import('*')
 
 subdirs = [
+    "output",
     "switch",
     "parallel",
     "modifier",

@@ -9,10 +9,13 @@
 namespace ProtoMol {
   //________________________________________ ForceFactory
   class ForceFactory : public Factory<Force> {
+    typedef std::set<std::string, ltstrNocase> policy_t;
+    typedef std::map<std::string, std::string, ltstrNocase> policiesSorted_t;
+
     struct ForceType {
-      std::set<std::string, ltstrNocase> policy;
-      std::set<std::string, ltstrNocase> policies;
-      std::map<std::string, std::string, ltstrNocase> policiesSorted;
+      policy_t policy;
+      policy_t policies;
+      policiesSorted_t policiesSorted;
     };
 
     typedef std::map<std::string, ForceType, ltstrNocase> forceTypes_t;

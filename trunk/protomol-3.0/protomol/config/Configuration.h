@@ -63,8 +63,8 @@ namespace ProtoMol {
 
     // Global print & test
     std::string print() const;
-    bool validConfiguration() const;
-    bool validConfiguration(std::string &errMsg) const;
+    bool hasUndefinedKeywords() const;
+    std::string printUndefinedKeywords() const;
 
     // Iterators
     const_iterator begin() const {return myValues.begin();}

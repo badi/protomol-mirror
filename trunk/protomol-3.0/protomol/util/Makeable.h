@@ -42,8 +42,7 @@ namespace ProtoMol {
     virtual std::string getScope() const = 0;
     virtual std::string getText() const {return std::string();}
 
-    bool checkParameters(std::string &errMsg,
-                         const std::vector<Value> &values) const;
+    void assertParameters(const std::vector<Value> &values) const;
     bool checkParameters(const std::vector<Value> &values) const;
     bool checkParameterTypes(const std::vector<Value> &values) const;
     virtual bool adjustWithDefaultParameters(std::vector<Value> &values,

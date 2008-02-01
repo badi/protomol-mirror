@@ -26,7 +26,7 @@ defineInputValue(InputDihedralMultPSF, "dihedralMultPSF");
 defineInputValue(InputIntegrator, "integrator");
 
 void MainModule::init(ProtoMolApp *app) {
-  Configuration *config = &app->getConfiguration();
+  Configuration *config = &app->config;
 
   InputSeed::registerConfiguration(config);
   InputFirststep::registerConfiguration(config);
@@ -48,20 +48,21 @@ void MainModule::init(ProtoMolApp *app) {
 }
 
 void MainModule::configure(ProtoMolApp *app) {
-  Configuration &config = app->getConfiguration();
+  Configuration &config = app->config;
 
   //  Set report level
   report << reportlevel((int)config[InputDebug::keyword]);
 
   // Check if configuration is complete
-  string errMsg;
-  if (!config.validConfiguration(errMsg))
-    report << plain << endl << errMsg << endr;
-
-  if (!config[InputFirststep::keyword].valid())
-    THROW("Firststep undefined.");
-
-  if (!config[InputNumsteps::keyword].valid())
-    THROW("Numsteps undefined.");
+  if (config.hasUndefinedKeywords()) {
+    report << plain << "Undefined Keyword(s):" << endl
+           << config.printUndefinedKeywords() << endl;
+    
+    if (!config[InputFirststep::keyword].valid())
+      THROW("Firststep undefined.");
+    
+    if (!config[InputNumsteps::keyword].valid())
+      THROW("Numsteps undefined.");
+  }
 }
 

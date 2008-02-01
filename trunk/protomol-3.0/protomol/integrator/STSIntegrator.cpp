@@ -63,9 +63,7 @@ void STSIntegrator::getParameters(vector<Parameter> &parameter) const {
 
 STSIntegrator *STSIntegrator::make(const vector<Value> &values,
                                    ForceGroup *fg) const {
-  string errMsg;
-  if (!checkParameters(errMsg, values))
-    THROW(errMsg);
+  assertParameters(values);
 
   return adjustAlias(doMake(values, fg));
 }

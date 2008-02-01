@@ -34,9 +34,7 @@ GenericTopology::GenericTopology(Real c, const ExclusionType &e) :
   minimalMolecularDistances(false) {}
 
 GenericTopology *GenericTopology::make(const vector<Value> &values) const {
-  string errMsg;
-
-  if (!checkParameters(errMsg, values)) THROW(errMsg);
+  assertParameters(values);
 
   return adjustAlias(doMake(values));
 }

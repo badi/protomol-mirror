@@ -19,14 +19,15 @@ const string Integrator::scope("Integrator");
 Real Integrator::myBeta = 0.;
 
 Integrator::Integrator() :
-  Makeable(), myPotEnergy(0), mhQ(0), myTopo(0), myPositions(0), myVelocities(0),
-  myForces(0), myEnergies(0), myForcesToEvaluate(0), myForward(true),
-  myOldForces(0) {}
+  Makeable(), myPotEnergy(0), mhQ(0), myTopo(0), myPositions(0),
+  myVelocities(0), myForces(0), myEnergies(0), myForcesToEvaluate(0),
+  myForward(true), myOldForces(0) {}
 
 Integrator::Integrator(ForceGroup *forceGroup) :
-  Makeable(), myPotEnergy(0), mhQ(0), myTopo(0), myPositions(0), myVelocities(0),
-  myForces(new Vector3DBlock), myEnergies(0), myForcesToEvaluate(forceGroup),
-  myForward(true), myOldForces(new Vector3DBlock) {}
+  Makeable(), myPotEnergy(0), mhQ(0), myTopo(0), myPositions(0),
+  myVelocities(0), myForces(new Vector3DBlock), myEnergies(0),
+  myForcesToEvaluate(forceGroup), myForward(true),
+  myOldForces(new Vector3DBlock) {}
 
 Integrator::~Integrator() {
   zap(myForces);
@@ -38,7 +39,7 @@ Integrator::~Integrator() {
     delete (*i);
 }
 
-void Integrator::initialize(GenericTopology *topo, Vector3DBlock   *positions,
+void Integrator::initialize(GenericTopology *topo, Vector3DBlock *positions,
                             Vector3DBlock   *velocities,
                             ScalarStructure *energies) {
   myTopo = topo;

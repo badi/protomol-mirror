@@ -20,8 +20,7 @@ namespace ProtoMol {
     // New methods of class NonStandardIntegrator
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    virtual NonStandardIntegrator *make(std::string &errMsg,
-                                        std::vector<Value> values,
+    virtual NonStandardIntegrator *make(std::vector<Value> values,
                                         ForceGroup *fg) const = 0;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -111,9 +111,11 @@ Integrator *IntegratorFactory::make(const string &definition,
         integratorInput[level].values[i].set(parameters[i].defaultValue);
     }
 
-    string errMsg;
-    if (!prototype->checkParameters(errMsg, integratorInput[level].values))
-      THROW(string(" Level " + toString(level) + " " + errMsg));
+    try {
+      prototype->assertParameters(integratorInput[level].values);
+    } catch (const Exception &e) {
+      THROW(string(" Level " + toString(level) + " " + e.getMessage()));
+    }
 
     // Parse forces
     stringstream ssf(forceStr);
@@ -126,19 +128,15 @@ Integrator *IntegratorFactory::make(const string &definition,
   }
 
   // Check if we have a definition for each level
-  bool ok = true;
-  string errMsg;
+  string err;
   for (unsigned int i = 0; i < integratorInput.size(); ++i)
-    if (integratorInput[i].prototype == NULL) {
-      if (ok) errMsg += " Missing integrator definitions of level(s):";
-      errMsg += " " + toString(i);
-      ok = false;
-    }
+    if (!integratorInput[i].prototype)
+      err += " " + toString(i);
 
-  if (!ok) THROW(errMsg + ".");
+  if (!err.empty())
+    THROW("Missing integrator definitions of level(s): " + err + ".");
 
   // Check if the chain is ok
-  ok = true;
   for (unsigned int i = 0; i < integratorInput.size(); ++i) {
     const Integrator *prototype = integratorInput[i].prototype;
     if (!prototype) THROW("null prototype");
@@ -146,30 +144,27 @@ Integrator *IntegratorFactory::make(const string &definition,
     if (dynamic_cast<const StandardIntegrator *>(prototype)) {
       if (!((i == 0 && dynamic_cast<const STSIntegrator *>(prototype)) ||
             i > 0 && dynamic_cast<const MTSIntegrator *>(prototype))) {
+
         if (i > 0)
-          errMsg += " Integrator " + toString(prototype->getId()) +
-                    " at level " + toString(i) +
-                    " is a STS integrator, expected MTS.";
+          err += "\nIntegrator " + toString(prototype->getId()) +
+            " at level " + toString(i) + " is a STS integrator, expected MTS.";
         else
-          errMsg += " Integrator " + toString(prototype->getId()) +
-                    " at level " + toString(i) +
-                    " is a MTS integrator, expected STS.";
-        ok = false;
+          err += "\nIntegrator " + toString(prototype->getId()) +
+            " at level " + toString(i) + " is a MTS integrator, expected STS.";
       }
 
     } else if (dynamic_cast<const NonStandardIntegrator *>(prototype)) {
-      errMsg += " NonStandardIntegrator (level " + toString(i) + " " +
-        toString(prototype->getId()) +
-        ") are not supported by " + Force::scope + "Factory yet.";
-      ok = false;
+      err += "\nNonStandardIntegrator (level " + toString(i) + " " +
+        toString(prototype->getId()) + ") are not supported by " +
+        Force::scope + "Factory yet.";
 
     } else
-      THROWS("[IntegratorFactory::make] Found an integrator \'"
-             << prototype->getId()
-             << "' neither a StandardIntegrator nor NonStandardIntegrator.");
+      err += "\n[IntegratorFactory::make] Found an integrator '" +
+        prototype->getId() +
+        "' neither a StandardIntegrator nor NonStandardIntegrator.";
   }
 
-  if (!ok) THROW(errMsg);
+  if (!err.empty()) THROW(err);
 
   // Now make the integrator chain ... with all forces
   StandardIntegrator *integrator = NULL;

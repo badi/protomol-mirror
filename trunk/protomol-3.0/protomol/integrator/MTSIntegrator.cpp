@@ -48,13 +48,9 @@ void MTSIntegrator::getParameters(vector<Parameter> &parameters) const {
       Value(myCycleLength, ConstraintValueType::Positive())));
 }
 
-MTSIntegrator *MTSIntegrator::
-  make(const vector<Value> &values, ForceGroup *fg,
-       StandardIntegrator *nextIntegrator) const {
-  string errMsg;
-
-  if (!checkParameters(errMsg, values))
-    THROW(errMsg);
+MTSIntegrator *MTSIntegrator::make(const vector<Value> &values, ForceGroup *fg,
+                                   StandardIntegrator *nextIntegrator) const {
+  assertParameters(values);
 
   return adjustAlias(doMake(values, fg, nextIntegrator));
 }

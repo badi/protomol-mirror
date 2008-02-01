@@ -21,7 +21,7 @@ void BondedForcesModule::registerForces(ProtoMolApp *app) {
   ForceFactory &f = app->forceFactory;
 
   string boundConds =
-    app->getConfiguration()[InputBoundaryConditions::keyword];
+    app->config[InputBoundaryConditions::keyword];
 
   if (equalNocase(boundConds, PeriodicBoundaryConditions::keyword)) {
     f.registerExemplar(new DihedralSystemForce<PeriodicBoundaryConditions>());
