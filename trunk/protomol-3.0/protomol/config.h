@@ -3,7 +3,9 @@
 
 #ifdef WIN32
 #include "os/win32.h"
-#else // WIN32
+#elif __CYGWIN__
+#include "os/cygwin.h"
+#else
 #include "os/unix.h"
 #endif // WIN32
 
