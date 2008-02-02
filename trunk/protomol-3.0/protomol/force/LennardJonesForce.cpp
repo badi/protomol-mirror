@@ -1,4 +1,4 @@
-#include "LennardJonesForce.h"
+#include <protomol/force/LennardJonesForce.h>
 
 using namespace std;
 

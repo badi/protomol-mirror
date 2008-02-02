@@ -1,4 +1,4 @@
-#include "Configuration.h"
+#include <protomol/config/Configuration.h>
 
 #include <protomol/util/Report.h>
 #include <protomol/debug/Exception.h>

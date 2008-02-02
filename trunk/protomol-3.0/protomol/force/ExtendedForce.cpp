@@ -1,7 +1,7 @@
 #include <protomol/force/ExtendedForce.h>
 #include <protomol/force/ForceGroup.h>
-#include "ExtendedCompareForce.h"
-#include "ExtendedTimeForce.h"
+#include <protomol/force/ExtendedCompareForce.h>
+#include <protomol/force/ExtendedTimeForce.h>
 
 using namespace ProtoMol;
 //____ ExtendedForce

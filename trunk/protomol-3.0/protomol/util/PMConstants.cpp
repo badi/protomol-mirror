@@ -1,4 +1,4 @@
-#include "PMConstants.h"
+#include <protomol/util/PMConstants.h>
 
 #ifdef HAVE_NO_LIMITS
 #ifndef WIN32
@@ -8,7 +8,7 @@
 #include <limits>
 #endif /* HAVE_NO_LIMITS */
 
-#include "StringUtilities.h"
+#include <protomol/util/StringUtilities.h>
 
 using namespace std;
 

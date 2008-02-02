@@ -2,7 +2,7 @@
 #ifndef XYZBINREADER_H
 #define XYZBINREADER_H
 
-#include "Reader.h"
+#include <protomol/io/Reader.h>
 #include <protomol/types/XYZ.h>
 
 namespace ProtoMol {

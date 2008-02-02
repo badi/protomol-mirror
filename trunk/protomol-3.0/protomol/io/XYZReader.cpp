@@ -1,4 +1,4 @@
-#include "XYZReader.h"
+#include <protomol/io/XYZReader.h>
 
 #include <protomol/util/Report.h>
 #include <protomol/util/StringUtilities.h>

@@ -1,4 +1,4 @@
-#include "Parameter.h"
+#include <protomol/config/Parameter.h>
 
 using namespace std;
 using namespace ProtoMol;

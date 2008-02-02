@@ -2,7 +2,7 @@
 #ifndef MAKEABLE_H
 #define MAKEABLE_H
 
-#include <protomol/util/MakeableDefinition.h>
+#include <protomol/base/MakeableDefinition.h>
 
 #include <iostream>
 using namespace std;

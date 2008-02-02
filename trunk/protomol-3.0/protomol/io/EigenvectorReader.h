@@ -2,7 +2,7 @@
 #ifndef EIGENVECTORREADER_H
 #define EIGENVECTORREADER_H
 
-#include "Reader.h"
+#include <protomol/io/Reader.h>
 #include <protomol/types/EigenvectorInfo.h>
 #include <protomol/types/TypeSelection.h>
 

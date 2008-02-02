@@ -2,7 +2,7 @@
 #ifndef MATHUTILITIES_H
 #define MATHUTILITIES_H
 
-#include "PMConstants.h"
+#include <protomol/util/PMConstants.h>
 #include <protomol/types/SimpleTypes.h>
 
 #include <math.h>

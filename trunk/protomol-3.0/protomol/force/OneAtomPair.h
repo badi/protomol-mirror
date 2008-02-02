@@ -5,7 +5,7 @@
 #include <protomol/topology/Topology.h>
 #include <protomol/config/Parameter.h>
 #include <protomol/types/ScalarStructure.h>
-#include "OneAtomContraints.h"
+#include <protomol/force/OneAtomContraints.h>
 
 namespace ProtoMol {
   //____ OneAtomPair

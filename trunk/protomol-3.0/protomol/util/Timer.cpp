@@ -33,7 +33,7 @@
 #include <sys/resource.h>
 #endif
 
-#include "Timer.h"
+#include <protomol/util/Timer.h>
 #include <iostream>
 
 using namespace ProtoMol::Report;

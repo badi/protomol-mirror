@@ -8,7 +8,7 @@
 #include <protomol/util/PMConstants.h>
 
 #ifdef HAVE_PARALLE
-#include "Parallel.h"
+#include <protomol/parallel/Parallel.h>
 #endif // HAVE_PARALLE
 
 using namespace ProtoMol;

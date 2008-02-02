@@ -5,7 +5,7 @@
 #include <protomol/types/AbstractEnumType.h>
 #include <protomol/types/Vector3D.h>
 
-#include "ConstraintValueType.h"
+#include <protomol/config/ConstraintValueType.h>
 
 namespace ProtoMol {
   //_____________________________________________________ ValueEnum

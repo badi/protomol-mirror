@@ -7,10 +7,10 @@
 #include <protomol/force/ExtendedForce.h>
 #include <protomol/force/MollyForce.h>
 #include <protomol/force/MetaForce.h>
-#include <protomol/base/TimerStatistic.h>
+#include <protomol/util/TimerStatistic.h>
 
 #ifdef HAVE_PARALLEL
-#include "Parallel.h"
+#include <protomol/parallel/Parallel.h>
 
 //____#define DEBUG_OUTSTANDING_MSG
 

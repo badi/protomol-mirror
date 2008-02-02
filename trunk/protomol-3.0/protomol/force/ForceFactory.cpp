@@ -7,7 +7,7 @@
 #include <algorithm>
 
 #ifdef HAVE_PARALLEL
-#include "Parallel.h"
+#include <protomol/parallel/Parallel.h>
 #endif
 
 using namespace std;

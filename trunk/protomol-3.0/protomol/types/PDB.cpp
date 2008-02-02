@@ -1,4 +1,4 @@
-#include "PDB.h"
+#include <protomol/types/PDB.h>
 
 using namespace std;
 using namespace ProtoMol::Report;

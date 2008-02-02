@@ -5,7 +5,7 @@
 #include <protomol/topology/GenericTopology.h>
 
 #ifdef HAVE_PARALLEL
-#include "Parallel.h"
+#include <protomol/parallel/Parallel.h>
 #endif
 
 using namespace std;

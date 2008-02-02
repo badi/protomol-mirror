@@ -22,10 +22,10 @@
 
 \*******************************************************************/
 
-#include "Pipe.h"
+#include <protomol/debug/Pipe.h>
 
-#include "Exception.h"
-#include "Zap.h"
+#include <protomol/debug/Exception.h>
+#include <protomol/debug/Zap.h>
 
 #include <stdio.h>
 #include <unistd.h>

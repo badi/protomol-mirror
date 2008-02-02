@@ -2,7 +2,7 @@
 #ifndef PARREADER_H
 #define PARREADER_H
 
-#include "Reader.h"
+#include <protomol/io/Reader.h>
 #include <protomol/types/PAR.h>
 
 namespace ProtoMol {

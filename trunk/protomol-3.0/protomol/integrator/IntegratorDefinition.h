@@ -2,7 +2,7 @@
 #ifndef INTEGRATORDEFINITION_H
 #define INTEGRATORDEFINITION_H
 
-#include <protomol/util/MakeableDefinition.h>
+#include <protomol/base/MakeableDefinition.h>
 
 namespace ProtoMol {
   //________________________________________ IntegratorDefinition

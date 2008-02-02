@@ -1,5 +1,5 @@
-#include "ModuleManager.h"
-#include "Module.h"
+#include <protomol/base/ModuleManager.h>
+#include <protomol/base/Module.h>
 
 #include <protomol/debug/Exception.h>
 #include <protomol/frontend/ProtoMolApp.h>

@@ -1,4 +1,4 @@
-#include "TopologyUtilities.h"
+#include <protomol/topology/TopologyUtilities.h>
 
 #include <protomol/types/Vector3DBlock.h>
 #include <protomol/topology/GenericTopology.h>

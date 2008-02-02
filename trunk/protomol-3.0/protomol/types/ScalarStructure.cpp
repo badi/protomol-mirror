@@ -1,4 +1,4 @@
-#include "ScalarStructure.h"
+#include <protomol/types/ScalarStructure.h>
 
 using namespace ProtoMol;
 //____ ScalarStructure

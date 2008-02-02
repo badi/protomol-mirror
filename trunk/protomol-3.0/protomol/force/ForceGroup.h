@@ -5,7 +5,7 @@
 #include <list>
 #include <vector>
 
-#include <protomol/util/MakeableDefinition.h>
+#include <protomol/base/MakeableDefinition.h>
 namespace ProtoMol {
   class Force;
   class MetaForce;

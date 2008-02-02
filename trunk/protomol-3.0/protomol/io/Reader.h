@@ -2,7 +2,7 @@
 #ifndef READER_H
 #define READER_H
 
-#include "File.h"
+#include <protomol/io/File.h>
 
 namespace ProtoMol {
   //_________________________________________________________________ Reader

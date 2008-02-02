@@ -2,7 +2,7 @@
 #ifndef FORCE_FACTORY_H
 #define FORCE_FACTORY_H
 
-#include <protomol/util/Factory.h>
+#include <protomol/base/Factory.h>
 #include <protomol/force/Force.h>
 #include <protomol/config/Value.h>
 

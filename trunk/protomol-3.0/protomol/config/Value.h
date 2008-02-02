@@ -2,8 +2,8 @@
 #ifndef VALUE_H
 #define VALUE_H
 
-#include "ValueType.h"
-#include "ConstraintValueType.h"
+#include <protomol/config/ValueType.h>
+#include <protomol/config/ConstraintValueType.h>
 #include <typeinfo>
 
 namespace ProtoMol {

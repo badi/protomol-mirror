@@ -2,7 +2,7 @@
 #ifndef WRITER_H
 #define WRITER_H
 
-#include "File.h"
+#include <protomol/io/File.h>
 
 namespace ProtoMol {
   //_________________________________________________________________ Writer

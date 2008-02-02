@@ -1,5 +1,5 @@
-#include "CommandLineModule.h"
-#include "CommandLine.h"
+#include <protomol/frontend/CommandLineModule.h>
+#include <protomol/frontend/CommandLine.h>
 
 #include <protomol/frontend/ProtoMolApp.h>
 

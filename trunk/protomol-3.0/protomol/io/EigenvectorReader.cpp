@@ -1,4 +1,4 @@
-#include "EigenvectorReader.h"
+#include <protomol/io/EigenvectorReader.h>
 
 #include <protomol/util/StringUtilities.h>
 #include <protomol/util/Report.h>

@@ -26,10 +26,15 @@
 #ifndef EXCEPTION_H
 #define EXCEPTION_H
 
-#include "FileLocation.h"
-#include "SmartPointer.h"
-#include "Debugger.h"
-#include "Zap.h"
+#include <protomol/debug/FileLocation.h>
+#include <protomol/debug/SmartPointer.h>
+#ifdef HAVE_DEBUGGER
+#include <protomol/debug/Debugger.h>
+#endif
+#ifdef HAVE_BACKTRACE
+#include <protomol/debug/Backtrace.h>
+#endif
+#include <protomol/debug/Zap.h>
 
 #include <string>
 #include <iostream>
@@ -59,10 +64,14 @@ class SmartPointer;
  * of the standard assert.
  */
 class Exception {
+public:
+  typedef std::vector<std::string> trace_t;
+
+private:
   std::string message;
   FileLocation location;
   SmartPointer<Exception> cause;
-  SmartPointer<std::list<std::string> > trace;
+  SmartPointer<trace_t> trace;
 
 public:
   static unsigned int causePrintLevel;
@@ -107,7 +116,7 @@ public:
    */  
   SmartPointer<Exception> getCause() const {return cause;}
 
-  SmartPointer<std::list<std::string> > getTrace() const {return trace;}
+  SmartPointer<trace_t> getTrace() const {return trace;}
 
   /** 
    * Prints the complete exception recuring down to the cause exception if
@@ -131,7 +140,7 @@ public:
     stream << message;
 
     if (enableStackTraces && !trace.isNull()) {
-      std::list<std::string>::iterator it;
+      trace_t::iterator it;
       for (it = trace->begin(); it != trace->end(); it++)
 	stream << std::endl << "  " << *it;
     }
@@ -155,7 +164,7 @@ public:
 protected:
   void init() {
     if (enableStackTraces) {
-      trace = new std::list<std::string>;
+      trace = new trace_t();
 
       // When Optimization is turned on functions such as this
       // one are often inlined and not visable to the debugger.
@@ -164,7 +173,20 @@ protected:
 #     ifdef __OPTIMIZE__
       trace->push_front("Warning: Optimization can cause incomplete traces.");
 #     endif
+
+#if defined(HAVE_DEBUGGER) && defined(HAVE_BACKTRACE)
+      if (!Debugger::getStackTrace(*trace)) {
+        trace->clear();
+        Backtrace::getStackTrace(*trace);
+      }
+
+#else
+#if defined(HAVE_DEBUGGER)
       Debugger::getStackTrace(*trace);
+#else
+      Backtrace::getStackTrace(*trace);
+#endif
+#endif
     }
   }
 
@@ -181,8 +203,7 @@ protected:
  *   return 0;
  * }
  */
-inline std::ostream &operator<<(std::ostream &stream,
-				const Exception &e) {
+inline std::ostream &operator<<(std::ostream &stream, const Exception &e) {
   e.print(stream);
   return stream;
 }

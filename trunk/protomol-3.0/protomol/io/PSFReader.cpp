@@ -1,4 +1,4 @@
-#include "PSFReader.h"
+#include <protomol/io/PSFReader.h>
 
 #include <protomol/util/StringUtilities.h>
 #include <protomol/util/Report.h>

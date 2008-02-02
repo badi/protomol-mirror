@@ -22,10 +22,10 @@
 
 \*******************************************************************/
 
-#include "Debugger.h"
-#include "Process.h"
+#include <protomol/debug/Debugger.h>
+#include <protomol/debug/Process.h>
 #include <protomol/types/String.h>
-#include "Exception.h"
+#include <protomol/debug/Exception.h>
 
 #include <sys/time.h>
 #include <sys/resource.h>
@@ -43,7 +43,6 @@ using namespace std;
 
 string Debugger::executableName;
 int Debugger::numTraces = 0;
-bool Debugger::leaveCores = false;
 bool Debugger::traceFiltering = true;
 int Debugger::maxTraces = 10;
 
@@ -53,10 +52,10 @@ void Debugger::initStackTrace(string executableName) {
 }
 
 bool Debugger::printStackTrace(ostream &stream) {
-  list<string> trace;
+  trace_t trace;
   bool retVal = getStackTrace(trace);
 
-  list<string>::iterator it;
+  trace_t::iterator it;
   for (it = trace.begin(); it != trace.end(); it++)
     stream << *it << endl;
 
@@ -65,7 +64,7 @@ bool Debugger::printStackTrace(ostream &stream) {
 
 #define BUF_SIZE 2048
 
-bool Debugger::_getStackTrace(list<string> &trace) {
+bool Debugger::_getStackTrace(trace_t &trace) {
   if (executableName == "") {
     trace.push_back("Stack Trace Error: Stack dumper not initialized!");
     return false;
@@ -78,52 +77,14 @@ bool Debugger::_getStackTrace(list<string> &trace) {
     return false;
   }
 
-  // Set core ulimit
-  struct rlimit coreLimit;
-  getrlimit(RLIMIT_CORE, &coreLimit);
-  coreLimit.rlim_cur = coreLimit.rlim_max;
-  setrlimit(RLIMIT_CORE, &coreLimit);
-
-  int pid = fork();
-
-  // Fork child and dump core
-  if (pid == 0) {
-    abort(); // Dump core
-    exit(0);
-  } else if (pid == -1) {
-    trace.push_back("Stack Trace Error: Creating abort process!");
-    return false;
-  }
-
-  waitpid(pid, 0, 0);
-
-  // Check for core file
-  string coreFilename = "core";
-  int coreFD = open(coreFilename.c_str(), O_RDONLY);
-  if (coreFD == -1) {
-    coreFilename = coreFilename + "." + String(pid);
-    coreFD = open(coreFilename.c_str(), O_RDONLY);
-
-    if (coreFD == -1) {
-      trace.push_back(string("Stack Trace Error: creating core file!\n") +
-        "This can occur if you do not have write permission\n" +
-        "in the current directory or if the core file limit\n" +
-        "is set to zero.  On many Unix systems the core file\n" +
-        "limit can be set with 'ulimit -c unlimited'.");
-
-      return false;
-    }
-  }
-  close(coreFD);
-
   // Spawn gdb process
   int argc = 0;
   char *argv[5];
 
   argv[argc++] = "gdb";
   argv[argc++] = (char *)executableName.c_str();
-  argv[argc++] = "-c";
-  argv[argc++] = (char *)coreFilename.c_str();
+  String pid(getpid());
+  argv[argc++] = (char *)pid.c_str();
   argv[argc] = 0;
 
   try {
@@ -185,8 +146,6 @@ bool Debugger::_getStackTrace(list<string> &trace) {
     fclose(out);
     fclose(err);
 
-    if (!leaveCores) unlink(coreFilename.c_str());
-
     debugProc.wait();
     if (debugProc.getReturnCode()) {
       trace.push_back("Stack Trace Error: gdb returned an error.");
@@ -202,7 +161,7 @@ bool Debugger::_getStackTrace(list<string> &trace) {
   return false;
 }
 
-bool Debugger::getStackTrace(list<string> &trace) {
+bool Debugger::getStackTrace(trace_t &trace) {
   static bool inStackTrace = false;
   bool ret;
 

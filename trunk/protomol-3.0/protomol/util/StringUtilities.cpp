@@ -1,11 +1,11 @@
-#include "StringUtilities.h"
-#include "MathUtilities.h"
+#include <protomol/util/StringUtilities.h>
+#include <protomol/util/MathUtilities.h>
 
 #include <algorithm>
 #include <stdlib.h>
 #include <errno.h>
 
-#include "Report.h"
+#include <protomol/util/Report.h>
 
 using namespace std;
 using namespace ProtoMol::Report;

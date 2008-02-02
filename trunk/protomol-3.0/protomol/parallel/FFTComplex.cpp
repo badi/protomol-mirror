@@ -2,7 +2,7 @@
 // FFT includes and forward declarations
 //
 #ifdef HAVE_FFT_SGI
-#  include <fft.h> // !!! Include first <fft.h> then "FFTComplex.h" !!!
+#  include <protomol/parallel/FFTComplex.h> !!!
                    // We use the definition of zomplex in <fft.h>
 #else
 #  ifdef HAVE_FFT_FFTW3
@@ -19,7 +19,7 @@
 #           include <fftw.h>
 #           include <fftw_mpi.h>
 #         else /* ZFFT */
-#           include "FFTComplex.h"     // Defines zomplex
+#           include <protomol/parallel/FFTComplex.h>     // Defines zomplex
 extern "C" {
   extern zomplex *zfftm1di(int m, zomplex *save);
   extern int zfftm1d(int sign, int m, int n, zomplex *array, 
@@ -42,7 +42,7 @@ extern "C" {
 //
 // Other includes
 //
-#include "FFTComplex.h"
+#include <protomol/parallel/FFTComplex.h>
 #include <protomol/util/Timer.h>
 #include <protomol/util/MathUtilities.h>
 #include <protomol/util/Report.h>

@@ -1,6 +1,6 @@
-#include "ConfigurationModule.h"
-#include "Configuration.h"
-#include "ConfigurationReader.h"
+#include <protomol/config/ConfigurationModule.h>
+#include <protomol/config/Configuration.h>
+#include <protomol/config/ConfigurationReader.h>
 
 #include <protomol/frontend/CommandLine.h>
 #include <protomol/frontend/ProtoMolApp.h>

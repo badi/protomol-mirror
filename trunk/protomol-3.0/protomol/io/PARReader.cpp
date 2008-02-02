@@ -1,4 +1,4 @@
-#include "PARReader.h"
+#include <protomol/io/PARReader.h>
 
 #include <protomol/util/StringUtilities.h>
 #include <protomol/util/Report.h>

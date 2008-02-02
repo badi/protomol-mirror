@@ -37,7 +37,7 @@
 #ifndef _TIMER_H
 #define  _TIMER_H
 
-#include "Report.h"
+#include <protomol/util/Report.h>
 
 namespace ProtoMol {
   //_____________________________________________________________________ TimeRep

@@ -2,7 +2,7 @@
 #ifndef PSFREADER_H
 #define PSFREADER_H
 
-#include "Reader.h"
+#include <protomol/io/Reader.h>
 #include <protomol/types/PSF.h>
 
 namespace ProtoMol {

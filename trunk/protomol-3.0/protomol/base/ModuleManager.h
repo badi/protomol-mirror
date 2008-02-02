@@ -5,7 +5,7 @@
 #include <set>
 #include <map>
 
-#include "Module.h"
+#include <protomol/base/Module.h>
 
 namespace ProtoMol {
   class ProtoMolApp;

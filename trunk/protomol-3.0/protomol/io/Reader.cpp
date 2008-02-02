@@ -1,4 +1,4 @@
-#include "Reader.h"
+#include <protomol/io/Reader.h>
 
 using namespace std;
 using namespace ProtoMol;

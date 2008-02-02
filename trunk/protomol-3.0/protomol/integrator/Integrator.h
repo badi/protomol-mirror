@@ -2,7 +2,7 @@
 #ifndef INTEGRATOR_H
 #define INTEGRATOR_H
 
-#include <protomol/util/Makeable.h>
+#include <protomol/base/Makeable.h>
 #include <protomol/integrator/IntegratorDefinition.h>
 #include <protomol/types/Real.h>
 

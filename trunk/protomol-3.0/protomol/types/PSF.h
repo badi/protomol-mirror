@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "Real.h"
+#include <protomol/types/Real.h>
 
 namespace ProtoMol {
   //_________________________________________________________________PSF

@@ -1,5 +1,5 @@
-#include "MathUtilities.h"
-#include "Timer.h"
+#include <protomol/util/MathUtilities.h>
+#include <protomol/util/Timer.h>
 
 using namespace std;
 

@@ -22,7 +22,7 @@
 
 \*******************************************************************/
 
-#include "FileLocation.h"
+#include <protomol/debug/FileLocation.h>
 
 #include <iostream>
 

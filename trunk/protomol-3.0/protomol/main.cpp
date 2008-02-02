@@ -23,6 +23,8 @@ int main(int argc, char *argv[]) {
     while (app.step())
       cout << "Step: " << app.currentStep << endl;
 
+    app.finalize();
+
     return 0;
   } catch (const Exception &e) {
     cerr << "ERROR: " << e.getMessage() << endl;

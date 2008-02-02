@@ -1,4 +1,4 @@
-#include "CommandLine.h"
+#include <protomol/frontend/CommandLine.h>
 
 #include <protomol/debug/Exception.h>
 #include <protomol/types/String.h>

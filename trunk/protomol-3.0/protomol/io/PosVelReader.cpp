@@ -1,11 +1,11 @@
-#include "PosVelReader.h"
+#include <protomol/io/PosVelReader.h>
 
 #include <protomol/types/Vector.h>
 #include <protomol/util/SystemUtilities.h>
 
-#include "XYZBinReader.h"
-#include "XYZReader.h"
-#include "PDBReader.h"
+#include <protomol/io/XYZBinReader.h>
+#include <protomol/io/XYZReader.h>
+#include <protomol/io/PDBReader.h>
 
 using namespace std;
 using namespace ProtoMol;

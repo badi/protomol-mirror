@@ -22,7 +22,7 @@
 
 \*******************************************************************/
 
-#include "Exception.h"
+#include <protomol/debug/Exception.h>
 
 using namespace std;
 

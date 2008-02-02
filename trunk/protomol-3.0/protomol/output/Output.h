@@ -2,7 +2,7 @@
 #ifndef OUTPUT_H
 #define OUTPUT_H
 
-#include <protomol/util/Makeable.h>
+#include <protomol/base/Makeable.h>
 
 namespace ProtoMol {
   class OutputCache;

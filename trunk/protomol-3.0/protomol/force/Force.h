@@ -2,8 +2,8 @@
 #ifndef FORCE_H
 #define FORCE_H
 
-#include <protomol/util/Makeable.h>
-#include <protomol/util/MakeableDefinition.h>
+#include <protomol/base/Makeable.h>
+#include <protomol/base/MakeableDefinition.h>
 #include <protomol/debug/Exception.h>
 
 #include <vector>

@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "Vector3DBlock.h"
+#include <protomol/types/Vector3DBlock.h>
 #include <protomol/util/Report.h>
 
 namespace ProtoMol {

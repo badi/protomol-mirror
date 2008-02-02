@@ -63,6 +63,7 @@ namespace ProtoMol {
     void build();
     void print(std::ostream &stream);
     bool step();
+    void finalize();
   };
 };
 #endif // PROTOMOLAPP_H

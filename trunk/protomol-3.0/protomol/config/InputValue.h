@@ -2,9 +2,9 @@
 #ifndef INPUTVALUE_H
 #define INPUTVALUE_H
 
-#include "Value.h"
-#include "InputValueMacros.h"
-#include "Configuration.h"
+#include <protomol/config/Value.h>
+#include <protomol/config/InputValueMacros.h>
+#include <protomol/config/Configuration.h>
 
 #include <protomol/util/Report.h>
 

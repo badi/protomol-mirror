@@ -21,13 +21,13 @@
                    jcofflan@users.sourceforge.net
 
 \*******************************************************************/
-#include "Process.h"
+#include <protomol/debug/Process.h>
 
-#include "Exception.h"
-#include "Debugger.h"
-#include "Pipe.h"
+#include <protomol/debug/Exception.h>
+#include <protomol/debug/Debugger.h>
+#include <protomol/debug/Pipe.h>
 #include <protomol/types/String.h>
-#include "Zap.h"
+#include <protomol/debug/Zap.h>
 
 #include <stdio.h>
 #include <unistd.h>

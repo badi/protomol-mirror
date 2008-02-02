@@ -1,4 +1,4 @@
-#include "Writer.h"
+#include <protomol/io/Writer.h>
 
 using namespace std;
 using namespace ProtoMol;

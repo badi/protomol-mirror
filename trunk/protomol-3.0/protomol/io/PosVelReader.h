@@ -2,7 +2,7 @@
 #ifndef POS_VEL_READER_H
 #define POS_VEL_READER_H
 
-#include "PosVelReaderType.h"
+#include <protomol/io/PosVelReaderType.h>
 #include <protomol/types/XYZ.h>
 #include <protomol/types/PDB.h>
 

@@ -1,4 +1,4 @@
-#include "PosVelReaderType.h"
+#include <protomol/io/PosVelReaderType.h>
 
 using namespace std;
 using namespace ProtoMol;

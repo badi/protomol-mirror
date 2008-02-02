@@ -1,4 +1,4 @@
-#include "IntegratorFactory.h"
+#include <protomol/integrator/IntegratorFactory.h>
 
 #include <protomol/integrator/STSIntegrator.h>
 #include <protomol/integrator/MTSIntegrator.h>

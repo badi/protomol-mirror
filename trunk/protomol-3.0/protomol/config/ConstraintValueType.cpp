@@ -1,4 +1,4 @@
-#include "ConstraintValueType.h"
+#include <protomol/config/ConstraintValueType.h>
 
 using namespace std;
 using namespace ProtoMol;

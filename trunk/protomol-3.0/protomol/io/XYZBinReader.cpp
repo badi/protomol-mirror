@@ -1,4 +1,4 @@
-#include "XYZBinReader.h"
+#include <protomol/io/XYZBinReader.h>
 
 #include <protomol/util/Report.h>
 #include <protomol/util/SystemUtilities.h>

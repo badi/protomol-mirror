@@ -8,6 +8,7 @@ addHeaderFilter() {
       if [ "$NAME" == "*" ]; then continue; fi
       if [ "$SED" != "" ]; then SED+=";"; fi
       SED+="s/\"$NAME\.h\"/<protomol\/$1\/$NAME.h>/g"
+      SED+=";s/<.*\/$NAME\.h>/<protomol\/$1\/$NAME.h>/g"
   done
 }
 
@@ -99,9 +100,10 @@ while [ "$1" != "" ]; do
     shift
 done
 
-if [ ${#FILTERS[@]} -eq 0 ]; then
-    addFilter $(dirname $0)/DEFAULT_FILTER
-fi
+# Add default filter
+#if [ ${#FILTERS[@]} -eq 0 ]; then
+#    addFilter $(dirname $0)/DEFAULT_FILTER
+#fi
 
 SED=
 for f in ${FILTERS[@]}; do
@@ -111,24 +113,25 @@ for f in ${FILTERS[@]}; do
     fi
 
     . "$f"
+
+    if [ ${#FILTER[@]} -eq 0 ]; then
+        echo "FILTER not set"
+        exit 1
+    fi
+
     buildFilter
 done
 
-if [ ${#FILTER[@]} -eq 0 ]; then
-    echo "FILTER not set"
-    exit 1
-fi
-
 if $headerfilter; then addAllHeaderFilters; fi
-
-if $testonly; then
-    echo "$SED"
-    exit 0
-fi
 
 if [ ${#FILES[@]} -eq 0 ]; then
     echo "No files"
     exit 1
+fi
+
+if $testonly; then
+    echo "$SED"
+    exit 0
 fi
 
 for i  in "${FILES[@]}"; do

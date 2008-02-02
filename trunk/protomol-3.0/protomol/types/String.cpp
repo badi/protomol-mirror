@@ -21,7 +21,7 @@
                    jcofflan@users.sourceforge.net
 
 \*******************************************************************/
-#include "String.h"
+#include <protomol/types/String.h>
 
 #include <protomol/debug/Exception.h>
 

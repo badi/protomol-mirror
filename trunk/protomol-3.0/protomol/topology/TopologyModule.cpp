@@ -1,10 +1,10 @@
-#include "TopologyModule.h"
+#include <protomol/topology/TopologyModule.h>
 
-#include "Topology.h"
-#include "TopologyFactory.h"
-#include "CubicCellManager.h"
-#include "VacuumBoundaryConditions.h"
-#include "PeriodicBoundaryConditions.h"
+#include <protomol/topology/Topology.h>
+#include <protomol/topology/TopologyFactory.h>
+#include <protomol/topology/CubicCellManager.h>
+#include <protomol/topology/VacuumBoundaryConditions.h>
+#include <protomol/topology/PeriodicBoundaryConditions.h>
 
 #include <protomol/frontend/ProtoMolApp.h>
 #include <protomol/topology/ExclusionTable.h>

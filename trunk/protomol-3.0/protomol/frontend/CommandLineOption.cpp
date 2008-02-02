@@ -1,4 +1,4 @@
-#include "CommandLineOption.h"
+#include <protomol/frontend/CommandLineOption.h>
 
 #include <ctype.h>
 

@@ -4,10 +4,10 @@
 #include <string>
 #include <vector>
 
-#include <protomol/util/Vector.h>
+#include <protomol/types/Vector.h>
 
-#include "ConstraintValueType.h"
-#include "ValueType.h"
+#include <protomol/config/ConstraintValueType.h>
+#include <protomol/config/ValueType.h>
 
 #define declareInputValue(NAME, TYPE, CONSTRAINT)                        \
   struct NAME##Identifier {                                              \

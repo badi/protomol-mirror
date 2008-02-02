@@ -1,4 +1,4 @@
-#include "Value.h"
+#include <protomol/config/Value.h>
 
 #include <protomol/util/StringUtilities.h>
 #include <protomol/util/MathUtilities.h>

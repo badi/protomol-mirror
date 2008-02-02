@@ -22,12 +22,12 @@
 
 \*******************************************************************/
 
-#include "Exception.h" 
+#include <protomol/debug/Exception.h> 
 
 #ifndef SMARTPOINTER_H
 #define SMARTPOINTER_H
 
-#include "Counter.h"
+#include <protomol/debug/Counter.h>
 
 #include <stdlib.h>
 

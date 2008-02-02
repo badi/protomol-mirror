@@ -26,22 +26,24 @@
 
 #include <string>
 #include <iostream>
-#include <list>
+#include <vector>
 
 class Debugger {
   static std::string executableName;
   static int numTraces;
 public:
-  static bool leaveCores;
+  typedef std::vector<std::string> trace_t;
+
   static bool traceFiltering;
   static int maxTraces;
 
   static void initStackTrace(std::string executableName);
   static bool printStackTrace(std::ostream &stream);
-  static bool getStackTrace(std::list<std::string> &trace);
+
+  static bool getStackTrace(trace_t &trace);
   static bool stackTraceInitialized() {return executableName != "";}
 
 private:
-  static bool _getStackTrace(std::list<std::string> &trace);
+  static bool _getStackTrace(trace_t &trace);
 };
 #endif // DEBUGGER_H

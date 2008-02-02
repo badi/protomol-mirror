@@ -1,4 +1,4 @@
-#include "OutputModule.h"
+#include <protomol/output/OutputModule.h>
 
 #include <protomol/frontend/ProtoMolApp.h>
 #include <protomol/config/Configuration.h>

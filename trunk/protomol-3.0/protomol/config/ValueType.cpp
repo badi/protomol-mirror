@@ -1,4 +1,4 @@
-#include "ValueType.h"
+#include <protomol/config/ValueType.h>
 
 using namespace std;
 using namespace ProtoMol::Report;

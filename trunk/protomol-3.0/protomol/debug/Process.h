@@ -29,7 +29,7 @@
 #include <vector>
 #include <list>
 
-#include "Pipe.h"
+#include <protomol/debug/Pipe.h>
 
 class ProcessFunctor {
 public:

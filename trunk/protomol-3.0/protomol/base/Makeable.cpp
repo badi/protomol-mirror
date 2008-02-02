@@ -1,4 +1,4 @@
-#include <protomol/util/Makeable.h>
+#include <protomol/base/Makeable.h>
 
 #include <protomol/util/StringUtilities.h>
 #include <protomol/debug/Exception.h>

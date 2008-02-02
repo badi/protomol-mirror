@@ -2,7 +2,7 @@
 #ifndef INTEGRATOR_FACTORY_H
 #define INTEGRATOR_FACTORY_H
 
-#include <protomol/util/Factory.h>
+#include <protomol/base/Factory.h>
 #include <protomol/integrator/Integrator.h>
 
 namespace ProtoMol {

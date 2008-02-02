@@ -1,4 +1,4 @@
-#include "PAR.h"
+#include <protomol/types/PAR.h>
 
 #include <protomol/util/MathUtilities.h>
 

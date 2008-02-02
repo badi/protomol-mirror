@@ -3,7 +3,7 @@
 #define CONFIGURATIONREADER_H
 
 #include <protomol/io/Reader.h>
-#include "Configuration.h"
+#include <protomol/config/Configuration.h>
 
 namespace ProtoMol {
   //_________________________________________________________ConfigurationReader

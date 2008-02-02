@@ -1,8 +1,8 @@
-#include "OutputFactory.h"
-#include "OutputCollection.h"
+#include <protomol/output/OutputFactory.h>
+#include <protomol/output/OutputCollection.h>
 #include <protomol/config/Configuration.h>
 #include <protomol/util/StringUtilities.h>
-#include "OutputFile.h"
+#include <protomol/output/OutputFile.h>
 #include <protomol/frontend/HelpTextFactory.h>
 #include <algorithm>
 

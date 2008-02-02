@@ -1,4 +1,4 @@
-#include "TopologyFactory.h"
+#include <protomol/topology/TopologyFactory.h>
 
 #include <protomol/config/Configuration.h>
 #include <protomol/frontend/HelpTextFactory.h>

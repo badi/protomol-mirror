@@ -2,7 +2,7 @@
 #ifndef OUTPUT_FACTORY_H
 #define OUTPUT_FACTORY_H
 
-#include <protomol/util/Factory.h>
+#include <protomol/base/Factory.h>
 
 #include <protomol/output/Output.h>
 #include <protomol/config/Value.h>

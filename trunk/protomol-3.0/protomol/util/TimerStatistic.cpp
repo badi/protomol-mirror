@@ -1,4 +1,4 @@
-#include "TimerStatistic.h"
+#include <protomol/util/TimerStatistic.h>
 
 using namespace std;
 using namespace ProtoMol::Report;

@@ -2,7 +2,7 @@
 #ifndef TOPOLOGYFACTORYDETAILS_H
 #define TOPOLOGYFACTORYDETAILS_H
 
-#include <protomol/util/Factory.h>
+#include <protomol/base/Factory.h>
 #include <protomol/topology/GenericTopology.h>
 
 namespace ProtoMol {

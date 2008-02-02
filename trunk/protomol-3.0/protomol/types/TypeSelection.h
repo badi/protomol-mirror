@@ -2,7 +2,7 @@
 #ifndef TYPESELECTION_H
 #define TYPESELECTION_H
 
-#include "Real.h"
+#include <protomol/types/Real.h>
 
 namespace ProtoMol {
   namespace Private {

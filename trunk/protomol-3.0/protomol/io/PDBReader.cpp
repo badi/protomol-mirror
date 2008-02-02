@@ -1,4 +1,4 @@
-#include "PDBReader.h"
+#include <protomol/io/PDBReader.h>
 
 #include <protomol/util/StringUtilities.h>
 #include <protomol/util/Report.h>

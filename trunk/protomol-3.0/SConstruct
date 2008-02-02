@@ -89,7 +89,7 @@ if compiler:
 
 # Debug flags
 if debug:
-    env.Append(CCFLAGS = '-g -Wall -DDEBUG')
+    env.Append(CCFLAGS = '-g -Wall -DDEBUG -DHAVE_DEBUGGER -DHAVE_BACKTRACE')
     if strict: env.Append(CCFLAGS = '-Werror')
 
 

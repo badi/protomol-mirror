@@ -2,7 +2,7 @@
 #ifndef XYZ_H
 #define XYZ_H
 
-#include "Vector3DBlock.h"
+#include <protomol/types/Vector3DBlock.h>
 #include <string>
 
 namespace ProtoMol {

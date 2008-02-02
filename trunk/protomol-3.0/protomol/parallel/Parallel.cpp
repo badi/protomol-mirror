@@ -12,9 +12,9 @@
 #include <protomol/types/Vector3DBlock.h>
 #include <protomol/util/MathUtilities.h>
 #include <protomol/util/SystemUtilities.h>
-#include <protomol/base/TimerStatistic.h>
+#include <protomol/util/TimerStatistic.h>
 #include <protomol/util/Report.h>
-#include "FFTComplex.h"
+#include <protomol/parallel/FFTComplex.h>
 
 using namespace std;
 using namespace ProtoMol::Report;

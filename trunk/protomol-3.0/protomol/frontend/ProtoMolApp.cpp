@@ -1,6 +1,6 @@
-#include "ProtoMolApp.h"
+#include <protomol/frontend/ProtoMolApp.h>
 
-#include "MainModule.h"
+#include <protomol/frontend/MainModule.h>
 
 #include <protomol/frontend/CommandLine.h>
 #include <protomol/config/Configuration.h>
@@ -270,4 +270,8 @@ bool ProtoMolApp::step() {
   integrator->run(inc);
 
   return true;
+}
+
+void ProtoMolApp::finalize() {
+  outputs->finalize(lastStep);
 }

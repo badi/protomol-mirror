@@ -1,6 +1,6 @@
-#include "MainModule.h"
+#include <protomol/frontend/MainModule.h>
 
-#include "ProtoMolApp.h"
+#include <protomol/frontend/ProtoMolApp.h>
 
 #include <protomol/config/Configuration.h>
 #include <protomol/util/Report.h>
