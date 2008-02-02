@@ -86,17 +86,17 @@ if compiler:
     elif compiler != 'default':
         Tool(compiler)(env)
 
-print "Compiler: " + env['CXX']
+print "Compiler: " + env['CC']
 
 # Options
-if env['CXX'] == 'cl':
+if env['CC'] == 'cl':
     env.Append(CCFLAGS = '-EHsc')
 
 # Debug flags
 if debug:
-    if env['CXX'] == 'cl':
+    if env['CC'] == 'cl':
         env.Append(CCFLAGS = '-W1 -GX /MDd')
-    elif env['CXX'] == 'g++':
+    elif env['CC'] == 'gcc':
         env.Append(CCFLAGS = '-g -Wall -DDEBUG')
         if strict: env.Append(CCFLAGS = '-Werror')
 
@@ -105,7 +105,7 @@ if debug:
 
 # Optimizations
 if optimize:
-    if env['CXX'] in ['icc', 'icpc']:
+    if env['CC'] in ['icc', 'icpc']:
         env.Append(CCFLAGS = '-O -finline-functions -funroll-loops')
     elif env['CC'] == 'gcc':
         env.Append(CCFLAGS =
