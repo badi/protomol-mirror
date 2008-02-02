@@ -15,9 +15,7 @@
 #define BITSPERBYTE 8
 #define BITS(type)  (BITSPERBYTE * (long)sizeof(type))
 #define HIBITI      (1U << (BITS(int) - 1))
-#ifndef MAXINT
 #define MAXINT          ((int)(~HIBITI))
-#endif
 #define MAXDOUBLE   1.7976931348623157e+308
 #define MINDOUBLE       2.2250738585072014e-308
 #define M_2_SQRTPI     1.12837916709551257390  /* 2/sqrt(pi) */
