@@ -87,14 +87,14 @@ if compiler:
         Tool(compiler)(env)
 
 # Options
-if CXX == 'cl':
+if env['CXX'] == 'cl':
     env.Append(CCFLAGS = '-EHsc')
 
 # Debug flags
 if debug:
-    if CXX == 'cl':
+    if env['CXX'] == 'cl':
         env.Append(CCFLAGS = '-W1 -GX /MDd')
-    elif CXX == 'g++':
+    elif env['CXX'] == 'g++':
         env.Append(CCFLAGS = '-g -Wall -DDEBUG')
         if strict: env.Append(CCFLAGS = '-Werror')
 
