@@ -86,11 +86,19 @@ if compiler:
     elif compiler != 'default':
         Tool(compiler)(env)
 
+# Options
+if CXX == 'cl':
+    env.Append(CCFLAGS = '-EHsc')
 
 # Debug flags
 if debug:
-    env.Append(CCFLAGS = '-g -Wall -DDEBUG')
-    if strict: env.Append(CCFLAGS = '-Werror')
+    if CXX == 'cl':
+        env.Append(CCFLAGS = '-W1 -GX /MDd')
+    elif CXX == 'g++':
+        env.Append(CCFLAGS = '-g -Wall -DDEBUG')
+        if strict: env.Append(CCFLAGS = '-Werror')
+
+    env.Append(CCFLAGS = '-DDEBUG')
 
 
 # Optimizations
