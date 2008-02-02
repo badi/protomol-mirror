@@ -5,7 +5,6 @@
 #include <vector>
 
 #include <protomol/types/Vector.h>
-
 #include <protomol/config/ConstraintValueType.h>
 #include <protomol/config/ValueType.h>
 
