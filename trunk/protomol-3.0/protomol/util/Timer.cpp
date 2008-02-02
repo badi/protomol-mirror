@@ -198,11 +198,11 @@ TimeRep Timer::getCurrentTime() {
   sysTime = (double)time.tms_stime / (double)HZ;
 
 #elif defined (WIN32)
-#ifndef __GNUC__
-#define EPOCHFILETIME (116444736000000000i 64)
-#else
+  //#ifndef __GNUC__
+  //#define EPOCHFILETIME (116444736000000000i 64)
+  //#else
 #define EPOCHFILETIME (116444736000000000LL)
-#endif
+    //#endif
   FILETIME ft;
   LARGE_INTEGER li;
   __int64 t;
