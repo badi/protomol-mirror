@@ -32,7 +32,8 @@ namespace ProtoMol {
    * Vector enables to initialize a STL std::vector with arbitrary number of elements@n
    *
    * static const std::vector<std::string> @n
-   * months(Vector<std::string>("Jan")("Feb")("Mar")("Apr")("May")("Jun")("Jul")("Aug")("Sep")("oct")("Nov")("Dec"));
+   * months(Vector<std::string>("Jan")("Feb")("Mar")("Apr")("May")
+   *        ("Jun")("Jul")("Aug")("Sep")("oct")("Nov")("Dec"));
    */
   template<typename T>
   class Vector  {

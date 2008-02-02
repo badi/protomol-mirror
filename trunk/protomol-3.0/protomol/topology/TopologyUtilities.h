@@ -7,7 +7,7 @@
 #include <protomol/types/Matrix3By3.h>
 #include <protomol/types/Real.h>
 #include <protomol/topology/Torsion.h>
-#include <protomol/base/Stack.h>
+#include <protomol/types/Stack.h>
 #include <protomol/topology/AngleInfo.h>
 #include <protomol/topology/Bond.h>
 
