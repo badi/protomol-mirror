@@ -2,6 +2,8 @@
 #ifndef ARRAY_H
 #define ARRAY_H
 
+#include <protomol/config.h>
+
 // Wrapper header file for N-dim. Array class
 //
 // If your compiler does not support partial template
