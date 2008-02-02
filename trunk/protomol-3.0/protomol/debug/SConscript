@@ -3,7 +3,8 @@ import glob
 Import('*')
 
 if env['PLATFORM'] == 'win32':
-  Return(['Exception.cpp', 'FileLocation.cpp'])
+  src = ['Exception.cpp', 'FileLocation.cpp']
 else:
   src = glob.glob('*.cpp')
-  Return('src')
+
+Return('src')
