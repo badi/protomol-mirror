@@ -98,7 +98,8 @@ namespace ProtoMol {
     }
 
     void unregisterAllExemplars() {
-      for (typename pointers_t::iterator i = begin(); i != end(); ++i)
+      for (typename pointers_t::iterator i = pointers.begin();
+           i != pointers.end(); ++i)
         delete (*i);
 
       exemplars.clear();
