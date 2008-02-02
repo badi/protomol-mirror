@@ -1,4 +1,9 @@
 import glob
 
-src = glob.glob('*.cpp')
-Return('src')
+Import('*')
+
+if env['PLATFORM'] == 'win32':
+  Return(['Exception.cpp', 'FileLocation.cpp'])
+else:
+  src = glob.glob('*.cpp')
+  Return('src')
