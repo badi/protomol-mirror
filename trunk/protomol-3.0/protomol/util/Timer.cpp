@@ -199,10 +199,10 @@ TimeRep Timer::getCurrentTime() {
 
 #elif defined (WIN32)
   //#ifndef __GNUC__
-  //#define EPOCHFILETIME (116444736000000000i 64)
+#define EPOCHFILETIME (116444736000000000i 64)
   //#else
-#define EPOCHFILETIME (116444736000000000LL)
-    //#endif
+  //#define EPOCHFILETIME (116444736000000000LL)
+  //#endif
   FILETIME ft;
   LARGE_INTEGER li;
   __int64 t;
