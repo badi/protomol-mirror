@@ -86,6 +86,8 @@ if compiler:
     elif compiler != 'default':
         Tool(compiler)(env)
 
+print "Compiler: " + env['CXX']
+
 # Options
 if env['CXX'] == 'cl':
     env.Append(CCFLAGS = '-EHsc')
