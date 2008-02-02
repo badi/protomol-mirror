@@ -5,9 +5,9 @@
 #include <protomol/topology/SemiGenericTopology.h>
 #include <protomol/topology/CellListEnumerator.h>
 #include <protomol/topology/CubicCellManager.h>
-#include <protomol/util/StringUtilities.h>
-#include <protomol/util/PMConstants.h>
-#include <protomol/debug/Exception.h>
+#include <protomol/base/StringUtilities.h>
+#include <protomol/base/PMConstants.h>
+#include <protomol/base/Exception.h>
 
 namespace ProtoMol {
   //________________________________________ Topology

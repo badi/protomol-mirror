@@ -1,7 +1,7 @@
 #include <protomol/config/Value.h>
 
-#include <protomol/util/StringUtilities.h>
-#include <protomol/util/MathUtilities.h>
+#include <protomol/base/StringUtilities.h>
+#include <protomol/base/MathUtilities.h>
 
 using namespace std;
 using namespace ProtoMol::Report;

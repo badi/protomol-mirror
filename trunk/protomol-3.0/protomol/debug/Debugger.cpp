@@ -22,7 +22,7 @@
 
 \*******************************************************************/
 
-#include <protomol/debug/Exception.h>
+#include <protomol/base/Exception.h>
 
 #ifdef HAVE_DEBUGGER
 #include <protomol/debug/Debugger.h>

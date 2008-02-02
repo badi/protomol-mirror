@@ -2,7 +2,7 @@
 #ifndef ARRAYCELLSTRUCTURE_H
 #define ARRAYCELLSTRUCTURE_H
 
-#include <protomol/util/StringUtilities.h>
+#include <protomol/base/StringUtilities.h>
 #include <protomol/topology/CubicCellLocation.h>
 #include <protomol/types/Vector3D.h>
 #include <protomol/types/Array.h>

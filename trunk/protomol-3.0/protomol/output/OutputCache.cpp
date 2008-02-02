@@ -6,16 +6,16 @@
 #include <protomol/types/Vector3DBlock.h>
 #include <protomol/integrator/Integrator.h>
 
-#include <protomol/util/Report.h>
-#include <protomol/util/MathUtilities.h>
-#include <protomol/util/SystemUtilities.h>
+#include <protomol/base/Report.h>
+#include <protomol/base/MathUtilities.h>
+#include <protomol/base/SystemUtilities.h>
 #include <protomol/topology/TopologyUtilities.h>
-#include <protomol/util/PMConstants.h>
+#include <protomol/base/PMConstants.h>
 
-#include <protomol/frontend/ProtoMolApp.h>
+#include <protomol/base/ProtoMolApp.h>
 
 #include <protomol/debug/Zap.h>
-#include <protomol/debug/Exception.h>
+#include <protomol/base/Exception.h>
 
 #include <limits>
 

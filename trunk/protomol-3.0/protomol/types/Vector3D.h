@@ -2,8 +2,8 @@
 #ifndef VECTOR3D_H
 #define VECTOR3D_H
 
-#include <protomol/util/MathUtilities.h>
-#include <protomol/util/Report.h>
+#include <protomol/base/MathUtilities.h>
+#include <protomol/base/Report.h>
 
 namespace ProtoMol {
   //_________________________________________________________________ Vector3D

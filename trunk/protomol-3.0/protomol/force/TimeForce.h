@@ -3,7 +3,7 @@
 #define TIMEFORCE_H
 
 #include <protomol/force/Force.h>
-#include <protomol/util/Timer.h>
+#include <protomol/base/Timer.h>
 
 namespace ProtoMol {
   //________________________________________ TimeForce

@@ -1,6 +1,6 @@
 #include "C2SwitchingFunction.h"
-#include <protomol/util/MathUtilities.h>
-#include <protomol/debug/Exception.h>
+#include <protomol/base/MathUtilities.h>
+#include <protomol/base/Exception.h>
 
 using namespace std;
 using namespace ProtoMol;

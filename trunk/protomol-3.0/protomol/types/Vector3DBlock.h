@@ -5,7 +5,7 @@
 #include <vector>
 
 #include <protomol/types/Vector3D.h>
-#include <protomol/util/Proxy.h>
+#include <protomol/base/Proxy.h>
 
 
 namespace ProtoMol {

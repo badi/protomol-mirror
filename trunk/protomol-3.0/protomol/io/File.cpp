@@ -1,6 +1,6 @@
 #include <protomol/io/File.h>
 
-#include <protomol/util/SystemUtilities.h>
+#include <protomol/base/SystemUtilities.h>
 
 #if defined (__SUNPRO_CC)
 //____ Sun WorkShop CC does not properly read more than one char ...

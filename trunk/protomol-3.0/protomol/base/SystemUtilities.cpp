@@ -1,7 +1,7 @@
-#include <protomol/util/SystemUtilities.h>
+#include <protomol/base/SystemUtilities.h>
 
-#include <protomol/util/StringUtilities.h>
-#include <protomol/debug/Exception.h>
+#include <protomol/base/StringUtilities.h>
+#include <protomol/base/Exception.h>
 
 #ifdef _WIN32
 

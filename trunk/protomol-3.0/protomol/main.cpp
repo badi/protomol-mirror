@@ -1,5 +1,5 @@
-#include <protomol/frontend/ProtoMolApp.h>
-#include <protomol/debug/Exception.h>
+#include <protomol/base/ProtoMolApp.h>
+#include <protomol/base/Exception.h>
 
 #include <iostream>
 

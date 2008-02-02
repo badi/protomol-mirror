@@ -6,7 +6,7 @@
 #include <vector>
 
 #include <protomol/types/Real.h>
-#include <protomol/util/Report.h>
+#include <protomol/base/Report.h>
 
 namespace ProtoMol {
   //_________________________________________________________________PAR

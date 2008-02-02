@@ -1,7 +1,7 @@
 #include <protomol/base/Makeable.h>
 
-#include <protomol/util/StringUtilities.h>
-#include <protomol/debug/Exception.h>
+#include <protomol/base/StringUtilities.h>
+#include <protomol/base/Exception.h>
 
 using namespace std;
 using namespace ProtoMol;

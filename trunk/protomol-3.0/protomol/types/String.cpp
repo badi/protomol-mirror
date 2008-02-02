@@ -23,7 +23,7 @@
 \*******************************************************************/
 #include <protomol/types/String.h>
 
-#include <protomol/debug/Exception.h>
+#include <protomol/base/Exception.h>
 
 #include <stdio.h>
 #include <stdlib.h>

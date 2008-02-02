@@ -5,10 +5,10 @@
 #include <protomol/types/ScalarStructure.h>
 #include <protomol/types/Vector3DBlock.h>
 #include <protomol/integrator/Integrator.h>
-#include <protomol/util/Report.h>
-#include <protomol/util/MathUtilities.h>
+#include <protomol/base/Report.h>
+#include <protomol/base/MathUtilities.h>
 #include <protomol/topology/TopologyUtilities.h>
-#include <protomol/frontend/ProtoMolApp.h>
+#include <protomol/base/ProtoMolApp.h>
 
 using namespace ProtoMol;
 //____ OutputCollection

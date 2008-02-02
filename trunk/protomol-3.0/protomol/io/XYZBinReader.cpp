@@ -1,7 +1,7 @@
 #include <protomol/io/XYZBinReader.h>
 
-#include <protomol/util/Report.h>
-#include <protomol/util/SystemUtilities.h>
+#include <protomol/base/Report.h>
+#include <protomol/base/SystemUtilities.h>
 #include <protomol/types/TypeSelection.h>
 
 using namespace std;

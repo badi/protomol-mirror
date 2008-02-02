@@ -4,7 +4,7 @@
 
 #include <protomol/base/Makeable.h>
 #include <protomol/base/MakeableDefinition.h>
-#include <protomol/debug/Exception.h>
+#include <protomol/base/Exception.h>
 
 #include <vector>
 

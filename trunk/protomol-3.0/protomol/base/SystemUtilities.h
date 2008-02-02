@@ -5,7 +5,7 @@
 #include <string>
 #include <algorithm>
 
-#include <protomol/util/Report.h>
+#include <protomol/base/Report.h>
 #include <protomol/types/Real.h>
 
 namespace ProtoMol {

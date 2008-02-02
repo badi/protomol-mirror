@@ -1,11 +1,11 @@
 #include "LangevinImpulseIntegrator.h"
-#include <protomol/util/Report.h>
+#include <protomol/base/Report.h>
 #include <protomol/types/ScalarStructure.h>
 #include <protomol/types/Vector3DBlock.h>
 #include <protomol/force/ForceGroup.h>
 #include <protomol/topology/GenericTopology.h>
 #include <protomol/topology/TopologyUtilities.h>
-#include <protomol/util/PMConstants.h>
+#include <protomol/base/PMConstants.h>
 
 using namespace std; 
 using namespace ProtoMol::Report;

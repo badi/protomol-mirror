@@ -43,9 +43,9 @@ extern "C" {
 // Other includes
 //
 #include <protomol/parallel/FFTComplex.h>
-#include <protomol/util/Timer.h>
-#include <protomol/util/MathUtilities.h>
-#include <protomol/util/Report.h>
+#include <protomol/base/Timer.h>
+#include <protomol/base/MathUtilities.h>
+#include <protomol/base/Report.h>
 using namespace ProtoMol::Report;
 
 namespace ProtoMol {

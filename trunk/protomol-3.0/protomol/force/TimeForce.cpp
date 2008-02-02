@@ -1,6 +1,6 @@
 #include <protomol/force/TimeForce.h>
 #include <protomol/types/ScalarStructure.h>
-#include <protomol/util/MathUtilities.h>
+#include <protomol/base/MathUtilities.h>
 #include <protomol/types/Vector3DBlock.h>
 #include <protomol/topology/GenericTopology.h>
 

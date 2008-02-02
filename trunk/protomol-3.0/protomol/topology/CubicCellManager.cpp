@@ -1,6 +1,6 @@
 #include <protomol/topology/CubicCellManager.h>
 
-#include <protomol/debug/Exception.h>
+#include <protomol/base/Exception.h>
 
 using namespace std;
 using namespace ProtoMol;

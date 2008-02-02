@@ -1,7 +1,7 @@
 #ifndef MODULE_H
 #define MODULE_H
 
-#include <protomol/debug/Exception.h>
+#include <protomol/base/Exception.h>
 
 #include <string>
 #include <set>

@@ -1,8 +1,8 @@
 #include <protomol/topology/PeriodicBoundaryConditions.h>
 
-#include <protomol/debug/Exception.h>
-#include <protomol/util/MathUtilities.h>
-#include <protomol/util/Report.h>
+#include <protomol/base/Exception.h>
+#include <protomol/base/MathUtilities.h>
+#include <protomol/base/Report.h>
 #include <algorithm>
 
 using namespace std;

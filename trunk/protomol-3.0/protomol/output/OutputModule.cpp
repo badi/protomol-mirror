@@ -1,6 +1,6 @@
 #include <protomol/output/OutputModule.h>
 
-#include <protomol/frontend/ProtoMolApp.h>
+#include <protomol/base/ProtoMolApp.h>
 #include <protomol/config/Configuration.h>
 #include <protomol/output/OutputFactory.h>
 

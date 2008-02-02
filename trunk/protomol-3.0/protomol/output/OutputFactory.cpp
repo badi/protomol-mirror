@@ -1,9 +1,9 @@
 #include <protomol/output/OutputFactory.h>
 #include <protomol/output/OutputCollection.h>
 #include <protomol/config/Configuration.h>
-#include <protomol/util/StringUtilities.h>
+#include <protomol/base/StringUtilities.h>
 #include <protomol/output/OutputFile.h>
-#include <protomol/frontend/HelpTextFactory.h>
+#include <protomol/config/HelpTextFactory.h>
 #include <algorithm>
 
 using namespace std;

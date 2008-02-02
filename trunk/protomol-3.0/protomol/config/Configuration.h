@@ -3,7 +3,7 @@
 #define CONFIGURATION_H
 
 #include <protomol/config/Parameter.h>
-#include <protomol/util/StringUtilities.h>
+#include <protomol/base/StringUtilities.h>
 #include <vector>
 #include <map>
 

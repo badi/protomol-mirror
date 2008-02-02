@@ -1,9 +1,9 @@
 #include <protomol/output/OutputXYZTrajectoryVel.h>
 #include <protomol/config/Configuration.h>
-#include <protomol/util/StringUtilities.h>
+#include <protomol/base/StringUtilities.h>
 #include <protomol/topology/GenericTopology.h>
 #include <protomol/output/OutputModule.h>
-#include <protomol/debug/Exception.h>
+#include <protomol/base/Exception.h>
 #include <protomol/io/XYZTrajectoryWriter.h>
 
 using namespace std;

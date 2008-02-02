@@ -1,5 +1,5 @@
 #include <protomol/integrator/Integrator.h>
-#include <protomol/util/Report.h>
+#include <protomol/base/Report.h>
 #include <protomol/types/ScalarStructure.h>
 #include <protomol/types/Vector3DBlock.h>
 #include <protomol/force/ForceGroup.h>

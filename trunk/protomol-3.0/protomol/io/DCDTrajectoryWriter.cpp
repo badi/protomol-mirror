@@ -1,8 +1,8 @@
 #include <protomol/io/DCDTrajectoryWriter.h>
 
-#include <protomol/util/Report.h>
-#include <protomol/util/SystemUtilities.h>
-#include <protomol/util/StringUtilities.h>
+#include <protomol/base/Report.h>
+#include <protomol/base/SystemUtilities.h>
+#include <protomol/base/StringUtilities.h>
 
 using namespace std;
 using namespace ProtoMol::Report;

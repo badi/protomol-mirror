@@ -1,9 +1,9 @@
 #include <protomol/io/EigenvectorReader.h>
 
-#include <protomol/util/StringUtilities.h>
-#include <protomol/util/Report.h>
-#include <protomol/util/MathUtilities.h>
-#include <protomol/util/SystemUtilities.h>
+#include <protomol/base/StringUtilities.h>
+#include <protomol/base/Report.h>
+#include <protomol/base/MathUtilities.h>
+#include <protomol/base/SystemUtilities.h>
 
 using namespace std;
 using namespace ProtoMol::Report;

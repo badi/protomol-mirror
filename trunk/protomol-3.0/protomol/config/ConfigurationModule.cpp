@@ -2,8 +2,8 @@
 #include <protomol/config/Configuration.h>
 #include <protomol/config/ConfigurationReader.h>
 
-#include <protomol/frontend/CommandLine.h>
-#include <protomol/frontend/ProtoMolApp.h>
+#include <protomol/config/CommandLine.h>
+#include <protomol/base/ProtoMolApp.h>
 #include <protomol/config/InputValue.h>
 
 #include <iostream>

@@ -1,6 +1,6 @@
 #include "TemplateModule.h"
 
-#include <protomol/frontend/ProtoMolApp.h>
+#include <protomol/base/ProtoMolApp.h>
 
 using namespace std;
 using namespace ProtoMol;

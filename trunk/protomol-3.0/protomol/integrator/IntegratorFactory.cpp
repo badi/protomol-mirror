@@ -3,11 +3,11 @@
 #include <protomol/integrator/STSIntegrator.h>
 #include <protomol/integrator/MTSIntegrator.h>
 #include <protomol/integrator/NonStandardIntegrator.h>
-#include <protomol/util/StringUtilities.h>
+#include <protomol/base/StringUtilities.h>
 #include <protomol/force/ForceFactory.h>
 #include <protomol/force/ForceGroup.h>
-#include <protomol/util/Report.h>
-#include <protomol/frontend/HelpTextFactory.h>
+#include <protomol/base/Report.h>
+#include <protomol/config/HelpTextFactory.h>
 
 using namespace std;
 using namespace ProtoMol;

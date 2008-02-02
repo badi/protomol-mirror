@@ -1,7 +1,7 @@
 #include <protomol/io/DCDTrajectoryReader.h>
 
-#include <protomol/util/Report.h>
-#include <protomol/util/SystemUtilities.h>
+#include <protomol/base/Report.h>
+#include <protomol/base/SystemUtilities.h>
 
 using namespace std;
 using namespace ProtoMol::Report;

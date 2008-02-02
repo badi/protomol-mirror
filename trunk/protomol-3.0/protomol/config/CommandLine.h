@@ -1,7 +1,7 @@
 #ifndef COMMAND_LINE_H
 #define COMMAND_LINE_H
 
-#include <protomol/frontend/CommandLineOption.h>
+#include <protomol/config/CommandLineOption.h>
 
 #include <string>
 #include <map>

@@ -3,8 +3,8 @@
 #define OUTPUTFILE_H
 
 #include <protomol/output/Output.h>
-#include <protomol/util/StringUtilities.h>
-#include <protomol/util/Timer.h>
+#include <protomol/base/StringUtilities.h>
+#include <protomol/base/Timer.h>
 #include <fstream>
 namespace ProtoMol {
   class Configuration;

@@ -1,10 +1,10 @@
-#include <protomol/frontend/MainModule.h>
+#include <protomol/base/MainModule.h>
 
-#include <protomol/frontend/ProtoMolApp.h>
+#include <protomol/base/ProtoMolApp.h>
 
 #include <protomol/config/Configuration.h>
-#include <protomol/util/Report.h>
-#include <protomol/debug/Exception.h>
+#include <protomol/base/Report.h>
+#include <protomol/base/Exception.h>
 
 using namespace std;
 using namespace ProtoMol;

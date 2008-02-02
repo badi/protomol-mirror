@@ -1,5 +1,5 @@
 #include <protomol/topology/LennardJonesParameterTable.h>
-#include <protomol/util/Report.h>
+#include <protomol/base/Report.h>
 using namespace ProtoMol::Report;
 
 using namespace ProtoMol;

@@ -1,10 +1,10 @@
 #include <protomol/base/ModuleManager.h>
 #include <protomol/base/Module.h>
 
-#include <protomol/debug/Exception.h>
-#include <protomol/frontend/ProtoMolApp.h>
-#include <protomol/frontend/CommandLine.h>
-#include <protomol/util/StringUtilities.h>
+#include <protomol/base/Exception.h>
+#include <protomol/base/ProtoMolApp.h>
+#include <protomol/config/CommandLine.h>
+#include <protomol/base/StringUtilities.h>
 
 #include <iostream>
 

@@ -1,7 +1,7 @@
 #include <protomol/output/OutputFile.h>
 #include <protomol/output/OutputModule.h>
 #include <protomol/config/Configuration.h>
-#include <protomol/debug/Exception.h>
+#include <protomol/base/Exception.h>
 
 using namespace std;
 using namespace ProtoMol::Report;

@@ -1,7 +1,7 @@
 #include <protomol/io/PARReader.h>
 
-#include <protomol/util/StringUtilities.h>
-#include <protomol/util/Report.h>
+#include <protomol/base/StringUtilities.h>
+#include <protomol/base/Report.h>
 #include <algorithm>
 
 using namespace std;

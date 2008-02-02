@@ -22,7 +22,7 @@
 
 \*******************************************************************/
 
-#include <protomol/debug/Exception.h> 
+#include <protomol/base/Exception.h> 
 
 #ifndef SMARTPOINTER_H
 #define SMARTPOINTER_H

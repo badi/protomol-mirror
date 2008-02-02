@@ -2,11 +2,11 @@
 
 #include <protomol/types/Vector3DBlock.h>
 #include <protomol/topology/GenericTopology.h>
-#include <protomol/util/Report.h>
+#include <protomol/base/Report.h>
 #include <protomol/topology/Topology.h>
-#include <protomol/util/MathUtilities.h>
-#include <protomol/util/PMConstants.h>
-#include <protomol/util/StringUtilities.h>
+#include <protomol/base/MathUtilities.h>
+#include <protomol/base/PMConstants.h>
+#include <protomol/base/StringUtilities.h>
 #include <protomol/types/ScalarStructure.h>
 
 #include <vector>

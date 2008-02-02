@@ -2,9 +2,9 @@
 #ifndef ENERGYSTRUCTURE_H
 #define ENERGYSTRUCTURE_H
 
-#include <protomol/util/Proxy.h>
+#include <protomol/base/Proxy.h>
 #include <protomol/types/Vector3D.h>
-#include <protomol/util/PMConstants.h>
+#include <protomol/base/PMConstants.h>
 
 namespace ProtoMol {
   //_________________________________________________________________ ScalarStructure

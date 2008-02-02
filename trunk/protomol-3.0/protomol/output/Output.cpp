@@ -2,8 +2,8 @@
 #include <protomol/config/Configuration.h>
 #include <protomol/topology/GenericTopology.h>
 #include <protomol/types/ScalarStructure.h>
-#include <protomol/frontend/MainModule.h>
-#include <protomol/frontend/ProtoMolApp.h>
+#include <protomol/base/MainModule.h>
+#include <protomol/base/ProtoMolApp.h>
 
 using namespace std;
 using namespace ProtoMol;

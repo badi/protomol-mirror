@@ -4,8 +4,8 @@
 
 #include <string>
 
-#include <protomol/util/Timer.h>
-#include <protomol/util/Report.h>
+#include <protomol/base/Timer.h>
+#include <protomol/base/Report.h>
 
 namespace ProtoMol {
   //_________________________________________________________________ TimerStatistic

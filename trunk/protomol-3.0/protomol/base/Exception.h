@@ -27,7 +27,7 @@
 #define EXCEPTION_H
 
 #include <protomol/config.h>
-#include <protomol/debug/FileLocation.h>
+#include <protomol/base/FileLocation.h>
 #include <protomol/debug/SmartPointer.h>
 #ifdef HAVE_DEBUGGER
 #include <protomol/debug/Debugger.h>

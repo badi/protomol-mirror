@@ -6,7 +6,7 @@
 #include <vector>
 
 #include <protomol/types/Vector3DBlock.h>
-#include <protomol/util/Report.h>
+#include <protomol/base/Report.h>
 
 namespace ProtoMol {
   //___________________________________________________________________PDB

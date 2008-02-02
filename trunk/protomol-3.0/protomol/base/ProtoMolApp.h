@@ -3,7 +3,7 @@
 
 #include <protomol/base/ModuleManager.h>
 #include <protomol/config/Configuration.h>
-#include <protomol/frontend/CommandLine.h>
+#include <protomol/config/CommandLine.h>
 
 #include <protomol/topology/TopologyFactory.h>
 #include <protomol/force/ForceFactory.h>

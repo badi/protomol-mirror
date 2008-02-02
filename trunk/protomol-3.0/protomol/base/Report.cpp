@@ -1,8 +1,8 @@
-#include <protomol/util/Report.h>
+#include <protomol/base/Report.h>
 
 #include <iomanip>
 
-#include <protomol/util/SystemUtilities.h>
+#include <protomol/base/SystemUtilities.h>
 
 using namespace std;
 

@@ -1,7 +1,7 @@
 #include <protomol/io/PosVelReader.h>
 
-#include <protomol/types/Vector.h>
-#include <protomol/util/SystemUtilities.h>
+#include <protomol/base/Vector.h>
+#include <protomol/base/SystemUtilities.h>
 
 #include <protomol/io/XYZBinReader.h>
 #include <protomol/io/XYZReader.h>

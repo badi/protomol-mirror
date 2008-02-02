@@ -4,7 +4,7 @@
 
 #include <protomol/io/Writer.h>
 #include <protomol/types/XYZ.h>
-#include <protomol/util/SystemUtilities.h>
+#include <protomol/base/SystemUtilities.h>
 #include <protomol/types/TypeSelection.h>
 
 namespace ProtoMol {

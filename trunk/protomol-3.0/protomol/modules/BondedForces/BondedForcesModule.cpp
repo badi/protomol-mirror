@@ -6,8 +6,8 @@
 #include "ImproperSystemForce.h"
 #include "HarmDihedralSystemForce.h"
 
-#include <protomol/frontend/ProtoMolApp.h>
-#include <protomol/util/StringUtilities.h>
+#include <protomol/base/ProtoMolApp.h>
+#include <protomol/base/StringUtilities.h>
 #include <protomol/topology/TopologyModule.h>
 #include <protomol/topology/PeriodicBoundaryConditions.h>
 #include <protomol/topology/VacuumBoundaryConditions.h>

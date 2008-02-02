@@ -1,11 +1,11 @@
-#include <protomol/frontend/CommandLine.h>
+#include <protomol/config/CommandLine.h>
 
-#include <protomol/debug/Exception.h>
+#include <protomol/base/Exception.h>
 #include <protomol/types/String.h>
 #include <protomol/config/Configuration.h>
 #include <protomol/config/ConfigurationModule.h>
-#include <protomol/util/StringUtilities.h>
-#include <protomol/util/SystemUtilities.h>
+#include <protomol/base/StringUtilities.h>
+#include <protomol/base/SystemUtilities.h>
 
 #include <stdlib.h>
 

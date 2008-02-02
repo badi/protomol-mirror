@@ -6,7 +6,7 @@
 #include <map>
 #include <set>
 
-#include <protomol/util/PMConstants.h>
+#include <protomol/base/PMConstants.h>
 #include <protomol/types/SimpleTypes.h>
 
 namespace ProtoMol {

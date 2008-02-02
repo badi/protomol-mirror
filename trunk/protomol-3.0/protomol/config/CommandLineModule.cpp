@@ -1,7 +1,7 @@
-#include <protomol/frontend/CommandLineModule.h>
-#include <protomol/frontend/CommandLine.h>
+#include <protomol/config/CommandLineModule.h>
+#include <protomol/config/CommandLine.h>
 
-#include <protomol/frontend/ProtoMolApp.h>
+#include <protomol/base/ProtoMolApp.h>
 
 using namespace std;
 using namespace ProtoMol;

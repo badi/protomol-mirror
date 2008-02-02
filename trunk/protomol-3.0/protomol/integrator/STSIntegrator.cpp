@@ -1,13 +1,13 @@
 #include <protomol/integrator/STSIntegrator.h>
-#include <protomol/util/Report.h>
+#include <protomol/base/Report.h>
 #include <protomol/types/ScalarStructure.h>
 #include <protomol/types/Vector3DBlock.h>
 #include <protomol/force/ForceGroup.h>
 #include <protomol/topology/GenericTopology.h>
 #include <protomol/topology/TopologyUtilities.h>
-#include <protomol/util/PMConstants.h>
+#include <protomol/base/PMConstants.h>
 #include <protomol/modifier/ModifierIncrementTimestep.h>
-#include <protomol/debug/Exception.h>
+#include <protomol/base/Exception.h>
 
 using namespace ProtoMol::Report;
 using namespace std;

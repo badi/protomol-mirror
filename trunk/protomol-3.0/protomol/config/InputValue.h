@@ -6,7 +6,7 @@
 #include <protomol/config/InputValueMacros.h>
 #include <protomol/config/Configuration.h>
 
-#include <protomol/util/Report.h>
+#include <protomol/base/Report.h>
 
 namespace ProtoMol {
   //________________________________________________________ InputValue

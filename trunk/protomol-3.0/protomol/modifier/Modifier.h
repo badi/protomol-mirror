@@ -3,7 +3,7 @@
 #define MODIFIER_H
 #include <vector>
 
-#include <protomol/util/Report.h>
+#include <protomol/base/Report.h>
 #include <protomol/topology/GenericTopology.h>
 
 namespace ProtoMol {

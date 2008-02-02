@@ -1,7 +1,7 @@
 #include <protomol/base/ModuleManager.h>
 
-#include <protomol/frontend/MainModule.h>
-#include <protomol/frontend/CommandLineModule.h>
+#include <protomol/base/MainModule.h>
+#include <protomol/config/CommandLineModule.h>
 #include <protomol/config/ConfigurationModule.h>
 #include <protomol/topology/TopologyModule.h>
 #include <protomol/output/OutputModule.h>

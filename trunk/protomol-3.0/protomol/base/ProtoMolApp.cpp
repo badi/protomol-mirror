@@ -1,13 +1,13 @@
-#include <protomol/frontend/ProtoMolApp.h>
+#include <protomol/base/ProtoMolApp.h>
 
-#include <protomol/frontend/MainModule.h>
+#include <protomol/base/MainModule.h>
 
-#include <protomol/frontend/CommandLine.h>
+#include <protomol/config/CommandLine.h>
 #include <protomol/config/Configuration.h>
 #include <protomol/config/ConfigurationModule.h>
-#include <protomol/util/SystemUtilities.h>
-#include <protomol/util/PMConstants.h>
-#include <protomol/util/Report.h>
+#include <protomol/base/SystemUtilities.h>
+#include <protomol/base/PMConstants.h>
+#include <protomol/base/Report.h>
 
 #include <protomol/types/String.h>
 #include <protomol/types/PDB.h>

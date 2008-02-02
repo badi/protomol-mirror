@@ -7,7 +7,7 @@
 #include <protomol/force/ExtendedForce.h>
 #include <protomol/force/MollyForce.h>
 #include <protomol/force/MetaForce.h>
-#include <protomol/util/TimerStatistic.h>
+#include <protomol/base/TimerStatistic.h>
 
 #ifdef HAVE_PARALLEL
 #include <protomol/parallel/Parallel.h>

@@ -4,7 +4,7 @@
 
 #include <string>
 #ifdef HAVE_NO_SSTREAM
-#include <protomol/util/sstream_local.h>
+#include <protomol/base/sstream_local.h>
 #else
 #include <sstream>
 #endif

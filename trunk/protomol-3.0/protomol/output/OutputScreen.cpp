@@ -5,7 +5,7 @@
 #include <protomol/topology/GenericTopology.h>
 #include <protomol/types/ScalarStructure.h>
 #include <protomol/topology/TopologyUtilities.h>
-#include <protomol/frontend/MainModule.h>
+#include <protomol/base/MainModule.h>
 #include <protomol/output/OutputModule.h>
 
 using namespace std;

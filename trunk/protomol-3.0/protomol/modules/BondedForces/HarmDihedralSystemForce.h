@@ -9,7 +9,7 @@
 #include <protomol/topology/TopologyUtilities.h>
 
 //for debugging
-#include <protomol/util/Report.h>
+#include <protomol/base/Report.h>
 
 using namespace ProtoMol::Report;
 namespace ProtoMol {

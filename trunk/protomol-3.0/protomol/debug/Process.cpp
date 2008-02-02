@@ -23,7 +23,7 @@
 \*******************************************************************/
 #include <protomol/debug/Process.h>
 
-#include <protomol/debug/Exception.h>
+#include <protomol/base/Exception.h>
 #include <protomol/debug/Debugger.h>
 #include <protomol/debug/Pipe.h>
 #include <protomol/types/String.h>

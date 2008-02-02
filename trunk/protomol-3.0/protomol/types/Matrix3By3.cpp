@@ -1,6 +1,6 @@
 #include <protomol/types/Matrix3By3.h>
-#include <protomol/util/MathUtilities.h>
-#include <protomol/util/Report.h>
+#include <protomol/base/MathUtilities.h>
+#include <protomol/base/Report.h>
 
 using namespace std;
 using namespace ProtoMol::Report;

@@ -1,7 +1,7 @@
 #include <protomol/force/Force.h>
 
 #include <protomol/force/CompareForce.h>
-#include <protomol/debug/Exception.h>
+#include <protomol/base/Exception.h>
 
 using namespace std;
 using namespace ProtoMol::Report;

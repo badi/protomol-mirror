@@ -6,22 +6,22 @@
 #include <protomol/topology/VacuumBoundaryConditions.h>
 #include <protomol/topology/PeriodicBoundaryConditions.h>
 
-#include <protomol/frontend/ProtoMolApp.h>
+#include <protomol/base/ProtoMolApp.h>
 #include <protomol/topology/ExclusionTable.h>
 #include <protomol/topology/GenericTopology.h>
 #include <protomol/topology/CoulombSCPISMParameterTable.h>
 #include <protomol/topology/LennardJonesParameterTable.h>
 #include <protomol/types/PAR.h>
 #include <protomol/types/PSF.h>
-#include <protomol/util/Report.h>
-#include <protomol/util/PMConstants.h>
-#include <protomol/util/MathUtilities.h>
-#include <protomol/util/StringUtilities.h>
+#include <protomol/base/Report.h>
+#include <protomol/base/PMConstants.h>
+#include <protomol/base/MathUtilities.h>
+#include <protomol/base/StringUtilities.h>
 #include <protomol/topology/TopologyUtilities.h>
 
-#include <protomol/frontend/MainModule.h>
+#include <protomol/base/MainModule.h>
 
-#include <protomol/debug/Exception.h>
+#include <protomol/base/Exception.h>
 #include <algorithm>
 #include <list>
 #include <map>

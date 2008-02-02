@@ -22,11 +22,24 @@
 
 \*******************************************************************/
 
-#include <protomol/debug/Exception.h>
+#include <protomol/base/FileLocation.h>
+
+#include <iostream>
 
 using namespace std;
 
-unsigned int Exception::causePrintLevel = 10;
-#ifdef HAVE_STACK_TRACE
-bool Exception::enableStackTraces = false;
-#endif
+ostream &operator<<(ostream &stream, const FileLocation &fl) {
+  if (!fl.isEmpty()) {
+    stream << fl.filename;
+    if (fl.line >= 0) {
+      stream << ':' << fl.line;
+
+      if (fl.col >= 0) stream << ':' << fl.col;
+    }
+
+    stream << ':' << fl.function;
+  }
+
+  return stream;
+}
+

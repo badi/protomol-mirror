@@ -1,5 +1,5 @@
 #include <protomol/force/ReducedHessAngle.h>
-#include <protomol/util/Report.h>
+#include <protomol/base/Report.h>
 
 using namespace std;
 using namespace ProtoMol::Report;

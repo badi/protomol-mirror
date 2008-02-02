@@ -1,10 +1,10 @@
 #include <protomol/output/OutputFinalXYZVel.h>
 #include <protomol/config/Configuration.h>
 #include <protomol/output/OutputCache.h>
-#include <protomol/util/StringUtilities.h>
+#include <protomol/base/StringUtilities.h>
 #include <protomol/topology/GenericTopology.h>
 #include <protomol/io/XYZWriter.h>
-#include <protomol/debug/Exception.h>
+#include <protomol/base/Exception.h>
 
 using namespace std;
 using namespace ProtoMol::Report;

@@ -10,10 +10,10 @@
 #include <protomol/parallel/Parallel.h>
 #include <protomol/types/ScalarStructure.h>
 #include <protomol/types/Vector3DBlock.h>
-#include <protomol/util/MathUtilities.h>
-#include <protomol/util/SystemUtilities.h>
-#include <protomol/util/TimerStatistic.h>
-#include <protomol/util/Report.h>
+#include <protomol/base/MathUtilities.h>
+#include <protomol/base/SystemUtilities.h>
+#include <protomol/base/TimerStatistic.h>
+#include <protomol/base/Report.h>
 #include <protomol/parallel/FFTComplex.h>
 
 using namespace std;

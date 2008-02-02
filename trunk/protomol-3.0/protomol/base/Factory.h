@@ -2,9 +2,9 @@
 #ifndef FACTORY_H
 #define FACTORY_H
 
-#include <protomol/util/StringUtilities.h>
-#include <protomol/util/Report.h>
-#include <protomol/debug/Exception.h>
+#include <protomol/base/StringUtilities.h>
+#include <protomol/base/Report.h>
+#include <protomol/base/Exception.h>
 
 #include <vector>
 #include <map>

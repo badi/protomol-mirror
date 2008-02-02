@@ -1,9 +1,9 @@
 #include <protomol/io/PDBWriter.h>
 
 #include <protomol/types/PDB.h>
-#include <protomol/util/Report.h>
-#include <protomol/util/StringUtilities.h>
-#include <protomol/util/SystemUtilities.h>
+#include <protomol/base/Report.h>
+#include <protomol/base/StringUtilities.h>
+#include <protomol/base/SystemUtilities.h>
 
 #include <iomanip>
 #include <map>
