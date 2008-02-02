@@ -95,7 +95,7 @@ if env['CC'] == 'cl':
 # Debug flags
 if debug:
     if env['CC'] == 'cl':
-        env.Append(CCFLAGS = '-W1 -GX /MDd')
+        env.Append(CCFLAGS = '-W1 /MDd')
     elif env['CC'] == 'gcc':
         env.Append(CCFLAGS = '-g -Wall -DDEBUG')
         if strict: env.Append(CCFLAGS = '-Werror')
