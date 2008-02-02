@@ -26,6 +26,7 @@
 #ifndef EXCEPTION_H
 #define EXCEPTION_H
 
+#include <protomol/config.h>
 #include <protomol/debug/FileLocation.h>
 #include <protomol/debug/SmartPointer.h>
 #ifdef HAVE_DEBUGGER
@@ -36,8 +37,14 @@
 #endif
 #include <protomol/debug/Zap.h>
 
+#include <vector>
 #include <string>
 #include <iostream>
+
+#if defined(HAVE_DEBUGGER) || defined(HAVE_BACKTRACE)
+#define HAVE_STACK_TRACE
+#endif
+
 
 // Forward Declarations
 template <class T, sp_alloc_t alloc_t>
@@ -64,18 +71,24 @@ class SmartPointer;
  * of the standard assert.
  */
 class Exception {
+#ifdef HAVE_STACK_TRACE
 public:
   typedef std::vector<std::string> trace_t;
+#endif
 
 private:
   std::string message;
   FileLocation location;
   SmartPointer<Exception> cause;
+#ifdef HAVE_STACK_TRACE
   SmartPointer<trace_t> trace;
+#endif
 
 public:
   static unsigned int causePrintLevel;
+#ifdef HAVE_STACK_TRACE
   static bool enableStackTraces;
+#endif
 
   Exception() {init();}
 
@@ -95,15 +108,20 @@ public:
   }
 
   Exception(const std::string message, const FileLocation &location, 
-		 const Exception &cause) :
+            const Exception &cause) :
     message(message), location(location) {
     this->cause = new Exception(cause);
     init();
   }
 
   /// Copy constructor
+#ifdef HAVE_STACK_TRACE
   Exception(const Exception &e) :
     message(e.message), location(e.location), cause(e.cause), trace(e.trace) {}
+#else
+  Exception(const Exception &e) :
+    message(e.message), location(e.location), cause(e.cause) {}
+#endif
 
   virtual ~Exception() {}
 
@@ -116,7 +134,9 @@ public:
    */  
   SmartPointer<Exception> getCause() const {return cause;}
 
+#ifdef HAVE_STACK_TRACE
   SmartPointer<trace_t> getTrace() const {return trace;}
+#endif
 
   /** 
    * Prints the complete exception recuring down to the cause exception if
@@ -131,30 +151,32 @@ public:
    * @return A reference to the passed stream.
    */  
   std::ostream &print(std::ostream &stream,
-		      bool printLocations = true,
-		      unsigned int printLevel = 0) const {
+                      bool printLocations = true,
+                      unsigned int printLevel = 0) const {
 
     if (printLocations && !location.isEmpty())
       stream << "@ " << location << " ";
 
     stream << message;
 
+#ifdef HAVE_STACK_TRACE
     if (enableStackTraces && !trace.isNull()) {
       trace_t::iterator it;
       for (it = trace->begin(); it != trace->end(); it++)
-	stream << std::endl << "  " << *it;
+        stream << std::endl << "  " << *it;
     }
+#endif
 
     if (!cause.isNull()) {
       stream << std::endl << " ";
 
       if (printLevel > causePrintLevel) {
-	stream << "Aborting exception dump due to causePrintLevel limit! "
-	       << "Increase Exception::causePrintLevel to see more.";
+        stream << "Aborting exception dump due to causePrintLevel limit! "
+               << "Increase Exception::causePrintLevel to see more.";
 
       } else {
-	stream << "caused by: ";
-	cause->print(stream, printLocations, printLevel);
+        stream << "caused by: ";
+        cause->print(stream, printLocations, printLevel);
       }
     }
 
@@ -163,6 +185,7 @@ public:
 
 protected:
   void init() {
+#ifdef HAVE_STACK_TRACE
     if (enableStackTraces) {
       trace = new trace_t();
 
@@ -188,6 +211,7 @@ protected:
 #endif
 #endif
     }
+#endif // HAVE_STACK_TRACE
   }
 
   friend std::ostream &operator<<(std::ostream &, const Exception &);

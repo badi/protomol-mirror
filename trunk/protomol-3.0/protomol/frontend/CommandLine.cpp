@@ -174,8 +174,9 @@ void CommandLine::usage(ostream &stream, const string &name) {
 
 #ifdef DEBUG
 int CommandLine::enableStackTraceAction(const vector<string> &args) {
+#ifdef HAVE_STACK_TRACE
   Debugger::initStackTrace(getCanonicalPath(name));
-  Exception::enableStackTraces = true;
+#endif
 
   return 0;
 }

@@ -1,5 +1,8 @@
 #include <protomol/debug/Backtrace.h>
 
+#include <protomol/config.h>
+
+#ifdef HAVE_BACKTRACE
 #include <execinfo.h>
 
 using namespace std;
@@ -16,3 +19,4 @@ void Backtrace::getStackTrace(trace_t &trace) {
   for (int i = 0; i < n; i++)
     trace.push_back(strings[i]);
 }
+#endif // HAVE_BACKTRACE

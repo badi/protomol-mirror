@@ -22,10 +22,12 @@
 
 \*******************************************************************/
 
+#include <protomol/debug/Exception.h>
+
+#ifdef HAVE_DEBUGGER
 #include <protomol/debug/Debugger.h>
 #include <protomol/debug/Process.h>
 #include <protomol/types/String.h>
-#include <protomol/debug/Exception.h>
 
 #include <sys/time.h>
 #include <sys/resource.h>
@@ -182,6 +184,7 @@ bool Debugger::getStackTrace(trace_t &trace) {
 
   return ret;
 }
+#endif // HAVE_DEBUGGER
 
 #ifdef DEBUGGER_TEST
 #include <iostream>

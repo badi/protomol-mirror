@@ -27,4 +27,6 @@
 using namespace std;
 
 unsigned int Exception::causePrintLevel = 10;
+#ifdef HAVE_STACK_TRACE
 bool Exception::enableStackTraces = false;
+#endif
