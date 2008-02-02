@@ -12,26 +12,26 @@ namespace ProtoMol {
   struct CoulombSCPISMParameters {
   public:
 
-    CoulombSCPISMParameters(Real _al = 0.0, Real _hb = 0.5, Real _r = 0.5,
-                            Real _sq = 0.0, Real _rc = 0.37, Real _ga = 0.52,
-                            Hbonded _is = NO)
-      : alpha_i(_al), hbond_factor(_hb), R_iw(_r), sqrt_alpha_i(_sq),
-        r_cov(_rc), gamma_i(_ga), isHbonded(_is) {}
+    CoulombSCPISMParameters(Real al = 0.0, Real hb = 0.5, Real r = 0.5,
+                            Real sq = 0.0, Real rc = 0.37, Real ga = 0.52,
+                            Hbonded is = NO)
+      : alpha_i(al), hbond_factor(hb), R_iw(r), sqrt_alpha_i(sq),
+        r_cov(rc), gamma_i(ga), isHbonded(is) {}
     
-    void set(Real _al = 0.0, Real _hb = 0.5, Real _r = 0.5, Real _sq = 0.0,
-             Real _rc = 0.37, Real _ga = 0.0052, Hbonded _is = NO,
-             Real _A = 0.0, Real _B = 0.0, Real _C = 0.0, Real _Rvdw = 0.0) {
-      alpha_i = _al;
-      hbond_factor = _hb;
-      R_iw = _r;
-      sqrt_alpha_i = _sq;
-      r_cov = _rc;
-      gamma_i = _ga;
-      isHbonded = _is;
-      A_i = _A;
-      B_i = _B;
-      C_i = _C;
-      R_vdw = _Rvdw;
+    void set(Real al = 0.0, Real hb = 0.5, Real r = 0.5, Real sq = 0.0,
+             Real rc = 0.37, Real ga = 0.0052, Hbonded is = NO,
+             Real A = 0.0, Real B = 0.0, Real C = 0.0, Real Rvdw = 0.0) {
+      alpha_i = al;
+      hbond_factor = hb;
+      R_iw = r;
+      sqrt_alpha_i = sq;
+      r_cov = rc;
+      gamma_i = ga;
+      isHbonded = is;
+      A_i = A;
+      B_i = B;
+      C_i = C;
+      R_vdw = Rvdw;
     }
 
     Real alpha_i; // Alpha_i controls slope of D(r) around atom type i
