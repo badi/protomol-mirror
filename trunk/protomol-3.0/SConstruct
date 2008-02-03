@@ -116,6 +116,8 @@ if optimize:
 if depends:
     env.Append(CCFLAGS = '-MMD -MF ${TARGET}.d')
 
+# Look for boost iostreams
+env.Append(CPPDEFINES = 'USE_BOOST_FILTER_STREAMS')
 
 # Build
 libsrc = []

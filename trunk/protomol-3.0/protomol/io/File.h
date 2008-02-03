@@ -2,7 +2,17 @@
 #ifndef FILE_H
 #define FILE_H
 
+#ifdef USE_BOOST_FILTER_STREAMS
+#include <boost/iostreams/device/file.hpp>
+#include <boost/iostreams/filtering_stream.hpp>
+
+typedef boost::iostreams::filtering_ostream ofstream;
+typedef boost::iostreams::filtering_ostream ifstream;
+#else
+
 #include <fstream>
+#endif
+
 #include <string>
 
 namespace ProtoMol {
@@ -12,15 +22,11 @@ namespace ProtoMol {
    * writes are intend to act STL alike to stream into or from a supported 
    * structure or container.
    *
-   *
-   *
    * NB:
    * - New writer or reader should never inherit directly from File, but
    *   from Reader or Writer.
    * - Reading binaries one should always use File::read(), rather directly
    *   myFile.read, since some compilers like Sun WorkShop CC have problems.
-   * - Be careful when defining constructors or methods with default values;
-   *   especially implicit conversion const char* to string
    * - File objects can be used as ios_base objects inside expression
    *   (e.g., while(dcdReader >> xyz){ ... } )
    */
