@@ -5,6 +5,7 @@
 #include <protomol/config/CommandLine.h>
 #include <protomol/config/Configuration.h>
 #include <protomol/config/ConfigurationModule.h>
+#include <protomol/config/ConfigurationReader.h>
 #include <protomol/base/SystemUtilities.h>
 #include <protomol/base/PMConstants.h>
 #include <protomol/base/Report.h>
@@ -42,14 +43,9 @@ ProtoMolApp::ProtoMolApp(ModuleManager *modManager) :
 ProtoMolApp::~ProtoMolApp() {}
 
 void ProtoMolApp::configure(const string &configfile) {
-  config[InputConfig::keyword] = configfile;
+  const char *argv[] = {"ProtoMol", configfile.c_str(), 0};
 
-  // Read Config file
-  if (config.valid(InputConfig::keyword))
-    changeDirectory(config[InputConfig::keyword]);
-  else THROW("Configuration file not set.");
-
-  modManager->configure(this);
+  configure(2, (char **)argv);
 }
 
 bool ProtoMolApp::configure(int argc, char *argv[]) {
