@@ -43,6 +43,12 @@ ProtoMolApp::~ProtoMolApp() {}
 
 void ProtoMolApp::configure(const string &configfile) {
   config[InputConfig::keyword] = configfile;
+
+  // Read Config file
+  if (config.valid(InputConfig::keyword))
+    changeDirectory(config[InputConfig::keyword]);
+  else THROW("Configuration file not set.");
+
   modManager->configure(this);
 }
 
