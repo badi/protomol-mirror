@@ -15,19 +15,11 @@ namespace ProtoMol {
   /// Pair of unsigned int
   typedef std::pair<unsigned int, unsigned int> PairUInt;
 
-  //   struct PairUInt {
-  //     PairUInt():first(0),second(0){}
-  //     PairUInt(unsigned int a, unsigned int b):first(a),second(b){}
-  //     unsigned int first,second;
-  //   };
-
   /// Pair of sorted int, where first <= second
   struct PairIntSorted {
     PairIntSorted() : first(0), second(0) {}
-    PairIntSorted(unsigned int a,
-                  unsigned int b) : first(std::min(a,
-                                                   b)),
-      second(std::max(a, b)) {}
+    PairIntSorted(unsigned int a, unsigned int b) :
+      first(std::min(a, b)), second(std::max(a, b)) {}
     bool operator<(const PairIntSorted &p) const {
       if (first < p.first)
         return true;
@@ -37,8 +29,9 @@ namespace ProtoMol {
         return true;
       return false;
     }
-    bool operator==(const PairIntSorted &p) const {return first == p.first &&
-                                                          second == p.second;}
+    bool operator==(const PairIntSorted &p) const {
+      return first == p.first && second == p.second;
+    }
 
     unsigned int first, second;
   };

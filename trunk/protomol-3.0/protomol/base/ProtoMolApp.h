@@ -58,6 +58,7 @@ namespace ProtoMol {
     ProtoMolApp(ModuleManager *modManager);
     ~ProtoMolApp();
 
+    void configure(const std::string &configfile);
     bool configure(int argc = 0, char *argv[] = 0);
     void read();
     void build();

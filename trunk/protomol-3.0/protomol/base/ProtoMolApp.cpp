@@ -41,6 +41,11 @@ ProtoMolApp::ProtoMolApp(ModuleManager *modManager) :
 
 ProtoMolApp::~ProtoMolApp() {}
 
+void ProtoMolApp::configure(const string &configfile) {
+  config[InputConfig::keyword] = configfile;
+  modManager->configure(this);
+}
+
 bool ProtoMolApp::configure(int argc, char *argv[]) {
   // Parse command line
   if (cmdLine.parse(argc, argv)) return false;
