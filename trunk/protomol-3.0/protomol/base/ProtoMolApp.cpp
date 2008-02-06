@@ -281,4 +281,9 @@ bool ProtoMolApp::step() {
 
 void ProtoMolApp::finalize() {
   outputs->finalize(lastStep);
+
+  // Clean up
+  delete topology;
+  delete integrator;
+  delete outputs;
 }

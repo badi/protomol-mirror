@@ -21,21 +21,6 @@ namespace ProtoMol {
     virtual ~XYZTrajectoryReader();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // From class File
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  public:
-    virtual bool open() {myFirst = true; return File::open();}
-
-    virtual bool open(const std::string &filename) {
-      myFirst = true;
-      return File::open(filename);
-    }
-
-    virtual bool open(const char *filename) {
-      myFirst = true; return File::open(filename);
-    }
-
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // From class Reader
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
@@ -70,7 +55,6 @@ namespace ProtoMol {
   private:
     Vector3DBlock *myCoords;
     std::vector<std::string> *myNames;
-    bool myFirst;
   };
 
   //____INLINES

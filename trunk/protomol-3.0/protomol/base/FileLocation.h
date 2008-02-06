@@ -28,78 +28,83 @@
 
 #include <string>
 
-/** 
- * This class is mainly used by Exception, but can be used
- * as a general class for recording a line and column location
- * with in a file.
- */
-class FileLocation {
-  std::string filename;
-  std::string function;
-  long line;
-  long col;
-  bool empty;
+namespace ProtoMol {
 
-public:
   /** 
-   * Construct a default FileLocation with an empty value.
+   * This class is mainly used by Exception, but can be used
+   * as a general class for recording a line and column location
+   * with in a file.
    */
-  FileLocation() : line(-1), col(-1), empty(true) {}
+  class FileLocation {
+    std::string filename;
+    std::string function;
+    long line;
+    long col;
+    bool empty;
+
+  public:
+    /** 
+     * Construct a default FileLocation with an empty value.
+     */
+    FileLocation() : line(-1), col(-1), empty(true) {}
+
+    /** 
+     * Copy constructor.
+     */
+    FileLocation(const FileLocation &x) : 
+      filename(x.filename), function(x.function), line(x.line), col(x.col),
+      empty(x.empty) {}
+
+    /** 
+     * @param filename The name of the file.
+     * @param line The line with that file.
+     * @param col The column on that line.
+     */
+    FileLocation(const std::string filename, const long line, 
+                 const long col) : 
+      filename(filename), line(line), col(col), empty(false) {}
+
+    FileLocation(const std::string filename, const std::string function,
+                 const long line,  const long col) : 
+      filename(filename), function(function), line(line), col(col),
+      empty(false) {}
+
+    virtual ~FileLocation() {}
+
+    const std::string getFilename() const {return filename;}
+
+    const std::string getFunction() const {return function;}
+
+    /** 
+     * @return -1 if no line was set the line number otherwise.
+     */  
+    const long getLine() const {return line;}
+
+    /** 
+     * @return -1 of no column was set the column number otherwise.
+     */
+    const long getCol() const {return col;}
+
+    /** 
+     * @return True of no filename, line, or column have been set.
+     */
+    bool isEmpty() const {return empty;}
+
+    friend std::ostream &operator<<(std::ostream &stream, 
+                                    const FileLocation &fl);
+  };  
 
   /** 
-   * Copy constructor.
+   * Print a file location to a stream.  The format is as follows.
+   *
+   * filename[:line[:col]]
+   *
+   * If no line or column has been set then they will not be displayed.
+   * 
+   * @return A reference to the passed stream.
    */
-  FileLocation(const FileLocation &x) : 
-    filename(x.filename), function(x.function), line(x.line), col(x.col), empty(x.empty) {}
-
-  /** 
-   * @param filename The name of the file.
-   * @param line The line with that file.
-   * @param col The column on that line.
-   */
-  FileLocation(const std::string filename, const long line, 
-		    const long col) : 
-    filename(filename), line(line), col(col), empty(false) {}
-
-  FileLocation(const std::string filename, const std::string function, const long line, 
-		    const long col) : 
-    filename(filename), function(function), line(line), col(col), empty(false) {}
-
-  virtual ~FileLocation() {}
-
-  const std::string getFilename() const {return filename;}
-
-  const std::string getFunction() const {return function;}
-
-  /** 
-   * @return -1 if no line was set the line number otherwise.
-   */  
-  const long getLine() const {return line;}
-
-  /** 
-   * @return -1 of no column was set the column number otherwise.
-   */
-  const long getCol() const {return col;}
-
-  /** 
-   * @return True of no filename, line, or column have been set.
-   */
-  bool isEmpty() const {return empty;}
-
-  friend std::ostream &operator<<(std::ostream &stream, 
-				  const FileLocation &fl);
-};  
-
-/** 
- * Print a file location to a stream.  The format is as follows.
- *
- * filename[:line[:col]]
- *
- * If no line or column has been set then they will not be displayed.
- * 
- * @return A reference to the passed stream.
- */
-std::ostream &operator<<(std::ostream &stream, const FileLocation &fl);
+  std::ostream &operator<<(std::ostream &stream, const FileLocation &fl);
+}
 
 #if __STDC_VERSION__ < 199901L
 # if __GNUC__ >= 2
@@ -109,6 +114,8 @@ std::ostream &operator<<(std::ostream &stream, const FileLocation &fl);
 # endif
 #endif
 
-#define FILE_LOCATION FileLocation(__FILE__, __func__, __LINE__, -1)
+#ifndef FILE_LOCATION
+#define FILE_LOCATION ProtoMol::FileLocation(__FILE__, __func__, __LINE__, -1)
+#endif
 
 #endif

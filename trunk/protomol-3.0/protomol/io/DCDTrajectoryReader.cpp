@@ -10,11 +10,10 @@ using namespace ProtoMol;
 //____DCDTrajectoryReader
 
 DCDTrajectoryReader::DCDTrajectoryReader() :
-  Reader(ios::binary), myCoords(NULL), mySwapEndian(false), myFirst(true) {}
+  Reader(ios::binary), myCoords(NULL), mySwapEndian(false) {}
 
 DCDTrajectoryReader::DCDTrajectoryReader(const string &filename) :
-  Reader(ios::binary,
-         filename), myCoords(NULL), mySwapEndian(false), myFirst(true) {}
+  Reader(ios::binary, filename), myCoords(NULL), mySwapEndian(false) {}
 
 DCDTrajectoryReader::~DCDTrajectoryReader() {
   if (myCoords != NULL)
@@ -25,9 +24,9 @@ bool DCDTrajectoryReader::tryFormat() {
   if (!open())
     return false;
 
-  myFile.seekg(0, ios::end);
-  ios::pos_type size = myFile.tellg();
-  myFile.seekg(0, ios::beg);
+  file.seekg(0, ios::end);
+  ios::pos_type size = file.tellg();
+  file.seekg(0, ios::beg);
 
   int32 n = 0;
   File::read(reinterpret_cast<char *>(&n), sizeof(int32));
@@ -41,9 +40,9 @@ bool DCDTrajectoryReader::tryFormat() {
 
   if (static_cast<long>(size) >= 104 &&
       (n == 84 || m == 84) && string(coord) == "CORD")
-    return !myFile.fail();
+    return !file.fail();
 
-  myFile.setstate(ios::failbit);
+  file.setstate(ios::failbit);
   return false;
 }
 
@@ -54,19 +53,17 @@ bool DCDTrajectoryReader::read() {
 }
 
 bool DCDTrajectoryReader::read(Vector3DBlock &coords) {
-  if (myFirst) {
+  if (!is_open()) {
     // First time ...
     myX.resize(0);
     myY.resize(0);
     myZ.resize(0);
 
-    if (!open())
-      return false;
-    myFirst = false;
+    if (!open()) return false;
 
-    myFile.seekg(0, ios::end);
-    ios::pos_type size = myFile.tellg();
-    myFile.seekg(0, ios::beg);
+    file.seekg(0, ios::end);
+    ios::pos_type size = file.tellg();
+    file.seekg(0, ios::beg);
 
     int32 n = 0;
     File::read(reinterpret_cast<char *>(&n), sizeof(int32));
@@ -87,22 +84,23 @@ bool DCDTrajectoryReader::read(Vector3DBlock &coords) {
                << "endian input on " <<
         (ISLITTLEENDIAN ? "little" : "big") << "endian machine." << endr;
       } else {
-        myFile.setstate(ios::failbit);
+        file.setstate(ios::failbit);
         close();
         return false;
       }
 
     int32 freeIndexes = 0;
-    myFile.seekg(40, ios::beg);
+    file.seekg(40, ios::beg);
     File::read(reinterpret_cast<char *>(&freeIndexes), sizeof(int32));
     if (mySwapEndian) swapBytes(freeIndexes);
 
     // Skip header
-    myFile.seekg(84 + 4, ios::beg);
-    n = 0; File::read(reinterpret_cast<char *>(&n), sizeof(int32));
+    file.seekg(84 + 4, ios::beg);
+    n = 0;
+    File::read(reinterpret_cast<char *>(&n), sizeof(int32));
     if (mySwapEndian) swapBytes(n);
-    if (n != 84 || myFile.fail()) {
-      myFile.setstate(ios::failbit);
+    if (n != 84 || file.fail()) {
+      file.setstate(ios::failbit);
       close();
       return false;
     }
@@ -114,17 +112,17 @@ bool DCDTrajectoryReader::read(Vector3DBlock &coords) {
     if (mySwapEndian) swapBytes(n);
     File::read(reinterpret_cast<char *>(&m), sizeof(int32));
     if (mySwapEndian) swapBytes(m);
-    //myFile.seekg (m*80, ios::cur);
-    myComment.resize(m * 80 + m - 1);
+    //file.seekg (m*80, ios::cur);
+    comment.resize(m * 80 + m - 1);
     for (unsigned int i = 0, j = 0; i < (unsigned int)m; i++, j += 81) {
-      File::read(&myComment[j], 80);
-      myComment[j + 80] = '\n';
+      File::read(&comment[j], 80);
+      comment[j + 80] = '\n';
     }
 
     File::read(reinterpret_cast<char *>(&l), sizeof(int32));
     if (mySwapEndian) swapBytes(l);
-    if ((n - 4) % 80 != 0 || myFile.fail() || l != n) {
-      myFile.setstate(ios::failbit);
+    if ((n - 4) % 80 != 0 || file.fail() || l != n) {
+      file.setstate(ios::failbit);
       close();
       return false;
     }
@@ -138,15 +136,15 @@ bool DCDTrajectoryReader::read(Vector3DBlock &coords) {
     if (mySwapEndian) swapBytes(count); // number of atoms
     File::read(reinterpret_cast<char *>(&l), sizeof(int32));
     if (mySwapEndian) swapBytes(l); // 4
-    if (n != 4 || l != 4 || myFile.fail()) {
-      myFile.setstate(ios::failbit);
+    if (n != 4 || l != 4 || file.fail()) {
+      file.setstate(ios::failbit);
       close();
       return false;
     }
 
     // Skip free indexes
     if (freeIndexes > 0)
-      myFile.seekg(4 * (count - freeIndexes + 2), ios::cur);
+      file.seekg(4 * (count - freeIndexes + 2), ios::cur);
 
     myX.resize(count);
     myY.resize(count);
@@ -159,8 +157,8 @@ bool DCDTrajectoryReader::read(Vector3DBlock &coords) {
   File::read(reinterpret_cast<char *>(&count), sizeof(int32));
   if (mySwapEndian) swapBytes(count); // number of atoms
   count /= sizeof(int32);
-  if ((unsigned int)count != myX.size() || myFile.fail()) {
-    myFile.setstate(ios::failbit);
+  if ((unsigned int)count != myX.size() || file.fail()) {
+    file.setstate(ios::failbit);
     close();
     return false;
   }
@@ -170,8 +168,8 @@ bool DCDTrajectoryReader::read(Vector3DBlock &coords) {
   File::read(reinterpret_cast<char *>(&count), sizeof(int32));
   if (mySwapEndian) swapBytes(count);
   count /= sizeof(int32);
-  if ((unsigned int)count != myX.size() || myFile.fail()) {
-    myFile.setstate(ios::failbit);
+  if ((unsigned int)count != myX.size() || file.fail()) {
+    file.setstate(ios::failbit);
     close();
     return false;
   }
@@ -181,8 +179,8 @@ bool DCDTrajectoryReader::read(Vector3DBlock &coords) {
   File::read(reinterpret_cast<char *>(&count), sizeof(int32));
   if (mySwapEndian) swapBytes(count); // number of atoms
   count /= sizeof(int32);
-  if ((unsigned int)count != myY.size() || myFile.fail()) {
-    myFile.setstate(ios::failbit);
+  if ((unsigned int)count != myY.size() || file.fail()) {
+    file.setstate(ios::failbit);
     close();
     return false;
   }
@@ -192,8 +190,8 @@ bool DCDTrajectoryReader::read(Vector3DBlock &coords) {
   File::read(reinterpret_cast<char *>(&count), sizeof(int32));
   if (mySwapEndian) swapBytes(count);
   count /= sizeof(int32);
-  if ((unsigned int)count != myY.size() || myFile.fail()) {
-    myFile.setstate(ios::failbit);
+  if ((unsigned int)count != myY.size() || file.fail()) {
+    file.setstate(ios::failbit);
     close();
     return false;
   }
@@ -203,8 +201,8 @@ bool DCDTrajectoryReader::read(Vector3DBlock &coords) {
   File::read(reinterpret_cast<char *>(&count), sizeof(int32));
   if (mySwapEndian) swapBytes(count); // number of atoms
   count /= sizeof(int32);
-  if ((unsigned int)count != myZ.size() || myFile.fail()) {
-    myFile.setstate(ios::failbit);
+  if ((unsigned int)count != myZ.size() || file.fail()) {
+    file.setstate(ios::failbit);
     close();
     return false;
   }
@@ -214,8 +212,8 @@ bool DCDTrajectoryReader::read(Vector3DBlock &coords) {
   File::read(reinterpret_cast<char *>(&count), sizeof(int32));
   if (mySwapEndian) swapBytes(count);
   count /= sizeof(int32);
-  if ((unsigned int)count != myZ.size() || myFile.fail()) {
-    myFile.setstate(ios::failbit);
+  if ((unsigned int)count != myZ.size() || file.fail()) {
+    file.setstate(ios::failbit);
     close();
     return false;
   }
@@ -231,7 +229,7 @@ bool DCDTrajectoryReader::read(Vector3DBlock &coords) {
     coords[i].z = myZ[i];
   }
 
-  return !myFile.fail();
+  return !file.fail();
 }
 
 XYZ DCDTrajectoryReader::getXYZ() const {

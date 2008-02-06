@@ -10,16 +10,14 @@ using namespace ProtoMol;
 //____XYZTrajectoryReader
 
 XYZTrajectoryReader::XYZTrajectoryReader() :
-  Reader(), myCoords(NULL), myNames(NULL), myFirst(true) {}
+  Reader(), myCoords(NULL), myNames(NULL) {}
 
 XYZTrajectoryReader::XYZTrajectoryReader(const string &filename) :
-  Reader(filename), myCoords(NULL), myNames(NULL), myFirst(true) {}
+  Reader(filename), myCoords(NULL), myNames(NULL) {}
 
 XYZTrajectoryReader::~XYZTrajectoryReader() {
-  if (myCoords != NULL)
-    delete myCoords;
-  if (myNames != NULL)
-    delete myNames;
+  if (myCoords != NULL) delete myCoords;
+  if (myNames != NULL) delete myNames;
 }
 
 bool XYZTrajectoryReader::tryFormat() {
@@ -28,14 +26,14 @@ bool XYZTrajectoryReader::tryFormat() {
 
   // Number of frames and atoms
   unsigned int frames, count = 0;
-  myFile >> frames >> count;
+  file >> frames >> count;
 
   // Atoms
   string str;
   Real x;
-  myFile >> str >> x >> x >> x;
+  file >> str >> x >> x >> x;
   close();
-  return !myFile.fail();
+  return !file.fail();
 }
 
 bool XYZTrajectoryReader::read() {
@@ -51,22 +49,20 @@ bool XYZTrajectoryReader::read(XYZ &xyz) {
 }
 
 bool XYZTrajectoryReader::read(Vector3DBlock &coords, vector<string> &names) {
-  if (myFirst) {
-    if (!open())
-      return false;
-    myFirst = false;
+  if (!is_open()) {
+    if (!open()) return false;
 
     // Number of frames;
     unsigned int n = 0;
-    myFile >> n;
-    if (n == 0 && myFile.good())
+    file >> n;
+    if (n == 0 && file.good())
       return true;
   }
 
   // Number of atoms;
   unsigned int n = 0;
-  myFile >> n;
-  if (myFile.fail()) {
+  file >> n;
+  if (file.fail()) {
     close();
     return false;
   }
@@ -75,10 +71,10 @@ bool XYZTrajectoryReader::read(Vector3DBlock &coords, vector<string> &names) {
   names.resize(n);
 
   // Read atoms
-  for (unsigned int i = 0; i < n && !myFile.fail(); ++i)
-    myFile >> names[i] >> coords[i].x >> coords[i].y >> coords[i].z;
+  for (unsigned int i = 0; i < n && !file.fail(); ++i)
+    file >> names[i] >> coords[i].x >> coords[i].y >> coords[i].z;
 
-  return !myFile.fail();
+  return !file.fail();
 }
 
 XYZ XYZTrajectoryReader::getXYZ() const {

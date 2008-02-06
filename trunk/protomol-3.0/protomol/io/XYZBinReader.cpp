@@ -26,10 +26,10 @@ bool XYZBinReader::tryFormat() {
   if (!open())
     return false;
 
-  myFile.seekg(0, ios::end);
-  ios::pos_type size = myFile.tellg();
+  file.seekg(0, ios::end);
+  ios::pos_type size = file.tellg();
   size -= 4;
-  myFile.seekg(0, ios::beg);
+  file.seekg(0, ios::beg);
 
   typedef TypeSelection::Int<4>::type int32;
   int32 n = 0;
@@ -39,13 +39,13 @@ bool XYZBinReader::tryFormat() {
   if (static_cast<int32>(size / (3 * sizeof(float))) == n ||
       static_cast<int32>(size / (3 * sizeof(double))) == n ||
       static_cast<int32>(size / (3 * sizeof(Real))) == n)
-    return !myFile.fail();
+    return !file.fail();
   else {
     swapBytes(n);
     if (static_cast<int32>(size / (3 * sizeof(float))) == n ||
         static_cast<int32>(size / (3 * sizeof(double))) == n ||
         static_cast<int32>(size / (3 * sizeof(Real))) == n)
-      return !myFile.fail();
+      return !file.fail();
   }
 
   return false;
@@ -63,10 +63,10 @@ bool XYZBinReader::read(Vector3DBlock &coords) {
   if (!open())
     return false;
 
-  myFile.seekg(0, ios::end);
-  ios::pos_type size = myFile.tellg();
+  file.seekg(0, ios::end);
+  ios::pos_type size = file.tellg();
   size -= 4;
-  myFile.seekg(0, ios::beg);
+  file.seekg(0, ios::beg);
   bool swapEndian = false;
 
   typedef TypeSelection::Int<4>::type int32;
@@ -147,14 +147,14 @@ bool XYZBinReader::read(Vector3DBlock &coords) {
     sizeof(double) << " to " << sizeof(Real) << " bytes." << endr;
   } else {
     report << recoverable << "[XYZBinReader::read]"
-           << " XYZBin file \'" << myFilename
+           << " XYZBin file \'" << filename
            << "\' could find adequate float nor double type." << endr;
     close();
     return false;
   }
 
   close();
-  return !myFile.fail();
+  return !file.fail();
 }
 
 XYZ XYZBinReader::getXYZ() const {

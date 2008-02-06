@@ -41,9 +41,9 @@ bool PDBReader::tryFormat() {
       close();
       return true;
     }
-  } while (!myFile.eof());
+  } while (!file.eof());
 
-  myFile.setstate(ios::failbit);
+  file.setstate(ios::failbit);
   close();
   return false;
 }
@@ -75,7 +75,7 @@ bool PDBReader::read(Vector3DBlock &coords, vector<PDB::Atom> &atoms,
   // Now we want to read data in until the record name is "END", then stop.
   int big = 0;
   int toBig = 0;
-  myComment = "";
+  comment = "";
   do {
     string record(getline());
     if (equalStart("END", record))
@@ -83,7 +83,7 @@ bool PDBReader::read(Vector3DBlock &coords, vector<PDB::Atom> &atoms,
     if (equalStart("REMARK", record) || record.empty()) {
       record = removeBeginEndBlanks(record);
       if (!record.empty())
-        myComment += (myComment.empty() ? "" : "\n") + record;
+        comment += (comment.empty() ? "" : "\n") + record;
       continue;
     }
     if (equalStart("ATOM", record) || equalStart("HETATM", record)) {
@@ -162,7 +162,7 @@ bool PDBReader::read(Vector3DBlock &coords, vector<PDB::Atom> &atoms,
     } else
       report << recoverable << "[PDB::read] Record unknow:\'" <<
       removeBeginEndBlanks(record) << "\'." << endr;
-  } while (!(myFile.eof()));
+  } while (!(file.eof()));
 
   if (big > 0)
     report << hint << "[PDB::read] Found " << big <<
@@ -172,7 +172,7 @@ bool PDBReader::read(Vector3DBlock &coords, vector<PDB::Atom> &atoms,
     " non interger/X-Plor residue number(s)." << endr;
 
   close();
-  return !myFile.fail();
+  return !file.fail();
 }
 
 Vector3DBlock *PDBReader::orphanCoords() {

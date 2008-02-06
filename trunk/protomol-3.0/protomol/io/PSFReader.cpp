@@ -26,8 +26,8 @@ bool PSFReader::tryFormat() {
   if (!open())
     return false;
   string psfHead;
-  myFile >> psfHead;
-  return myFile.good() && equalNocase("PSF", psfHead);
+  file >> psfHead;
+  return file.good() && equalNocase("PSF", psfHead);
 }
 
 bool PSFReader::read() {
@@ -45,18 +45,18 @@ bool PSFReader::read(PSF &psf) {
 
   // Find header
   string psfHead;
-  myFile >> psfHead;
+  file >> psfHead;
   if (!equalNocase("PSF", psfHead)) {
-    myFile.setstate(ios::failbit);
+    file.setstate(ios::failbit);
     close();
     return false;
   }
 
-  while (!myFile.eof()) {
+  while (!file.eof()) {
     string line(removeBeginEndBlanks(getline()));
 
     // Exit if nothing more to read
-    if (line.empty() && myFile.eof()) {
+    if (line.empty() && file.eof()) {
       close();
       return true;
     }
@@ -76,13 +76,13 @@ bool PSFReader::read(PSF &psf) {
       header.push_back(str);
     }
 
-    if (myFile.fail() || index < 1 || index > 2 || header.size() < 2) {
+    if (file.fail() || index < 1 || index > 2 || header.size() < 2) {
       report << recoverable
-             << " PSF file \'" << myFilename
+             << " PSF file \'" << filename
              << "\' has corrupt record header." << endl
              << "\'" << line << "\'"
              << endr;
-      myFile.setstate(ios::failbit);
+      file.setstate(ios::failbit);
       return false;
     }
     string keyword = header[index];
@@ -94,30 +94,30 @@ bool PSFReader::read(PSF &psf) {
 
       if (!isInt(header[0])) {
         report << recoverable
-               << " PSF file \'" << myFilename
+               << " PSF file \'" << filename
                <<
         "\' has corrupt record header, number of records should be an integer."
                << endl
                << "\'" << line << "\'"
                << endr;
-        myFile.setstate(ios::failbit);
+        file.setstate(ios::failbit);
         close();
         return false;
       }
 
       if (equalStartNocase("!NTITLE", keyword)) {  // title
-        myComment = "";
+        comment = "";
         for (int counter = 0; counter < numrecords; ++counter) {
           line = removeBeginEndBlanks(getline());   // lines of title + one empty line
           if (!line.empty())
-            myComment += (myComment.empty() ? "" : "\n") + line;
+            comment += (comment.empty() ? "" : "\n") + line;
         }
 
         continue;
       } else if (equalStartNocase("!NATOM", keyword)) {
         for (int counter = 1; counter <= numrecords; ++counter) {
           PSF::Atom temp_atom;
-          myFile >> temp_atom.number     // read atom number
+          file >> temp_atom.number     // read atom number
           >> temp_atom.seg_id        // read segment identifier
           >> str                     // read in residue sequence
           >> temp_atom.residue_name   // read in residue name
@@ -133,8 +133,8 @@ bool PSFReader::read(PSF &psf) {
                    << "I do not know what to do with \'" << str << "\'." <<
             endr;
           psf.atoms.push_back(temp_atom);
-          if (myFile.fail() || (myFile.eof() && counter < numrecords)) {
-            myFile.setstate(ios::failbit);
+          if (file.fail() || (file.eof() && counter < numrecords)) {
+            file.setstate(ios::failbit);
             close();
             return false;
           }
@@ -145,11 +145,11 @@ bool PSFReader::read(PSF &psf) {
         for (int counter = 1; counter <= numrecords; ++counter) {
           PSF::Bond temp_bond;
           temp_bond.number = counter;
-          myFile >> temp_bond.atom1;
-          myFile >> temp_bond.atom2;
+          file >> temp_bond.atom1;
+          file >> temp_bond.atom2;
           psf.bonds.push_back(temp_bond);
-          if (myFile.fail() || (myFile.eof() && counter < numrecords)) {
-            myFile.setstate(ios::failbit);
+          if (file.fail() || (file.eof() && counter < numrecords)) {
+            file.setstate(ios::failbit);
             close();
             return false;
           }
@@ -160,12 +160,12 @@ bool PSFReader::read(PSF &psf) {
         for (int counter = 1; counter <= numrecords; ++counter) {
           PSF::Angle temp_angle;
           temp_angle.number = counter;
-          myFile >> temp_angle.atom1;
-          myFile >> temp_angle.atom2;
-          myFile >> temp_angle.atom3;
+          file >> temp_angle.atom1;
+          file >> temp_angle.atom2;
+          file >> temp_angle.atom3;
           psf.angles.push_back(temp_angle);
-          if (myFile.fail() || (myFile.eof() && counter < numrecords)) {
-            myFile.setstate(ios::failbit);
+          if (file.fail() || (file.eof() && counter < numrecords)) {
+            file.setstate(ios::failbit);
             close();
             return false;
           }
@@ -176,13 +176,13 @@ bool PSFReader::read(PSF &psf) {
         for (int counter = 1; counter <= numrecords; ++counter) {
           PSF::Dihedral temp_dihedral;
           temp_dihedral.number = counter;
-          myFile >> temp_dihedral.atom1;
-          myFile >> temp_dihedral.atom2;
-          myFile >> temp_dihedral.atom3;
-          myFile >> temp_dihedral.atom4;
+          file >> temp_dihedral.atom1;
+          file >> temp_dihedral.atom2;
+          file >> temp_dihedral.atom3;
+          file >> temp_dihedral.atom4;
           psf.dihedrals.push_back(temp_dihedral);
-          if (myFile.fail() || (myFile.eof() && counter < numrecords)) {
-            myFile.setstate(ios::failbit);
+          if (file.fail() || (file.eof() && counter < numrecords)) {
+            file.setstate(ios::failbit);
             close();
             return false;
           }
@@ -193,13 +193,13 @@ bool PSFReader::read(PSF &psf) {
         for (int counter = 1; counter <= numrecords; ++counter) {
           PSF::Improper temp_improper;
           temp_improper.number = counter;
-          myFile >> temp_improper.atom1;
-          myFile >> temp_improper.atom2;
-          myFile >> temp_improper.atom3;
-          myFile >> temp_improper.atom4;
+          file >> temp_improper.atom1;
+          file >> temp_improper.atom2;
+          file >> temp_improper.atom3;
+          file >> temp_improper.atom4;
           psf.impropers.push_back(temp_improper);
-          if (myFile.fail() || (myFile.eof() && counter < numrecords)) {
-            myFile.setstate(ios::failbit);
+          if (file.fail() || (file.eof() && counter < numrecords)) {
+            file.setstate(ios::failbit);
             close();
             return false;
           }
@@ -210,11 +210,11 @@ bool PSFReader::read(PSF &psf) {
         for (int counter = 1; counter <= numrecords; ++counter) {
           PSF::Donor temp_donor;
           temp_donor.number = counter;
-          myFile >> temp_donor.atom1;
-          myFile >> temp_donor.atom2;
+          file >> temp_donor.atom1;
+          file >> temp_donor.atom2;
           psf.donors.push_back(temp_donor);
-          if (myFile.fail() || (myFile.eof() && counter < numrecords)) {
-            myFile.setstate(ios::failbit);
+          if (file.fail() || (file.eof() && counter < numrecords)) {
+            file.setstate(ios::failbit);
             close();
             return false;
           }
@@ -225,11 +225,11 @@ bool PSFReader::read(PSF &psf) {
         for (int counter = 1; counter <= numrecords; ++counter) {
           PSF::Acceptor temp_acceptor;
           temp_acceptor.number = counter;
-          myFile >> temp_acceptor.atom1;
-          myFile >> temp_acceptor.atom2;
+          file >> temp_acceptor.atom1;
+          file >> temp_acceptor.atom2;
           psf.acceptors.push_back(temp_acceptor);
-          if (myFile.fail() || (myFile.eof() && counter < numrecords)) {
-            myFile.setstate(ios::failbit);
+          if (file.fail() || (file.eof() && counter < numrecords)) {
+            file.setstate(ios::failbit);
             close();
             return false;
           }
@@ -240,9 +240,9 @@ bool PSFReader::read(PSF &psf) {
         for (int counter = 1; counter <= numrecords; ++counter) {
           PSF::Nonbonded temp_nonbonded;
           temp_nonbonded.number = counter;
-          myFile >> temp_nonbonded.atom1;
+          file >> temp_nonbonded.atom1;
           psf.nonbondeds.push_back(temp_nonbonded);
-          if (myFile.fail() || (myFile.eof() && counter < numrecords)) {
+          if (file.fail() || (file.eof() && counter < numrecords)) {
             report << recoverable << "[PSF::read] Expecting " <<
             numrecords << " NNB, read " << counter - 1 <<
             ", reached end of file." << endr;
@@ -260,11 +260,11 @@ bool PSFReader::read(PSF &psf) {
         for (int counter = 1; counter <= numrecords; ++counter) {
           PSF::Ngrp temp_ngrp;
           temp_ngrp.number = counter;
-          myFile >> temp_ngrp.atom1;
-          myFile >> temp_ngrp.atom2;
-          myFile >> temp_ngrp.atom3;
+          file >> temp_ngrp.atom1;
+          file >> temp_ngrp.atom2;
+          file >> temp_ngrp.atom3;
           psf.ngrp.push_back(temp_ngrp);
-          if (myFile.fail() || (myFile.eof() && counter < numrecords)) {
+          if (file.fail() || (file.eof() && counter < numrecords)) {
             report << recoverable << "[PSF::read] Expecting " <<
             numrecords << " NGRP, read " << counter - 1 <<
             ", reached end of file." << endr;
@@ -281,7 +281,7 @@ bool PSFReader::read(PSF &psf) {
   }
 
   close();
-  return !myFile.fail();
+  return !file.fail();
 }
 
 PSF *PSFReader::orphanPSF() {

@@ -2,18 +2,17 @@
 #ifndef FILE_H
 #define FILE_H
 
-#ifdef USE_BOOST_FILTER_STREAMS
-#include <boost/iostreams/device/file.hpp>
-#include <boost/iostreams/filtering_stream.hpp>
+#include <string>
 
-typedef boost::iostreams::filtering_ostream ofstream;
-typedef boost::iostreams::filtering_ostream ifstream;
+#ifdef BUILD_FOR_FAH
+#include <boost/iostreams/stream.hpp>
+#include <fah/core/ChecksumDevice.h>
+
 #else
-
 #include <fstream>
 #endif
 
-#include <string>
+#include <protomol/base/Exception.h>
 
 namespace ProtoMol {
   //_________________________________________________________________ File
@@ -25,19 +24,23 @@ namespace ProtoMol {
    * NB:
    * - New writer or reader should never inherit directly from File, but
    *   from Reader or Writer.
-   * - Reading binaries one should always use File::read(), rather directly
-   *   myFile.read, since some compilers like Sun WorkShop CC have problems.
+   * - Reading binaries one should always use read(), rather directly
+   *   file.read, since some compilers like Sun WorkShop CC have problems.
    * - File objects can be used as ios_base objects inside expression
    *   (e.g., while(dcdReader >> xyz){ ... } )
    */
   class File {
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // Constructors, destructors, assignment
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  private:
-    File() {} // Force to use one of the constructors below
   protected:
-    explicit File(std::ios::openmode mode);
+    std::ios::openmode mode;
+    std::string filename;
+    std::string comment;
+#ifdef BUILD_FOR_FAH
+    boost::iostreams::stream<FAH::ChecksumDevice> file;
+#else
+    std::iostream file;
+#endif
+
+    File(std::ios::openmode mode);
     File(std::ios::openmode mode, const std::string &filename);
 
   public:
@@ -46,50 +49,27 @@ namespace ProtoMol {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // New methods of class File
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  public:
-    void setFilename(const std::string &filename);
-    std::string getFilename() const;
-
-    virtual bool open() = 0;
-    virtual bool open(const std::string &filename) = 0;
-    virtual bool open(const char *filename) = 0;
-    // We give a default implementation, but force to
-    // choose the default implementation or to reimplement
+    void setFilename(const std::string &filename) {this->filename = filename;}
+    std::string getFilename() const {return filename;}
+    const std::string &getComment() const {return comment;}
+    void setComment(const std::string &comment) {this->comment = comment;}
 
     bool isAccessible();
-
+    bool open(const std::string &filename);
+    bool open(const std::string &filename, std::ios::openmode mode);
+    bool open();
     void close();
+    bool is_open();
 
-    operator void*() const;
-    bool operator!() const;
     // enable expression testing
+    operator void*() const {return !*this ? 0 : const_cast<File *>(this);}
+    bool operator!() const {return file.fail();}
 
-  protected:
-    std::fstream &read(char *c, std::streamsize count);
     // Redirect of fstream::read  (Sun WorkShop CC does not properly read
     // more than one char ...)
+    void read(char *c, std::streamsize count);
     std::string getline();
-
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // My data members
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  private:
-    std::ios::openmode myMode;
-  protected:
-    std::fstream myFile;
-    std::string myFilename;
-    std::string myComment; // Reader has get and Writer has set method
   };
-
-  //____________________________________________________________________ INLINES
-
-  inline void File::setFilename(const std::string &filename) {
-    myFilename = filename;
-  }
-
-  inline std::string File::getFilename() const {
-    return myFilename;
-  }
 }
 
 #endif /* FILE_H */

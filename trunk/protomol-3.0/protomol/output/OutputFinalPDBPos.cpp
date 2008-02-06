@@ -15,16 +15,16 @@ using namespace ProtoMol;
 const string OutputFinalPDBPos::keyword("finPDBPosFile");
 
 OutputFinalPDBPos::OutputFinalPDBPos() :
-  Output(1), myFilename(""), myMinimalImage(false) {}
+  Output(1), filename(""), myMinimalImage(false) {}
 
 OutputFinalPDBPos::OutputFinalPDBPos(const string &filename,
                                      bool minimal) :
-  Output(1), myFilename(filename), myMinimalImage(minimal) {}
+  Output(1), filename(filename), myMinimalImage(minimal) {}
 
 void OutputFinalPDBPos::doFinalize(int step) {
   PDBWriter writer;
-  if (!writer.open(myFilename))
-    THROW(string("Can't open ") + getId() + " '" + myFilename + "'.");
+  if (!writer.open(filename))
+    THROW(string("Can't open ") + getId() + " '" + filename + "'.");
 
   writer.setComment("Time : " + toString(cache->time()) + ", step : " +
                     toString(step) +
@@ -34,7 +34,7 @@ void OutputFinalPDBPos::doFinalize(int step) {
     (myMinimalImage ? cache->minimalPositions() : myPositions);
 
   if (!writer.write(*pos, cache->pdb()))
-    THROW(string("Could not write ") + getId() + " '" + myFilename + "'.");
+    THROW(string("Could not write ") + getId() + " '" + filename + "'.");
 }
 
 Output *OutputFinalPDBPos::doMake(const vector<Value> &values) const {
@@ -43,7 +43,7 @@ Output *OutputFinalPDBPos::doMake(const vector<Value> &values) const {
 
 void OutputFinalPDBPos::getParameters(vector<Parameter> &parameter) const {
   parameter.push_back
-    (Parameter(getId(), Value(myFilename, ConstraintValueType::NotEmpty())));
+    (Parameter(getId(), Value(filename, ConstraintValueType::NotEmpty())));
   parameter.push_back
     (Parameter(keyword + "MinimalImage", Value(myMinimalImage),
                Text("whether the coordinates should be transformed to minimal "

@@ -13,6 +13,7 @@ opts.AddOptions(
     BoolOption('strict', 'Set to 0 to disable strict options', 1),
     BoolOption('boost', 'Set to 0 to disable boost lib', 1),
     BoolOption('depends', 'Set to 1 to output dependency files', 0),
+    BoolOption('fah', 'Set to 1 to build library for Folding@Home', 0),
     EnumOption('compiler', 'Select compiler', 'default',
                allowed_values = ('default', 'gnu', 'intel', 'mingw', 'msvc',
                                  'linux-mingw', 'aix', 'posix', 'hp', 'sgi',
@@ -50,6 +51,7 @@ strict = int(env.get('strict', 1))
 boost = int(env.get('boost', 1))
 compiler = env.get('compiler', 0)
 depends = int(env.get('depends', 0))
+fah = int(env.get('fah', 0))
 
 
 # Select compiler
@@ -97,10 +99,10 @@ if debug:
     if env['CC'] == 'cl':
         env.Append(CCFLAGS = '-W1 /MDd')
     elif env['CC'] == 'gcc':
-        env.Append(CCFLAGS = '-g -Wall -DDEBUG')
+        env.Append(CCFLAGS = '-g -Wall')
         if strict: env.Append(CCFLAGS = '-Werror')
 
-    env.Append(CCFLAGS = '-DDEBUG')
+    env.Append(CPPDEFINES = ['-DDEBUG'])
 
 
 # Optimizations
@@ -116,28 +118,39 @@ if optimize:
 if depends:
     env.Append(CCFLAGS = '-MMD -MF ${TARGET}.d')
 
-# Look for boost iostreams
-env.Append(CPPDEFINES = 'USE_BOOST_FILTER_STREAMS')
+libname = 'protomol'
+libsrc = []
+
+if fah:
+    if os.environ.has_key('LIBFAH_HOME'):
+        env.Append(CPPPATH = [os.environ['LIBFAH_HOME']])
+    if not conf.CheckCXXHeader('fah/core/ChecksumDevice.h'):
+        print 'Folding@Home needed please set LIBFAH_HOME'
+        Exit(1)
+    # Look for boost iostreams
+    env.Append(CPPDEFINES = ['BUILD_FOR_FAH'])
+
+    libname = 'protomol-fah'
+    libsrc.append('#/protomol/modules.cpp')
 
 # Build
-libsrc = []
 for s in subsrc:
     libsrc.append('#/protomol/' + s)
 
 
 # Build libprotomol
-env.Library('protomol', libsrc)
+env.Library(libname, libsrc)
 
 
 # Add subdir libs
 env.Append(LIBPATH = '.')
 env.Append(LIBS = 'protomol')
 
-
-# Build Protomol
-src = ['protomol/main.cpp', 'protomol/modules.cpp']
-protomol = env.Program('ProtoMol', src)
-Default(protomol)
+if not fah:
+    # Build Protomol
+    src = ['protomol/main.cpp', 'protomol/modules.cpp']
+    protomol = env.Program('ProtoMol', src)
+    Default(protomol)
 
 
 # Tidy

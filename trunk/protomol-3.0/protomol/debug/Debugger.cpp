@@ -42,6 +42,7 @@
 #include <sstream>
 
 using namespace std;
+using namespace ProtoMol;
 
 string Debugger::executableName;
 int Debugger::numTraces = 0;
@@ -94,12 +95,14 @@ bool Debugger::_getStackTrace(trace_t &trace) {
     Pipe *inPipe = debugProc.getChildPipe(Process::TO_CHILD, 0);
     Pipe *outPipe = debugProc.getChildPipe(Process::FROM_CHILD, 1);
     Pipe *errPipe = debugProc.getChildPipe(Process::FROM_CHILD, 2);
-    debugProc.exec(argv);
 
     // Run gdb commands
     string debugCmd =
       string("set width ") + String(BUF_SIZE - 1) + "\nwhere\nquit\n";
     write(inPipe->getInFD(), debugCmd.c_str(), debugCmd.length());
+
+    // Execute debugger process
+    debugProc.exec(argv);
 
     // Read output
     FILE *out = fdopen(outPipe->getOutFD(), "r");

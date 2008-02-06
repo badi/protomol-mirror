@@ -14,7 +14,7 @@
 
 #include <protomol/base/ProtoMolApp.h>
 
-#include <protomol/debug/Zap.h>
+#include <protomol/base/Zap.h>
 #include <protomol/base/Exception.h>
 
 #include <limits>

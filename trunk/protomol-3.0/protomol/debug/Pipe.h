@@ -26,29 +26,32 @@
 
 #include <iostream>
 
-class Pipe {
-  int pipeFDs[2];
-  bool fdOpen[2];
-  std::istream *outStream;
-  std::ostream *inStream;
+namespace ProtoMol {
 
-public:
-  Pipe();
-  ~Pipe();
+  class Pipe {
+    int pipeFDs[2];
+    bool fdOpen[2];
+    std::istream *outStream;
+    std::ostream *inStream;
 
-  void closeOut();
-  void closeIn();
+  public:
+    Pipe();
+    ~Pipe();
 
-  int getOutFD() {return pipeFDs[0];}
-  int getInFD() {return pipeFDs[1];}
+    void closeOut();
+    void closeIn();
 
-  void duplicateOutFD(int newFD);
-  void duplicateInFD(int newFD);
+    int getOutFD() {return pipeFDs[0];}
+    int getInFD() {return pipeFDs[1];}
 
-  void moveOutFD(int newFD);
-  void moveInFD(int newFD);
+    void duplicateOutFD(int newFD);
+    void duplicateInFD(int newFD);
 
-  std::istream *getOutStream();
-  std::ostream *getInStream();
-};
+    void moveOutFD(int newFD);
+    void moveInFD(int newFD);
+
+    std::istream *getOutStream();
+    std::ostream *getInStream();
+  };
+}
 #endif // PIPE_H

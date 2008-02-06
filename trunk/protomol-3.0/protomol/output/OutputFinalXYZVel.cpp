@@ -14,21 +14,21 @@ using namespace ProtoMol;
 const string OutputFinalXYZVel::keyword("finXYZVelFile");
 
 OutputFinalXYZVel::OutputFinalXYZVel() :
-  Output(1), myFilename("") {}
+  Output(1), filename("") {}
 
 OutputFinalXYZVel::OutputFinalXYZVel(const string &filename) :
-  Output(1), myFilename(filename) {}
+  Output(1), filename(filename) {}
 
 void OutputFinalXYZVel::doFinalize(int step) {
   XYZWriter writer;
-  if (!writer.open(myFilename))
-    THROW(string("Can't open ") + getId() + " '" + myFilename + "'.");
+  if (!writer.open(filename))
+    THROW(string("Can't open ") + getId() + " '" + filename + "'.");
 
   writer.setComment("Time : " + toString(cache->time()) + ", step : " +
                     toString(step) + ".");
 
   if (!writer.write(*myVelocities, myTopology->atoms, myTopology->atomTypes))
-    THROW(string("Could not write ") + getId() + " '" + myFilename + "'.");
+    THROW(string("Could not write ") + getId() + " '" + filename + "'.");
 }
 
 Output *OutputFinalXYZVel::doMake(const vector<Value> &values) const {
@@ -37,6 +37,6 @@ Output *OutputFinalXYZVel::doMake(const vector<Value> &values) const {
 
 void OutputFinalXYZVel::getParameters(vector<Parameter> &parameter) const {
   parameter.push_back
-    (Parameter(getId(), Value(myFilename, ConstraintValueType::NotEmpty())));
+    (Parameter(getId(), Value(filename, ConstraintValueType::NotEmpty())));
 }
 

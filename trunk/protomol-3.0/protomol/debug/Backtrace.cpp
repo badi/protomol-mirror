@@ -1,11 +1,11 @@
 #include <protomol/debug/Backtrace.h>
-
 #include <protomol/config.h>
 
 #ifdef HAVE_BACKTRACE
 #include <execinfo.h>
 
 using namespace std;
+using namespace ProtoMol;
 
 #define MAX_STACK 256
 

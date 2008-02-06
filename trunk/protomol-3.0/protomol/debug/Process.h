@@ -31,69 +31,73 @@
 
 #include <protomol/debug/Pipe.h>
 
-class ProcessFunctor {
-public:
+namespace ProtoMol {
+
+  class ProcessFunctor {
+  public:
 	virtual ~ProcessFunctor() {}
-  virtual void child() = 0;
-  virtual void parent() = 0;
-};
+    virtual void child() = 0;
+    virtual void parent() = 0;
+  };
 
-class PipeProcessFunctor : public ProcessFunctor {
-  Pipe pipe;
-  int direction;
-  int fd;
-public:
+  class PipeProcessFunctor : public ProcessFunctor {
+    Pipe pipe;
+    int direction;
+    int fd;
+  public:
 
-  PipeProcessFunctor(int direction, int fd) : direction(direction), fd(fd) {}
-  virtual ~PipeProcessFunctor() {}
+    PipeProcessFunctor(int direction, int fd) : direction(direction), fd(fd) {}
+    virtual ~PipeProcessFunctor() {}
 
-  virtual void child();
-  virtual void parent();
+    virtual void child();
+    virtual void parent();
 
-  Pipe *getPipe() {return &pipe;}
-};
+    Pipe *getPipe() {return &pipe;}
+  };
 
-class FDReplaceProcessFunctor : public ProcessFunctor {
-  int fd;
-  int replacement;
+  class FDReplaceProcessFunctor : public ProcessFunctor {
+    int fd;
+    int replacement;
 
-public:
-  FDReplaceProcessFunctor(int fd, int replacement) : fd(fd), replacement(replacement) {}
-  virtual ~FDReplaceProcessFunctor() {}
+  public:
+    FDReplaceProcessFunctor(int fd, int replacement) :
+      fd(fd), replacement(replacement) {}
+    virtual ~FDReplaceProcessFunctor() {}
 
-  virtual void child();
-  virtual void parent() {}
-};
+    virtual void child();
+    virtual void parent() {}
+  };
 
-class Process {
-  typedef std::vector<ProcessFunctor *> functors_t;
-  functors_t functors;
+  class Process {
+    typedef std::vector<ProcessFunctor *> functors_t;
+    functors_t functors;
 
-  int pid;
-  bool running;
-  int returnCode;
+    int pid;
+    bool running;
+    int returnCode;
 
-public:
-  Process();
-  ~Process();
+  public:
+    Process();
+    ~Process();
 
-  typedef enum {TO_CHILD, FROM_CHILD} dir_t;
+    typedef enum {TO_CHILD, FROM_CHILD} dir_t;
 
-  void exec(std::list<std::string> &args);
-  void exec(const char *args);
-  void exec(char *args);
-  void exec(char *argv[]);
+    void exec(std::list<std::string> &args);
+    void exec(const char *args);
+    void exec(char *args);
+    void exec(char *argv[]);
 
-  static void parseArgs(char *args, int &argc, char *argv[], int n);
+    static void parseArgs(char *args, int &argc, char *argv[], int n);
 
-  Pipe *getChildPipe(dir_t dir, int childFD = -1);
-  void replaceChildFD(int fd, int replacement);
+    Pipe *getChildPipe(dir_t dir, int childFD = -1);
+    void replaceChildFD(int fd, int replacement);
 
-  int getPID() {return pid;}
-  void kill(int sig);
-  int wait(int options = 0);
+    int getPID() {return pid;}
+    void kill(int sig);
+    int wait(int options = 0);
 
-  bool isRunning();
-  int getReturnCode() {return returnCode;}
-};
+    bool isRunning();
+    int getReturnCode() {return returnCode;}
+  };
+}
 #endif // PROCESS_H

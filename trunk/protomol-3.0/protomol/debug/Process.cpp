@@ -27,7 +27,7 @@
 #include <protomol/debug/Debugger.h>
 #include <protomol/debug/Pipe.h>
 #include <protomol/types/String.h>
-#include <protomol/debug/Zap.h>
+#include <protomol/base/Zap.h>
 
 #include <stdio.h>
 #include <unistd.h>
@@ -39,6 +39,7 @@
 #include <string>
 
 using namespace std;
+using namespace ProtoMol;
 
 void PipeProcessFunctor::child() {
   if (direction == Process::TO_CHILD) {

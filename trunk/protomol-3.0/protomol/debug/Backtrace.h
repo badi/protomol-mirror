@@ -4,11 +4,12 @@
 #include <vector>
 #include <string>
 
-class Backtrace {
-public:
-  typedef std::vector<std::string> trace_t;
+namespace ProtoMol {
+  class Backtrace {
+  public:
+    typedef std::vector<std::string> trace_t;
   
-  static void getStackTrace(trace_t &trace);
-};
-
+    static void getStackTrace(trace_t &trace);
+  };
+}
 #endif // BACKTRACE_H

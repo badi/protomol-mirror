@@ -27,8 +27,8 @@ bool XYZReader::tryFormat() {
 
   // Number of atoms
   unsigned int count = 0;
-  myFile >> count;
-  if (myFile.good() && count == 0) {
+  file >> count;
+  if (file.good() && count == 0) {
     close();
     return true;
   }
@@ -43,15 +43,15 @@ bool XYZReader::tryFormat() {
   Real x;
   if (testTrajectory) {
     unsigned int frames = toUInt(str);
-    for (unsigned int i = 0; i < count && !myFile.fail(); ++i)
-      myFile >> str >> x >> x >> x;
+    for (unsigned int i = 0; i < count && !file.fail(); ++i)
+      file >> str >> x >> x >> x;
 
     if (frames > 1)
-      myFile >> count >> str >> x >> x >> x;
+      file >> count >> str >> x >> x >> x;
   } else
-    myFile >> str >> x >> x >> x;
-  myFile.close();
-  return !myFile.fail();
+    file >> str >> x >> x >> x;
+  close();
+  return !file.fail();
 }
 
 bool XYZReader::read() {
@@ -74,12 +74,12 @@ bool XYZReader::read(Vector3DBlock &coords, vector<string> &names) {
 
   // Number of atoms
   unsigned int n = 0;
-  myFile >> n;
+  file >> n;
   string str(getline());
 
   // Comment
   str = getline();
-  if (myFile.fail()) {
+  if (file.fail()) {
     close();
     return false;
   }
@@ -88,17 +88,17 @@ bool XYZReader::read(Vector3DBlock &coords, vector<string> &names) {
     report << hint <<
     "[XYZReader::read] Does also match XYZ trajectory format." << endr;
 
-  myComment = str;
+  comment = str;
 
   coords.resize(n);
   names.resize(n);
 
   // Read atoms
-  for (unsigned int i = 0; i < n && !myFile.fail(); ++i)
-    myFile >> names[i] >> coords[i].x >> coords[i].y >> coords[i].z;
+  for (unsigned int i = 0; i < n && !file.fail(); ++i)
+    file >> names[i] >> coords[i].x >> coords[i].y >> coords[i].z;
 
   close();
-  return !myFile.fail();
+  return !file.fail();
 }
 
 XYZ XYZReader::getXYZ() const {

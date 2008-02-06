@@ -10,34 +10,19 @@ namespace ProtoMol {
    * Base class of readers
    */
   class Reader : public File {
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // Constructors, destructors, assignment
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   protected:
     Reader();
-    explicit Reader(const std::string &filename);
+    Reader(const std::string &filename);
     /// To open with special file flags, std::ios::in is set
-    explicit Reader(std::ios::openmode mode);
+    Reader(std::ios::openmode mode);
     /// To open with special file flags, std::ios::in is set
     Reader(std::ios::openmode mode, const std::string &filename);
-  public:
-    virtual ~Reader();
 
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // New methods of class Reader
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    virtual bool tryFormat() = 0;
     /// Simple test, true if the format might be correct/readable
+    virtual bool tryFormat() = 0;
     virtual bool read() = 0;
-    const std::string &getComment() const;
-
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // My data members
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  private:
   };
-
 }
 
 #endif /* READER_H */

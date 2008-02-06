@@ -44,7 +44,7 @@ namespace ProtoMol {
     static const std::string keyword;
 
   private:
-    std::string myFilename;
+    std::string filename;
   };
 }
 #endif

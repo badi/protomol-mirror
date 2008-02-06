@@ -27,8 +27,9 @@
 #include <iostream>
 
 using namespace std;
+using namespace ProtoMol;
 
-ostream &operator<<(ostream &stream, const FileLocation &fl) {
+ostream &ProtoMol::operator<<(ostream &stream, const FileLocation &fl) {
   if (!fl.isEmpty()) {
     stream << fl.filename;
     if (fl.line >= 0) {

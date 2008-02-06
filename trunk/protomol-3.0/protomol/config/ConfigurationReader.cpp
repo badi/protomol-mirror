@@ -8,52 +8,38 @@ using namespace ProtoMol::Report;
 using namespace ProtoMol;
 //____ConfigurationReader
 
-ConfigurationReader::ConfigurationReader() :
-  Reader(), myConfig(NULL) {}
+ConfigurationReader::ConfigurationReader() : Reader() {}
 
 ConfigurationReader::ConfigurationReader(const string &filename) :
-  Reader(filename), myConfig(NULL) {}
-
-ConfigurationReader::~ConfigurationReader() {
-  if (myConfig != NULL)
-    delete myConfig;
-}
+  Reader(filename) {}
 
 bool ConfigurationReader::tryFormat() {
   open();
-  return !myFile.fail();
-}
-
-bool ConfigurationReader::read() {
-  if (myConfig == NULL)
-    myConfig = new Configuration();
-  return read(*myConfig);
+  return !file.fail();
 }
 
 bool ConfigurationReader::read(Configuration &config) {
-  if (!tryFormat())
-    return false;
-  if (!open())
-    return false;
+  if (!tryFormat()) return false;
 
   // Remove comments and reformat
   stringstream all;
-  while (!myFile.eof() && !myFile.fail()) {
+  while (!file.eof() && !file.fail()) {
     string line(getline());
-    stringstream ss(string(line.begin(), find(line.begin(),
-                        line.end(), '#')));
+    stringstream ss(string(line.begin(), find(line.begin(), line.end(), '#')));
     string str;
+
     while (ss >> str)
       all << (all.str().empty() ? "" : " ") << str;
   }
 
   close();
-  if (myFile.fail())
-    return false;
+  if (file.fail()) return false;
 
   // Nothing to do ...
-  if (all.str().empty())
+  if (all.str().empty()) {
+    report << warning << "Empty configuration file" << endr;
     return true;
+  }
 
   // First get the keyword and then let Value read from istream ...
   string str;
@@ -87,13 +73,8 @@ bool ConfigurationReader::read(Configuration &config) {
 
   if (!bad.empty())
     report << recoverable << "Ignoring:" << bad << endr;
-  return res;
-}
 
-Configuration *ConfigurationReader::orphanConfiguration() {
-  Configuration *tmp = myConfig;
-  myConfig = NULL;
-  return tmp;
+  return res;
 }
 
 ConfigurationReader &ProtoMol::operator>>(ConfigurationReader &configReader,
@@ -101,4 +82,3 @@ ConfigurationReader &ProtoMol::operator>>(ConfigurationReader &configReader,
   configReader.read(config);
   return configReader;
 }
-

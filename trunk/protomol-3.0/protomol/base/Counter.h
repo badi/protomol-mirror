@@ -25,35 +25,37 @@
 #ifndef COUNTER_H
 #define COUNTER_H
 
-/** 
- * This class is used by SmartPointer to count
- * pointer references.
- */
-class Counter {
-  long count;
-
-public:
-  Counter(const Counter &counter) : count(counter.count) {}
-  Counter(const long initialCount) : count(initialCount) {}
-  Counter() : count(0) {}
-
+namespace ProtoMol {
   /** 
-   * Increment.
+   * This class is used by SmartPointer to count
+   * pointer references.
    */
-  void inc() {count++;}
+  class Counter {
+    long count;
 
-  /** 
-   * Decrement.
-   * 
-   * @return true if count != 0, false otherwise
-   */  
-  bool dec() {count--; return count != 0;}
+  public:
+    Counter(const Counter &counter) : count(counter.count) {}
+    Counter(const long initialCount) : count(initialCount) {}
+    Counter() : count(0) {}
 
-  /** 
-   * Get the current count.
-   * 
-   * @return The count.
-   */
-  long getCount() const {return count;}
-};
+    /** 
+     * Increment.
+     */
+    void inc() {count++;}
+
+    /** 
+     * Decrement.
+     * 
+     * @return true if count != 0, false otherwise
+     */  
+    bool dec() {count--; return count != 0;}
+
+    /** 
+     * Get the current count.
+     * 
+     * @return The count.
+     */
+    long getCount() const {return count;}
+  };
+}
 #endif

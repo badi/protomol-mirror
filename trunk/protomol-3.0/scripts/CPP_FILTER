@@ -4,6 +4,6 @@ FILTER=(
   'std::' ''
   '^namespace ProtoMol {.*$' 'using namespace ProtoMol;'
   '\/\/[Rr]eport.*$' ''
-  'NULL', '0'
+  'NULL' '0'
   ') :\(..*\)$' ') :\n  \1'
 )

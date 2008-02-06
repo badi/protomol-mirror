@@ -49,7 +49,7 @@ bool EigenvectorReader::read(EigenvectorInfo &ei) {
   for (unsigned int i = 0; i < ei.myEigenvectorLength; i++)
     for (unsigned int j = 0; j < ei.myNumEigenvectors; j++)
       for (unsigned int k = 0; k < 3; k++) {   // X, Y, Z
-        myFile.read(
+        file.read(
           reinterpret_cast<char *>(&(ei.myEigenvectors[i * 3 *
                                                        ei.
                                                          myNumEigenvectors

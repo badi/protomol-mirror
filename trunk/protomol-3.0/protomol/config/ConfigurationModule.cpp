@@ -74,4 +74,3 @@ int ConfigurationModule::configure(const vector<string> &args) {
 
   return 0;
 }
-

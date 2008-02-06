@@ -43,28 +43,28 @@ bool XYZWriter::write(const Vector3DBlock &coords,
            << " Coorindate and atom name size are not equal." << endr;
 
   // First, write the number of atoms
-  myFile << count << endl;
+  file << count << endl;
 
   // Comment
-  myFile << "!ProtoMol (built on " << __DATE__ << " at " << __TIME__ <<
-  ") generated this XYZ file by " << getUserName() << ". " << myComment <<
+  file << "!ProtoMol (built on " << __DATE__ << " at " << __TIME__ <<
+  ") generated this XYZ file by " << getUserName() << ". " << comment <<
   endl;
 
   // Write atoms
-  myFile << setprecision(15);   // This should be some FLT_DIG or DBL_DIG ...
+  file << setprecision(15);   // This should be some FLT_DIG or DBL_DIG ...
   for (unsigned int i = 0; i < count; ++i) {
-    myFile << names[i] << "\t";
-    myFile.width(24);
-    myFile << coords[i].x;
-    myFile.width(24);
-    myFile << coords[i].y;
-    myFile.width(24);
-    myFile << coords[i].z;
-    myFile << endl;
+    file << names[i] << "\t";
+    file.width(24);
+    file << coords[i].x;
+    file.width(24);
+    file << coords[i].y;
+    file.width(24);
+    file << coords[i].z;
+    file << endl;
   }
 
   close();
-  return !myFile.fail();
+  return !file.fail();
 }
 
 XYZWriter &operator<<(XYZWriter &xyzWriter, const XYZ &xyz) {

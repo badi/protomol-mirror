@@ -22,7 +22,6 @@
 
 \*******************************************************************/
 #include <protomol/types/String.h>
-
 #include <protomol/base/Exception.h>
 
 #include <stdio.h>
@@ -30,6 +29,7 @@
 #include <errno.h>
 
 using namespace std;
+using namespace ProtoMol;
 
 String::String(const int x) {
   char buf[12];

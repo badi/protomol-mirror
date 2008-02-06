@@ -12,10 +12,10 @@ using namespace ProtoMol;
 //____ File
 
 PosVelReader::PosVelReader() :
-  myFilename(""), myOk(true), myType(PosVelReaderType::UNDEFINED) {}
+  filename(""), myOk(true), myType(PosVelReaderType::UNDEFINED) {}
 
 PosVelReader::PosVelReader(const string &filename) :
-  myFilename(filename), myOk(isAccessible(filename)),
+  filename(filename), myOk(isAccessible(filename)),
   myType(PosVelReaderType::UNDEFINED) {}
 
 PosVelReader::operator void*() const {
@@ -27,13 +27,13 @@ bool PosVelReader::operator!() const {
 }
 
 void PosVelReader::setFilename(const string &filename) {
-  myFilename = filename;
+  this->filename = filename;
   myOk = true;
   myType = PosVelReaderType::UNDEFINED;
 }
 
 bool PosVelReader::open() {
-  myOk = isAccessible(myFilename);
+  myOk = isAccessible(filename);
   return myOk;
 }
 
@@ -44,16 +44,16 @@ bool PosVelReader::open(const string &filename) {
 
 bool PosVelReader::tryFormat(PosVelReaderType::Enum type) {
   if (type == PosVelReaderType::PDB) {
-    PDBReader reader(myFilename);
+    PDBReader reader(filename);
     return reader.tryFormat();
   } else if (type == PosVelReaderType::XYZ) {
-    XYZReader reader(myFilename);
+    XYZReader reader(filename);
     return reader.tryFormat();
   } else if (type == PosVelReaderType::XYZBIN) {
-    XYZBinReader reader(myFilename);
+    XYZBinReader reader(filename);
     return reader.tryFormat();
   } else
-    return isAccessible(myFilename);
+    return isAccessible(filename);
 }
 
 PosVelReaderType PosVelReader::getType() const {
@@ -64,7 +64,7 @@ PosVelReader &ProtoMol::operator>>(PosVelReader &posReader, PDB &pdb) {
   posReader.myType = PosVelReaderType::UNDEFINED;
 
   // PDB
-  PDBReader pdbReader(posReader.myFilename);
+  PDBReader pdbReader(posReader.filename);
   posReader.myOk = pdbReader.tryFormat();
   if (posReader.myOk) {
     posReader.myOk = (pdbReader >> pdb ? true : false);
@@ -78,7 +78,7 @@ PosVelReader &ProtoMol::operator>>(PosVelReader &posReader, XYZ &xyz) {
   posReader.myType = PosVelReaderType::UNDEFINED;
 
   // XYZ
-  XYZReader xyzReader(posReader.myFilename);
+  XYZReader xyzReader(posReader.filename);
   posReader.myOk = xyzReader.tryFormat();
   if (posReader.myOk) {
     posReader.myOk = (xyzReader >> xyz ? true : false);
@@ -86,7 +86,7 @@ PosVelReader &ProtoMol::operator>>(PosVelReader &posReader, XYZ &xyz) {
   }
   // PDB
   if (!posReader.myOk) {
-    PDBReader pdbReader(posReader.myFilename);
+    PDBReader pdbReader(posReader.filename);
     if (pdbReader.tryFormat()) {
       posReader.myOk = (pdbReader >> xyz ? true : false);
       posReader.myType = PosVelReaderType::PDB;
@@ -101,7 +101,7 @@ PosVelReader &ProtoMol::operator>>(PosVelReader &posReader,
   posReader.myType = PosVelReaderType::UNDEFINED;
 
   // XYZ
-  XYZReader xyzReader(posReader.myFilename);
+  XYZReader xyzReader(posReader.filename);
   posReader.myOk = xyzReader.tryFormat();
   if (posReader.myOk) {
     posReader.myOk = (xyzReader >> coords ? true : false);
@@ -109,7 +109,7 @@ PosVelReader &ProtoMol::operator>>(PosVelReader &posReader,
   }
   // XYZ binary
   if (!posReader.myOk) {
-    XYZBinReader xyzBinReader(posReader.myFilename);
+    XYZBinReader xyzBinReader(posReader.filename);
     if (xyzBinReader.tryFormat()) {
       posReader.myOk = (xyzBinReader >> coords ? true : false);
       posReader.myType = PosVelReaderType::XYZBIN;
@@ -118,7 +118,7 @@ PosVelReader &ProtoMol::operator>>(PosVelReader &posReader,
 
   // PDB
   if (!posReader.myOk) {
-    PDBReader pdbReader(posReader.myFilename);
+    PDBReader pdbReader(posReader.filename);
     if (pdbReader.tryFormat()) {
       posReader.myOk = (pdbReader >> coords ? true : false);
       posReader.myType = PosVelReaderType::PDB;

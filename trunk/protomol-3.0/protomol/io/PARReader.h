@@ -36,17 +36,10 @@ namespace ProtoMol {
                        PAR::CharmmTypeEnum charmmType = PAR::UNDEFINED);
     explicit PARReader(const char *filename,
                        PAR::CharmmTypeEnum charmmType = PAR::UNDEFINED);
-    // Need this implementation, otherwise const char* will bee converted to bool or int ...
+    // Need this implementation, otherwise const char* will bee converted
+    // to bool or int ...
 
     virtual ~PARReader();
-
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // From class File
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  public:
-    virtual bool open() {return File::open();};
-    virtual bool open(const std::string &filename) {return File::open(filename);};
-    virtual bool open(const char *filename) {return File::open(filename);}
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // From class Reader
@@ -59,12 +52,16 @@ namespace ProtoMol {
     // New methods of class PAR
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    bool open(const std::string &filename, PAR::CharmmTypeEnum charmmType);
-    bool open(const char *filename, PAR::CharmmTypeEnum charmmType);
-    bool open(PAR::CharmmTypeEnum charmmType);
+    bool openWith(const std::string &filename, PAR::CharmmTypeEnum charmmType);
+    bool openWith(PAR::CharmmTypeEnum charmmType);
 
-    void setCharmmType(PAR::CharmmTypeEnum charmmType);
-    PAR::CharmmTypeEnum getCharmmTypeDetected() const;
+    void setCharmmType(PAR::CharmmTypeEnum charmmType) {
+      myCharmmType = charmmType;
+      myCharmmTypeDetected = PAR::UNDEFINED;
+    }
+    PAR::CharmmTypeEnum getCharmmTypeDetected() const {
+      return myCharmmTypeDetected;
+    }
 
     bool read(PAR &par);
 
@@ -88,20 +85,5 @@ namespace ProtoMol {
     PAR::CharmmTypeEnum myCharmmType;
     PAR::CharmmTypeEnum myCharmmTypeDetected;
   };
-
-  //____________________________________________________________________________INLINES
-  inline void PARReader::setCharmmType(PAR::CharmmTypeEnum charmmType) {
-    myCharmmType = charmmType;
-    myCharmmTypeDetected = PAR::UNDEFINED;
-  }
-
-  inline PAR::CharmmTypeEnum PARReader::getCharmmTypeDetected() const {
-    return myCharmmTypeDetected;
-  }
-
-  inline bool PARReader::open(const char *filename,
-                              PAR::CharmmTypeEnum charmmType) {
-    return open(std::string(filename), charmmType);
-  }
 }
 #endif /* PARREADER_H */

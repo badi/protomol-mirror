@@ -25,13 +25,14 @@
 #include <protomol/debug/Pipe.h>
 
 #include <protomol/base/Exception.h>
-#include <protomol/debug/Zap.h>
+#include <protomol/base/Zap.h>
 
 #include <stdio.h>
 #include <unistd.h>
 #include <ext/stdio_filebuf.h> // NOTE: This only works in GCC 3.2 and newer
 
 using namespace std;
+using namespace ProtoMol;
 
 Pipe::Pipe() :
   outStream(0), inStream(0) {

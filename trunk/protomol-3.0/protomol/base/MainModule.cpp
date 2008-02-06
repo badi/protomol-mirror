@@ -29,7 +29,7 @@ void MainModule::init(ProtoMolApp *app) {
   Configuration *config = &app->config;
 
   InputSeed::registerConfiguration(config);
-  InputFirststep::registerConfiguration(config);
+  InputFirststep::registerConfiguration(config, 0);
   InputNumsteps::registerConfiguration(config);
 #ifdef DEBUG
   InputDebug::registerConfiguration(config, 1);
@@ -60,7 +60,7 @@ void MainModule::configure(ProtoMolApp *app) {
     
     if (!config[InputFirststep::keyword].valid())
       THROW("Firststep undefined.");
-    
+
     if (!config[InputNumsteps::keyword].valid())
       THROW("Numsteps undefined.");
   }

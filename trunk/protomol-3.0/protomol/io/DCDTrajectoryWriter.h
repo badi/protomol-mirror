@@ -45,32 +45,18 @@ namespace ProtoMol {
     // Need this implementation, otherwise const char* will bee converted to 
     // bool or int ...
 
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // From class File
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  public:
-    virtual bool open() {myFirst = false; return File::open();}
-
-    virtual bool open(const std::string &filename) {
-      myFirst = false;
-      return File::open(filename);
-    }
-
-    virtual bool open(const char *filename) {
-      myFirst = false; return File::open(filename);
-    }
-
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // New methods of class DCD
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    bool open(Real timestep, unsigned int firststep = 1,
-              bool isLittleEndian = ISLITTLEENDIAN);
-    bool open(const std::string &filename, Real timestep,
-              unsigned int firststep = 1,
-              bool isLittleEndian = ISLITTLEENDIAN);
-    bool open(const char *filename, Real timestep, unsigned int firststep = 1,
-              bool isLittleEndian = ISLITTLEENDIAN);
+    bool openWith(Real timestep, unsigned int firststep = 1,
+                  bool isLittleEndian = ISLITTLEENDIAN);
+    bool openWith(const std::string &filename, Real timestep,
+                  unsigned int firststep = 1,
+                  bool isLittleEndian = ISLITTLEENDIAN);
+    bool openWith(const char *filename, Real timestep,
+                  unsigned int firststep = 1,
+                  bool isLittleEndian = ISLITTLEENDIAN);
 
     bool write(const Vector3DBlock &coords);
 
@@ -100,7 +86,6 @@ namespace ProtoMol {
     std::vector<float4> myX;
     std::vector<float4> myY;
     std::vector<float4> myZ;
-    bool myFirst;  // flag if the file has to be opend and cleared
   };
 
   //____INLINES

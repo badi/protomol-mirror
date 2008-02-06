@@ -29,21 +29,6 @@ namespace ProtoMol {
     virtual ~DCDTrajectoryReader();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // From class File
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  public:
-    virtual bool open() {myFirst = true; return File::open();}
-
-    virtual bool open(const std::string &filename) {
-      myFirst = true;
-      return File::open(filename);
-    }
-
-    virtual bool open(const char *filename) {
-      myFirst = true; return File::open(filename);
-    }
-
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // From class Reader
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
@@ -79,7 +64,6 @@ namespace ProtoMol {
     std::vector<float4> myZ;
     Vector3DBlock *myCoords;
     bool mySwapEndian;
-    bool myFirst;
   };
 
   //____INLINES

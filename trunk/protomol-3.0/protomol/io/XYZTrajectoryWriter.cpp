@@ -21,41 +21,41 @@ XYZTrajectoryWriter::XYZTrajectoryWriter(const string &filename) :
 
 XYZTrajectoryWriter::~XYZTrajectoryWriter() {}
 
-bool XYZTrajectoryWriter::open(const XYZ &xyz) {
+bool XYZTrajectoryWriter::openWith(const XYZ &xyz) {
   setNames(xyz.names);
   myFirst = false;
   return open();
 }
 
-bool XYZTrajectoryWriter::open(const vector<string> &names) {
+bool XYZTrajectoryWriter::openWith(const vector<string> &names) {
   setNames(names);
   myFirst = false;
   return open();
 }
 
-bool XYZTrajectoryWriter::open(const vector<Atom> &atoms,
-                               const vector<AtomType> &atomTypes) {
+bool XYZTrajectoryWriter::openWith(const vector<Atom> &atoms,
+                                   const vector<AtomType> &atomTypes) {
   setNames(atoms, atomTypes);
   myFirst = false;
   return open();
 }
 
-bool XYZTrajectoryWriter::open(const string &filename, const XYZ &xyz) {
+bool XYZTrajectoryWriter::openWith(const string &filename, const XYZ &xyz) {
   setNames(xyz.names);
   myFirst = false;
   return open(filename);
 }
 
-bool XYZTrajectoryWriter::open(const string &filename,
-                               const vector<string> &names) {
+bool XYZTrajectoryWriter::openWith(const string &filename,
+                                   const vector<string> &names) {
   setNames(names);
   myFirst = false;
   return open(filename);
 }
 
-bool XYZTrajectoryWriter::open(const string &filename,
-                               const vector<Atom> &atoms,
-                               const vector<AtomType> &atomTypes) {
+bool XYZTrajectoryWriter::openWith(const string &filename,
+                                   const vector<Atom> &atoms,
+                                   const vector<AtomType> &atomTypes) {
   setNames(atoms, atomTypes);
   myFirst = false;
   return open(filename);
@@ -68,12 +68,12 @@ bool XYZTrajectoryWriter::reopen() {
       return false;
   }
 
-  if (myFile.is_open())
+  if (is_open())
     close();
 
   // Try to read the number of frames
-  myFile.clear();
-  myFile.open(myFilename.c_str(), ios::in);
+  file.clear();
+  open(filename.c_str(), ios::in);
   string line, str;
   line = getline();
   close();
@@ -83,22 +83,22 @@ bool XYZTrajectoryWriter::reopen() {
     // Ok, we have already written frames
     str = (toString(toInt(str) + 1) + "                       ").substr(0, 19);
     str += "\n";
-    myFile.clear();
-    myFile.open(myFilename.c_str(), ios::in | ios::out);
-    myFile.seekp(0, ios::beg);
-    myFile.write(str.c_str(), str.size());
+    file.clear();
+    open(filename.c_str(), ios::in | ios::out);
+    file.seekp(0, ios::beg);
+    file.write(str.c_str(), str.size());
   } else {
     // First time ...
-    myFile.clear();
-    myFile.open(myFilename.c_str(), ios::out | ios::trunc);
+    file.clear();
+    open(filename.c_str(), ios::out | ios::trunc);
     str = (toString(1) + "                       ").substr(0, 19);
     str += "\n";
-    myFile << str;
+    file << str;
   }
   close();
-  myFile.clear();
-  myFile.open(myFilename.c_str(), ios::out | ios::app);
-  return !myFile.fail();
+  file.clear();
+  open(filename.c_str(), ios::out | ios::app);
+  return !file.fail();
 }
 
 bool XYZTrajectoryWriter::write(const XYZ &xyz) {
@@ -143,25 +143,25 @@ bool XYZTrajectoryWriter::write() {
            << " Coorindate and atom name size are not equal." << endr;
 
   // First, write the number of atoms
-  myFile << count << endl;
+  file << count << endl;
 
   // Write atoms
-  myFile << setprecision(15);   // This should be some FLT_DIG or DBL_DIG ...
+  file << setprecision(15);   // This should be some FLT_DIG or DBL_DIG ...
   for (unsigned int i = 0; i < count; ++i) {
-    myFile <<
+    file <<
     (myNames !=
      NULL ? (*myNames)[i] : (*myAtomTypes)[(*myAtoms)[i].type].name) << "\t";
-    myFile.width(24);
-    myFile << (*myCoords)[i].x;
-    myFile.width(24);
-    myFile << (*myCoords)[i].y;
-    myFile.width(24);
-    myFile << (*myCoords)[i].z;
-    myFile << endl;
+    file.width(24);
+    file << (*myCoords)[i].x;
+    file.width(24);
+    file << (*myCoords)[i].y;
+    file.width(24);
+    file << (*myCoords)[i].z;
+    file << endl;
   }
 
   close();
-  return !myFile.fail();
+  return !file.fail();
 }
 
 void XYZTrajectoryWriter::setNames(const XYZ &xyz) {

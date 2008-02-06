@@ -2,7 +2,6 @@
 #include <protomol/output/OutputCollection.h>
 #include <protomol/config/Configuration.h>
 #include <protomol/base/StringUtilities.h>
-//#include <protomol/output/OutputFile.h>
 #include <protomol/config/HelpTextFactory.h>
 #include <algorithm>
 

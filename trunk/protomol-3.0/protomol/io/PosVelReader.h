@@ -47,7 +47,7 @@ namespace ProtoMol {
     // My data members
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   private:
-    std::string myFilename;
+    std::string filename;
     bool myOk;
     PosVelReaderType myType;
   };

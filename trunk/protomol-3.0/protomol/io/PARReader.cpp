@@ -27,13 +27,14 @@ PARReader::~PARReader() {
     delete myPAR;
 }
 
-bool PARReader::open(const string &filename, PAR::CharmmTypeEnum charmmType) {
+bool PARReader::openWith(const string &filename,
+                         PAR::CharmmTypeEnum charmmType) {
   myCharmmType = charmmType;
   myCharmmTypeDetected = PAR::UNDEFINED;
   return open(filename);
 }
 
-bool PARReader::open(PAR::CharmmTypeEnum charmmType) {
+bool PARReader::openWith(PAR::CharmmTypeEnum charmmType) {
   myCharmmType = charmmType;
   myCharmmTypeDetected = PAR::UNDEFINED;
   return open();
@@ -48,7 +49,7 @@ PAR *PARReader::orphanPAR() {
 bool PARReader::tryFormat() {
   if (!open())
     return false;
-  while (!myFile.eof()) {
+  while (!file.eof()) {
     string str;
     str = getline();
     stringstream ss(str);
@@ -66,7 +67,7 @@ bool PARReader::tryFormat() {
     }
   }
 
-  myFile.setstate(ios::failbit);
+  file.setstate(ios::failbit);
   close();
   return false;
 }
@@ -92,7 +93,7 @@ bool PARReader::read(PAR &par) {
   int count = 0;                   // PAR file line counter
 
   int comment = 0;
-  while (!myFile.eof()) {
+  while (!file.eof()) {
     vector<string> data;
     string numbers = "";
     string str(removeBeginEndBlanks(getline()));
@@ -314,10 +315,12 @@ bool PARReader::read(PAR &par) {
             j[2], toReal(j[3]), toReal(j[4]), false, 0.0, 0.0));
       else if (s == "wwwdddd")
         par.angles.push_back(PAR::Angle(par.angles.size() + 1, j[0], j[1],
-            j[2], toReal(j[3]), toReal(j[4]), true, toReal(j[5]), toReal(j[6])));
+                                        j[2], toReal(j[3]), toReal(j[4]),
+                                        true, toReal(j[5]), toReal(j[6])));
       else if (s == "wwwddwdd")
         par.angles.push_back(PAR::Angle(par.angles.size() + 1, j[0], j[1],
-            j[2], toReal(j[3]), toReal(j[4]), true, toReal(j[6]), toReal(j[7])));
+                                        j[2], toReal(j[3]), toReal(j[4]), true,
+                                        toReal(j[6]), toReal(j[7])));
       else
         report << warning << "Unknown angle definition \'" << definition <<
         "\' (" << s << ") in PAR file at line " << (*line) << "." << endr;
@@ -480,7 +483,7 @@ bool PARReader::read(PAR &par) {
   }
 
   close();
-  return !myFile.fail();
+  return !file.fail();
 }
 
 //____isKeywordCharmm19

@@ -24,21 +24,6 @@ namespace ProtoMol {
     virtual ~XYZTrajectoryWriter();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // From class File
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  public:
-    virtual bool open() {myFirst = false; return File::open();}
-
-    virtual bool open(const std::string &filename) {
-      myFirst = false;
-      return File::open(filename);
-    }
-
-    virtual bool open(const char *filename) {
-      myFirst = false; return File::open(filename);
-    }
-
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // From class Writer
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   private:
@@ -48,16 +33,16 @@ namespace ProtoMol {
     // New methods of class XYZ
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    bool open(const XYZ &xyz);
-    bool open(const std::vector<std::string> &names);
-    bool open(const std::vector<Atom> &atoms,
-              const std::vector<AtomType> &atomTypes);
+    bool openWith(const XYZ &xyz);
+    bool openWith(const std::vector<std::string> &names);
+    bool openWith(const std::vector<Atom> &atoms,
+                  const std::vector<AtomType> &atomTypes);
 
-    bool open(const std::string &filename, const XYZ &xyz);
-    bool open(const std::string &filename,
-              const std::vector<std::string> &names);
-    bool open(const std::string &filename, const std::vector<Atom> &atoms,
-              const std::vector<AtomType> &atomTypes);
+    bool openWith(const std::string &filename, const XYZ &xyz);
+    bool openWith(const std::string &filename,
+                  const std::vector<std::string> &names);
+    bool openWith(const std::string &filename, const std::vector<Atom> &atoms,
+                  const std::vector<AtomType> &atomTypes);
 
     bool write(const XYZ &xyz);
     bool write(const Vector3DBlock &coords);

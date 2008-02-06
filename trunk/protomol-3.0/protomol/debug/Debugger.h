@@ -28,22 +28,25 @@
 #include <iostream>
 #include <vector>
 
-class Debugger {
-  static std::string executableName;
-  static int numTraces;
-public:
-  typedef std::vector<std::string> trace_t;
+namespace ProtoMol {
 
-  static bool traceFiltering;
-  static int maxTraces;
+  class Debugger {
+    static std::string executableName;
+    static int numTraces;
+  public:
+    typedef std::vector<std::string> trace_t;
 
-  static void initStackTrace(std::string executableName);
-  static bool printStackTrace(std::ostream &stream);
+    static bool traceFiltering;
+    static int maxTraces;
 
-  static bool getStackTrace(trace_t &trace);
-  static bool stackTraceInitialized() {return executableName != "";}
+    static void initStackTrace(std::string executableName);
+    static bool printStackTrace(std::ostream &stream);
 
-private:
-  static bool _getStackTrace(trace_t &trace);
-};
+    static bool getStackTrace(trace_t &trace);
+    static bool stackTraceInitialized() {return executableName != "";}
+
+  private:
+    static bool _getStackTrace(trace_t &trace);
+  };
+}
 #endif // DEBUGGER_H

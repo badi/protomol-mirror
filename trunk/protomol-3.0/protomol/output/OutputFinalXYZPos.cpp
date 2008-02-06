@@ -15,15 +15,15 @@ using namespace ProtoMol;
 const string OutputFinalXYZPos::keyword("finXYZPosFile");
 
 OutputFinalXYZPos::OutputFinalXYZPos() :
-  Output(1), myFilename(""), myMinimalImage(false) {}
+  Output(1), filename(""), myMinimalImage(false) {}
 
 OutputFinalXYZPos::OutputFinalXYZPos(const string &filename, bool minimal) :
-  Output(1), myFilename(filename), myMinimalImage(minimal) {}
+  Output(1), filename(filename), myMinimalImage(minimal) {}
 
 void OutputFinalXYZPos::doFinalize(int step) {
   XYZWriter writer;
-  if (!writer.open(myFilename))
-    THROW(string("Can't open ") + getId() + " '" + myFilename + "'.");
+  if (!writer.open(filename))
+    THROW(string("Can't open ") + getId() + " '" + filename + "'.");
 
   const Vector3DBlock *pos = (myMinimalImage ? cache->minimalPositions() :
                               myPositions);
@@ -32,7 +32,7 @@ void OutputFinalXYZPos::doFinalize(int step) {
                     (myMinimalImage ? ", minimal Image" : "") + ".");
 
   if (!writer.write(*pos, myTopology->atoms, myTopology->atomTypes))
-    THROW(string("Could not write ") + getId() + " '" + myFilename + "'.");
+    THROW(string("Could not write ") + getId() + " '" + filename + "'.");
 }
 
 Output *OutputFinalXYZPos::doMake(const vector<Value> &values) const {
@@ -41,7 +41,7 @@ Output *OutputFinalXYZPos::doMake(const vector<Value> &values) const {
 
 void OutputFinalXYZPos::getParameters(vector<Parameter> &parameter) const {
   parameter.push_back
-    (Parameter(getId(), Value(myFilename, ConstraintValueType::NotEmpty())));
+    (Parameter(getId(), Value(filename, ConstraintValueType::NotEmpty())));
   parameter.push_back
     (Parameter(keyword + "MinimalImage", Value(myMinimalImage),
                Text("whether the coordinates should be transformed to minimal"

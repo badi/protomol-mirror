@@ -44,11 +44,11 @@ bool PDBWriter::write(const Vector3DBlock &coords,
     report << error << "[PDBWriter::write]"
            << " Size of coordinates and atoms differ." << endr;
 
-  myFile << "REMARKS ProtoMol (built on " << __DATE__ << " at " <<
+  file << "REMARKS ProtoMol (built on " << __DATE__ << " at " <<
   __TIME__ << ") by " << getUserName() << endl
          << "REMARKS This .pdb file was created by PDBWriter" << endl
          << "REMARKS It was not manually assembled" << endl
-         << "REMARKS " << myComment << endl;
+         << "REMARKS " << comment << endl;
 
   map<int, int> tersMap;
   for (unsigned int i = 0; i < ters.size(); ++i)
@@ -120,7 +120,7 @@ bool PDBWriter::write(const Vector3DBlock &coords,
     line.replace(PDB::Atom::S_CHARGE,
                  PDB::Atom::L_CHARGE,
                  getLeftFill(a.charge, PDB::Atom::L_CHARGE));
-    myFile << line << endl;
+    file << line << endl;
     if (tersMap.find(a.elementNum) != tersMap.end()) {
       string line(80, ' ');
       const PDB::Ter &t(ters[tersMap[a.elementNum]]);
@@ -153,11 +153,11 @@ bool PDBWriter::write(const Vector3DBlock &coords,
       line.replace(PDB::Ter::S_I_CODE,
                    PDB::Ter::L_I_CODE,
                    getRightFill(t.insertionCode, PDB::Ter::L_I_CODE));
-      myFile << line << endl;
+      file << line << endl;
     }
   }
 
-  myFile << "END" << endl;
+  file << "END" << endl;
   if (big > 0)
     report << hint << "[PDB::write] Wrote " << big <<
     " X-Plor residue number(s) starting with a character." << endr;
@@ -165,7 +165,7 @@ bool PDBWriter::write(const Vector3DBlock &coords,
     report << recoverable << "[PDB::write] Wrote " << toBig <<
     " non interger/X-Plor residue number(s)." << endr;
   close();
-  return !myFile.fail();
+  return !file.fail();
 }
 
 PDBWriter &ProtoMol::operator<<(PDBWriter &pdbWriter, const PDB &pdb) {

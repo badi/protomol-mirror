@@ -22,14 +22,6 @@ namespace ProtoMol {
     virtual ~PDBReader();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // From class File
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  public:
-    virtual bool open(){return File::open();}
-    virtual bool open(const std::string& filename){return File::open(filename);}
-    virtual bool open(const char* filename){return File::open(filename);}
-    
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // From class Reader
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
@@ -40,7 +32,8 @@ namespace ProtoMol {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
     bool read(PDB& pdb);
-    bool read(Vector3DBlock& coords, std::vector<PDB::Atom>& atoms, std::vector<PDB::Ter>& ters);
+    bool read(Vector3DBlock& coords, std::vector<PDB::Atom>& atoms,
+              std::vector<PDB::Ter>& ters);
 
     PDB getPDB() const;
     Vector3DBlock* orphanCoords();
