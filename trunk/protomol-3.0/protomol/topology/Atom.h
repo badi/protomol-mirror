@@ -22,14 +22,11 @@ namespace ProtoMol {
 
     Real polarFrac;
     ///< For SCPISM calculations
+
     Real dR_vdw2;
-
     Real r_cov;
-
     Real R_iw;
-
     Real R_w;
-
     Real R_p;
   };
   /**
@@ -90,31 +87,31 @@ namespace ProtoMol {
     ///< Needed to correctly compute DeltaMu for intramolecular interactions.
 
     int stageNumber;
-    ///< For iSG simulations.  Molecule transformations can be broken into stages
-    ///< so that only small fragments of the whole molecule can be transformed at
-    ///< any time.  This is critical to being able to transform a small molecule
-    ///< into a relatively large molecule.  This variable is the number of the stage
-    ///< in which this atom will be transformed.  For example, suppose I break a
-    ///< molecular transformation into 5 stages.  If this atom's stageNumber = 3, that
-    ///< means that this atom will have its identity transformed only when 2 <= lambda <= 3.  -- TIM
+    ///< For iSG simulations.  Molecule transformations can be broken into 
+    ///< stages so that only small fragments of the whole molecule can be 
+    ///< transformed at any time.  This is critical to being able to transform 
+    ///< a small molecule into a relatively large molecule.  This variable is 
+    ///< the number of the stage in which this atom will be transformed.  For 
+    ///< example, suppose I break a molecular transformation into 5 stages.  
+    ///< If this atom's stageNumber = 3, that means that this atom will have
+    ///< its identity transformed only when 2 <= lambda <= 3.  -- TIM
 
     Real alphaLJ;
-    ///< For iSG simulations.  Atoms which are dummy atoms in one particular identity but are
-    ///< real, interacting atoms in another identity require a positive, non-zero alpha parameter for the
-    ///< soft-core Lennard-Jones function used by iSGMD.  Atoms which are real, interacting atoms in both
-    ///< identities of a transformation attempt need to have alphaLJ = 0 for the soft-core LJ function.  I
-    ///< found that when transforming a water oxygen atom into an alcohol oxygen atom using the standard alphaLJ
-    ///< value of 0.5, the simulation was wildly unstable, but if I used alphaLJ = 0 only for the oxygen atom
-    ///< then the transformation proceeded smoothly.  -- TIM 3/31/2005  (alphaLJ will be set prior to force
+    ///< For iSG simulations.  Atoms which are dummy atoms in one particular 
+    ///< identity but are real, interacting atoms in another identity require 
+    ///< a positive, non-zero alpha parameter for the soft-core Lennard-Jones 
+    ///< function used by iSGMD.  Atoms which are real, interacting atoms in 
+    ///< both identities of a transformation attempt need to have alphaLJ = 0 
+    ///< for the soft-core LJ function.  I found that when transforming a water
+    ///< oxygen atom into an alcohol oxygen atom using the standard alphaLJ
+    ///< value of 0.5, the simulation was wildly unstable, but if I used 
+    ///< alphaLJ = 0 only for the oxygen atom then the transformation proceeded
+    ///< smoothly.  -- TIM 3/31/2005  (alphaLJ will be set prior to force
     ///< calculations by ModifierISG::pickNewMolecule(...) )
 
-
     std::string name;
-
     std::string residue_name;
-
     int residue_seq;
-
     SCPISMAtomParameters *mySCPISM;
   };
 }

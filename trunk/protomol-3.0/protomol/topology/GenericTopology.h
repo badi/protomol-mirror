@@ -12,6 +12,7 @@
 #include <protomol/types/Vector3DBlock.h>
 #include <protomol/base/Makeable.h>
 #include <protomol/topology/Molecule.h>
+#include <protomol/base/Zap.h>
 
 #include <protomol/topology/LennardJonesParameterTable.h>
 #include <protomol/topology/BankLennardJonesParameterTable.h>
@@ -56,10 +57,10 @@ namespace ProtoMol {
     virtual ~GenericTopology() {
       if (doSCPISM) {
         for (unsigned int i = 0; i < atoms.size(); i++)
-          delete atoms[i].mySCPISM;
+          zap(atoms[i].mySCPISM);
 
         for (unsigned int i = 0; i < atomTypes.size(); i++)
-          delete atomTypes[i].mySCPISM;
+          zap(atomTypes[i].mySCPISM);
       }
     };
 
