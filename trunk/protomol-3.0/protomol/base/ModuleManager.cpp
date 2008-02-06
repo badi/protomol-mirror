@@ -25,7 +25,7 @@ void ModuleManager::remove(Module *m) {
 }
 
 Module *ModuleManager::find(const string &name) {
-  return nameMap[name];
+  return nameMap[name].get();
 }
 
 void ModuleManager::init(ProtoMolApp *app) {

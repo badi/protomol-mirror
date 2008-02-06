@@ -6,12 +6,13 @@
 #include <map>
 
 #include <protomol/base/Module.h>
+#include <protomol/base/SmartPointer.h>
 
 namespace ProtoMol {
   class ProtoMolApp;
 
   class ModuleManager {
-    typedef std::map<std::string, Module *> nameMap_t;
+    typedef std::map<std::string, SmartPointer<Module> > nameMap_t;
     nameMap_t nameMap;
 
     typedef std::set<Module *, moduleLess> modules_t;

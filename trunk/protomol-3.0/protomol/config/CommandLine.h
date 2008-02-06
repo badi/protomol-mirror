@@ -2,6 +2,7 @@
 #define COMMAND_LINE_H
 
 #include <protomol/config/CommandLineOption.h>
+#include <protomol/base/SmartPointer.h>
 
 #include <string>
 #include <map>
@@ -17,7 +18,7 @@ namespace ProtoMol {
     typedef std::map<const std::string, CommandLineOption *> optionMap_t;
     optionMap_t optionMap;
 
-    typedef std::vector<CommandLineOption *> options_t;
+    typedef std::vector<SmartPointer<CommandLineOption> > options_t;
     options_t options;
 
     std::string name;
