@@ -22,9 +22,12 @@ for i in $@; do
     fi
 
     cp "$i" "$BASE"
-    cleanupFiles -u -h --clean-commas "$BASE"
+    cleanupFiles -d -u -h --clean-commas "$BASE"
     if [ "$BASE" != "$(basename "$BASE" .cpp)" ]; then
         cleanupFiles -f $(dirname $0)/CPP_FILTER --fix-ending-namepace "$BASE"
     fi
     rm "$BASE"*~
+
+    # Over 80
+    overEighty "$i"
 done

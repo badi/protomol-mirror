@@ -2,6 +2,10 @@
 
 TOP=$(dirname $0)/..
 
+sedEscape() {
+    echo -n "$1" | sed 's/\./\\\./g;s/\//\\\//g'
+}
+
 addHeaderFilter() {
   for i in $TOP/protomol/$1/*.h; do
       NAME=$(basename $i .h)
@@ -13,9 +17,10 @@ addHeaderFilter() {
 }
 
 addAllHeaderFilters() {
-  for i in $(find $TOP/protomol -maxdepth 2 -mindepth 1 -type d | grep -v '\.svn'); do
-      BASE=$(echo "$TOP/protomol/" | sed 's/\./\\\./g;s/\//\\\//g')
-      NAME=$(echo $i | sed "s/^$BASE//")
+  DIRS=$(find $TOP/protomol -maxdepth 2 -mindepth 1 -type d | grep -v '\.svn')
+  for i in $DIRS; do
+      BASE=$(sedEscape "$TOP/protomol/")
+      NAME=$(sedEscape $(echo $i | sed "s/^$BASE//"))
       addHeaderFilter "$NAME"
   done
 }
