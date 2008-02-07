@@ -3,13 +3,12 @@
 #define HARMDIHEDRALSYSTEMFORCE_H
 
 #include "MTorsionSystemForce.h"
-#include "HarmDihedralSystemForceBase.h"
 #include <protomol/type/ScalarStructure.h>
 #include <protomol/parallel/Parallel.h>
 #include <protomol/topology/TopologyUtilities.h>
-
-//for debugging
 #include <protomol/base/Report.h>
+
+#include <string>
 
 using namespace ProtoMol::Report;
 namespace ProtoMol {
@@ -17,8 +16,7 @@ namespace ProtoMol {
 
   template<class TBoundaryConditions>
   class HarmDihedralSystemForce :
-    public MTorsionSystemForce<TBoundaryConditions>,
-    private HarmDihedralSystemForceBase {
+    public MTorsionSystemForce<TBoundaryConditions> {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Constructors, destructors, assignment
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -31,6 +29,8 @@ namespace ProtoMol {
     HarmDihedralSystemForce(Real kbias, int dihedral, Real dihedralReference,
                             bool other) : k(kbias), myDihedral(dihedral),
       myDihedralReference(dtor(dihedralReference)), computeOthers(other) {}
+
+    virtual ~HarmDihedralSystemForce() {}
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // New methods of class HarmDihedralSystemForce
@@ -59,7 +59,7 @@ namespace ProtoMol {
     // From class Force
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    virtual std::string getKeyword() const {return keyword;}
+    virtual std::string getKeyword() const {return "HarmDihedral";}
 
     virtual unsigned int numberOfBlocks(const GenericTopology *topo,
                                         const Vector3DBlock *pos);
@@ -74,7 +74,7 @@ namespace ProtoMol {
     // From class Makeable
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    virtual std::string getIdNoAlias() const {return keyword;}
+    virtual std::string getIdNoAlias() const {return getKeyword();}
     virtual void getParameters(std::vector<Parameter> &parameters) const {
       parameters.push_back
         (Parameter("-kbias", Value(k, ConstraintValueType::NotNegative()),

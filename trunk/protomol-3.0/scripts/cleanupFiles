@@ -13,9 +13,9 @@ addHeaderFilter() {
 }
 
 addAllHeaderFilters() {
-  for i in $(find $TOP/protomol -maxdepth 1 -mindepth 1 -type d); do
-      NAME=$(basename $i)
-      if [ "$NAME" == ".svn" ]; then continue; fi
+  for i in $(find $TOP/protomol -maxdepth 2 -mindepth 1 -type d | grep -v '\.svn'); do
+      BASE=$(echo "$TOP/protomol/" | sed 's/\./\\\./g;s/\//\\\//g')
+      NAME=$(echo $i | sed "s/^$BASE//")
       addHeaderFilter "$NAME"
   done
 }
@@ -124,14 +124,14 @@ done
 
 if $headerfilter; then addAllHeaderFilters; fi
 
-if [ ${#FILES[@]} -eq 0 ]; then
-    echo "No files"
-    exit 1
-fi
-
 if $testonly; then
     echo "$SED"
     exit 0
+fi
+
+if [ ${#FILES[@]} -eq 0 ]; then
+    echo "No files"
+    exit 1
 fi
 
 for i  in "${FILES[@]}"; do

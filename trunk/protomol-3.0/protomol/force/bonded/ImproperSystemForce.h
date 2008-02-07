@@ -3,20 +3,19 @@
 #define IMPROPERSYSTEMFORCE_H
 
 #include "MTorsionSystemForce.h"
-#include "ImproperSystemForceBase.h"
 #include <protomol/type/ScalarStructure.h>
 #include <protomol/parallel/Parallel.h>
+#include <protomol/topology/SemiGenericTopology.h>
+
+#include <string>
 
 namespace ProtoMol {
   //____ ImproperSystemForce
 
   template<class TBoundaryConditions>
-  class ImproperSystemForce : public MTorsionSystemForce<TBoundaryConditions> ,
-    private ImproperSystemForceBase {
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // Constructors, destructors, assignment
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  class ImproperSystemForce : public MTorsionSystemForce<TBoundaryConditions> {
   public:
+    virtual ~ImproperSystemForce() {}
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // From class SystemForce
@@ -35,7 +34,7 @@ namespace ProtoMol {
     // From class Force
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    virtual std::string getKeyword() const {return keyword;}
+    virtual std::string getKeyword() const {return "Improper";}
 
     virtual unsigned int numberOfBlocks(const GenericTopology *topo,
                                         const Vector3DBlock *pos);
@@ -49,7 +48,7 @@ namespace ProtoMol {
     // From class Makeable
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    virtual std::string getIdNoAlias() const {return keyword;}
+    virtual std::string getIdNoAlias() const {return getKeyword();}
     virtual void getParameters(std::vector<Parameter> &) const {}
 
   private:

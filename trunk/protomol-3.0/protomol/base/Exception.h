@@ -238,7 +238,8 @@ namespace ProtoMol {
 
 #ifndef THROW
 #define THROW(msg) throw ProtoMol::Exception((msg), FILE_LOCATION)
-#define THROWC(msg, cause) throw ProtoMol::Exception((msg), FILE_LOCATION, (cause))
+#define THROWC(msg, cause) \
+  throw ProtoMol::Exception((msg), FILE_LOCATION, (cause))
 #define ASSERT_OR_THROW(msg, condition) {if (!(condition)) THROW(msg);}
 #endif
 
