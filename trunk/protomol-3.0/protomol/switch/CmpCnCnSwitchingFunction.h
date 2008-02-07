@@ -97,11 +97,7 @@ namespace ProtoMol {
     Matrix3By3 hessian(const Vector3D &rij, Real distSquared) const;
 
     static const std::string getId() {return "ComplimentCnCn";}
-
     void getParameters(std::vector<Parameter> &parameters) const;
-
-    static unsigned int getParameterSize() {return 4;}
-
     static CmpCnCnSwitchingFunction make(std::vector<Value> values);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
