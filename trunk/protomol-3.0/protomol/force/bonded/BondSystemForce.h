@@ -3,19 +3,22 @@
 #define BONDSYSTEMFORCE_H
 
 #include <protomol/force/SystemForce.h>
-#include "BondSystemForceBase.h"
 #include <protomol/type/ScalarStructure.h>
 #include <protomol/parallel/Parallel.h>
+
+#include <string>
 
 namespace ProtoMol {
   //____ BondSystemForce
 
   template<class TBoundaryConditions>
-  class BondSystemForce : public SystemForce, private BondSystemForceBase {
+  class BondSystemForce : public SystemForce {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Constructors, destructors, assignment
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
+    virtual ~BondSystemForce() {}
+
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // New methods of class BondSystemForce
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -45,7 +48,7 @@ namespace ProtoMol {
     // From class Force
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    virtual std::string getKeyword() const {return keyword;}
+    virtual std::string getKeyword() const {return "Bond";}
 
     virtual unsigned int numberOfBlocks(const GenericTopology *topo,
                                         const Vector3DBlock *pos);
@@ -59,7 +62,7 @@ namespace ProtoMol {
     // From class Makeable
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    virtual std::string getIdNoAlias() const {return keyword;}
+    virtual std::string getIdNoAlias() const {return getKeyword();}
     virtual void getParameters(std::vector<Parameter> &) const {}
 
   private:

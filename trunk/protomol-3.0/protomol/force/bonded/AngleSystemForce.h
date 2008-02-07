@@ -2,7 +2,6 @@
 #ifndef ANGLESYSTEMFORCE_H
 #define ANGLESYSTEMFORCE_H
 
-#include "AngleSystemForceBase.h"
 #include <protomol/force/SystemForce.h>
 #include <protomol/type/ScalarStructure.h>
 #include <protomol/parallel/Parallel.h>
@@ -10,11 +9,12 @@
 namespace ProtoMol {
   //____ AngleSystemForce
   template<class TBoundaryConditions>
-  class AngleSystemForce : public SystemForce, private AngleSystemForceBase {
+  class AngleSystemForce : public SystemForce {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Constructors, destructors, assignment
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
+    virtual ~AngleSystemForce() {}
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // New methods of class AngleSystemForce
@@ -45,7 +45,7 @@ namespace ProtoMol {
     // From class Force
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    virtual std::string getKeyword() const {return keyword;}
+    virtual std::string getKeyword() const {return "Angle";}
 
     virtual unsigned int numberOfBlocks(const GenericTopology *topo,
                                         const Vector3DBlock *pos);
@@ -59,7 +59,7 @@ namespace ProtoMol {
     // From class Makeable
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    virtual std::string getIdNoAlias() const {return keyword;}
+    virtual std::string getIdNoAlias() const {return getKeyword();}
     virtual void getParameters(std::vector<Parameter> &) const {}
 
   private:

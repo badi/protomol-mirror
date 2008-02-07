@@ -2,23 +2,23 @@
 #ifndef DIHEDRALSYSTEMFORCE_H
 #define DIHEDRALSYSTEMFORCE_H
 
-#include "DihedralSystemForceBase.h"
-
 #include "MTorsionSystemForce.h"
 #include <protomol/type/ScalarStructure.h>
 #include <protomol/parallel/Parallel.h>
 #include <protomol/topology/SemiGenericTopology.h>
 
+#include <string>
+
 namespace ProtoMol {
   //____ DihedralSystemForce
 
   template<class TBoundaryConditions>
-  class DihedralSystemForce : public MTorsionSystemForce<TBoundaryConditions> ,
-    private DihedralSystemForceBase {
+  class DihedralSystemForce : public MTorsionSystemForce<TBoundaryConditions> {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Constructors, destructors, assignment
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
+    virtual ~DihedralSystemForce() {}
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // From class SystemForce
@@ -37,7 +37,7 @@ namespace ProtoMol {
     // From class Force
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    virtual std::string getKeyword() const {return keyword;}
+    virtual std::string getKeyword() const {return "Dihedral";}
 
     virtual unsigned int numberOfBlocks(const GenericTopology *topo,
                                         const Vector3DBlock *pos);
@@ -51,7 +51,7 @@ namespace ProtoMol {
     // From class Makeable
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    virtual std::string getIdNoAlias() const {return keyword;}
+    virtual std::string getIdNoAlias() const {return getKeyword();}
     virtual void getParameters(std::vector<Parameter> &) const {}
 
   private:
