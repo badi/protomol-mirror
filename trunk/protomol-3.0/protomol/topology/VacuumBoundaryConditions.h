@@ -3,7 +3,7 @@
 #define VACUUMBOUNDARYCONDITIONS_H
 
 #include <protomol/config/Parameter.h>
-#include <protomol/types/Vector3DBlock.h>
+#include <protomol/type/Vector3DBlock.h>
 #include <string>
 #include <iostream>
 using namespace std;

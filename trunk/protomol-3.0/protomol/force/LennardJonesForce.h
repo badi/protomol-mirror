@@ -4,7 +4,7 @@
 
 #include <protomol/topology/GenericTopology.h>
 #include <protomol/topology/LennardJonesParameters.h>
-#include <protomol/types/ScalarStructure.h>
+#include <protomol/type/ScalarStructure.h>
 #include <protomol/topology/ExclusionTable.h>
 #include <protomol/config/Parameter.h>
 #include <string>

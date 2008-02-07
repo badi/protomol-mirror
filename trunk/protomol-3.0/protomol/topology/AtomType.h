@@ -4,7 +4,7 @@
 
 #include <string>
 
-#include <protomol/types/Real.h>
+#include <protomol/type/Real.h>
 
 namespace ProtoMol {
   enum Hbonded {NO = 0, PH = 1, PA = 2};

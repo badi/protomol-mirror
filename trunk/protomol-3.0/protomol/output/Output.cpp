@@ -1,7 +1,7 @@
 #include <protomol/output/Output.h>
 #include <protomol/config/Configuration.h>
 #include <protomol/topology/GenericTopology.h>
-#include <protomol/types/ScalarStructure.h>
+#include <protomol/type/ScalarStructure.h>
 #include <protomol/base/MainModule.h>
 #include <protomol/base/ProtoMolApp.h>
 

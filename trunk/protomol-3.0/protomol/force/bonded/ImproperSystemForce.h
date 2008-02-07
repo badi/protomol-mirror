@@ -4,7 +4,7 @@
 
 #include "MTorsionSystemForce.h"
 #include "ImproperSystemForceBase.h"
-#include <protomol/types/ScalarStructure.h>
+#include <protomol/type/ScalarStructure.h>
 #include <protomol/parallel/Parallel.h>
 
 namespace ProtoMol {

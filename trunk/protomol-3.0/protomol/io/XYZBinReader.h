@@ -3,7 +3,7 @@
 #define XYZBINREADER_H
 
 #include <protomol/io/Reader.h>
-#include <protomol/types/XYZ.h>
+#include <protomol/type/XYZ.h>
 
 namespace ProtoMol {
   //________________________________________________________________XYZBinReader

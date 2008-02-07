@@ -10,9 +10,9 @@
 // specialization, define NO_PARTIAL_TEMPLATE_SPECIALIZATION
 
 #ifdef NO_PARTIAL_TEMPLATE_SPECIALIZATION
-#include <protomol/types/ArrayNoPartialSpecialization.h>
+#include <protomol/type/ArrayNoPartialSpecialization.h>
 #else
-#include <protomol/types/ArrayFastest.h>
+#include <protomol/type/ArrayFastest.h>
 #endif
 
 #endif

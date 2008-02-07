@@ -2,7 +2,7 @@
 #ifndef BOND_H
 #define BOND_H
 
-#include <protomol/types/Real.h>
+#include <protomol/type/Real.h>
 
 namespace ProtoMol {
   //________________________________________ Bond

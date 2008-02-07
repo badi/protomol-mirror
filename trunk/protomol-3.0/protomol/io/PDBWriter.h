@@ -3,7 +3,7 @@
 #define PDBWRITER_H
 
 #include <protomol/io/Writer.h>
-#include <protomol/types/PDB.h>
+#include <protomol/type/PDB.h>
 
 namespace ProtoMol {
   //____PDBWriter

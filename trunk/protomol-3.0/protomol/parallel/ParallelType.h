@@ -2,7 +2,7 @@
 #ifndef PARALLELTYPE_H
 #define PARALLELTYPE_H
 
-#include <protomol/types/AbstractEnumType.h>
+#include <protomol/type/AbstractEnumType.h>
 
 namespace ProtoMol {
   //____ ParallelEnum

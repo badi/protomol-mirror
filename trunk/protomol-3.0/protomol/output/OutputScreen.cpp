@@ -3,7 +3,7 @@
 #include <protomol/integrator/Integrator.h>
 #include <protomol/config/Configuration.h>
 #include <protomol/topology/GenericTopology.h>
-#include <protomol/types/ScalarStructure.h>
+#include <protomol/type/ScalarStructure.h>
 #include <protomol/topology/TopologyUtilities.h>
 #include <protomol/base/MainModule.h>
 #include <protomol/output/OutputModule.h>

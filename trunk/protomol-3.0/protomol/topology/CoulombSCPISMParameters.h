@@ -2,7 +2,7 @@
 #ifndef COULOMBSCPISM_H
 #define COULOMBSCPISM_H
 
-#include <protomol/types/Real.h>
+#include <protomol/type/Real.h>
 #include <protomol/topology/AtomType.h>
 
 namespace ProtoMol {

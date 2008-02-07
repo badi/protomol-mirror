@@ -4,7 +4,7 @@
 
 #include <protomol/force/SystemForce.h>
 #include "BondSystemForceBase.h"
-#include <protomol/types/ScalarStructure.h>
+#include <protomol/type/ScalarStructure.h>
 #include <protomol/parallel/Parallel.h>
 
 namespace ProtoMol {

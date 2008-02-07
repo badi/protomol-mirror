@@ -3,8 +3,8 @@
 #define EIGENVECTORREADER_H
 
 #include <protomol/io/Reader.h>
-#include <protomol/types/EigenvectorInfo.h>
-#include <protomol/types/TypeSelection.h>
+#include <protomol/type/EigenvectorInfo.h>
+#include <protomol/type/TypeSelection.h>
 
 namespace ProtoMol {
   //_________________________________________________________________PDBReader

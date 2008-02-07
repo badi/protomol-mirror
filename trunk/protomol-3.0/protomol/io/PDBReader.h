@@ -3,8 +3,8 @@
 #define PDBREADER_H
 
 #include <protomol/io/Reader.h>
-#include <protomol/types/PDB.h>
-#include <protomol/types/XYZ.h>
+#include <protomol/type/PDB.h>
+#include <protomol/type/XYZ.h>
 
 namespace ProtoMol {
 

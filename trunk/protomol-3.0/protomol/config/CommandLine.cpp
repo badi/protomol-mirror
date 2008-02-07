@@ -1,7 +1,7 @@
 #include <protomol/config/CommandLine.h>
 
 #include <protomol/base/Exception.h>
-#include <protomol/types/String.h>
+#include <protomol/type/String.h>
 #include <protomol/config/Configuration.h>
 #include <protomol/config/ConfigurationModule.h>
 #include <protomol/base/StringUtilities.h>

@@ -12,11 +12,11 @@
 #include <protomol/output/OutputCache.h>
 #include <protomol/output/OutputFactory.h>
 
-#include <protomol/types/Vector3DBlock.h>
-#include <protomol/types/EigenvectorInfo.h>
-#include <protomol/types/PSF.h>
-#include <protomol/types/PAR.h>
-#include <protomol/types/ScalarStructure.h>
+#include <protomol/type/Vector3DBlock.h>
+#include <protomol/type/EigenvectorInfo.h>
+#include <protomol/type/PSF.h>
+#include <protomol/type/PAR.h>
+#include <protomol/type/ScalarStructure.h>
 
 #include <ostream>
 

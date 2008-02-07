@@ -2,7 +2,7 @@
 #ifndef ANGLE_H
 #define ANGLE_H
 
-#include <protomol/types/Real.h>
+#include <protomol/type/Real.h>
 
 namespace ProtoMol {
   //________________________________________ Angle

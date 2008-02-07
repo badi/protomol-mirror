@@ -3,8 +3,8 @@
 #define POS_VEL_READER_H
 
 #include <protomol/io/PosVelReaderType.h>
-#include <protomol/types/XYZ.h>
-#include <protomol/types/PDB.h>
+#include <protomol/type/XYZ.h>
+#include <protomol/type/PDB.h>
 
 namespace ProtoMol {
   class Configuration;

@@ -3,7 +3,7 @@
 #define MATHUTILITIES_H
 
 #include <protomol/base/PMConstants.h>
-#include <protomol/types/SimpleTypes.h>
+#include <protomol/type/SimpleTypes.h>
 
 #include <math.h>
 #include <algorithm>

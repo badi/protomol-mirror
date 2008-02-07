@@ -1,32 +1,13 @@
+import glob
+import os
 Import('*')
-
-subdirs = [
-    "output",
-    "switch",
-    "parallel",
-    "modifier",
-    "integrator",
-    "force",
-    "topology",
-    "debug",
-    "base",
-    "config",
-    "factory",
-    "io",
-    "types",
-    "modules",
-]
-
-
-# Include protomol
-env.Append(CPPPATH = '#')
-
 
 # Import subdir build files
 allsrc = []
-for subdir in subdirs:
-    src = SConscript(subdir + '/SConscript')
-    for s in src:
-      allsrc.append(subdir + '/' + s)
+for d in glob.glob('*'):
+    if os.path.isdir(d) and os.path.exists(d + '/SConscript'):
+      src = SConscript(d + '/SConscript')
+      for s in src:
+        allsrc.append(d + '/' + s)
 
 Return('allsrc')

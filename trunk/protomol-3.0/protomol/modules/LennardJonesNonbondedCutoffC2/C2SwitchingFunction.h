@@ -6,7 +6,7 @@
 
 #include <protomol/config/Parameter.h>
 #include "C2SwitchingFunctionBase.h"
-#include <protomol/types/Matrix3By3.h>
+#include <protomol/type/Matrix3By3.h>
 
 namespace ProtoMol {
   //____ C2SwitchingFunction

@@ -1,6 +1,6 @@
 #include <protomol/io/PosVelReader.h>
 
-#include <protomol/types/Vector.h>
+#include <protomol/type/Vector.h>
 #include <protomol/base/SystemUtilities.h>
 
 #include <protomol/io/XYZBinReader.h>

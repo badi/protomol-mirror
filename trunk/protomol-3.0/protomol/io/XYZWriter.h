@@ -3,7 +3,7 @@
 #define XYZWRITER_H
 
 #include <protomol/io/Writer.h>
-#include <protomol/types/XYZ.h>
+#include <protomol/type/XYZ.h>
 #include <protomol/topology/Atom.h>
 #include <protomol/topology/AtomType.h>
 

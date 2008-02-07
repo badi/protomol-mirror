@@ -3,7 +3,7 @@
 #define PARAMETER_H
 
 #include <protomol/config/Value.h>
-#include <protomol/types/SimpleTypes.h>
+#include <protomol/type/SimpleTypes.h>
 
 #include <ostream>
 

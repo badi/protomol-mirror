@@ -3,9 +3,9 @@
 #define MTORSIONSYSTEMFORCE_H
 
 #include <protomol/force/SystemForce.h>
-#include <protomol/types/ScalarStructure.h>
+#include <protomol/type/ScalarStructure.h>
 #include <protomol/topology/Torsion.h>
-#include <protomol/types/Vector3DBlock.h>
+#include <protomol/type/Vector3DBlock.h>
 
 namespace ProtoMol {
   //____ MTorsionSystemForce

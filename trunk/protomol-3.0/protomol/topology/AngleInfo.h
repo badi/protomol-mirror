@@ -3,7 +3,7 @@
 #define ANGLEINFO_H
 
 #include <vector>
-#include <protomol/types/Real.h>
+#include <protomol/type/Real.h>
 
 namespace ProtoMol {
   /**

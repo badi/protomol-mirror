@@ -2,8 +2,8 @@
 #ifndef VALUETYPE_H
 #define VALUETYPE_H
 
-#include <protomol/types/AbstractEnumType.h>
-#include <protomol/types/Vector3D.h>
+#include <protomol/type/AbstractEnumType.h>
+#include <protomol/type/Vector3D.h>
 
 #include <protomol/config/ConstraintValueType.h>
 

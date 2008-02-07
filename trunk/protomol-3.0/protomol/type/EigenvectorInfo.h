@@ -2,7 +2,7 @@
 #ifndef EIGENVECTORINFO_H
 #define EIGENVECTORINFO_H
 
-#include <protomol/types/Real.h>
+#include <protomol/type/Real.h>
 #include <string>
 #include <iostream>
 using std::cout;

@@ -6,7 +6,7 @@
 #include <algorithm>
 
 #include <protomol/base/Report.h>
-#include <protomol/types/Real.h>
+#include <protomol/type/Real.h>
 
 namespace ProtoMol {
   /// Changes to the actual directory of the file name

@@ -3,8 +3,8 @@
 #define DCDTRAJECTORYREADER_H
 
 #include <protomol/io/Reader.h>
-#include <protomol/types/XYZ.h>
-#include <protomol/types/TypeSelection.h>
+#include <protomol/type/XYZ.h>
+#include <protomol/type/TypeSelection.h>
 
 namespace ProtoMol {
   //____DCDTrajectoryReader

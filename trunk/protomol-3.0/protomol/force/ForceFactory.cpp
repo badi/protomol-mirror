@@ -1,7 +1,7 @@
 #include <protomol/force/ForceFactory.h>
 #include <protomol/base/StringUtilities.h>
 #include <protomol/base/Report.h>
-#include <protomol/types/SimpleTypes.h>
+#include <protomol/type/SimpleTypes.h>
 #include <protomol/force/CompareForce.h>
 #include <protomol/force/TimeForce.h>
 #include <algorithm>

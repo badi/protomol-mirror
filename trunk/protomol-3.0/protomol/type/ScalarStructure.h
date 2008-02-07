@@ -3,7 +3,7 @@
 #define ENERGYSTRUCTURE_H
 
 #include <protomol/base/Proxy.h>
-#include <protomol/types/Vector3D.h>
+#include <protomol/type/Vector3D.h>
 #include <protomol/base/PMConstants.h>
 
 namespace ProtoMol {

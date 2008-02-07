@@ -1,4 +1,4 @@
-#include <protomol/types/Matrix3By3.h>
+#include <protomol/type/Matrix3By3.h>
 #include <protomol/base/MathUtilities.h>
 #include <protomol/base/Report.h>
 

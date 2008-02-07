@@ -3,7 +3,7 @@
 #define PARREADER_H
 
 #include <protomol/io/Reader.h>
-#include <protomol/types/PAR.h>
+#include <protomol/type/PAR.h>
 
 namespace ProtoMol {
   //_________________________________________________________________PARReader

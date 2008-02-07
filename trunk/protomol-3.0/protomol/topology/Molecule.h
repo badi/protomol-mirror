@@ -2,9 +2,9 @@
 #ifndef MOLECULE_H
 #define MOLECULE_H
 
-#include <protomol/types/Real.h>
-#include <protomol/types/Vector3D.h>
-#include <protomol/types/SimpleTypes.h>
+#include <protomol/type/Real.h>
+#include <protomol/type/Vector3D.h>
+#include <protomol/type/SimpleTypes.h>
 #include <string>
 #include <vector>
 #include <set>

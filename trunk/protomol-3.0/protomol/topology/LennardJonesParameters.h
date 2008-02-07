@@ -2,7 +2,7 @@
 #ifndef LENNARDJONESPARAMETERS_H
 #define LENNARDJONESPARAMETERS_H
 
-#include <protomol/types/Real.h>
+#include <protomol/type/Real.h>
 
 namespace ProtoMol {
   //________________________________________ LennardJonesParameters

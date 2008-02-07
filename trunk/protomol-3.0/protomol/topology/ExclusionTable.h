@@ -7,7 +7,7 @@
 #include <set>
 
 #include <protomol/base/PMConstants.h>
-#include <protomol/types/SimpleTypes.h>
+#include <protomol/type/SimpleTypes.h>
 
 namespace ProtoMol {
   //________________________________________ ExclusionClass

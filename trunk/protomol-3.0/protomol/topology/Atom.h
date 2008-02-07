@@ -2,7 +2,7 @@
 #ifndef ATOM_H
 #define ATOM_H
 
-#include <protomol/types/Real.h>
+#include <protomol/type/Real.h>
 #include <string>
 #include <vector>
 

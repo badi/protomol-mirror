@@ -1,6 +1,6 @@
 #include <protomol/force/ExtendedTimeForce.h>
-#include <protomol/types/ScalarStructure.h>
-#include <protomol/types/Vector3DBlock.h>
+#include <protomol/type/ScalarStructure.h>
+#include <protomol/type/Vector3DBlock.h>
 #include <protomol/topology/GenericTopology.h>
 
 using namespace ProtoMol;

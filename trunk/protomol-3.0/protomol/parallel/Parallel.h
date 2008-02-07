@@ -5,7 +5,7 @@
 #include <vector>
 #include <string>
 
-#include <protomol/types/Real.h>
+#include <protomol/type/Real.h>
 #include <protomol/parallel/ParallelType.h>
 
 namespace ProtoMol {

@@ -118,6 +118,9 @@ if optimize:
 if depends:
     env.Append(CCFLAGS = '-MMD -MF ${TARGET}.d')
 
+# Include protomol
+env.Append(CPPPATH = '#')
+
 libname = 'protomol'
 libsrc = []
 

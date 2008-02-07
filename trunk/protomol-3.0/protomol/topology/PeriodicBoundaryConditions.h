@@ -5,7 +5,7 @@
 #include <string>
 
 #include <protomol/config/Parameter.h>
-#include <protomol/types/Vector3DBlock.h>
+#include <protomol/type/Vector3DBlock.h>
 
 namespace ProtoMol {
   //________________________________________ PeriodicBoundaryConditions

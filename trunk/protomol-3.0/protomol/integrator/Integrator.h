@@ -4,7 +4,7 @@
 
 #include <protomol/base/Makeable.h>
 #include <protomol/integrator/IntegratorDefinition.h>
-#include <protomol/types/Real.h>
+#include <protomol/type/Real.h>
 
 #include <string>
 #include <set>

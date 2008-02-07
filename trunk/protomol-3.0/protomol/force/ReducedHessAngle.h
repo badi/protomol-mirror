@@ -2,7 +2,7 @@
 #ifndef REDUCEDHESSANGLE_H
 #define REDUCEDHESSANGLE_H
 
-#include <protomol/types/Matrix3By3.h>
+#include <protomol/type/Matrix3By3.h>
 
 
 namespace ProtoMol {

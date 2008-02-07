@@ -9,7 +9,7 @@
 #include <sstream>
 #endif
 
-#include <protomol/types/Vector3D.h>
+#include <protomol/type/Vector3D.h>
 #include <vector>
 #include <ostream>
 

@@ -2,8 +2,8 @@
 #include <protomol/output/Output.h>
 #include <protomol/config/Configuration.h>
 #include <protomol/topology/GenericTopology.h>
-#include <protomol/types/ScalarStructure.h>
-#include <protomol/types/Vector3DBlock.h>
+#include <protomol/type/ScalarStructure.h>
+#include <protomol/type/Vector3DBlock.h>
 #include <protomol/integrator/Integrator.h>
 #include <protomol/base/Report.h>
 #include <protomol/base/MathUtilities.h>

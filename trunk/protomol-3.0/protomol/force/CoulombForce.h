@@ -3,7 +3,7 @@
 #define COULOMBFORCE_H
 
 #include <protomol/topology/GenericTopology.h>
-#include <protomol/types/ScalarStructure.h>
+#include <protomol/type/ScalarStructure.h>
 #include <protomol/topology/ExclusionTable.h>
 #include <protomol/config/Parameter.h>
 #include <string>

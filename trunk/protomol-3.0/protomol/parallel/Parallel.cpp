@@ -8,8 +8,8 @@
 #include <algorithm>
 
 #include <protomol/parallel/Parallel.h>
-#include <protomol/types/ScalarStructure.h>
-#include <protomol/types/Vector3DBlock.h>
+#include <protomol/type/ScalarStructure.h>
+#include <protomol/type/Vector3DBlock.h>
 #include <protomol/base/MathUtilities.h>
 #include <protomol/base/SystemUtilities.h>
 #include <protomol/base/TimerStatistic.h>

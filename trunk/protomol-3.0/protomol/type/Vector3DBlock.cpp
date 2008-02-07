@@ -1,5 +1,5 @@
-#include <protomol/types/Vector3DBlock.h>
-#include <protomol/types/Array.h>
+#include <protomol/type/Vector3DBlock.h>
+#include <protomol/type/Array.h>
 
 using namespace std;
 using namespace ProtoMol;

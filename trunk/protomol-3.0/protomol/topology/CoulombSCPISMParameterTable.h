@@ -2,7 +2,7 @@
 #ifndef COULOMBSCPISMPARAMETERTABLE_H
 #define COULOMBSCPISMPARAMETERTABLE_H
 
-#include <protomol/types/Real.h>
+#include <protomol/type/Real.h>
 #include <protomol/topology/CoulombSCPISMParameters.h>
 
 #include <string>

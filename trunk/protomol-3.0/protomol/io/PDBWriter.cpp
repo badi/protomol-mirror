@@ -1,6 +1,6 @@
 #include <protomol/io/PDBWriter.h>
 
-#include <protomol/types/PDB.h>
+#include <protomol/type/PDB.h>
 #include <protomol/base/Report.h>
 #include <protomol/base/StringUtilities.h>
 #include <protomol/base/SystemUtilities.h>

@@ -2,7 +2,7 @@
 
 #include <protomol/base/Report.h>
 #include <protomol/base/SystemUtilities.h>
-#include <protomol/types/TypeSelection.h>
+#include <protomol/type/TypeSelection.h>
 
 using namespace std;
 using namespace ProtoMol::Report;

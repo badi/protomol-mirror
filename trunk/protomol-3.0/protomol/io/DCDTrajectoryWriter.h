@@ -3,9 +3,9 @@
 #define DCDTRAJECTORYWRITER_H
 
 #include <protomol/io/Writer.h>
-#include <protomol/types/XYZ.h>
+#include <protomol/type/XYZ.h>
 #include <protomol/base/SystemUtilities.h>
-#include <protomol/types/TypeSelection.h>
+#include <protomol/type/TypeSelection.h>
 
 namespace ProtoMol {
   //____DCDTrajectoryWriter

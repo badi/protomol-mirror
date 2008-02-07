@@ -1,6 +1,6 @@
 #include <protomol/integrator/MTSIntegrator.h>
-#include <protomol/types/ScalarStructure.h>
-#include <protomol/types/Vector3DBlock.h>
+#include <protomol/type/ScalarStructure.h>
+#include <protomol/type/Vector3DBlock.h>
 #include <protomol/force/ForceGroup.h>
 #include <protomol/topology/GenericTopology.h>
 #include <protomol/base/PMConstants.h>

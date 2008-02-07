@@ -4,8 +4,8 @@
 
 #include <protomol/base/StringUtilities.h>
 #include <protomol/topology/CubicCellLocation.h>
-#include <protomol/types/Vector3D.h>
-#include <protomol/types/Array.h>
+#include <protomol/type/Vector3D.h>
+#include <protomol/type/Array.h>
 
 //#define DEBUG_ARRAYCELLLISTSTRUCTURE
 

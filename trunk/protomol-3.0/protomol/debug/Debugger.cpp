@@ -27,7 +27,7 @@
 #ifdef HAVE_DEBUGGER
 #include <protomol/debug/Debugger.h>
 #include <protomol/debug/Process.h>
-#include <protomol/types/String.h>
+#include <protomol/type/String.h>
 
 #include <sys/time.h>
 #include <sys/resource.h>

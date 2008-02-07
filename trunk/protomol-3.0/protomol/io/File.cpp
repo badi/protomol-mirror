@@ -2,7 +2,7 @@
 
 #include <protomol/base/SystemUtilities.h>
 #include <protomol/base/Zap.h>
-#include <protomol/types/String.h>
+#include <protomol/type/String.h>
 
 using namespace std;
 using namespace ProtoMol;

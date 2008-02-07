@@ -11,8 +11,8 @@
 #include <protomol/topology/GenericTopology.h>
 #include <protomol/topology/CoulombSCPISMParameterTable.h>
 #include <protomol/topology/LennardJonesParameterTable.h>
-#include <protomol/types/PAR.h>
-#include <protomol/types/PSF.h>
+#include <protomol/type/PAR.h>
+#include <protomol/type/PSF.h>
 #include <protomol/base/Report.h>
 #include <protomol/base/PMConstants.h>
 #include <protomol/base/MathUtilities.h>

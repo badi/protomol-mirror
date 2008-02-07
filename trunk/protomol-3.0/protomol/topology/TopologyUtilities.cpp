@@ -1,13 +1,13 @@
 #include <protomol/topology/TopologyUtilities.h>
 
-#include <protomol/types/Vector3DBlock.h>
+#include <protomol/type/Vector3DBlock.h>
 #include <protomol/topology/GenericTopology.h>
 #include <protomol/base/Report.h>
 #include <protomol/topology/Topology.h>
 #include <protomol/base/MathUtilities.h>
 #include <protomol/base/PMConstants.h>
 #include <protomol/base/StringUtilities.h>
-#include <protomol/types/ScalarStructure.h>
+#include <protomol/type/ScalarStructure.h>
 
 #include <vector>
 #include <algorithm>

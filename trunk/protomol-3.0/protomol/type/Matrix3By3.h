@@ -3,7 +3,7 @@
 #define MATRIX3BY3_H
 
 #include <iostream>
-#include <protomol/types/Vector3D.h>
+#include <protomol/type/Vector3D.h>
 
 namespace ProtoMol {
   /*________________________________________ Matrix3By3

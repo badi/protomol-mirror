@@ -10,8 +10,8 @@
 #include <protomol/base/PMConstants.h>
 #include <protomol/base/Report.h>
 
-#include <protomol/types/String.h>
-#include <protomol/types/PDB.h>
+#include <protomol/type/String.h>
+#include <protomol/type/PDB.h>
 
 #include <protomol/io/PosVelReader.h>
 #include <protomol/io/EigenvectorReader.h>

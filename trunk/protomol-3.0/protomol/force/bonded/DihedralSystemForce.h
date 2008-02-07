@@ -5,7 +5,7 @@
 #include "DihedralSystemForceBase.h"
 
 #include "MTorsionSystemForce.h"
-#include <protomol/types/ScalarStructure.h>
+#include <protomol/type/ScalarStructure.h>
 #include <protomol/parallel/Parallel.h>
 #include <protomol/topology/SemiGenericTopology.h>
 

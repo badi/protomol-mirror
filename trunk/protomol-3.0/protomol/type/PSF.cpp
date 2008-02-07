@@ -1,4 +1,4 @@
-#include <protomol/types/PSF.h>
+#include <protomol/type/PSF.h>
 
 using namespace ProtoMol;
 //____ PSF

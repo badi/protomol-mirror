@@ -2,7 +2,7 @@
 #ifndef EXCLUSIONTYPE_H
 #define EXCLUSIONTYPE_H
 
-#include <protomol/types/AbstractEnumType.h>
+#include <protomol/type/AbstractEnumType.h>
 
 namespace ProtoMol {
   //________________________________________ ExclusionEnum

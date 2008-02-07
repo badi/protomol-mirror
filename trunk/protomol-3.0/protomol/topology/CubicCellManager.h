@@ -4,7 +4,7 @@
 
 #include <protomol/topology/ArrayCellListStructure.h>
 #include <protomol/config/Parameter.h>
-#include <protomol/types/Vector3D.h>
+#include <protomol/type/Vector3D.h>
 
 #include <vector>
 

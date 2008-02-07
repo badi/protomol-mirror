@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include <protomol/types/Vector.h>
+#include <protomol/type/Vector.h>
 #include <protomol/config/ConstraintValueType.h>
 #include <protomol/config/ValueType.h>
 

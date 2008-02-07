@@ -2,7 +2,7 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
-#include <protomol/types/Real.h>
+#include <protomol/type/Real.h>
 #include <string>
 
 namespace ProtoMol {

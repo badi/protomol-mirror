@@ -11,7 +11,7 @@
   } zomplex;
 #endif
 
-#include <protomol/types/Real.h>
+#include <protomol/type/Real.h>
 
 namespace ProtoMol {
 

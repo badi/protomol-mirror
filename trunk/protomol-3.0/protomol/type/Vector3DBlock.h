@@ -4,7 +4,7 @@
 
 #include <vector>
 
-#include <protomol/types/Vector3D.h>
+#include <protomol/type/Vector3D.h>
 #include <protomol/base/Proxy.h>
 
 

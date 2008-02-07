@@ -9,7 +9,7 @@
 #include <protomol/topology/Torsion.h>
 #include <protomol/topology/ExclusionTable.h>
 #include <protomol/topology/ExclusionType.h>
-#include <protomol/types/Vector3DBlock.h>
+#include <protomol/type/Vector3DBlock.h>
 #include <protomol/base/Makeable.h>
 #include <protomol/topology/Molecule.h>
 #include <protomol/base/Zap.h>

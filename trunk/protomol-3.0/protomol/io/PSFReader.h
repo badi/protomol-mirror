@@ -3,7 +3,7 @@
 #define PSFREADER_H
 
 #include <protomol/io/Reader.h>
-#include <protomol/types/PSF.h>
+#include <protomol/type/PSF.h>
 
 namespace ProtoMol {
   //_________________________________________________________________PSFReader

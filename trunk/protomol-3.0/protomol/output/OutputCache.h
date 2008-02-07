@@ -2,11 +2,11 @@
 #ifndef OUTPUTCACHE_H
 #define OUTPUTCACHE_H
 
-#include <protomol/types/Real.h>
-#include <protomol/types/PDB.h>
-#include <protomol/types/PAR.h>
-#include <protomol/types/PSF.h>
-#include <protomol/types/Vector3D.h>
+#include <protomol/type/Real.h>
+#include <protomol/type/PDB.h>
+#include <protomol/type/PAR.h>
+#include <protomol/type/PSF.h>
+#include <protomol/type/Vector3D.h>
 
 namespace ProtoMol {
   class ProtoMolApp;

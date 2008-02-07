@@ -2,12 +2,12 @@
 #ifndef TOPOLOGYUTILITIES_H
 #define TOPOLOGYUTILITIES_H
 
-#include <protomol/types/Vector3DBlock.h>
-#include <protomol/types/Vector3D.h>
-#include <protomol/types/Matrix3By3.h>
-#include <protomol/types/Real.h>
+#include <protomol/type/Vector3DBlock.h>
+#include <protomol/type/Vector3D.h>
+#include <protomol/type/Matrix3By3.h>
+#include <protomol/type/Real.h>
 #include <protomol/topology/Torsion.h>
-#include <protomol/types/Stack.h>
+#include <protomol/type/Stack.h>
 #include <protomol/topology/AngleInfo.h>
 #include <protomol/topology/Bond.h>
 

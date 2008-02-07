@@ -2,7 +2,7 @@
 #ifndef CONSTRAINTVALUETYPE_H
 #define CONSTRAINTVALUETYPE_H
 
-#include <protomol/types/AbstractEnumType.h>
+#include <protomol/type/AbstractEnumType.h>
 
 namespace ProtoMol {
   //_____________________________________________________ ConstraintValueEnum
