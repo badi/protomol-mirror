@@ -5,9 +5,9 @@
 #include <protomol/config/ConfigurationModule.h>
 #include <protomol/topology/TopologyModule.h>
 #include <protomol/output/OutputModule.h>
+#include <protomol/force/bonded/BondedForcesModule.h>
 
 #include <protomol/modules/LangevinImpulse/LangevinImpulseModule.h>
-#include <protomol/modules/BondedForces/BondedForcesModule.h>
 #include <protomol/modules/LennardJonesNonbondedCutoffC2/LennardJonesNonbondedCutoffC2Module.h>
 
 using namespace ProtoMol;
