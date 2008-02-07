@@ -8,6 +8,7 @@
 #include <protomol/force/MollyForce.h>
 #include <protomol/force/MetaForce.h>
 #include <protomol/base/TimerStatistic.h>
+#include <protomol/base/ProtoMolApp.h>
 
 #ifdef HAVE_PARALLEL
 #include <protomol/parallel/Parallel.h>
@@ -49,24 +50,22 @@ ForceGroup::~ForceGroup() {
     delete (*currentForce);
 }
 
-void ForceGroup::evaluateSystemForces(GenericTopology *topo,
-                                      const Vector3DBlock *positions,
-                                      Vector3DBlock *forces,
-                                      ScalarStructure *energies) const {
+void ForceGroup::evaluateSystemForces(ProtoMolApp *app,
+                                      Vector3DBlock *forces) const {
   if (mySystemForcesList.empty()) return;
-  topo->uncacheCellList();
+  app->topology->uncacheCellList();
 
 #ifdef HAVE_PARALLEL
-  Parallel::distribute(energies, forces);
+  Parallel::distribute(&app->energies, forces);
 
   if (Parallel::isDynamic()) {
     // Collecting the number of blocks of each force.
     vector<int> blocks;
-    for (list<SystemForce *>::const_iterator currentForce =
-           mySystemForcesList.begin();
-         currentForce != mySystemForcesList.end();
-         ++currentForce)
-      blocks.push_back((*currentForce)->numberOfBlocks(topo, positions));
+    list<SystemForce *>::const_iterator currentForce;
+    for (currentForce = mySystemForcesList.begin();
+         currentForce != mySystemForcesList.end(); ++currentForce)
+      blocks.push_back
+        ((*currentForce)->numberOfBlocks(app->topology, &app->positions));
 
     Parallel::resetNext(blocks);
   }
@@ -76,31 +75,32 @@ void ForceGroup::evaluateSystemForces(GenericTopology *topo,
 #endif // HAVE_PARALLEL
 
   TimerStatistic::timer[TimerStatistic::FORCES].start();
-  for (list<SystemForce *>::const_iterator currentForce =
-         mySystemForcesList.begin();
+  list<SystemForce *>::const_iterator currentForce;
+  for (currentForce = mySystemForcesList.begin();
        currentForce != mySystemForcesList.end(); ++currentForce)
 #ifdef HAVE_PARALLEL
     if (Parallel::isParallel())
-      (*currentForce)->parallelEvaluate(topo, positions, forces, energies);
+      (*currentForce)->parallelEvaluate(app->topology, &app->positions, forces,
+                                        &app->energies);
     else
 #endif // HAVE_PARALLEL
-    (*currentForce)->evaluate(topo, positions, forces, energies);
+    (*currentForce)->evaluate(app->topology, &app->positions, forces,
+                              &app->energies);
 
   TimerStatistic::timer[TimerStatistic::FORCES].stop();
-
 #ifdef HAVE_PARALLEL
 }
 
 #ifdef DEBUG_OUTSTANDING_MSG
-report << allnodes << plain << "Node " << Parallel::getId() << " done." <<
-endr;
-MPI_Barrier(MPI_COMM_WORLD);
-MPI_Status status;
-int test = 0;
-MPI_Iprobe(MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &test, &status);
-if (test != 0)
-  report << plain << allnodes << "Node " << Parallel::getId() <<
-  " outstanding msg from " << status.MPI_SOURCE << endr;
+  report << allnodes << plain << "Node " << Parallel::getId() << " done."
+         << endr;
+  MPI_Barrier(MPI_COMM_WORLD);
+  MPI_Status status;
+  int test = 0;
+  MPI_Iprobe(MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &test, &status);
+  if (test != 0)
+    report << plain << allnodes << "Node " << Parallel::getId()
+           << " outstanding msg from " << status.MPI_SOURCE << endr;
 #endif
 
 Parallel::reduce(energies, forces);
@@ -108,27 +108,23 @@ Parallel::reduce(energies, forces);
 }
 //____ Evaluate all system forces in this group.
 
-void ForceGroup::evaluateExtendedForces(GenericTopology *topo,
-                                        const Vector3DBlock *positions,
-                                        const Vector3DBlock *velocities,
-                                        Vector3DBlock *forces,
-                                        ScalarStructure *energies) const {
-  if (myExtendedForcesList.empty())
-    return;
+void ForceGroup::evaluateExtendedForces(ProtoMolApp *app,
+                                        Vector3DBlock *forces) const {
+  if (myExtendedForcesList.empty()) return;
 
-  topo->uncacheCellList();
+  app->topology->uncacheCellList();
 
 #ifdef HAVE_PARALLEL
-  Parallel::distribute(energies, forces);
+  Parallel::distribute(&app->energies, forces);
 
   if (Parallel::isDynamic()) {
     // Collecting the number of blocks of each force.
     vector<int> blocks;
-    for (list<ExtendedForce *>::const_iterator currentForce =
-           myExtendedForcesList.begin();
-         currentForce != myExtendedForcesList.end();
-         ++currentForce)
-      blocks.push_back((*currentForce)->numberOfBlocks(topo, positions));
+    list<ExtendedForce *>::const_iterator currentForce =
+    for (myExtendedForcesList.begin();
+         currentForce != myExtendedForcesList.end(); ++currentForce)
+      blocks.push_back
+        ((*currentForce)->numberOfBlocks(app->topology, &app->positions));
 
     Parallel::resetNext(blocks);
   }
@@ -138,36 +134,37 @@ void ForceGroup::evaluateExtendedForces(GenericTopology *topo,
 #endif // HAVE_PARALLEL
 
   TimerStatistic::timer[TimerStatistic::FORCES].start();
-  for (list<ExtendedForce *>::const_iterator currentForce =
-         myExtendedForcesList.begin();
-       currentForce != myExtendedForcesList.end();
-       ++currentForce)
+  list<ExtendedForce *>::const_iterator currentForce;
+  for (currentForce = myExtendedForcesList.begin();
+       currentForce != myExtendedForcesList.end(); ++currentForce)
 #ifdef HAVE_PARALLEL
     if (Parallel::isParallel())
-      (*currentForce)->parallelEvaluate(topo, positions, velocities,
-        forces, energies);
+      (*currentForce)->parallelEvaluate(app->topology, &app->positions,
+                                        &app->velocities, forces,
+                                        &app->energies);
     else
 #endif // HAVE_PARALLEL
-    (*currentForce)->evaluate(topo, positions, velocities, forces,
-      energies);
+      (*currentForce)->evaluate(app->topology, &app->positions,
+                                &app->velocities, forces, &app->energies);
 
   TimerStatistic::timer[TimerStatistic::FORCES].stop();
 #ifdef HAVE_PARALLEL
 }
 
 #ifdef DEBUG_OUTSTANDING_MSG
-report << allnodes << plain << "Node " << Parallel::getId() << " done." <<
-endr;
-MPI_Barrier(MPI_COMM_WORLD);
-MPI_Status status;
-int test = 0;
-MPI_Iprobe(MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &test, &status);
-if (test != 0)
-  report << plain << allnodes << "Node " << Parallel::getId() <<
-  " outstanding msg from " << status.MPI_SOURCE << endr;
+  report << allnodes << plain << "Node " << Parallel::getId() << " done."
+         << endr;
+
+  MPI_Barrier(MPI_COMM_WORLD);
+  MPI_Status status;
+  int test = 0;
+  MPI_Iprobe(MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &test, &status);
+  if (test != 0)
+    report << plain << allnodes << "Node " << Parallel::getId() <<
+      " outstanding msg from " << status.MPI_SOURCE << endr;
 #endif
 
-Parallel::reduce(energies, forces);
+  Parallel::reduce(&app->energies, forces);
 #endif // HAVE_PARALLEL
 }
 

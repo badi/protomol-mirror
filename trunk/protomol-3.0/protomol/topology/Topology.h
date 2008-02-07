@@ -97,14 +97,9 @@ namespace ProtoMol {
       this->cellManager.getParameters(parameters);
     }
 
-    virtual unsigned int getParameterSize() const {
-      return this->boundaryConditions.getParameterSize() +
-             this->cellManager.getParameterSize() + 2;
+    virtual std::string getIdNoAlias() const {
+      return std::string(TBoundaryConditions::keyword + TCellManager::keyword);
     }
-
-    virtual std::string getIdNoAlias() const {return std::string(
-                                                TBoundaryConditions::keyword +
-                                                TCellManager::keyword);}
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // From Topology
@@ -217,15 +212,14 @@ namespace ProtoMol {
         THROW(string(" Exclusion '") + values[1].getString() +
               "' not recognized, possible values are: " +
               ExclusionType::getPossibleValues(",") + ".");
-      
+
+      // Split up parameters
       unsigned int n = TBoundaryConditions::getParameterSize();
+      std::vector<Value> parmsBC(values.begin() + 2, values.begin() + n + 2);
+      std::vector<Value> parmsCM(values.begin() + n + 2, values.end());
       
-      TBoundaryConditions BC = 
-        TBoundaryConditions::make(std::vector<Value>(values.begin() + 2,
-                                                     values.begin() + n + 2));
-      TCellManager CM =
-        TCellManager::make(std::vector<Value>(values.begin() + n + 2,
-                                              values.end()));
+      TBoundaryConditions BC = TBoundaryConditions::make(parmsBC);
+      TCellManager CM = TCellManager::make(parmsCM);
 
       return new Topology<TBoundaryConditions, TCellManager>(csf, e, BC, CM);
     }

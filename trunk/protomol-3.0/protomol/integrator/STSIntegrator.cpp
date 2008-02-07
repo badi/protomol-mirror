@@ -20,12 +20,6 @@ STSIntegrator::STSIntegrator() :
 STSIntegrator::STSIntegrator(Real timestep, ForceGroup *overloadedForces) :
   StandardIntegrator(overloadedForces), myTimestep(timestep) {}
 
-void STSIntegrator::initialize(GenericTopology *topo, Vector3DBlock *positions,
-                               Vector3DBlock *velocities,
-                               ScalarStructure *energies) {
-  StandardIntegrator::initialize(topo, positions, velocities, energies);
-}
-
 void STSIntegrator::addModifierAfterInitialize() {
   adoptPostForceModifier(new ModifierIncrementTimestep(this));
 }
@@ -46,19 +40,19 @@ void STSIntegrator::calculateForces() {
   //  Forces are cleared in StandardIntegrator::calculateForces()          //
   //  -------------------------------------------------------------------  //
 
-  myEnergies->clear();
+  app->energies.clear();
   StandardIntegrator::calculateForces();
 }
 
 void STSIntegrator::doDrift() {
   Real h = getTimestep() * Constant::INV_TIMEFACTOR;
-  myPositions->intoWeightedAdd(h, *myVelocities);
-  buildMolecularCenterOfMass(myPositions, myTopo);
+  app->positions.intoWeightedAdd(h, app->velocities);
+  buildMolecularCenterOfMass(&app->positions, app->topology);
 }
 
 void STSIntegrator::getParameters(vector<Parameter> &parameter) const {
-  parameter.push_back(Parameter("timestep",
-      Value(myTimestep, ConstraintValueType::Positive())));
+  parameter.push_back
+    (Parameter("timestep", Value(myTimestep, ConstraintValueType::Positive())));
 }
 
 STSIntegrator *STSIntegrator::make(const vector<Value> &values,
@@ -67,4 +61,3 @@ STSIntegrator *STSIntegrator::make(const vector<Value> &values,
 
   return adjustAlias(doMake(values, fg));
 }
-

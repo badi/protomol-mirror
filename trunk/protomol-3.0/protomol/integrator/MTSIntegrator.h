@@ -21,8 +21,7 @@ namespace ProtoMol {
     //   are empty lists of forces.  Then the default forces will be assigned);
     //   however, the lists still must be passed nonetheless.
     MTSIntegrator();
-    MTSIntegrator(int cycles,
-                  ForceGroup *overloadedForces,
+    MTSIntegrator(int cycles, ForceGroup *overloadedForces,
                   StandardIntegrator *nextIntegrator);
 
     virtual ~MTSIntegrator();
@@ -45,17 +44,13 @@ namespace ProtoMol {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
     virtual void getParameters(std::vector<Parameter> &parameter) const;
-    virtual unsigned int getParameterSize() const {return 1;}
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // From class Integrator
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
     virtual Real getTimestep() const;
-    virtual void initialize(GenericTopology *topo, Vector3DBlock *positions,
-                            Vector3DBlock *velocities,
-                            ScalarStructure *energies);
-
+    virtual void initialize(ProtoMolApp *app);
     virtual Integrator *next();
     virtual const Integrator *next() const;
 

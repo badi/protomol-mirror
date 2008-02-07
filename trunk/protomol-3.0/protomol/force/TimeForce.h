@@ -44,7 +44,7 @@ namespace ProtoMol {
   public:
     virtual std::string getIdNoAlias() const;
     virtual void getParameters(std::vector<Parameter> &parameters) const;
-    virtual unsigned int getParameterSize() const;
+
   private:
     virtual void doSetParameters(std::vector<Value> values);
 

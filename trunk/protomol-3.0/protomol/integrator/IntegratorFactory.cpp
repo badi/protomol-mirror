@@ -30,9 +30,9 @@ Integrator *IntegratorFactory::make(const string &definition,
 
     const Integrator *prototype = getPrototype(integrator);
     if (prototype == NULL)
-      THROW(string(" Could not find any match for \'") + integrator + "\' in " +
-        Integrator::scope + "Factory. Possible integrators are:\n" +
-        print());
+      THROWS(" Could not find any match for '" << integrator << "' in "
+             << Integrator::scope << "Factory. Possible integrators are:\n"
+             << *this);
 
     // Read first integrator parameters and then force definitions
     string parameterStr, forceStr;
@@ -199,39 +199,6 @@ Integrator *IntegratorFactory::make(const string &definition,
   }
 
   return integrator;
-}
-
-string IntegratorFactory::print() const {
-  string res;
-  for (map<string, const Integrator *,
-           ltstrNocase>::const_iterator i = exemplars.begin();
-       i != exemplars.end();
-       ++i) {
-    res += (i == exemplars.begin() ? "" : "\n") + i->first;
-    vector<Parameter> parameter(i->second->getParameters());
-    for (unsigned int k = 0; k < parameter.size(); k++) {
-      if (!parameter[k].keyword.empty())
-        res += "\n" + Constant::PRINTINDENT + Constant::PRINTINDENT +
-               getRightFill(parameter[k].keyword, Constant::PRINTMAXWIDTH);
-      res += " " +
-             (parameter[k].defaultValue.valid() ? parameter[k].defaultValue.
-                getDefinitionTypeString() :
-              parameter[k].value.
-                getDefinitionTypeString());
-      if (!parameter[k].text.empty())
-        res += "\t # " + parameter[k].text;
-    }
-  }
-
-  res += "\nAlias:";
-  for (map<string, const Integrator *,
-           ltstrNocase>::const_iterator j = aliasExemplars.begin();
-       j != aliasExemplars.end();
-       ++j)
-    res += "\n" + j->first + " : " + j->second->getId() + " (" +
-           j->second->getIdNoAlias() + ")";
-
-  return res;
 }
 
 void IntegratorFactory::registerHelpText() const {

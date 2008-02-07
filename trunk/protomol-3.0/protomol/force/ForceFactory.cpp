@@ -5,6 +5,7 @@
 #include <protomol/force/CompareForce.h>
 #include <protomol/force/TimeForce.h>
 #include <algorithm>
+#include <sstream>
 
 #ifdef HAVE_PARALLEL
 #include <protomol/parallel/Parallel.h>
@@ -24,8 +25,13 @@ Force *ForceFactory::make(const string &idInput, vector<Value> values) const {
   // Just try .. and see if we can find it directly
   string id = normalizeString(idInput);
   const Force *prototype = getPrototype(id);
-  if (prototype != NULL && values.size() != prototype->getParameterSize())
-    prototype = NULL;
+  
+  // Check that paramter size matches values
+  if (prototype != NULL) {
+      vector<Parameter> tmp;
+      prototype->getParameters(tmp);
+      if (values.size() != tmp.size()) prototype = NULL;
+  }
 
   if (prototype == NULL) {
     // Lookup tables
@@ -240,40 +246,31 @@ Force *ForceFactory::make(const string &idInput, vector<Value> values) const {
   return newObj;
 }
 
-string ForceFactory::print() const {
+ostream &ForceFactory::print(ostream &stream) const {
   if (!cache) updateCache();
 
-  string res;
-  for (forceTypes_t::const_iterator i =
-         forceTypes.begin(); i != forceTypes.end(); ++i) {
-    res += (res.empty() ? "" : "\n") + i->first;
-    for (set<string, ltstrNocase>::const_iterator j =
-           i->second.policies.begin(); j != i->second.policies.end(); ++j) {
-      if (!(*j).empty())
-        res += "\n" + Constant::PRINTINDENT + (*j);
-      vector<Parameter> parameter =
-        getPrototype(i->first +
-          ((*j).empty() ? "" : " " + (*j)))->getParameters();
-      for (unsigned int k = 0; k < parameter.size(); k++) {
-        if (!parameter[k].keyword.empty())
-          res += "\n" + Constant::PRINTINDENT + Constant::PRINTINDENT +
-                 getRightFill(parameter[k].keyword, Constant::PRINTMAXWIDTH);
-        res += " " + (parameter[k].defaultValue.valid() ?
-                      parameter[k].defaultValue.getDefinitionTypeString() :
-                      parameter[k].value.getDefinitionTypeString());
-        if (!parameter[k].text.empty())
-          res += "\t # " + parameter[k].text;
+  forceTypes_t::const_iterator i;
+  for (i = forceTypes.begin(); i != forceTypes.end(); ++i) {
+    if (i == forceTypes.begin()) stream << endl;
+    stream << i->first;
+
+    policy_t::const_iterator j;
+    for (j = i->second.policies.begin(); j != i->second.policies.end(); ++j) {
+      if (!(*j).empty()) stream << "\n" << Constant::PRINTINDENT  << (*j);
+
+      string protoName = i->first + ((*j).empty() ? "" : " " + (*j));
+      vector<Parameter> parameters = getPrototype(protoName)->getParameters();
+      for (unsigned int k = 0; k < parameters.size(); k++){
+        stream << endl;
+        parameters[k].print(stream);
       }
     }
   }
 
-  res += "\nAlias:";
-  for (exemplars_t::const_iterator j =
-         aliasExemplars.begin(); j != aliasExemplars.end(); ++j)
-    res += "\n" + j->first + " : " + j->second->getId() + " (" +
-           j->second->getIdNoAlias() + ")";
+  stream << "\nAlias:";
+  printAliases(stream);
 
-  return res;
+  return stream;
 }
 
 void ForceFactory::updateCache() const {

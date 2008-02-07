@@ -18,11 +18,11 @@ MTSIntegrator::MTSIntegrator(int cycles, ForceGroup *overloadedForces,
                              StandardIntegrator *nextIntegrator) :
   StandardIntegrator(overloadedForces), myNextIntegrator(nextIntegrator),
   myCycleLength(cycles) {
+
   // The plan for this constructor:
   //  We make sure that we get a non-zero pointer to ForceGroup object.
   //  In some cases (for test purpose) we may not have any forces to evaluate,
-  //  but the force evaluation is still call ...
-
+  //  but the force evaluation is still called.
   myNextIntegrator->myPreviousIntegrator = this;
 }
 
@@ -36,16 +36,15 @@ void MTSIntegrator::doDriftOrNextIntegrator() {
   postDriftOrNextModify();
 }
 
-void MTSIntegrator::initialize(GenericTopology *topo, Vector3DBlock *positions,
-                               Vector3DBlock *velocities,
-                               ScalarStructure *energies) {
-  myNextIntegrator->initialize(topo, positions, velocities, energies);
-  StandardIntegrator::initialize(topo, positions, velocities, energies);
+void MTSIntegrator::initialize(ProtoMolApp *app) {
+  myNextIntegrator->initialize(app);
+  StandardIntegrator::initialize(app);
 }
 
 void MTSIntegrator::getParameters(vector<Parameter> &parameters) const {
-  parameters.push_back(Parameter("cyclelength",
-      Value(myCycleLength, ConstraintValueType::Positive())));
+  parameters.push_back
+    (Parameter("cyclelength",
+               Value(myCycleLength, ConstraintValueType::Positive())));
 }
 
 MTSIntegrator *MTSIntegrator::make(const vector<Value> &values, ForceGroup *fg,

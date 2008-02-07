@@ -26,18 +26,13 @@ namespace ProtoMol {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
     virtual std::string getIdNoAlias() const {return keyword;}
-
     virtual void getParameters(std::vector<Parameter> &parameters) const;
-
-    virtual unsigned int getParameterSize() const {return 4;}
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // From class Integrator
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    virtual void initialize(GenericTopology *topo, Vector3DBlock   *positions,
-                            Vector3DBlock   *velocities,
-                            ScalarStructure *energies);
+    virtual void initialize(ProtoMolApp *app);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // From class StandardIntegrator

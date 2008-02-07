@@ -142,10 +142,6 @@ void CompareForce::getParameters(vector<Parameter> &parameters) const {
   myActualForce->getParameters(parameters);
 }
 
-unsigned int CompareForce::getParameterSize() const {
-  return myActualForce->getParameterSize();
-}
-
 string CompareForce::getIdNoAlias() const {
   return string(CompareForce::keyword + " " + myActualForce->getIdNoAlias());
 }

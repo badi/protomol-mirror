@@ -10,6 +10,7 @@
 #include <set>
 
 namespace ProtoMol {
+  class ProtoMolApp;
   class GenericTopology;
   class ScalarStructure;
   class Vector3DBlock;
@@ -44,10 +45,8 @@ namespace ProtoMol {
     ///  and should perform any starting force evaluations the
     ///  integrator needs in order to run correctly.  The simulation
     ///  data should be kept in the given structures.
-    virtual void initialize(GenericTopology *topo,
-                            Vector3DBlock   *positions,
-                            Vector3DBlock   *velocities,
-                            ScalarStructure *energies);
+    virtual void initialize(ProtoMolApp *app);
+
     //  Needed for calculating shadow Hamiltonian.
     virtual void updateBeta(Real /*timestep*/) {}
 
@@ -184,27 +183,24 @@ namespace ProtoMol {
     unsigned int numEigvects;
 
   protected:
-    GenericTopology *myTopo;
-
-    Vector3DBlock   *myPositions;
-    Vector3DBlock   *myVelocities;
+    ProtoMolApp     *app;
     Vector3DBlock   *myForces;
-    ScalarStructure *myEnergies;
-
     ForceGroup      *myForcesToEvaluate;
     bool myForward;
 
   private:
     Vector3DBlock   *myOldForces;
 
-    std::set<Modifier *> myPreStepModifiers;
-    std::set<Modifier *> myPreDriftOrNextModifiers;
-    std::set<Modifier *> myPostDriftOrNextModifiers;
-    std::set<Modifier *> myPreForceModifiers;
-    std::set<Modifier *> myMediForceModifiers;
-    std::set<Modifier *> myPostForceModifiers;
-    std::set<Modifier *> myPostStepModifiers;
-    std::set<Modifier *> myListModifiers;
+    typedef std::set<Modifier *>  modifiers_t;
+    typedef modifiers_t::iterator iterator;
+    modifiers_t myPreStepModifiers;
+    modifiers_t myPreDriftOrNextModifiers;
+    modifiers_t myPostDriftOrNextModifiers;
+    modifiers_t myPreForceModifiers;
+    modifiers_t myMediForceModifiers;
+    modifiers_t myPostForceModifiers;
+    modifiers_t myPostStepModifiers;
+    modifiers_t myListModifiers;
   };
 
   //________________________________________ INLINES

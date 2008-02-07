@@ -62,10 +62,6 @@ namespace ProtoMol {
     virtual std::string getIdNoAlias() const;
     virtual void getParameters(std::vector<Parameter> &parameters) const;
 
-    virtual unsigned int getParameterSize() const {
-      return 1 + TOneAtomPair:: getParameterSize();
-    }
-
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // My data members
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -77,9 +73,8 @@ namespace ProtoMol {
 
   template<class TCellManager, class TOneAtomPair, class TForce,
            class TImplForce>
-  void NonbondedCutoffForce<TCellManager, TOneAtomPair, TForce,
-                            TImplForce>::doEvaluate(const GenericTopology *topo,
-                                                    unsigned int n) {
+  void NonbondedCutoffForce<TCellManager, TOneAtomPair, TForce, TImplForce>::
+  doEvaluate(const GenericTopology *topo, unsigned int n) {
     CellPairType thisPair;
     unsigned int count = 0;
     for (; !enumerator.done(); enumerator.next()) {

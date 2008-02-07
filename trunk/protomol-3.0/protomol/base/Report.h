@@ -43,21 +43,23 @@ private:
     /**
        MyStreamer wraps the output to a given stream and provides different
        manipulators a la std::cout and std::cerr. report is a global instance
-       of MyStreamer and acts as std::cout and std::cerr. In parallel environment, by
-       default, only output from the master is passed to the actual stream.
-       One can also pipe the putput to a file.
+       of MyStreamer and acts as std::cout and std::cerr. In parallel 
+       environment, by default, only output from the master is passed to the
+       actual stream. One can also pipe the putput to a file.
        @n
-       It handles different report levels. Production code will by default suppress
-       all debug output (print if level <= 0, reportlevel=0), where as debug
-       compilation will by default print all information with level <= 1, reportlevel=1.
+       It handles different report levels. Production code will by default
+       suppress all debug output (print if level <= 0, reportlevel=0), where as
+       debug compilation will by default print all information with level <= 1,
+       reportlevel=1.
        @n
        NB! Do not put debug(<int>) inside forces, ok if it is inside
        initialization, otherwise use a type from oneAtomContraints.h to
        debug pair wise potentials @n @n
 
-       report << debug(1) << "This is only debug inforamtion"<< endr @n
+       report << debug(1) << "This is only debug inforamtion" << endr @n
 
-       report << quit << plain << "Well, this story gonna end soon ... " <<endr @n @n
+       report << quit << plain << "Well, this storys gonna end soon ... " 
+              << endr @n @n
 
        - plain              : -4
        - error              : -3
@@ -70,7 +72,8 @@ private:
        - aborting           : does an abort (MPI_Abort)
        - quit               : does an exit (MPI_Finalize)
        - endr               : end of report/MyStreamer output
-       - allnodesserial     : output synchronized node by node including the master
+       - allnodesserial     : output synchronized node by node including the
+                              master
        - allslavesserial    : output synchronized node by node, only slaves
        - allnodes           : output unsynchronized from all nodes
        - donthint           : suppress all hint output
@@ -86,7 +89,6 @@ public:
       //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       // New methods of class MyStreamer
       //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-public:
       std::ostream *setStream(std::ostream *);
       void setAbort(bool);
       void setQuit(bool);
@@ -98,7 +100,6 @@ public:
       //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       // New methods of class MyStreamer
       //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-public:
       void setf(std::ios::fmtflags flag);
       void setf(std::ios::fmtflags flag, std::ios::fmtflags mask);
       void precision(int prec);
@@ -108,7 +109,6 @@ public:
       //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       // New methods of class MyStreamer
       //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-public:
       MyStreamer &operator<<(bool);
       MyStreamer &operator<<(char);
       MyStreamer &operator<<(unsigned char);
@@ -127,17 +127,14 @@ public:
       MyStreamer &operator<<(unsigned long);
       MyStreamer &operator<<(float);
       MyStreamer &operator<<(double);
-
       MyStreamer &operator<<(const std::string &);
       MyStreamer &operator<<(const std::ostream &);
       MyStreamer &operator<<(std::ostream *);
       MyStreamer &operator<<(std::ostream &(*f)(std::ostream &));
       MyStreamer &operator<<(std::ios &(*f)(std::ios &));
-
       MyStreamer &operator<<(MyStreamer &(*f)(MyStreamer &));
 
       friend MyStreamer &allnodes(MyStreamer &stream);
-      //friend MyStreamer& debug(MyStreamer& stream);
       friend MyStreamer &plain(MyStreamer &stream);
       friend MyStreamer &hint(MyStreamer &stream);
       friend MyStreamer &quit(MyStreamer &stream);
@@ -150,8 +147,13 @@ public:
       friend MyStreamer &endr(MyStreamer &stream);
       friend MyStreamer &dohint(MyStreamer &stream);
       friend MyStreamer &donthint(MyStreamer &stream);
+
 private:
-      bool print() const;
+      bool print() const {
+        return mySilentHint < 1 && myLevel <= myReportLevel &&
+          (myAllNodes || myIAmMaster);
+      }
+
       //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       // My data members
       //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -180,8 +182,6 @@ private:
     MyStreamer &warning(MyStreamer &stream);
     /// Hint, can be suppressed by donthint/dohint
     MyStreamer &hint(MyStreamer &stream);
-    //MyStreamer& debug(MyStreamer& stream);
-
 
     MyStreamer &allnodes(MyStreamer &stream);
     MyStreamer &quit(MyStreamer &stream);
@@ -197,12 +197,6 @@ private:
 
     // Our global streamer
     extern MyStreamer report;
-
-    //______________________________________________________________________ INLINES
-    inline bool MyStreamer::print() const {
-      return mySilentHint < 1 && myLevel <= myReportLevel &&
-             (myAllNodes || myIAmMaster);
-    }
   }
 }
 #endif /* REPORT_H */

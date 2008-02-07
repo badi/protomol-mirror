@@ -16,6 +16,7 @@ namespace ProtoMol {
   class Vector3DBlock;
   class ScalarStructure;
   class ReducedHessAngle;
+  class ProtoMolApp;
 
   //________________________________________ ForceGroup
 
@@ -37,17 +38,10 @@ namespace ProtoMol {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
     /// Evaluate all system forces in this group.
-    void evaluateSystemForces(GenericTopology *topo,
-                              const Vector3DBlock *positions,
-                              Vector3DBlock *forces,
-                              ScalarStructure *energies) const;
+    void evaluateSystemForces(ProtoMolApp *app, Vector3DBlock *forces) const;
 
     /// Evaluate all extended forces in this group.
-    void evaluateExtendedForces(GenericTopology *topo,
-                                const Vector3DBlock *positions,
-                                const Vector3DBlock *velocities,
-                                Vector3DBlock *forces,
-                                ScalarStructure *energies) const;
+    void evaluateExtendedForces(ProtoMolApp *app, Vector3DBlock *forces) const;
 
     // Evaluate all MOLLY forces in this group.
     void evaluateMollyForces(GenericTopology *topo,

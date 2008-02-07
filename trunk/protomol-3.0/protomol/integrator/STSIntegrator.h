@@ -42,10 +42,6 @@ namespace ProtoMol {
     // From class Integrator
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    virtual void initialize(GenericTopology *topo,
-                            Vector3DBlock   *positions,
-                            Vector3DBlock   *velocities,
-                            ScalarStructure *energies);
     virtual Integrator *next() {return NULL;}
     virtual const Integrator *next() const {return NULL;}
     virtual Real getTimestep() const;

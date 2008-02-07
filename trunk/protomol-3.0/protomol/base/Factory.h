@@ -5,6 +5,7 @@
 #include <protomol/base/StringUtilities.h>
 #include <protomol/base/Report.h>
 #include <protomol/base/Exception.h>
+#include <protomol/config/Parameter.h>
 
 #include <vector>
 #include <map>
@@ -12,6 +13,10 @@
 
 namespace ProtoMol {
   //________________________________________ Factory
+  template<typename Type> class Factory;
+  template <typename Type>
+  std::ostream &operator<<(std::ostream &, const Factory<Type> &);
+
   /**
      Base class of all factories templated with the family type.
      Container to keep pointers for each prototype exemplar and their
@@ -50,12 +55,6 @@ namespace ProtoMol {
           << Report::hint << "Prototype '" << id << "' already registered in "
           << Type::scope << "Factory" << Type::scope
           << ", overwriting." << Report::endr;
-
-      if (exemplar->getParameterSize() != exemplar->getParameters().size())
-        THROWS(Type::scope << "Factory" << Type::scope << " prototype '" << id
-               << "' has different parameter size definitions "
-               << exemplar->getParameterSize() << " != "
-               << exemplar->getParameters().size() << ", fix it.");
 
       exemplars[id] = exemplar;
       pointers.insert(exemplar);
@@ -107,14 +106,44 @@ namespace ProtoMol {
       pointers.clear();
       cache = false;
     }
+    
+    std::ostream &printAliases(std::ostream &stream) const {
+      typename exemplars_t::const_iterator i;
+      for (i = aliasExemplars.begin(); i != aliasExemplars.end(); i++)
+        stream << "\n" << i->first << " : " << i->second->getId() << " ("
+               << i->second->getIdNoAlias() << ")";
 
-    virtual std::string print() const = 0;
+      return stream;
+    }
+
+    virtual std::ostream &print(std::ostream &stream) const {
+      typename exemplars_t::const_iterator i;
+      for (i = exemplars.begin(); i != exemplars.end(); i++) {
+        if (i == exemplars.begin()) stream << std::endl;
+        stream << i->first;
+        
+        std::vector<Parameter> parameters(i->second->getParameters());
+        for (unsigned int k = 0; k < parameters.size(); k++) {
+          stream << std::endl;
+          parameters[k].print(stream);
+        }
+      }
+      
+      stream << "\nAlias:";
+      printAliases(stream);
+      
+      return stream;
+    }
+
     virtual void registerHelpText() const = 0;
 
     bool empty() const {return pointers.empty();}
     const_iterator begin() const {return pointers.begin();}
     const_iterator end() const {return pointers.end();}
     const Type *find(const std::string &id) const {return getPrototype(id);}
+
+    friend
+    std::ostream &operator<< <>(std::ostream &, const Factory<Type> &);
 
   protected:
     const Type *getPrototype(const std::string &id) const {
@@ -128,5 +157,10 @@ namespace ProtoMol {
       return prototype;
     }
   };
+
+  template <typename Type>
+  std::ostream &operator<<(std::ostream &stream, const Factory<Type> &f) {
+    return f.print(stream);
+  }
 }
 #endif /* FACTORY_H */

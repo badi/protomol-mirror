@@ -6,6 +6,7 @@
 #include <protomol/topology/GenericTopology.h>
 #include <protomol/topology/TopologyUtilities.h>
 #include <protomol/base/PMConstants.h>
+#include <protomol/base/ProtoMolApp.h>
 
 #ifdef HAVE_PARALLE
 #include <protomol/parallel/Parallel.h>
@@ -30,13 +31,6 @@ void StandardIntegrator::run(int numTimesteps) {
   }
 }
 
-void StandardIntegrator::initialize(GenericTopology *topo,
-                                    Vector3DBlock   *positions,
-                                    Vector3DBlock   *velocities,
-                                    ScalarStructure *energies) {
-  Integrator::initialize(topo, positions, velocities, energies);
-}
-
 void StandardIntegrator::initializeForces() {
   addModifierBeforeInitialize();
   calculateForces();
@@ -45,57 +39,55 @@ void StandardIntegrator::initializeForces() {
 
 void StandardIntegrator::calculateForces() {
   //  Save current value of potentialEnergy().
-  myPotEnergy = myEnergies->potentialEnergy();
+  myPotEnergy = app->energies.potentialEnergy();
 
   myForces->zero();
   preForceModify();
 
 #ifdef HAVE_PARALLEL
   if (!anyMediForceModify())
-    Parallel::distribute(myEnergies, myForces);
+    Parallel::distribute(&app->energies, myForces);
 #endif // HAVE_PARALLEL
 
-  myForcesToEvaluate->
-    evaluateSystemForces(myTopo, myPositions, myForces, myEnergies);
+  myForcesToEvaluate->evaluateSystemForces(app, myForces);
   mediForceModify();
-  myForcesToEvaluate->
-    evaluateExtendedForces(myTopo, myPositions, myVelocities, myForces,
-    myEnergies);
+  myForcesToEvaluate->evaluateExtendedForces(app, myForces);
 
 #ifdef HAVE_PARALLEL
-  if (!anyMediForceModify())
-    Parallel::reduce(myEnergies, myForces);
+  if (!anyMediForceModify()) Parallel::reduce(&app->energies, myForces);
 #endif // HAVE_PARALLEL
 
   postForceModify();
 
   //  Compute my potentialEnergy as the difference before/after the call to
   //  calculateForces().
-  myPotEnergy = myEnergies->potentialEnergy() - myPotEnergy;
+  myPotEnergy = app->energies.potentialEnergy() - myPotEnergy;
 }
 
 void StandardIntegrator::doHalfKick() {
   Real h = 0.5 * getTimestep() * Constant::INV_TIMEFACTOR;
-  const unsigned int count = myPositions->size();
+  const unsigned int count = app->positions.size();
 
   updateBeta(h);
 
   for (unsigned int i = 0; i < count; ++i)
-    (*myVelocities)[i] += (*myForces)[i] * h / myTopo->atoms[i].scaledMass;
+    app->velocities[i] +=
+      (*myForces)[i] * h / app->topology->atoms[i].scaledMass;
 
-  buildMolecularMomentum(myVelocities, myTopo);
+  buildMolecularMomentum(&app->velocities, app->topology);
 }
 
 void StandardIntegrator::doKick() {
   Real h = getTimestep() * Constant::INV_TIMEFACTOR;
-  const unsigned int count = myPositions->size();
+  const unsigned int count = app->positions.size();
 
   updateBeta(h);
 
   for (unsigned int i = 0; i < count; ++i)
-    (*myVelocities)[i] += (*myForces)[i] * h / myTopo->atoms[i].scaledMass;
+    app->velocities[i] +=
+      (*myForces)[i] * h / app->topology->atoms[i].scaledMass;
 
-  buildMolecularMomentum(myVelocities, myTopo);
+  buildMolecularMomentum(&app->velocities, app->topology);
 }
 
 Integrator *StandardIntegrator::previous() {

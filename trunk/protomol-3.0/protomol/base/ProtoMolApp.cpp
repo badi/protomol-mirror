@@ -251,7 +251,7 @@ void ProtoMolApp::build() {
   else outputs = new OutputCollection; // Empty collection
 
   // Initialize
-  integrator->initialize(topology, &positions, &velocities, &energies);
+  integrator->initialize(this);
   outputs->initialize(this);
   outputCache.initialize(this);
 

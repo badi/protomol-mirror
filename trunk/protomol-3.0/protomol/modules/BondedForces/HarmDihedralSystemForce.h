@@ -16,8 +16,8 @@ namespace ProtoMol {
   //____ HarmDihedralSystemForce
 
   template<class TBoundaryConditions>
-  class HarmDihedralSystemForce : public MTorsionSystemForce<
-                                                             TBoundaryConditions> ,
+  class HarmDihedralSystemForce :
+    public MTorsionSystemForce<TBoundaryConditions>,
     private HarmDihedralSystemForceBase {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Constructors, destructors, assignment
@@ -75,22 +75,18 @@ namespace ProtoMol {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
     virtual std::string getIdNoAlias() const {return keyword;}
-
-    virtual unsigned int getParameterSize() const {return 4;}
-
     virtual void getParameters(std::vector<Parameter> &parameters) const {
-      parameters.push_back(Parameter("-kbias",
-                                     Value(k,
-                                           ConstraintValueType::NotNegative()),
-                                     Text("potential bias constant")));
-      parameters.push_back(Parameter("-dihedral",
-                                     Value(myDihedral,
-                                           ConstraintValueType::NotNegative())));
+      parameters.push_back
+        (Parameter("-kbias", Value(k, ConstraintValueType::NotNegative()),
+                   Text("potential bias constant")));
+      parameters.push_back
+        (Parameter("-dihedral",
+                   Value(myDihedral, ConstraintValueType::NotNegative())));
       parameters.push_back(Parameter("-angle", Value(rtod(myDihedralReference)),
                                      Text("reference angle -180 to 180")));
-      parameters.push_back(Parameter("-others",
-                                     Value(computeOthers,
-                                           ConstraintValueType::NoConstraints())));
+      parameters.push_back
+        (Parameter("-others",
+                   Value(computeOthers, ConstraintValueType::NoConstraints())));
     }
 
   private:
@@ -185,12 +181,6 @@ namespace ProtoMol {
       diff -= 2 * M_PI;
     Real V = k * diff * diff;
 
-    /* Replaced by PRB 5/24/05
-       Real V = k * (dihedralAngle - myDihedralReference) * (dihedralAngle - myDihedralReference);
-       report << debug(1) << "actual dihedral angle: " << dihedralAngle
-           << "   target dihedral angle: " << myDihedralReference <<  endr;
-     */
-
     // -------------------------------------------------------------
     // The atoms in the dihedral
     int ai = topo->dihedrals[myDihedral].atom1;
@@ -217,9 +207,6 @@ namespace ProtoMol {
     // The derivate of V with respect to the dihedral angle
     Real dVdPhi = 2 * (k) * diff;
 
-    /* Replaced by PRB 5/24/05
-       Real dVdPhi = (k) * (dihedralAngle - myDihedralReference);
-     */
     // -------------------------------------------------------------
     // Miscellaneous quantities needed to compute the forces
     Real rkj_norm = rkj.norm();

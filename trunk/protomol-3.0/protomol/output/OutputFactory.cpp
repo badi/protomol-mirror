@@ -34,8 +34,8 @@ Output *OutputFactory::make(const string &id,
   const Output *prototype = getPrototype(id);
 
   if (prototype == NULL)
-    THROW(string(" Could not find any match for '") + id + "' in " +
-          Output::scope + "Factory. Possible outputs are:\n" + print());
+    THROWS(" Could not find any match for '" << id << "' in " <<
+           Output::scope << "Factory. Possible outputs are:\n" << *this);
 
   // Make
   Output *newObj = prototype->make(values);
@@ -82,35 +82,6 @@ OutputFactory::makeCollection(const Configuration *config) const {
           res->adoptOutput(make((*i).first, values));
         }
     }
-
-  return res;
-}
-
-string OutputFactory::print() const {
-  string res;
-
-  for (exemplars_t::const_iterator i = exemplars.begin();
-       i != exemplars.end(); ++i) {
-    res += (i == exemplars.begin() ? "" : "\n") + i->first;
-    vector<Parameter> parameter(i->second->getParameters());
-    for (unsigned int k = 0; k < parameter.size(); k++) {
-      if (!parameter[k].keyword.empty())
-        res += "\n" + Constant::PRINTINDENT + Constant::PRINTINDENT +
-               getRightFill(parameter[k].keyword, Constant::PRINTMAXWIDTH);
-      res +=
-        (parameter[k].defaultValue.valid() ? parameter[k].defaultValue.
-           getDefinitionTypeString()
-         : parameter[k].value.getDefinitionTypeString());
-      if (!parameter[k].text.empty())
-        res += "\t # " + parameter[k].text;
-    }
-  }
-
-  res += "\nAlias:";
-  for (exemplars_t::const_iterator j = aliasExemplars.begin();
-       j != aliasExemplars.end(); ++j)
-    res += "\n" + j->first + " : " + j->second->getId() + " (" +
-           j->second->getIdNoAlias() + ")";
 
   return res;
 }

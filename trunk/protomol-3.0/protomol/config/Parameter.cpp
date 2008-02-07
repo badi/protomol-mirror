@@ -34,3 +34,16 @@ Parameter::Parameter(const char *k, const Value &val, const Value &def,
                      const Text &t) :
   keyword(string(k)), value(val), defaultValue(def), text(t.text) {}
 
+ostream &Parameter::print(ostream &stream) const {
+  if (!keyword.empty())
+    stream << Constant::PRINTINDENT << Constant::PRINTINDENT
+           << getRightFill(keyword, Constant::PRINTMAXWIDTH) << " ";
+
+  if (defaultValue.valid())
+    stream << defaultValue.getDefinitionTypeString();
+  else stream << value.getDefinitionTypeString();
+
+  if (!text.empty()) stream << "\t # " << text;
+
+  return stream;
+}

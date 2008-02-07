@@ -74,10 +74,6 @@ void TimeForce::getParameters(vector<Parameter> &parameters) const {
   myActualForce->getParameters(parameters);
 }
 
-unsigned int TimeForce::getParameterSize() const {
-  return myActualForce->getParameterSize();
-}
-
 string TimeForce::getIdNoAlias() const {
   return string(TimeForce::keyword + " " + myActualForce->getIdNoAlias());
 }

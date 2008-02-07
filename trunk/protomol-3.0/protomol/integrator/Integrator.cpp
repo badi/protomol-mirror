@@ -19,13 +19,11 @@ const string Integrator::scope("Integrator");
 Real Integrator::myBeta = 0.;
 
 Integrator::Integrator() :
-  Makeable(), myPotEnergy(0), mhQ(0), myTopo(0), myPositions(0),
-  myVelocities(0), myForces(0), myEnergies(0), myForcesToEvaluate(0),
+  Makeable(), myPotEnergy(0), mhQ(0), myForces(0), myForcesToEvaluate(0),
   myForward(true), myOldForces(0) {}
 
 Integrator::Integrator(ForceGroup *forceGroup) :
-  Makeable(), myPotEnergy(0), mhQ(0), myTopo(0), myPositions(0),
-  myVelocities(0), myForces(new Vector3DBlock), myEnergies(0),
+  Makeable(), myPotEnergy(0), mhQ(0), myForces(new Vector3DBlock),
   myForcesToEvaluate(forceGroup), myForward(true),
   myOldForces(new Vector3DBlock) {}
 
@@ -34,24 +32,19 @@ Integrator::~Integrator() {
   zap(myOldForces);
   zap(myForcesToEvaluate);
 
-  for (set<Modifier *>::iterator i = myListModifiers.begin();
+  for (iterator i = myListModifiers.begin();
        i != myListModifiers.end(); ++i)
     delete (*i);
 }
 
-void Integrator::initialize(GenericTopology *topo, Vector3DBlock *positions,
-                            Vector3DBlock   *velocities,
-                            ScalarStructure *energies) {
-  myTopo = topo;
-  myPositions = positions;
-  myVelocities = velocities;
-  myEnergies = energies;
+void Integrator::initialize(ProtoMolApp *app) {
+  this->app = app;
 
-  myForces->zero(positions->size());
-  myOldForces->zero(positions->size());
+  myForces->zero(app->positions.size());
+  myOldForces->zero(app->positions.size());
 
-  buildMolecularCenterOfMass(myPositions, myTopo);
-  buildMolecularMomentum(myVelocities, myTopo);
+  buildMolecularCenterOfMass((&app->positions), app->topology);
+  buildMolecularMomentum((&app->velocities), app->topology);
 
   // Initialize only external modifiers,
   // where internal modifiers will be added
@@ -137,414 +130,338 @@ void Integrator::backward() {
 }
 
 void Integrator::preStepModify() {
-  report << debug(10) << "[Integrator::preStepModify] (" <<
-  (long)this << ") " << (myTopo != 0 ? myTopo->time : 0.0) << endr;
-  for (set<Modifier *>::iterator i = myPreStepModifiers.begin();
-       i != myPreStepModifiers.end();
-       ++i)
+  report << debug(10) << "[Integrator::preStepModify] (" << (long)this << ") " 
+         << (app->topology != 0 ? app->topology->time : 0.0) << endr;
+
+  for (iterator i = myPreStepModifiers.begin();
+       i != myPreStepModifiers.end(); ++i)
     (*i)->execute();
 }
 
 void Integrator::preDriftOrNextModify() {
-  report << debug(10) <<
-  "[Integrator::preDriftOrNextModify] (" << (long)this << ") " <<
-  (myTopo != 0 ? myTopo->time : 0.0) << endr;
-  for (set<Modifier *>::iterator i = myPreDriftOrNextModifiers.begin();
-       i != myPreDriftOrNextModifiers.end();
-       ++i)
+  report << debug(10) << "[Integrator::preDriftOrNextModify] (" << (long)this 
+         << ") " << (app->topology != 0 ? app->topology->time : 0.0) << endr;
+
+  for (iterator i = myPreDriftOrNextModifiers.begin();
+       i != myPreDriftOrNextModifiers.end(); ++i)
     (*i)->execute();
 }
 
 void Integrator::postDriftOrNextModify() {
-  report << debug(10) <<
-  "[Integrator::postDriftOrNextModify] (" << (long)this << ") " <<
-  (myTopo != 0 ? myTopo->time : 0.0) << endr;
-  for (set<Modifier *>::iterator i = myPostDriftOrNextModifiers.begin();
+  report << debug(10) << "[Integrator::postDriftOrNextModify] ("
+         << (long)this << ") "
+         << (app->topology != 0 ? app->topology->time : 0.0) << endr;
+
+  for (iterator i = myPostDriftOrNextModifiers.begin();
        i != myPostDriftOrNextModifiers.end();
        ++i)
     (*i)->execute();
 }
 
 void Integrator::preForceModify() {
-  report << debug(10) << "[Integrator::preForceModify] (" <<
-  (long)this << ") " << (myTopo != 0 ? myTopo->time : 0.0) << endr;
-  for (set<Modifier *>::iterator i = myPreForceModifiers.begin();
+  report << debug(10) << "[Integrator::preForceModify] (" << (long)this << ") "
+         << (app->topology != 0 ? app->topology->time : 0.0) << endr;
+
+  for (iterator i = myPreForceModifiers.begin();
        i != myPreForceModifiers.end();
        ++i)
     (*i)->execute();
 }
 
 void Integrator::mediForceModify() {
-  report << debug(10) << "[Integrator::mediForceModify] (" <<
-  (long)this << ") " << (myTopo != 0 ? myTopo->time : 0.0) << endr;
-  for (set<Modifier *>::iterator i = myMediForceModifiers.begin();
+  report << debug(10) << "[Integrator::mediForceModify] (" << (long)this << ") "
+         << (app->topology != 0 ? app->topology->time : 0.0) << endr;
+
+  for (iterator i = myMediForceModifiers.begin();
        i != myMediForceModifiers.end();
        ++i)
     (*i)->execute();
 }
 
 void Integrator::postForceModify() {
-  report << debug(10) << "[Integrator::postForceModify] (" <<
-  (long)this << ") " << (myTopo != 0 ? myTopo->time : 0.0) << endr;
-  for (set<Modifier *>::iterator i = myPostForceModifiers.begin();
-       i != myPostForceModifiers.end();
-       ++i)
+  report << debug(10) << "[Integrator::postForceModify] (" << (long)this << ") "
+         << (app->topology != 0 ? app->topology->time : 0.0) << endr;
+
+  for (iterator i = myPostForceModifiers.begin();
+       i != myPostForceModifiers.end(); ++i)
     (*i)->execute();
 }
 
 void Integrator::postStepModify() {
-  report << debug(10) << "[Integrator::postStepModify] (" <<
-  (long)this << ") " << (myTopo != 0 ? myTopo->time : 0.0) << endr;
-  for (set<Modifier *>::iterator i = myPostStepModifiers.begin();
-       i != myPostStepModifiers.end();
-       ++i)
+  report << debug(10) << "[Integrator::postStepModify] (" << (long)this << ") "
+         << (app->topology != 0 ? app->topology->time : 0.0) << endr;
+
+  for (iterator i = myPostStepModifiers.begin();
+       i != myPostStepModifiers.end(); ++i)
     (*i)->execute();
 }
 
-//____  ---------------------------------------------------------------------  //
-
 void Integrator::adoptPreStepModifier(Modifier *modifier) {
-  report << debug(10) <<
-  "[Integrator::adoptPreStepModifier] " << modifier->print() << "(" <<
-  (long)modifier << ") " <<
-  (myTopo != 0 ? myTopo->time : 0.0) << endr;
-  if (myTopo != 0)
-    modifier->initialize(myTopo,
-      myPositions,
-      myVelocities,
-      myForces,
-      myEnergies);
+  report << debug(10) << "[Integrator::adoptPreStepModifier] "
+         << modifier->getId() << "(" << (long)modifier << ") "
+         << (app->topology ? app->topology->time : 0.0) << endr;
+
+  if (app->topology != 0) modifier->initialize(app, myForces);
   myPreStepModifiers.insert(modifier);
+
   addModifier(modifier);
 }
 
 void Integrator::adoptPreDriftOrNextModifier(Modifier *modifier) {
-  report << debug(10) <<
-  "[Integrator::adoptPreDriftOrNextModifier] " << modifier->print() << "(" <<
-  (long)modifier << ") " <<
-  (myTopo != 0 ? myTopo->time : 0.0) << endr;
-  if (myTopo != 0)
-    modifier->initialize(myTopo,
-      myPositions,
-      myVelocities,
-      myForces,
-      myEnergies);
+  report << debug(10) << "[Integrator::adoptPreDriftOrNextModifier] " 
+         << modifier->getId() << "(" << (long)modifier << ") "
+         << (app->topology ? app->topology->time : 0.0) << endr;
+
+  if (app->topology != 0) modifier->initialize(app, myForces);
   myPreDriftOrNextModifiers.insert(modifier);
   addModifier(modifier);
 }
 
 void Integrator::adoptPostDriftOrNextModifier(Modifier *modifier) {
-  report << debug(10) <<
-  "[Integrator::adoptPostDriftOrNextModifier] " << modifier->print() <<
-  "(" <<
-  (long)modifier << ") " <<
-  (myTopo != 0 ? myTopo->time : 0.0) << endr;
-  if (myTopo != 0)
-    modifier->initialize(myTopo,
-      myPositions,
-      myVelocities,
-      myForces,
-      myEnergies);
+  report << debug(10) << "[Integrator::adoptPostDriftOrNextModifier] "
+         << modifier->getId() << "(" << (long)modifier << ") "
+         << (app->topology != 0 ? app->topology->time : 0.0) << endr;
+
+  if (app->topology != 0) modifier->initialize(app, myForces);
   myPostDriftOrNextModifiers.insert(modifier);
   addModifier(modifier);
 }
 
 void Integrator::adoptPreForceModifier(Modifier *modifier) {
-  report << debug(10) <<
-  "[Integrator::adoptPreForceModifier] " << modifier->print() << "(" <<
-  (long)modifier << ") " <<
-  (myTopo != 0 ? myTopo->time : 0.0) << endr;
-  if (myTopo != 0)
-    modifier->initialize(myTopo,
-      myPositions,
-      myVelocities,
-      myForces,
-      myEnergies);
+  report << debug(10) << "[Integrator::adoptPreForceModifier] "
+         << modifier->getId() << "(" << (long)modifier << ") " 
+         << (app->topology ? app->topology->time : 0.0) << endr;
+
+  if (app->topology != 0) modifier->initialize(app, myForces);
   myPreForceModifiers.insert(modifier);
   addModifier(modifier);
 }
 
 void Integrator::adoptMediForceModifier(Modifier *modifier) {
-  report << debug(10) <<
-  "[Integrator::adoptMediForceModifier] " << modifier->print() << "(" <<
-  (long)modifier << ") " <<
-  (myTopo != 0 ? myTopo->time : 0.0) << endr;
-  if (myTopo != 0)
-    modifier->initialize(myTopo,
-      myPositions,
-      myVelocities,
-      myForces,
-      myEnergies);
+  report << debug(10) << "[Integrator::adoptMediForceModifier] "
+         << modifier->getId() << "(" << (long)modifier << ") " 
+         << (app->topology ? app->topology->time : 0.0) << endr;
+
+  if (app->topology != 0) modifier->initialize(app, myForces);
   myMediForceModifiers.insert(modifier);
   addModifier(modifier);
 }
 
 void Integrator::adoptPostForceModifier(Modifier *modifier) {
-  report << debug(10) <<
-  "[Integrator::adoptPostForceModifier] " << modifier->print() << "(" <<
-  (long)modifier << ") " <<
-  (myTopo != 0 ? myTopo->time : 0.0) << endr;
-  if (myTopo != 0)
-    modifier->initialize(myTopo,
-      myPositions,
-      myVelocities,
-      myForces,
-      myEnergies);
+  report << debug(10) << "[Integrator::adoptPostForceModifier] "
+         << modifier->getId() << "(" << (long)modifier << ") "
+         << (app->topology ? app->topology->time : 0.0) << endr;
+
+  if (app->topology != 0) modifier->initialize(app, myForces);
   myPostForceModifiers.insert(modifier);
   addModifier(modifier);
 }
 
 void Integrator::adoptPostStepModifier(Modifier *modifier) {
-  report << debug(10) <<
-  "[Integrator::adoptPostStepModifier] " << modifier->print() << "(" <<
-  (long)modifier << ") " <<
-  (myTopo != 0 ? myTopo->time : 0.0) << endr;
-  if (myTopo != 0)
-    modifier->initialize(myTopo,
-      myPositions,
-      myVelocities,
-      myForces,
-      myEnergies);
+  report << debug(10) << "[Integrator::adoptPostStepModifier] " 
+         << modifier->getId() << "(" << (long)modifier << ") "
+         << (app->topology ? app->topology->time : 0.0) << endr;
+
+  if (app->topology != 0) modifier->initialize(app, myForces);
   myPostStepModifiers.insert(modifier);
   addModifier(modifier);
 }
 
-//____  ---------------------------------------------------------------------  //
-
 void Integrator::deleteInternalModifiers() {
-  report << debug(10) <<
-  "[Integrator::deleteInternalModifiers]" << endr;
-  for (set<Modifier *>::iterator i = myPreStepModifiers.begin();
-       i != myPreStepModifiers.end();
-       ++i)
+  report << debug(10) << "[Integrator::deleteInternalModifiers]" << endr;
+
+  for (iterator i = myPreStepModifiers.begin();
+       i != myPreStepModifiers.end(); ++i)
     if ((*i)->isInternal()) {
       myPreStepModifiers.erase(i);
       deleteModifier(*i);
     }
 
-  for (set<Modifier *>::iterator i = myPreDriftOrNextModifiers.begin();
-       i != myPreDriftOrNextModifiers.end();
-       ++i)
+  for (iterator i = myPreDriftOrNextModifiers.begin();
+       i != myPreDriftOrNextModifiers.end(); ++i)
     if ((*i)->isInternal()) {
       myPreDriftOrNextModifiers.erase(i);
       deleteModifier(*i);
     }
 
-  for (set<Modifier *>::iterator i = myPostDriftOrNextModifiers.begin();
-       i != myPostDriftOrNextModifiers.end();
-       ++i)
+  for (iterator i = myPostDriftOrNextModifiers.begin();
+       i != myPostDriftOrNextModifiers.end(); ++i)
     if ((*i)->isInternal()) {
       myPostDriftOrNextModifiers.erase(i);
       deleteModifier(*i);
     }
 
-  for (set<Modifier *>::iterator i = myPreForceModifiers.begin();
-       i != myPreForceModifiers.end();
-       ++i)
+  for (iterator i = myPreForceModifiers.begin();
+       i != myPreForceModifiers.end(); ++i)
     if ((*i)->isInternal()) {
       myPreForceModifiers.erase(i);
       deleteModifier(*i);
     }
 
-  for (set<Modifier *>::iterator i = myMediForceModifiers.begin();
-       i != myMediForceModifiers.end();
-       ++i)
+  for (iterator i = myMediForceModifiers.begin();
+       i != myMediForceModifiers.end(); ++i)
     if ((*i)->isInternal()) {
       myMediForceModifiers.erase(i);
       deleteModifier(*i);
     }
 
-  for (set<Modifier *>::iterator i = myPostForceModifiers.begin();
-       i != myPostForceModifiers.end();
-       ++i)
+  for (iterator i = myPostForceModifiers.begin();
+       i != myPostForceModifiers.end(); ++i)
     if ((*i)->isInternal()) {
       myPostForceModifiers.erase(i);
       deleteModifier(*i);
     }
 
-  for (set<Modifier *>::iterator i = myPostStepModifiers.begin();
-       i != myPostStepModifiers.end();
-       ++i)
+  for (iterator i = myPostStepModifiers.begin();
+       i != myPostStepModifiers.end(); ++i)
     if ((*i)->isInternal()) {
       myPostStepModifiers.erase(i);
       deleteModifier(*i);
     }
 }
-
-//____  ---------------------------------------------------------------------  //
 
 void Integrator::deleteExternalModifiers() {
-  report << debug(10) <<
-  "[Integrator::deleteExternalModifiers] size=" << myListModifiers.size() <<
-  endr;
-  for (set<Modifier *>::iterator i = myPreStepModifiers.begin();
-       i != myPreStepModifiers.end();
-       ++i)
+  report << debug(10) << "[Integrator::deleteExternalModifiers] size="
+         << myListModifiers.size() << endr;
+
+  iterator i;
+
+  for (i = myPreStepModifiers.begin(); i != myPreStepModifiers.end(); ++i)
     if (!((*i)->isInternal())) {
       myPreStepModifiers.erase(i);
       deleteModifier(*i);
     }
 
-  for (set<Modifier *>::iterator i = myPreDriftOrNextModifiers.begin();
-       i != myPreDriftOrNextModifiers.end();
-       ++i)
+  for (i = myPreDriftOrNextModifiers.begin();
+       i != myPreDriftOrNextModifiers.end(); ++i)
     if (!((*i)->isInternal())) {
       myPreDriftOrNextModifiers.erase(i);
       deleteModifier(*i);
     }
 
-  for (set<Modifier *>::iterator i = myPostDriftOrNextModifiers.begin();
-       i != myPostDriftOrNextModifiers.end();
-       ++i)
+  for (i = myPostDriftOrNextModifiers.begin();
+       i != myPostDriftOrNextModifiers.end(); ++i)
     if (!((*i)->isInternal())) {
       myPostDriftOrNextModifiers.erase(i);
       deleteModifier(*i);
     }
 
-  for (set<Modifier *>::iterator i = myPreForceModifiers.begin();
-       i != myPreForceModifiers.end();
-       ++i)
+  for (i = myPreForceModifiers.begin(); i != myPreForceModifiers.end(); ++i)
     if (!((*i)->isInternal())) {
       myPreForceModifiers.erase(i);
       deleteModifier(*i);
     }
 
-  for (set<Modifier *>::iterator i = myMediForceModifiers.begin();
-       i != myMediForceModifiers.end();
-       ++i)
+  for (i = myMediForceModifiers.begin(); i != myMediForceModifiers.end(); ++i)
     if (!((*i)->isInternal())) {
       myMediForceModifiers.erase(i);
       deleteModifier(*i);
     }
 
-  for (set<Modifier *>::iterator i = myPostForceModifiers.begin();
-       i != myPostForceModifiers.end();
-       ++i)
+  for (i = myPostForceModifiers.begin(); i != myPostForceModifiers.end(); ++i)
     if (!((*i)->isInternal())) {
       myPostForceModifiers.erase(i);
       deleteModifier(*i);
     }
 
-  for (set<Modifier *>::iterator i = myPostStepModifiers.begin();
-       i != myPostStepModifiers.end();
-       ++i)
+  for (i = myPostStepModifiers.begin(); i != myPostStepModifiers.end(); ++i)
     if (!((*i)->isInternal())) {
       myPostStepModifiers.erase(i);
       deleteModifier(*i);
     }
 
-  report << debug(10) <<
-  "[Integrator::deleteExternalModifiers] end size=" <<
-  myListModifiers.size() << endr;
+  report << debug(10) << "[Integrator::deleteExternalModifiers] end size="
+         << myListModifiers.size() << endr;
 }
 
-//____  ---------------------------------------------------------------------  //
-
 bool Integrator::removeModifier(const Modifier *modifier) {
-  report << debug(10) << "[Integrator::removeModifier]" <<
-  endr;
+  report << debug(10) << "[Integrator::removeModifier]" << endr;
+
+  iterator i;
   bool ok = false;
-  for (set<Modifier *>::iterator i = myPreStepModifiers.begin();
-       i != myPreStepModifiers.end();
-       ++i)
+  for (i = myPreStepModifiers.begin(); i != myPreStepModifiers.end(); ++i)
     if (modifier == (*i)) {
       myPreStepModifiers.erase(i);
       ok = true;
     }
 
-  for (set<Modifier *>::iterator i = myPreDriftOrNextModifiers.begin();
-       i != myPreDriftOrNextModifiers.end();
-       ++i)
+  for (i = myPreDriftOrNextModifiers.begin();
+       i != myPreDriftOrNextModifiers.end(); ++i)
     if (modifier == (*i)) {
       myPreDriftOrNextModifiers.erase(i);
       ok = true;
     }
 
-  for (set<Modifier *>::iterator i = myPostDriftOrNextModifiers.begin();
-       i != myPostDriftOrNextModifiers.end();
-       ++i)
+  for (i = myPostDriftOrNextModifiers.begin();
+       i != myPostDriftOrNextModifiers.end(); ++i)
     if (modifier == (*i)) {
       myPostDriftOrNextModifiers.erase(i);
       ok = true;
     }
 
-  for (set<Modifier *>::iterator i = myPreForceModifiers.begin();
-       i != myPreForceModifiers.end();
-       ++i)
+  for (i = myPreForceModifiers.begin(); i != myPreForceModifiers.end(); ++i)
     if (modifier == (*i)) {
       myPreForceModifiers.erase(i);
       ok = true;
     }
 
-  for (set<Modifier *>::iterator i = myMediForceModifiers.begin();
-       i != myMediForceModifiers.end();
-       ++i)
+  for (i = myMediForceModifiers.begin(); i != myMediForceModifiers.end(); ++i)
     if (modifier == (*i)) {
       myMediForceModifiers.erase(i);
       ok = true;
     }
 
-  for (set<Modifier *>::iterator i = myPostForceModifiers.begin();
-       i != myPostForceModifiers.end();
-       ++i)
+  for (i = myPostForceModifiers.begin(); i != myPostForceModifiers.end(); ++i)
     if (modifier == (*i)) {
       myPostForceModifiers.erase(i);
       ok = true;
     }
 
-  for (set<Modifier *>::iterator i = myPostStepModifiers.begin();
-       i != myPostStepModifiers.end();
-       ++i)
+  for (i = myPostStepModifiers.begin(); i != myPostStepModifiers.end(); ++i)
     if (modifier == (*i)) {
       myPostStepModifiers.erase(i);
       ok = true;
     }
 
   if (ok) {
-    set<Modifier *>::iterator i =
-      myListModifiers.find(const_cast<Modifier *>(modifier));
-    if (i != myListModifiers.end())
-      myListModifiers.erase(i);
+    i = myListModifiers.find(const_cast<Modifier *>(modifier));
+    if (i != myListModifiers.end()) myListModifiers.erase(i);
   }
 
   return ok;
 }
 
-//____  ---------------------------------------------------------------------  //
-
 void Integrator::initializeModifiers() {
-  report << debug(10) <<
-  "[Integrator::initializeModifiers] " <<
-  (myTopo != 0 ? myTopo->time : 0.0) << endr;
-  for (set<Modifier *>::iterator i = myListModifiers.begin();
-       i != myListModifiers.end();
-       ++i)
-    (*i)->initialize(myTopo, myPositions, myVelocities, myForces, myEnergies);
+  report << debug(10) << "[Integrator::initializeModifiers] "
+         << (app->topology != 0 ? app->topology->time : 0.0) << endr;
+  
+  for (iterator i = myListModifiers.begin(); i != myListModifiers.end(); ++i)
+    (*i)->initialize(app, myForces);
 }
-
-//____  ---------------------------------------------------------------------  //
 
 void Integrator::addModifier(Modifier *modifier) {
   report << debug(10) << "[Integrator::addModifier] size=";
+
   myListModifiers.insert(modifier);
+
   report << myListModifiers.size() << endr;
 }
 
-//____  ---------------------------------------------------------------------  //
-
 void Integrator::deleteModifier(Modifier *modifier) {
-  report << debug(10) <<
-  "[Integrator::deleteModifier] size=" << myListModifiers.size() << "," <<
-  modifier->isInternal() << endr;
-  set<Modifier *>::iterator i = myListModifiers.find(modifier);
+  report << debug(10) << "[Integrator::deleteModifier] size="
+         << myListModifiers.size() << "," << modifier->isInternal() << endr;
+
+  iterator i = myListModifiers.find(modifier);
   if (i != myListModifiers.end()) {
-    report << debug(10) <<
-    "[Integrator::deleteModifier] delete" << (long)(modifier) << endr;
+    report << debug(10) << "[Integrator::deleteModifier] delete"
+           << (long)(modifier) << endr;
+
     delete modifier;
     myListModifiers.erase(i);
   }
-  report << debug(10) <<
-  "[Integrator::deleteModifier] end size=" << myListModifiers.size() << endr;
+
+  report << debug(10) << "[Integrator::deleteModifier] end size="
+         << myListModifiers.size() << endr;
 }
 
 //____  --------------------------------------------------------------------  //
@@ -552,86 +469,67 @@ void Integrator::deleteModifier(Modifier *modifier) {
 //____  --------------------------------------------------------------------  //
 
 bool Integrator::removeModifier(const string modifierName) {
-  report << debug(10) << "[Integrator::removeModifier]" <<
-  endr;
+  report << debug(10) << "[Integrator::removeModifier]" << endr;
 
   bool found = false;
   Modifier *foundMod = 0;
+  iterator i;
 
-  for (set<Modifier *>::iterator i = myPostStepModifiers.begin();
-       i != myPostStepModifiers.end();
-       ++i)
+  for (iterator i = myPostStepModifiers.begin();
+       i != myPostStepModifiers.end(); ++i)
 
-    if ((*i)->print() == modifierName) {
+    if ((*i)->getId() == modifierName) {
       myPostStepModifiers.erase(i);
       foundMod = *i;
       found = true;
     }
 
-  for (set<Modifier *>::iterator i = myPreStepModifiers.begin();
-       i != myPreStepModifiers.end();
-       ++i)
-
-    if ((*i)->print() == modifierName) {
+  for (i = myPreStepModifiers.begin(); i != myPreStepModifiers.end(); ++i)
+    if ((*i)->getId() == modifierName) {
       myPreStepModifiers.erase(i);
       foundMod = *i;
       found = true;
     }
 
-  for (set<Modifier *>::iterator i = myPreDriftOrNextModifiers.begin();
-       i != myPreDriftOrNextModifiers.end();
-       ++i)
-
-    if ((*i)->print() == modifierName) {
+  for (i = myPreDriftOrNextModifiers.begin();
+       i != myPreDriftOrNextModifiers.end(); ++i)
+    if ((*i)->getId() == modifierName) {
       myPreDriftOrNextModifiers.erase(i);
       foundMod = *i;
       found = true;
     }
 
-  for (set<Modifier *>::iterator i = myPostDriftOrNextModifiers.begin();
-       i != myPostDriftOrNextModifiers.end();
-       ++i)
-
-    if ((*i)->print() == modifierName) {
+  for (i = myPostDriftOrNextModifiers.begin();
+       i != myPostDriftOrNextModifiers.end(); ++i)
+    if ((*i)->getId() == modifierName) {
       myPostDriftOrNextModifiers.erase(i);
       foundMod = *i;
       found = true;
     }
 
-  for (set<Modifier *>::iterator i = myPreForceModifiers.begin();
-       i != myPreForceModifiers.end();
-       ++i)
-
-    if ((*i)->print() == modifierName) {
+  for (i = myPreForceModifiers.begin(); i != myPreForceModifiers.end(); ++i)
+    if ((*i)->getId() == modifierName) {
       myPreForceModifiers.erase(i);
       foundMod = *i;
       found = true;
     }
 
-  for (set<Modifier *>::iterator i = myMediForceModifiers.begin();
-       i != myMediForceModifiers.end();
-       ++i)
-
-    if ((*i)->print() == modifierName) {
+  for (i = myMediForceModifiers.begin(); i != myMediForceModifiers.end(); ++i)
+    if ((*i)->getId() == modifierName) {
       myMediForceModifiers.erase(i);
       foundMod = *i;
       found = true;
     }
 
-  for (set<Modifier *>::iterator i = myPostForceModifiers.begin();
-       i != myPostForceModifiers.end();
-       ++i)
-
-    if ((*i)->print() == modifierName) {
+  for (i = myPostForceModifiers.begin(); i != myPostForceModifiers.end(); ++i)
+    if ((*i)->getId() == modifierName) {
       myPostForceModifiers.erase(i);
       foundMod = *i;
       found = true;
     }
 
   if (found) {
-    set<Modifier *>::iterator i = myListModifiers.find(
-      const_cast<Modifier *>(foundMod));
-
+    i = myListModifiers.find(const_cast<Modifier *>(foundMod));
     if (i != myListModifiers.end())
       myListModifiers.erase(i);
   }
@@ -646,10 +544,10 @@ bool Integrator::removeModifier(const string modifierName) {
 //____  --------------------------------------------------------------------  //
 
 void Integrator::saveForces() {
-  (*myOldForces) = (*myForces);
+  *myOldForces = *myForces;
 }
 
 void Integrator::restoreForces() {
-  (*myForces) = (*myOldForces);
+  *myForces = *myOldForces;
 }
 

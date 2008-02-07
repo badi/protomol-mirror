@@ -8,10 +8,8 @@ using namespace ProtoMol;
 //____ Makeable
 
 string Makeable::getId() const {
-  if (!myAlias.empty())
-    return getAlias();
-  else
-    return getIdNoAlias();
+  if (!myAlias.empty()) return getAlias();
+  else return getIdNoAlias();
 }
 
 string Makeable::getAlias() const {
@@ -20,10 +18,10 @@ string Makeable::getAlias() const {
 
 string Makeable::setAlias(const string &id) {
   string tmp(myAlias);
-  if (equalNocase(id, getIdNoAlias()))
-    myAlias = "";
-  else
-    myAlias = id;
+
+  if (equalNocase(id, getIdNoAlias())) myAlias = "";
+  else myAlias = id;
+
   return tmp;
 }
 

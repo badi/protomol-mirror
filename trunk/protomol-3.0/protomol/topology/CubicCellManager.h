@@ -58,7 +58,6 @@ namespace ProtoMol {
     const std::string &getKeyword() const {return keyword;}
 
     void getParameters(std::vector<Parameter> &parameters) const;
-    unsigned int getParameterSize() const {return 1;}
     static CubicCellManager make(std::vector<Value> values);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

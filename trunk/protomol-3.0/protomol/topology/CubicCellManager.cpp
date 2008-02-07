@@ -10,8 +10,7 @@ using namespace ProtoMol;
 const string CubicCellManager::keyword("Cubic");
 
 CubicCellManager::CubicCellManager(Real r) :
-  myCellSize(r), myRealCellSize(Vector3D(r, r,
-                                         r)),
+  myCellSize(r), myRealCellSize(Vector3D(r, r, r)),
   myRealRCellSize(Vector3D(1.0 / r, 1.0 / r, 1.0 / r)) {}
 
 void CubicCellManager::setCellSize(Real newSize) {

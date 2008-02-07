@@ -5,6 +5,8 @@
 #include <protomol/config/Value.h>
 #include <protomol/types/SimpleTypes.h>
 
+#include <ostream>
+
 namespace ProtoMol {
   //________________________________________________________ Parameter
   struct Parameter {
@@ -51,6 +53,8 @@ namespace ProtoMol {
       text(t.text) {
       defaultValue.set(def);
     }
+
+    std::ostream &print(std::ostream &stream) const;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // data members

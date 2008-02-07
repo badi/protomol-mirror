@@ -6,6 +6,7 @@
 
 #include <protomol/output/Output.h>
 #include <protomol/config/Value.h>
+
 namespace ProtoMol {
   class OutputCollection;
 
@@ -15,11 +16,10 @@ namespace ProtoMol {
     // From Factory<Output>
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    virtual std::string print() const;
     virtual void registerHelpText() const;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // New methods of class DetailsOutputFactory
+    // New methods of class OutputFactory
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
     void registerAllExemplarsConfiguration(Configuration *config) const;

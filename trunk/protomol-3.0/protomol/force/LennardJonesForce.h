@@ -68,9 +68,7 @@ namespace ProtoMol {
 
     // Parsing
     static std::string getId() {return keyword;}
-
     static unsigned int getParameterSize() {return 0;}
-
     void getParameters(std::vector<Parameter> &) const {}
 
     static LennardJonesForce make(const std::vector<Value> &) {

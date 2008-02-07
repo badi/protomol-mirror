@@ -39,11 +39,6 @@ namespace ProtoMol {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
     virtual std::string getIdNoAlias() const {return keyword;}
-
-    // Returns the identification string
-
-    virtual unsigned int getParameterSize() const {return 2;}
-
     virtual void getParameters(std::vector<Parameter> &) const;
     virtual bool adjustWithDefaultParameters(std::vector<Value> &values,
                                              const Configuration *config) const;

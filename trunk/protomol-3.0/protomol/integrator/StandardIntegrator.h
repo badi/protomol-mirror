@@ -36,11 +36,6 @@ namespace ProtoMol {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
     virtual void run(int numTimesteps);
-    virtual void initialize(GenericTopology *topo,
-                            Vector3DBlock   *positions,
-                            Vector3DBlock   *velocities,
-                            ScalarStructure *energies);
-
     virtual Integrator *previous();
     virtual const Integrator *previous() const;
 

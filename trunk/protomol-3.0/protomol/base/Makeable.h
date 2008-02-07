@@ -22,15 +22,13 @@ namespace ProtoMol {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
     virtual ~Makeable() {};
+
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // New methods of class Makeable
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
   public:
     /// retrieve all parameters
     virtual void getParameters(std::vector<Parameter> &parameters) const = 0;
-    /// number of parameters
-    virtual unsigned int getParameterSize() const = 0;
     /// retrieve all parameters
     std::vector<Parameter> getParameters() const;
     virtual MakeableDefinition getDefinition() const;

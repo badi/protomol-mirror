@@ -23,6 +23,7 @@ namespace ProtoMol {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
     typedef TBoundaryConditions BoundaryConditions;
+    typedef SemiGenericTopology<TBoundaryConditions> TopologyType;
     // Make the boundary conditions visible
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -38,20 +39,17 @@ namespace ProtoMol {
     // New methods of class OneAtomPair
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    void initialize(const SemiGenericTopology<TBoundaryConditions> *topo,
-                    const Vector3DBlock *pos, Vector3DBlock *f,
-                    ScalarStructure *e) {
-      realTopo = (SemiGenericTopology<TBoundaryConditions> *)topo;
+    void initialize(const TopologyType *topo, const Vector3DBlock *pos,
+                    Vector3DBlock *f, ScalarStructure *e) {
+      realTopo = (TopologyType *)topo;
       positions = pos;
       forces = f;
       energies = e;
     }
 
-    void initialize(SemiGenericTopology<TBoundaryConditions> *topo,
-                    const Vector3DBlock *pos, Vector3DBlock *f,
-                    ScalarStructure *e) {
-      initialize(static_cast<const SemiGenericTopology<TBoundaryConditions> *>(
-                   topo), pos, f, e);
+    void initialize(TopologyType *topo, const Vector3DBlock *pos,
+                    Vector3DBlock *f, ScalarStructure *e) {
+      initialize(static_cast<const TopologyType *>(topo), pos, f, e);
     }
 
     void doOneAtomPair(const int i, const int j);
@@ -63,18 +61,14 @@ namespace ProtoMol {
       switchingFunction.getParameters(parameters);
     }
 
-    static unsigned int getParameterSize() {
-      return TNonbondedForce::getParameterSize() +
-             TSwitchingFunction::getParameterSize();
-    }
-
     static OneAtomPair make(std::vector<Value> values) {
       unsigned int n = TNonbondedForce::getParameterSize();
-      return OneAtomPair
-        (TNonbondedForce::make(std::vector<Value>(values.begin(),
-                                                  values.begin() + n)),
-         TSwitchingFunction::make(std::vector<Value>(values.begin() + n,
-                                                     values.end())));
+
+      std::vector<Value> parmsNF(values.begin(), values.begin() + n);
+      std::vector<Value> parmsSF(values.begin() + n, values.end());
+
+      return OneAtomPair(TNonbondedForce::make(parmsNF),
+                         TSwitchingFunction::make(parmsSF));
     }
 
     static std::string getId() {
@@ -95,7 +89,7 @@ namespace ProtoMol {
     TSwitchingFunction &getSwitchingFunction() {return switchingFunction;}
 
   private:
-    mutable SemiGenericTopology<TBoundaryConditions> *realTopo;
+    mutable TopologyType *realTopo;
     const Vector3DBlock *positions;
     Vector3DBlock *forces;
     ScalarStructure *energies;
