@@ -30,7 +30,6 @@ namespace ProtoMol {
   private:
     virtual void doExecute();
 
-    virtual std::string doPrint() const {return std::string("Rattle");};
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // From class ModifierMetaRattleShake
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
