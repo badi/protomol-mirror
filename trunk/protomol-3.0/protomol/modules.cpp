@@ -7,7 +7,8 @@
 #include <protomol/output/OutputModule.h>
 #include <protomol/force/bonded/BondedForcesModule.h>
 
-#include <protomol/modules/LangevinImpulse/LangevinImpulseModule.h>
+#include <protomol/integrator/base/IntegratorBaseModule.h>
+
 #include <protomol/modules/LennardJonesNonbondedCutoffC2/LennardJonesNonbondedCutoffC2Module.h>
 
 using namespace ProtoMol;
@@ -19,8 +20,9 @@ void moduleInitFunction(ModuleManager *manager) {
   manager->add(new TopologyModule());
   manager->add(new OutputModule());
 
-  manager->add(new LangevinImpulseModule());
+  manager->add(new IntegratorBaseModule());
   manager->add(new BondedForcesModule());
+
   manager->add(new LennardJonesNonbondedCutoffC2Module());
 }
 
