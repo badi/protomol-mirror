@@ -15,8 +15,7 @@ namespace ProtoMol {
     };
 
     template<unsigned int size, class A, class B> struct SelectType {
-      typedef  typename SelectTypeHelper < sizeof(A) == size, A, B >
-        ::type type;
+      typedef typename SelectTypeHelper<sizeof(A) == size, A, B>::type type;
     };
 
     template<bool cmp, class A> struct SelectTypeCheckHelper {};
@@ -26,10 +25,10 @@ namespace ProtoMol {
     };
 
     template<class A, unsigned int size> struct SelectTypeCheck {
-      typedef  typename SelectTypeCheckHelper < sizeof(A) == size, A >
-        ::type type;
+      typedef typename SelectTypeCheckHelper<sizeof(A) == size, A>::type type;
     };
   }
+
   /**
    * Enables to select the right type of an int or float
    * with a given sizeof, bails out if there is not adequate
@@ -41,25 +40,26 @@ namespace ProtoMol {
    */
   namespace TypeSelection {
     /**
-     * Select the right type among short, int, long or ong long according the given sizeof.
+     * Select the right type among short, int, long or ong long according the 
+     * given sizeof.
      */
     template<unsigned int size> struct Int {
-      typedef typename Private::SelectTypeCheck <
-      typename Private::SelectType < size,
-      typename Private::SelectType<size, int, short>::type,
-      typename Private::SelectType<size, long,
-                                   long long>::type > ::type, size >
-        ::type type;
+      typedef Private::SelectType<size, int, short> ST1;
+      typedef Private::SelectType<size, long, long long> ST2;
+      typedef Private::
+      SelectType<size, typename ST1::type, typename ST2::type> ST3;
+      typedef typename Private::
+      SelectTypeCheck<typename ST3::type, size>::type type;
     };
 
     /**
      * Select the right type among float or double according the given sizeof.
      */
     template<unsigned int size> struct Float {
-      typedef typename Private::SelectTypeCheck <
-      typename Private::SelectType < size,
-      typename Private::SelectType<size, float, double>::type,
-      Real > ::type, size > ::type type;
+      typedef Private::SelectType<size, float, double> ST1;
+      typedef Private::SelectType<size, typename ST1::type, Real> ST2;
+      typedef typename Private::
+      SelectTypeCheck<typename ST2::type, size>::type type;
     };
   }
 }
