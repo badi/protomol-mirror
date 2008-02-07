@@ -18,14 +18,13 @@ C2SwitchingFunction::C2SwitchingFunction(Real switchon,
   mySwitch3(4.0 / power<3>(cutoff * cutoff - switchon * switchon)) {}
 
 void C2SwitchingFunction::getParameters(vector<Parameter> &parameters) const {
-  parameters.push_back(Parameter("-switchon",
-                                 Value(mySwitchon,
-                                       ConstraintValueType::NotNegative()),
-                                 Text("C2 swf switch on")));
-  parameters.push_back(Parameter("-cutoff",
-                                 Value(myCutoff,
-                                       ConstraintValueType::Positive()),
-                                 Text("C2 swf cutoff")));
+  parameters.push_back
+    (Parameter("-switchon",
+               Value(mySwitchon, ConstraintValueType::NotNegative()),
+               Text("C2 swf switch on")));
+  parameters.push_back
+    (Parameter("-cutoff", Value(myCutoff, ConstraintValueType::Positive()),
+               Text("C2 swf cutoff")));
 }
 
 C2SwitchingFunction C2SwitchingFunction::make(vector<Value> values) {
@@ -34,7 +33,7 @@ C2SwitchingFunction C2SwitchingFunction::make(vector<Value> values) {
   values[1].get(cutoff);
   if (!values[0].valid() || !values[0].valid() || switchon < 0.0 || cutoff <=
       0.0 || switchon >= cutoff)
-    THROW(keyword + " switching function: 0 <= switchon (=" +
+    THROW(getId() + " switching function: 0 <= switchon (=" +
           values[0].getString() + ") < cutoff (=" +
           values[1].getString() + ").");
 
@@ -47,6 +46,7 @@ Matrix3By3 C2SwitchingFunction::hessian(const Vector3D &rij, Real a) const {
   Real tm3 = 12.0 * (a - myCutoff2) * (a - mySwitchon2) / tm2;
   Real tm4 = 24.0 * (2.0 * a - myCutoff2 - mySwitchon2) / tm2;
 
-  return Matrix3By3(tm3, 0, 0, 0, tm3, 0, 0, 0,
-                    tm3) + Matrix3By3(rij, rij) * tm4;
+  return
+    Matrix3By3(tm3, 0, 0, 0, tm3, 0, 0, 0, tm3) +
+    Matrix3By3(rij, rij) * tm4;
 }

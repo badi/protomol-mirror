@@ -1,4 +1,4 @@
-#include "NonbondedCutoffForceBase.h"
+#include <protomol/modules/LennardJonesNonbondedCutoffC2/NonbondedCutoffForceBase.h>
 
 using namespace std;
 using namespace ProtoMol;

@@ -3,9 +3,9 @@
 #define C2SWITCHINGFUNCTION_H
 
 #include <vector>
+#include <string>
 
 #include <protomol/config/Parameter.h>
-#include "C2SwitchingFunctionBase.h"
 #include <protomol/type/Matrix3By3.h>
 
 namespace ProtoMol {
@@ -14,7 +14,7 @@ namespace ProtoMol {
   /**
    * The switching function provide C2 continues
    */
-  class C2SwitchingFunction : private C2SwitchingFunctionBase {
+  class C2SwitchingFunction {
   public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Types and Enums
@@ -54,7 +54,7 @@ namespace ProtoMol {
 
     Matrix3By3 hessian(const Vector3D &rij, Real distSquared) const;
 
-    static const std::string &getId() {return keyword;}
+    static const std::string getId() {return "C2";}
     void getParameters(std::vector<Parameter> &parameters) const;
     static C2SwitchingFunction make(std::vector<Value> values);
 

@@ -5,7 +5,7 @@
 #include <protomol/force/Force.h>
 #include <protomol/parallel/Parallel.h>
 #include <protomol/topology/Topology.h>
-#include "NonbondedCutoffForceBase.h"
+#include <protomol/modules/LennardJonesNonbondedCutoffC2/NonbondedCutoffForceBase.h>
 
 namespace ProtoMol {
   //____ NonbondedCutoffForce

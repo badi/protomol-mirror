@@ -3,7 +3,7 @@
 #define NONBONDEDCUTOFFSYSTEMFORCE_H
 
 #include <protomol/force/SystemForce.h>
-#include "NonbondedCutoffForce.h"
+#include <protomol/modules/LennardJonesNonbondedCutoffC2/NonbondedCutoffForce.h>
 
 namespace ProtoMol {
   //____ NonbondedCutoffSystemForce
