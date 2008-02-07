@@ -1,19 +1,23 @@
 /* -*- c++ -*- */
-#ifndef C1SWITCHINGFUNCTION_H
-#define C1SWITCHINGFUNCTION_H
+#ifndef CnSWITCHINGFUNCTION_H
+#define CnSWITCHINGFUNCTION_H
 
 #include <vector>
+#include <string>
 
 #include <protomol/config/Parameter.h>
 #include <protomol/type/Matrix3By3.h>
 
 namespace ProtoMol {
-  //____ C1SwitchingFunction
+  //____ CnSwitchingFunction
 
   /**
-   * The switching function provide C1 continues
+   * The switching function provide C2, 3, 4 0r 6 continuous
    */
-  class C1SwitchingFunction {
+  class CnSwitchingFunction {
+#define MAXEQNN 7
+#define NUMSW   5
+
   public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Types and Enums
@@ -26,10 +30,10 @@ namespace ProtoMol {
     // Constructors, destructors, assignment
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    C1SwitchingFunction();
-    C1SwitchingFunction(Real cutoff);
+    CnSwitchingFunction();
+    CnSwitchingFunction(Real switchon, Real cutoff, Real order, Real switchoff);
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // New methods of class C1SwitchingFunction
+    // New methods of class CnSwitchingFunction
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
     bool roughTest(Real distSquared) const {return distSquared <= myCutoff2;}
@@ -38,35 +42,27 @@ namespace ProtoMol {
 
     Real cutoff() const {return myCutoff;}
 
-    void operator()(Real &value, Real &derivOverD, Real distSquared) const {
-      if (distSquared > myCutoff2) {
-        value = 0.0;
-        derivOverD = 0.0;
-        return;
-      }
-      Real dist = sqrt(distSquared);
-      value = 1.0 - dist * (my15Cutoff_1 - distSquared * my05Cutoff_3);
-      derivOverD = -my15Cutoff_1 / dist + dist * my15Cutoff_3;
-    }
-
+    void operator()(Real &value, Real &deriv, Real distSquared) const;
     Matrix3By3 hessian(const Vector3D &rij, Real distSquared) const;
 
-    static const std::string getId() {return "C1";}
+    static const std::string getId() {return "Cn";}
 
     void getParameters(std::vector<Parameter> &parameters) const;
 
-    static unsigned int getParameterSize() {return 1;}
+    static unsigned int getParameterSize() {return 4;}
 
-    static C1SwitchingFunction make(std::vector<Value> values);
+    static CnSwitchingFunction make(std::vector<Value> values);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // My data members
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   private:
-    Real myCutoff, myCutoff2, myCutoff_3, my15Cutoff_1, my05Cutoff_3,
-         my15Cutoff_3;
-  };
+    Real mySwitchon, mySwitchon2, myCutoff, myCutoff2, myOrder, mySwitchoff;
+    Real myIRange[MAXEQNN];
+    int ordInt, ordIdx;
 
+    static Real swcoef[][MAXEQNN], dswcoef[][MAXEQNN], d2swcoef[][MAXEQNN];
+  };
   //____ INLINES
 }
-#endif /* C1SWITCHINGFUNCTION_H */
+#endif /* CnSWITCHINGFUNCTION_H */

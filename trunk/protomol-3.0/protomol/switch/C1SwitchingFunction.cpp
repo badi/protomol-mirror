@@ -21,7 +21,7 @@ void C1SwitchingFunction::getParameters(vector<Parameter> &parameters) const {
                Text("C1 swf cutoff")));
 }
 
-C1SwitchingFunction C1SwitchingFunction::make(string &, vector<Value> values) {
+C1SwitchingFunction C1SwitchingFunction::make(vector<Value> values) {
   return C1SwitchingFunction(values[0]);
 }
 
