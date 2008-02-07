@@ -54,6 +54,10 @@ namespace ProtoMol {
       myPositions(0), myVelocities(0), myForces(0), myEnergies(0) {}
     virtual ~Modifier() {}
 
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // From class Makeable
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  public:
     virtual std::string getScope() const {return "Modifier";}
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
