@@ -4,7 +4,7 @@
 
 #include <protomol/integrator/MTSIntegrator.h>
 #include <protomol/integrator/nm/NormalModeUtilities.h>
-#include <protomol/hessian/Hessian.h>
+#include <protomol/integrator/hessian/Hessian.h>
 
 #include <protomol/type/Vector3DBlock.h>
 
