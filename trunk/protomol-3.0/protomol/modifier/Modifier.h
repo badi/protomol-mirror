@@ -89,6 +89,9 @@ namespace ProtoMol {
     /// Initialize
     void initialize(ProtoMolApp *app, Vector3DBlock *forces);
 
+    virtual Modifier *doMake(const std::vector<Value> &values) const {return 0;}
+    virtual void getParameters(std::vector<Parameter> &parameters) const {}
+
     /// print/debug
     virtual std::ostream &print(std::ostream &stream) const {
       return stream << getId() << endl;
