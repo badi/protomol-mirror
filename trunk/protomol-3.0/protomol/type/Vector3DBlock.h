@@ -9,7 +9,7 @@
 
 
 namespace ProtoMol {
-  //_________________________________________________________________ Vector3DBlock
+  //_____________________________________________________________ Vector3DBlock
   /**
    * Container holding a vector (array) of 3D coordinates/vectors
    */
@@ -44,55 +44,42 @@ namespace ProtoMol {
     //  New methods of class Vector3DBlock from std::vector
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    iterator begin()                                             {return vec.
-                                                                           begin();}
-    iterator end()                                               {return vec.
-                                                                           end();}
+    iterator begin() {return vec.begin();}
+    iterator end() {return vec.end();}
     const_iterator begin() const {return vec.begin();}
     const_iterator end() const {return vec.end();}
-    reverse_iterator rbegin()                                    {return vec.
-                                                                           rbegin();}
-    reverse_iterator rend()                                      {return vec.
-                                                                           rend();}
+    reverse_iterator rbegin() {return vec.rbegin();}
+    reverse_iterator rend() {return vec.rend();}
     const_reverse_iterator rbegin() const {return vec.rbegin();}
     const_reverse_iterator rend() const {return vec.rend();}
     size_type size() const {return vec.size();}
     size_type max_size() const {return vec.max_size();}
     size_type capacity() const {return vec.capacity();}
     bool empty() const {return vec.empty();}
-    reference operator[](size_type n)                            {return vec[n];}
+    reference operator[](size_type n) {return vec[n];}
     const_reference operator[](size_type n) const {return vec[n];}
-    void reserve(size_t n)                                       {vec.reserve(n);}
-    reference front()                                            {return vec.
-                                                                           front();}
+    void reserve(size_t n) {vec.reserve(n);}
+    reference front() {return vec.front();}
     const_reference front() const {return vec.front();}
-    reference back()                                             {return vec.
-                                                                           back();}
+    reference back() {return vec.back();}
     const_reference back() const {return vec.back();}
-    void push_back(const Vector3D &t)                            {return vec.
-                                                                           push_back(
-                                                                    t);}
-    void pop_back()                                              {return vec.
-                                                                           pop_back();}
-    void swap(Vector3DBlock &x)                                  {vec.swap(
-                                                                    x.vec);}
-    iterator insert(iterator pos,
-                    const Vector3D &x)             {return vec.insert(pos, x);}
-    void insert(iterator pos, size_type n, const Vector3D &x)    {vec.insert(
-                                                                    pos,
-                                                                    n,
-                                                                    x);}
-    iterator erase(iterator pos)                                 {return vec.
-                                                                           erase(
-                                                                    pos);}
-    iterator erase(iterator first,
-                   iterator last)                {return vec.erase(first, last);}
-    void clear()                                                 {vec.clear();}
-    void resize(size_type n, Vector3D t = Vector3D(0.0, 0.0, 0.0)) {vec.resize(
-                                                                      n,
-                                                                      t);}
-
-
+    void push_back(const Vector3D &t) {return vec.push_back(t);}
+    void pop_back() {return vec.pop_back();}
+    void swap(Vector3DBlock &x) {vec.swap(x.vec);}
+    iterator insert(iterator pos, const Vector3D &x) {
+      return vec.insert(pos, x);
+    }
+    void insert(iterator pos, size_type n, const Vector3D &x) {
+      vec.insert(pos, n, x);
+    }
+    iterator erase(iterator pos) {return vec.erase(pos);}
+    iterator erase(iterator first, iterator last) {
+      return vec.erase(first, last);
+    }
+    void clear() {vec.clear();}
+    void resize(size_type n, Vector3D t = Vector3D(0.0, 0.0, 0.0)) {
+      vec.resize(n, t);
+    }
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // New methods of class Vector3DBlock
