@@ -7,6 +7,7 @@
 #include <protomol/topology/TopologyUtilities.h>
 #include <protomol/base/PMConstants.h>
 #include <protomol/modifier/ModifierIncrementTimestep.h>
+#include <protomol/base/ProtoMolApp.h>
 #include <protomol/base/Exception.h>
 
 using namespace ProtoMol::Report;

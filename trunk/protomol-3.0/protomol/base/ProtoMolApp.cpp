@@ -21,6 +21,7 @@
 #include <protomol/topology/GenericTopology.h>
 #include <protomol/topology/TopologyFactory.h>
 #include <protomol/topology/TopologyModule.h>
+#include <protomol/topology/TopologyUtilities.h>
 
 #include <protomol/output/OutputModule.h>
 #include <protomol/output/OutputFactory.h>
@@ -209,14 +210,17 @@ void ProtoMolApp::build() {
     if (!topology) throw e;
   }
 
+
   // Build topology
   Module *topoMod = modManager->find("Topology");
   if (!topoMod) THROW("Topology module not found");
 
   topoMod->buildTopology(this);
 
+
   // Register Forces
   modManager->registerForces(this);
+
 
   // Build the integrators and forces
   integrator =
@@ -250,7 +254,23 @@ void ProtoMolApp::build() {
 
   else outputs = new OutputCollection; // Empty collection
 
+
+  // Post build processing
+  modManager->postBuild(this);
+
+  report << plain << "Actual start temperature : "
+         << temperature(topology, &velocities) << "K" << endr;
+
+
   // Initialize
+  //scalar.molecularVirial(config[InputMolVirialCalc::keyword]);
+  //scalar.virial(config[InputVirialCalc::keyword]);
+  //report << plain << "Virial tensor : "<< scalar.virial()<<endr;
+  //report << plain << "Molecular virial tensor : "
+  //       << scalar.molecularVirial()<<endr;
+  //topology->time =
+  //  (Real)config[InputFirststep::keyword] * integrator->getTimestep();
+
   integrator->initialize(this);
   outputs->initialize(this);
   outputCache.initialize(this);

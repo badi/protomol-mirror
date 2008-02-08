@@ -1,7 +1,7 @@
 #include <protomol/base/MainModule.h>
 
 #include <protomol/base/ProtoMolApp.h>
-
+#include <protomol/topology/TopologyUtilities.h>
 #include <protomol/config/Configuration.h>
 #include <protomol/base/Report.h>
 #include <protomol/base/Exception.h>
@@ -24,6 +24,8 @@ defineInputValueWithAliases(InputPAR, "parfile", ("parameters"));
 defineInputValue(InputPDBScaling, "pdbScaling");
 defineInputValue(InputDihedralMultPSF, "dihedralMultPSF");
 defineInputValue(InputIntegrator, "integrator");
+defineInputValue(InputReducedImage, "reducedImage");
+defineInputValue(InputTemperature, "temperature");
 
 void MainModule::init(ProtoMolApp *app) {
   Configuration *config = &app->config;
@@ -45,6 +47,8 @@ void MainModule::init(ProtoMolApp *app) {
   InputPDBScaling::registerConfiguration(config);
   InputDihedralMultPSF::registerConfiguration(config);
   InputIntegrator::registerConfiguration(config);
+  InputReducedImage::registerConfiguration(config);
+  InputTemperature::registerConfiguration(config);
 }
 
 void MainModule::configure(ProtoMolApp *app) {
@@ -54,15 +58,47 @@ void MainModule::configure(ProtoMolApp *app) {
   report << reportlevel((int)config[InputDebug::keyword]);
 
   // Check if configuration is complete
-  if (config.hasUndefinedKeywords()) {
-    report << plain << "Undefined Keyword(s):" << endl
-           << config.printUndefinedKeywords() << endl;
+  //if (config.hasUndefinedKeywords()) {
+  //  report << plain << "Undefined Keyword(s):" << endl
+  //         << config.printUndefinedKeywords() << endl;
+  //}
     
-    if (!config[InputFirststep::keyword].valid())
-      THROW("Firststep undefined.");
-
-    if (!config[InputNumsteps::keyword].valid())
-      THROW("Numsteps undefined.");
-  }
+  if (!config[InputFirststep::keyword].valid())
+    THROW("Firststep undefined.");
+  
+  if (!config[InputNumsteps::keyword].valid())
+    THROW("Numsteps undefined.");
 }
 
+void MainModule::postBuild(ProtoMolApp *app) {  
+  // Reduce image
+  app->topology->minimalMolecularDistances =
+    app->topology->checkMoleculePairDistances(app->positions);
+
+  if ((bool)app->config[InputReducedImage::keyword] &&
+      !app->topology->minimalMolecularDistances) {
+    Vector3DBlock tmp(app->positions);
+
+    app->topology->minimalImage(tmp);
+
+    if (app->topology->checkMoleculePairDistances(tmp)) {
+      app->positions = tmp;
+      report << plain << "Fixed minimal molecule distances." << endr;
+      app->topology->minimalMolecularDistances = true;
+
+    } else {
+      report << plain << "Could not fixed minimal molecule distances." << endr;
+      app->topology->minimalMolecularDistances = false;
+    }
+  }
+
+   // Fix velocities
+  if (!app->config.valid(InputVelocities::keyword)) {
+    randomVelocity(app->config[InputTemperature::keyword],
+                   app->topology, &app->velocities,
+                   app->config[InputSeed::keyword]);
+
+    report << plain << "Random temperature : "
+           << temperature(app->topology, &app->velocities) << "K" << endr;
+  }
+}

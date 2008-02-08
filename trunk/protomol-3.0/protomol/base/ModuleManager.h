@@ -26,6 +26,7 @@ namespace ProtoMol {
     void init(ProtoMolApp *app);
     void configure(ProtoMolApp *app);
     void registerForces(ProtoMolApp *app);
+    void postBuild(ProtoMolApp *app);
 
     int listAction();
   };

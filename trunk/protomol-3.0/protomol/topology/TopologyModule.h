@@ -17,8 +17,6 @@ namespace ProtoMol {
   declareInputValue(InputBoundaryConditions, STRING, NOTEMPTY);
   declareInputValue(InputCellManager, STRING, NOTEMPTY);
   declareInputValue(InputDoSCPISM, BOOL, NOCONSTRAINTS);
-  declareInputValue(InputReducedImage, BOOL, NOCONSTRAINTS);
-  declareInputValue(InputTemperature, REAL, NOTNEGATIVE);
   declareInputValue(InputRemoveAngularMomentum, INT, NOCONSTRAINTS);
   declareInputValue(InputRemoveLinearMomentum, INT, NOCONSTRAINTS);
 

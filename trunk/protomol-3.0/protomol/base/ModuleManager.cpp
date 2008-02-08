@@ -80,6 +80,13 @@ void ModuleManager::registerForces(ProtoMolApp *app) {
     (*it)->registerForces(app);
 }
 
+void ModuleManager::postBuild(ProtoMolApp *app) {
+  modules_t::iterator it;
+
+  for (it = modules.begin(); it != modules.end(); it++)
+    (*it)->registerForces(app);
+}
+
 int ModuleManager::listAction() {
   modules_t::iterator it;
 

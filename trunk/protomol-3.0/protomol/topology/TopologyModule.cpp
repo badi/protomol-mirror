@@ -34,8 +34,6 @@ using namespace ProtoMol::Report;
 defineInputValue(InputBoundaryConditions, "boundaryConditions");
 defineInputValue(InputCellManager, "cellManager");
 defineInputValue(InputDoSCPISM, "doscpism");
-defineInputValue(InputReducedImage, "reducedImage");
-defineInputValue(InputTemperature, "temperature");
 defineInputValueWithAliasesAndText
 (InputRemoveLinearMomentum, "removeLinearMomentum", ("comMotion"),
   "removes linear momentum, where -1 for never, 0 at initialization or at STS "
@@ -62,8 +60,6 @@ void TopologyModule::init(ProtoMolApp *app) {
   InputBoundaryConditions::registerConfiguration(config);
   InputCellManager::registerConfiguration(config);
   InputDoSCPISM::registerConfiguration(config);
-  InputReducedImage::registerConfiguration(config);
-  InputTemperature::registerConfiguration(config);
   InputRemoveLinearMomentum::registerConfiguration(config);
   InputRemoveAngularMomentum::registerConfiguration(config);
 }
@@ -89,35 +85,8 @@ void TopologyModule::buildTopology(ProtoMolApp *app) {
     topo->doSCPISM = true;
 
   buildTopology(topo, app->psf, app->par,
-    config[InputDihedralMultPSF::keyword]);
+                config[InputDihedralMultPSF::keyword]);
 
-  topo->minimalMolecularDistances =
-    topo->checkMoleculePairDistances(*positions);
-
-  // Reduce image
-  if ((bool)config[InputReducedImage::keyword] &&
-      !topo->minimalMolecularDistances) {
-    Vector3DBlock tmp(*positions);
-
-    topo->minimalImage(tmp);
-
-    if (topo->checkMoleculePairDistances(tmp)) {
-      *positions = tmp;
-      report << plain << "Fixed minimal molecule distances." << endr;
-      topo->minimalMolecularDistances = true;
-    } else {
-      report << plain << "Could not fixed minimal molecule distances." << endr;
-      topo->minimalMolecularDistances = false;
-    }
-  }
-
-  // Fix velocities
-  if (!config.valid(InputVelocities::keyword)) {
-    randomVelocity(config[InputTemperature::keyword],
-      topo, velocities, config[InputSeed::keyword]);
-    report << plain << "Random temperature : "
-           << temperature(topo, velocities) << "K" << endr;
-  }
 
   // Remove Linear Momentum
   if ((int)config[InputRemoveLinearMomentum::keyword] >= 0)
@@ -142,8 +111,6 @@ void TopologyModule::buildTopology(ProtoMolApp *app) {
            << angularMomentum(positions, velocities, topo) *
     Constant::INV_TIMEFACTOR << endr;
 
-  report << plain << "Actual start temperature : "
-         << temperature(topo, velocities) << "K" << endr;
 }
 
 //____findNextNeighbor

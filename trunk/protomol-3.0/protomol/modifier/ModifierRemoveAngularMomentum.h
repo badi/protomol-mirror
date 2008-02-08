@@ -1,44 +1,48 @@
 /*  -*- c++ -*-  */
-#ifndef MODIFIERINCREMENTTIMESTEP_H
-#define MODIFIERINCREMENTTIMESTEP_H
+#ifndef MODIFIERREMOVEANGULARMOMENTUM_H
+#define MODIFIERREMOVEANGULARMOMENTUM_H
 
 #include <protomol/modifier/Modifier.h>
-#include <protomol/topology/GenericTopology.h>
-#include <protomol/integrator/STSIntegrator.h>
-#include <protomol/base/ProtoMolApp.h>
+#include <protomol/topology/TopologyUtilities.h>
 
 namespace ProtoMol {
-  class ModifierIncrementTimestep : public Modifier {
-    static const std::string keyword;
-
+  //____ ModifierRemoveAngularMomentum
+  class ModifierRemoveAngularMomentum : public Modifier {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Constructors, destructors, assignment
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    ModifierIncrementTimestep(STSIntegrator *i) :
-      Modifier(Constant::MAX_INT), myTheIntegrator(i) {}
+    ModifierRemoveAngularMomentum(int freq) : Modifier(Constant::MAX_INT - 200),
+      myStep(0), myFreq(freq) {}
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // From class Makeable
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     virtual void getParameters(std::vector<Parameter> &parameters) const {}
-    virtual std::string getIdNoAlias() const {return "IncrementTimestep";}
+    virtual std::string getIdNoAlias() const {return "RemoveAngularMomentum";}
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // From class Modifier
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    virtual bool isInternal() const {return true;}
+  public:
+    virtual bool isInternal() const {return false;}
 
   private:
     virtual void doExecute() {
-      app->topology->time += myTheIntegrator->getTimestep();
+      if (myFreq == 0 || 0 == (myStep = (myStep % myFreq)))
+        removeAngularMomentum(myPositions, myVelocities, myTopology);
+      myStep++;
     }
+
+  private:
+    virtual void doInitialize() {myStep = 0;}
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // My data members
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   private:
-    STSIntegrator *myTheIntegrator;
+    int myStep;
+    int myFreq;
   };
 }
-#endif /* MODIFIERINCREMENTTIMESTEP_H */
+#endif /* MODIFIER_H */

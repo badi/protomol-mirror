@@ -37,7 +37,7 @@ namespace ProtoMol {
 #ifdef BUILD_FOR_FAH
     boost::iostreams::stream<FAH::ChecksumDevice> file;
 #else
-    std::iostream file;
+    std::fstream file;
 #endif
 
     File(std::ios::openmode mode);

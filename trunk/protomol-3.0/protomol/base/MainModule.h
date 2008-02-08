@@ -19,17 +19,20 @@ namespace ProtoMol {
   declareInputValue(InputPDBScaling, BOOL, NOCONSTRAINTS);
   declareInputValue(InputDihedralMultPSF, BOOL, NOCONSTRAINTS);
   declareInputValue(InputIntegrator, INTEGRATOR, NOTEMPTY);
+  declareInputValue(InputReducedImage, BOOL, NOCONSTRAINTS);
+  declareInputValue(InputTemperature, REAL, NOTNEGATIVE);
 
   class MainModule : public Module {
   public:
     const std::string getName() const {return "Main";}
     int getPriority() const {return 0;}
     const std::string getHelp() const {
-      return "System default registrations.";
+      return "System default keywords and setup.";
     }
 
     void init(ProtoMolApp *app);
     void configure(ProtoMolApp *app);
+    void postBuild(ProtoMolApp *app);
   };
 };
 

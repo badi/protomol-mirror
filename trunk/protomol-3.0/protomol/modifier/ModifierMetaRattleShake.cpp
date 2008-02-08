@@ -1,6 +1,7 @@
 #include <protomol/modifier/ModifierMetaRattleShake.h>
 #include <protomol/topology/Topology.h>
 #include <protomol/topology/TopologyUtilities.h>
+#include <protomol/base/ProtoMolApp.h>
 
 using namespace std;
 using namespace ProtoMol;
@@ -11,19 +12,21 @@ ModifierMetaRattleShake::ModifierMetaRattleShake(Real eps, int maxIter,
   Modifier(order), myEpsilon(eps), myMaxIter(maxIter), myListOfConstraints(0) {}
 
 void ModifierMetaRattleShake::doInitialize() {
-  myLastPositions = (*myPositions);
+  myLastPositions = app->positions;
 
   // ... maybe it's a second inittialize, add the old back.
-  myTopology->degreesOfFreedom += myTopology->bondRattleShakeConstraints.size();
+  app->topology->degreesOfFreedom +=
+    app->topology->bondRattleShakeConstraints.size();
 
-  buildRattleShakeBondConstraintList(myTopology,
-                                     myTopology->bondRattleShakeConstraints);
+  buildRattleShakeBondConstraintList(app->topology,
+                                     app->topology->bondRattleShakeConstraints);
   // this list contains bonded pairs, and UB-bonded pairs excluding
   // (heavy atom)-H pairs and (heavy)-(heavy) pairs
 
   // subtract the # of constraints from the # of degrees of freedom of the 
   // system. This is needed so that we get the correct temperature
-  myTopology->degreesOfFreedom -= myTopology->bondRattleShakeConstraints.size();
+  app->topology->degreesOfFreedom -=
+    app->topology->bondRattleShakeConstraints.size();
 
-  myListOfConstraints = &(myTopology->bondRattleShakeConstraints);
+  myListOfConstraints = &(app->topology->bondRattleShakeConstraints);
 }

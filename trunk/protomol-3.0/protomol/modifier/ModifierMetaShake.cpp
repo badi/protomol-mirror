@@ -1,5 +1,6 @@
 #include <protomol/modifier/ModifierMetaShake.h>
 #include <protomol/topology/Topology.h>
+#include <protomol/base/ProtoMolApp.h>
 
 using namespace ProtoMol;
 
@@ -21,8 +22,8 @@ Real ModifierMetaShake::calcError() const {
     int a2 = (*myListOfConstraints)[i].atom2;
     Real restLengthSquared = power<2>((*myListOfConstraints)[i].restLength);
     Real err = fabs(
-      ((*myPositions)[a2] -
-       (*myPositions)[a1]).normSquared() -
+      (app->positions[a2] -
+       app->positions[a1]).normSquared() -
       restLengthSquared) / (2.0 * restLengthSquared);
     error += err;
   }

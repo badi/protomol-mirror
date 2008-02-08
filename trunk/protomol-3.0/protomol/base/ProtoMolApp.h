@@ -12,6 +12,8 @@
 #include <protomol/output/OutputCache.h>
 #include <protomol/output/OutputFactory.h>
 
+#include <protomol/modifier/ModifierFactory.h>
+
 #include <protomol/type/Vector3DBlock.h>
 #include <protomol/type/EigenvectorInfo.h>
 #include <protomol/type/PSF.h>
@@ -42,6 +44,7 @@ namespace ProtoMol {
     ForceFactory forceFactory;
     IntegratorFactory integratorFactory;
     OutputFactory outputFactory;
+    ModifierFactory modifierFactory;
 
     // Containers
     CommandLine cmdLine;

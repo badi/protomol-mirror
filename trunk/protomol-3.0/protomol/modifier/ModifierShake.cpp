@@ -2,6 +2,7 @@
 #include <protomol/integrator/Integrator.h>
 #include <protomol/topology/Topology.h>
 #include <protomol/type/ScalarStructure.h>
+#include <protomol/base/ProtoMolApp.h>
 #include <protomol/base/PMConstants.h>
 
 using namespace ProtoMol::Report;
@@ -34,7 +35,7 @@ void ModifierShake::doExecute() {
       Real restLength = (*myListOfConstraints)[i].restLength;
 
       // now lets compute the lambdas.
-      Vector3D pab = (*myPositions)[a1] - (*myPositions)[a2];
+      Vector3D pab = app->positions[a1] - app->positions[a2];
 
       // compute the current bond vector
       Real pabsq = pab.normSquared();
@@ -49,30 +50,30 @@ void ModifierShake::doExecute() {
       Real rpab = rab * pab;
 
       // reciprocal atomic masses
-      Real rM1 = 1 / myTopology->atoms[a1].scaledMass;
-      Real rM2 = 1 / myTopology->atoms[a2].scaledMass;
+      Real rM1 = 1 / app->topology->atoms[a1].scaledMass;
+      Real rM2 = 1 / app->topology->atoms[a2].scaledMass;
 
       // calculate the constraint force, or multiplier
       Real gab = diffsq / (2 * (rM1 + rM2) * rpab);
       Vector3D dp = rab * gab;
 
       // move the positions based upon the multiplier
-      (*myPositions)[a1] += dp * rM1;
-      (*myPositions)[a2] -= dp * rM2;
+      app->positions[a1] += dp * rM1;
+      app->positions[a2] -= dp * rM2;
 
       dp /= dt;
 
       // move the velocities based upon the multiplier
-      (*myVelocities)[a1] += dp * rM1;
-      (*myVelocities)[a2] -= dp * rM2;
+      app->velocities[a1] += dp * rM1;
+      app->velocities[a2] -= dp * rM2;
 
       // the constraint adds a force to each atom since their positions
       // had to be changed.  This constraint force therefore contributes
       // to the atomic virial.  Note that the molecular virial is independent of
       // any intramolecular constraint forces.
-      if (myEnergies->virial()) {
+      if (app->energies.virial()) {
         dp /= dt;
-        myEnergies->addVirial(dp * 2, rab);
+        app->energies.addVirial(dp * 2, rab);
       }
     }
 
@@ -88,6 +89,6 @@ void ModifierShake::doExecute() {
   }
 
   // store the old positions
-  myLastPositions = (*myPositions);
+  myLastPositions = app->positions;
 }
 

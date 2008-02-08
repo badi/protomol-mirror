@@ -27,6 +27,7 @@ namespace ProtoMol {
     virtual void buildTopology(ProtoMolApp *app)
     {THROW("Not implemented in this module");}
     virtual void registerForces(ProtoMolApp *app) {}
+    virtual void postBuild(ProtoMolApp *app) {}
 
   protected:
     virtual void init(ProtoMolApp *app) = 0;

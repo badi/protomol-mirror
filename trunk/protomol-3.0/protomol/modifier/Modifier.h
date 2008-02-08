@@ -3,19 +3,13 @@
 #define MODIFIER_H
 #include <vector>
 
-#include <protomol/base/Report.h>
 #include <protomol/base/Makeable.h>
-#include <protomol/base/ProtoMolApp.h>
-#include <protomol/topology/GenericTopology.h>
 
 #include <ostream>
 
 namespace ProtoMol {
-  class GenericTopology;
-  class ScalarStructure;
+  class ProtoMolApp;
   class Vector3DBlock;
-  class ForceGroup;
-  class Integrator;
 
   //________________________________________ Modifier
   /**
@@ -50,8 +44,8 @@ namespace ProtoMol {
     // Constructors, destructors, assignment
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    Modifier(int order = 0) : myOrder(order), myEnable(true), myTopology(0),
-      myPositions(0), myVelocities(0), myForces(0), myEnergies(0) {}
+    Modifier(int order = 0) : 
+      myOrder(order), myEnable(true), app(0), myForces(0) {}
     virtual ~Modifier() {}
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -65,17 +59,7 @@ namespace ProtoMol {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
     /// The method, which calls the implemenation
-    void execute() {
-      stringstream str;
-      print(str);
-
-      Report::report
-        << Report::debug(10) << "[Modifier::execute] " << str.str()
-        << "(" << (long)(this) << ") (enable=" << myEnable << ") at " <<
-        myTopology->time << Report::endr;
-
-      if (myEnable) doExecute();
-    }
+    void execute();
 
     /// If the modifier is internal (added by an integrator) or
     /// external (added by the user)
@@ -99,21 +83,7 @@ namespace ProtoMol {
     }
 
     /// Initialize
-    void initialize(ProtoMolApp *app, Vector3DBlock *forces) {
-      myTopology = app->topology;
-      myPositions = &app->positions;
-      myVelocities = &app->velocities;
-      myForces = forces;
-      myEnergies = &app->energies;
-
-      stringstream str;
-      print(str);
-      Report::report << Report::debug(10) << "[Modifier::initialize] " <<
-        str.str() << "(" << (long)(this) << ") at " << myTopology->time <<
-        Report::endr;
-
-      doInitialize();
-    }
+    void initialize(ProtoMolApp *app, Vector3DBlock *forces);
 
     /// print/debug
     virtual std::ostream &print(std::ostream &stream) const {
@@ -135,11 +105,8 @@ namespace ProtoMol {
     mutable bool myEnable;
 
   protected:
-    GenericTopology *myTopology;
-    Vector3DBlock *myPositions;
-    Vector3DBlock *myVelocities;
+    ProtoMolApp *app;
     Vector3DBlock *myForces;
-    ScalarStructure *myEnergies;
   };
 
   inline std::ostream &operator<<(std::ostream &stream, const Modifier &m) {

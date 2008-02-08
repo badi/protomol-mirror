@@ -1,4 +1,5 @@
 #include <protomol/modifier/ModifierMetaRattle.h>
+#include <protomol/base/ProtoMolApp.h>
 #include <protomol/topology/Topology.h>
 
 using namespace std;
@@ -19,8 +20,8 @@ Real ModifierMetaRattle::calcError() const {
   for (unsigned int i = 0; i < myListOfConstraints->size(); i++) {
     int a1 = (*myListOfConstraints)[i].atom1;
     int a2 = (*myListOfConstraints)[i].atom2;
-    Vector3D vab = (*myVelocities)[a1] - (*myVelocities)[a2];
-    Vector3D rab = (*myPositions)[a1] - (*myPositions)[a2];
+    Vector3D vab = app->velocities[a1] - app->velocities[a2];
+    Vector3D rab = app->positions[a1] - app->positions[a2];
     Real err = fabs(rab * vab);
     error += err;
   }

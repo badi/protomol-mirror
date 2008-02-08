@@ -2,6 +2,7 @@
 #include <protomol/integrator/Integrator.h>
 #include <protomol/topology/Topology.h>
 #include <protomol/type/ScalarStructure.h>
+#include <protomol/base/ProtoMolApp.h>
 #include <protomol/base/PMConstants.h>
 
 using namespace std;
@@ -32,16 +33,16 @@ void ModifierRattle::doExecute() {
       int a2 = (*myListOfConstraints)[i].atom2;
 
       // reciprocal atomic masses
-      Real rM1 = 1 / myTopology->atoms[a1].scaledMass;
-      Real rM2 = 1 / myTopology->atoms[a2].scaledMass;
+      Real rM1 = 1 / app->topology->atoms[a1].scaledMass;
+      Real rM2 = 1 / app->topology->atoms[a2].scaledMass;
 
       // now lets compute the lambdas.
       // compute the current bond vector
-      Vector3D rab = (*myPositions)[a1] - (*myPositions)[a2];
+      Vector3D rab = app->positions[a1] - app->positions[a2];
       Real rabsq = rab.normSquared();
 
       // compute the current velocity vector
-      Vector3D vab = (*myVelocities)[a1] - (*myVelocities)[a2];
+      Vector3D vab = app->velocities[a1] - app->velocities[a2];
 
       // dot product of distance and velocity vectors
       Real rvab = rab * vab;
@@ -51,14 +52,14 @@ void ModifierRattle::doExecute() {
       Vector3D dp = rab * gab;
 
       // move the velocities based upon the multiplier
-      (*myVelocities)[a1] += dp * dt * rM1;
-      (*myVelocities)[a2] -= dp * dt * rM2;
+      app->velocities[a1] += dp * dt * rM1;
+      app->velocities[a2] -= dp * dt * rM2;
 
       // the constraint adds a force to each atom since their positions
       // had to be changed.  This constraint force therefore contributes
       // to the atomic virial.  Note that the molecular virial is independent of
       // any intramolecular constraint forces.
-      if (myEnergies->virial()) myEnergies->addVirial(dp * 2, rab);
+      if (app->energies.virial()) app->energies.addVirial(dp * 2, rab);
     }
 
     // compute the error in all the velocity constraints after this RATTLE

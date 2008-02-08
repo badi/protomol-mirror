@@ -6,6 +6,7 @@
 #include <protomol/topology/GenericTopology.h>
 #include <protomol/topology/TopologyUtilities.h>
 #include <protomol/modifier/Modifier.h>
+#include <protomol/base/ProtoMolApp.h>
 #include <protomol/base/Zap.h>
 
 using namespace std;
