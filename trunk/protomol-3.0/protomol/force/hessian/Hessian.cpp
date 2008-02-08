@@ -1,4 +1,4 @@
-#include "Hessian.h"
+#include <protomol/force/hessian/Hessian.h>
 
 #include <protomol/base/Report.h>
 #include <protomol/type/ScalarStructure.h>
@@ -14,16 +14,16 @@
 #include <protomol/switch/C2SwitchingFunction.h>
 #include <protomol/switch/C1SwitchingFunction.h>
 
-#include "HessDihedral.h"
-#include "reducedHessBond.h"
-#include "ReducedHessCoulomb.h"
-#include "ReducedHessCoulombDiElec.h"
-#include "ReducedHessCoulombSCPISM.h"
-#include "ReducedHessCoulombBornRadii.h"
-#include "ReducedHessLennardJones.h"
-#include "CoulombForceDiElec.h"
-#include "CoulombSCPISMForce.h"
-#include "CoulombBornRadiiForce.h"
+#include <protomol/force/hessian/HessDihedral.h>
+#include <protomol/force/hessian/ReducedHessBond.h>
+#include <protomol/force/hessian/ReducedHessCoulomb.h>
+#include <protomol/force/hessian/ReducedHessCoulombDiElec.h>
+#include <protomol/force/hessian/ReducedHessCoulombSCPISM.h>
+#include <protomol/force/hessian/ReducedHessCoulombBornRadii.h>
+#include <protomol/force/hessian/ReducedHessLennardJones.h>
+#include <protomol/force/coulomb/CoulombForceDiElec.h>
+#include <protomol/force/coulomb/CoulombSCPISMForce.h>
+#include <protomol/force/coulomb/CoulombBornRadiiForce.h>
 
 using namespace std;
 using namespace ProtoMol::Report;
@@ -73,7 +73,7 @@ Hessian::Hessian(const Hessian &hess) {
 
 void Hessian::initialData(unsigned int szin) {
   sz = szin;
-  if (hessM == 0) hessM = new double[sz * sz];   //assign array
+  if (hessM == 0) hessM = new double[sz * sz]; //assign array
 }
 
 void Hessian::findForces(ForceGroup *overloadedForces) {
@@ -83,7 +83,10 @@ void Hessian::findForces(ForceGroup *overloadedForces) {
   lOrder = cOrder = lSwitchoff = cSwitchoff = 0.0;
   D = 78.0; S = 0.3; epsi = 1.0;
   myBond = myAngle = myCoulomb = myCoulombDielec = myCoulombSCPISM =
-    myCoulombBornRadii = myLennardJones = myDihedral = myImproper = false;
+                                                     myCoulombBornRadii =
+                                                       myLennardJones =
+                                                         myDihedral =
+                                                           myImproper = false;
   for (unsigned int i = 0; i < ListForces.size(); i++) {
     if (equalNocase(ListForces[i]->getId(), "Bond"))
       myBond = true;
@@ -91,7 +94,8 @@ void Hessian::findForces(ForceGroup *overloadedForces) {
       myAngle = true;
     else if (equalStartNocase("CoulombDiElec", ListForces[i]->getId())) {
       myCoulombDielec = true;
-      vector<Parameter> Fparam = ListForces[i]->getParameters();
+      vector<Parameter> Fparam;
+      ListForces[i]->getParameters(Fparam);
       for (unsigned int j = 0; j < Fparam.size(); j++) {
         if (equalNocase(Fparam[j].keyword, "-cutoff")) {
           cCutoff = Fparam[j].value;
@@ -115,10 +119,10 @@ void Hessian::findForces(ForceGroup *overloadedForces) {
         else if (equalNocase(Fparam[j].keyword, "-EPS"))
           epsi = Fparam[j].value;
       }
-
     } else if (equalStartNocase("CoulombSCPISM", ListForces[i]->getId())) {
       myCoulombSCPISM = true;
-      vector<Parameter> Fparam = ListForces[i]->getParameters();
+      vector<Parameter> Fparam;
+      ListForces[i]->getParameters(Fparam);
       for (unsigned int j = 0; j < Fparam.size(); j++) {
         if (equalNocase(Fparam[j].keyword, "-cutoff")) {
           cCutoff = Fparam[j].value;
@@ -136,15 +140,13 @@ void Hessian::findForces(ForceGroup *overloadedForces) {
           cSwitch = 3;
         }
       }
-
-    } else if (equalStartNocase("CoulombBornRadii",
-                                ListForces[i]->getId())) {
+    } else if (equalStartNocase("CoulombBornRadii", ListForces[i]->getId())) {
       myCoulombBornRadii = true;
       swt = 1;         //default
-
     } else if (equalStartNocase("Coulomb", ListForces[i]->getId())) {
       myCoulomb = true;
-      vector<Parameter> Fparam = ListForces[i]->getParameters();
+      vector<Parameter> Fparam;
+      ListForces[i]->getParameters(Fparam);
       for (unsigned int j = 0; j < Fparam.size(); j++) {
         if (equalNocase(Fparam[j].keyword, "-cutoff")) {
           cCutoff = Fparam[j].value;
@@ -164,7 +166,8 @@ void Hessian::findForces(ForceGroup *overloadedForces) {
       }
     } else if (equalStartNocase("LennardJones", ListForces[i]->getId())) {
       myLennardJones = true;
-      vector<Parameter> Fparam = ListForces[i]->getParameters();
+      vector<Parameter> Fparam;
+      ListForces[i]->getParameters(Fparam);
       for (unsigned int j = 0; j < Fparam.size(); j++) {
         if (equalNocase(Fparam[j].keyword, "-cutoff")) {
           lCutoff = Fparam[j].value;
@@ -234,7 +237,7 @@ void Hessian::evaluate(const Vector3DBlock *myPositions,
                     ((rhd(ll, mm) / sqrt(myTopo->atoms[aout[ii]].scaledMass *
                                          myTopo->atoms[aout[kk]].scaledMass)));
                 else hessM[(aout[ii] * 3 + ll) * sz + aout[kk] * 3 + mm] +=
-                       rhd(ll, mm);
+                    rhd(ll, mm);
 
           }
 
@@ -275,7 +278,7 @@ void Hessian::evaluate(const Vector3DBlock *myPositions,
                     ((rhd(ll, mm) / sqrt(myTopo->atoms[aout[ii]].scaledMass *
                                          myTopo->atoms[aout[kk]].scaledMass)));
                 else hessM[(aout[ii] * 3 + ll) * sz + aout[kk] * 3 + mm] +=
-                       rhd(ll, mm);
+                    rhd(ll, mm);
 
           }
 
@@ -311,6 +314,7 @@ void Hessian::evaluate(const Vector3DBlock *myPositions,
           hessM[(eye + ll - 1) * sz + jay + mm - 1] += ms3;
           hessM[(jay + ll - 1) * sz + eye + mm - 1] += ms3;
         }
+
     }
 
   //Angles
@@ -325,7 +329,8 @@ void Hessian::evaluate(const Vector3DBlock *myPositions,
       Real ubRestL = myTopo->angles[i].ureyBradleyRestLength;
       // ReducedHessAngle for atoms a1, a2 and a3
       rh.evaluate((*myPositions)[a1], (*myPositions)[a2], (*myPositions)[a3],
-                  k_t, theta0);
+                  k_t,
+                  theta0);
       //ureyBradley
       if (ubConst) {
         //Cheat using bond hessian as same as UB!!!!
@@ -349,8 +354,8 @@ void Hessian::evaluate(const Vector3DBlock *myPositions,
                 hessM[(aout[ii] * 3 + ll) * sz + aout[kk] * 3 + mm] +=
                   ((rha(ll, mm) / sqrt(myTopo->atoms[aout[ii]].scaledMass *
                                        myTopo->atoms[aout[kk]].scaledMass)));
-              else hessM[(aout[ii] * 3 + ll) * sz + aout[kk] * 3 + mm] += 
-                     rha(ll, mm);
+              else hessM[(aout[ii] * 3 + ll) * sz + aout[kk] * 3 + mm] +=
+                  rha(ll, mm);
 
         }
 
@@ -529,7 +534,8 @@ void Hessian::evaluate(const Vector3DBlock *myPositions,
           }
           rha =
             rHess(rawE, rawF, a, a, rij, myTopo, i, j, swtchV, swtchD, mz, ec,
-                  D, S, epsi);
+                  D, S,
+                  epsi);
           //output sparse matrix
           for (int ll = 0; ll < 3; ll++)
             for (int mm = 0; mm < 3; mm++) {
@@ -701,4 +707,6 @@ void Hessian::evaluateCoulombBornRadii(const Vector3DBlock *myPositions,
 void Hessian::clear() {
   if (hessM != 0)
     for (unsigned int i = 0; i < sz * sz; i++) hessM[i] = 0.0;
+
 }
+
