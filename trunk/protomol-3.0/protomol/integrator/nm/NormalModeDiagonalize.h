@@ -1,9 +1,10 @@
 /*  -*- c++ -*-  */
-#ifndef NORMALMODERELAX_H
-#define NORMALMODERELAX_H
+#ifndef NORMALMODEDIAGONALIZE_H
+#define NORMALMODEDIAGONALIZE_H
 
 #include <protomol/integrator/MTSIntegrator.h>
-#include <protomol/nm/NormalModeUtilities.h>
+#include <protomol/integrator/nm/NormalModeUtilities.h>
+#include <protomol/hessian/Hessian.h>
 
 #include <protomol/type/Vector3DBlock.h>
 
@@ -11,24 +12,27 @@ namespace ProtoMol {
   class ScalarStructure;
   class ForceGroup;
 
-  //____ NormalModeRelax
-  class NormalModeRelax : public MTSIntegrator, public NormalModeUtilities {
+  //____ NormalModeDiagonalize
+  class NormalModeDiagonalize : public MTSIntegrator,
+    public NormalModeUtilities {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Constructors, destructors, assignment
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    NormalModeRelax();
-    NormalModeRelax(int cycles, Real minimlim, bool rediag, bool simplemin,
-                    ForceGroup *overloadedForces,
-                    StandardIntegrator *nextIntegrator);
-    ~NormalModeRelax();
+    NormalModeDiagonalize();
+    NormalModeDiagonalize(int cycles, int avs, Real avss, int redi, int rayf,
+                          int raya, int mins, Real minl,
+                          ForceGroup *overloadedForces,
+                          StandardIntegrator *nextIntegrator);
+    ~NormalModeDiagonalize();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // New methods of class NormalModeRelax
+    // New methods of class NormalModeDiagonalize
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   protected:
-    void utilityCalculateForces();
+    void drift();
 
+  private:
   public:
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -63,15 +67,23 @@ namespace ProtoMol {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
     static const std::string keyword;
-    int avItrs, itrs, avMinForceCalc, numSteps;
 
   private:
-    int minCount, forceCalc;
+    Vector3DBlock diagAt;
+    Hessian hsn;
+    double *eigVec, *eigVal;
+    int *eigIndx;
+    bool eigAlloc;
+    int noAvStep;
+    Real avStep;
+    int rediagCount, nextRediag, raylFrequ, raylAverage, nextRayl, raylAvCount;
+    bool raylDo;
+    int minSteps;
     Real minLim;
-    NormalModeUtilities *myPreviousNormalMode;
+    bool validMaxEigv;
+    NormalModeUtilities *myNextNormalMode;
+    int forceCalc;
     Real lastLambda;
-    bool reDiag, simpleMin;
-    Real randStp;
   };
 }
 

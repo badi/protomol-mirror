@@ -1,4 +1,4 @@
-#include <protomol/nm/NormalModeMori.h>
+#include <protomol/integrator/nm/NormalModeLangevin.h>
 #include <protomol/base/Report.h>
 #include <protomol/type/ScalarStructure.h>
 #include <protomol/type/Vector3DBlock.h>
@@ -8,41 +8,45 @@
 #include <protomol/base/PMConstants.h>
 #include <protomol/base/ProtoMolApp.h>
 
-#include <protomol/modifier/ModifierForceProjection.h>
+#include <protomol/integrator/nm/ModifierForceProjection.h>
 
 using namespace std;
 using namespace ProtoMol::Report;
 using namespace ProtoMol;
-//____ NormalModeMori
 
-const string NormalModeMori::keyword("NormalModeMori");
+//____ NormalModeLangevin
 
-NormalModeMori::NormalModeMori() :
+const string NormalModeLangevin::keyword("NormalModeLangevin");
+
+NormalModeLangevin::NormalModeLangevin() :
   MTSIntegrator(), NormalModeUtilities()
 {}
 
-NormalModeMori::NormalModeMori(int cycles, int firstmode, int nummode,
-                               Real gamma, int seed, Real temperature,
-                               ForceGroup *overloadedForces,
-                               StandardIntegrator *nextIntegrator) :
-  MTSIntegrator(cycles, overloadedForces,  nextIntegrator),
-  NormalModeUtilities(firstmode, nummode, gamma, seed, temperature)
+NormalModeLangevin::NormalModeLangevin(int cycles, int firstmode, int nummode,
+                                       Real gamma, int seed, Real temperature,
+                                       bool gencn,
+                                       ForceGroup *overloadedForces,
+                                       StandardIntegrator *nextIntegrator) :
+  MTSIntegrator(cycles, overloadedForces,
+                nextIntegrator),
+  NormalModeUtilities(firstmode, nummode, gamma, seed,
+                      temperature),
+  genCompNoise(gencn)
 {}
 
-NormalModeMori::~NormalModeMori()
+NormalModeLangevin::~NormalModeLangevin()
 {}
 
-void NormalModeMori::initialize(ProtoMolApp *app) {
+void NormalModeLangevin::initialize(ProtoMolApp *app) {
   MTSIntegrator::initialize(app);
-  //
-  //point to bottom integrator, for average force
-  myBottomNormalMode = dynamic_cast<NormalModeUtilities *>(bottom());
   //check valid eigenvectors
   //NM initialization if OK
-  NormalModeUtilities::
-    initialize((int)app->positions.size(), app->topology, myForces,
-               NO_NM_FLAGS);
-  //last for non-complimentary forces
+  int nm_flags = NO_NM_FLAGS;
+  if (genCompNoise) nm_flags |= GEN_COMP_NOISE;
+  
+  //last int for no complimentary forces or gen noise: GEN_COMP_NOISE
+  NormalModeUtilities::initialize((int)app->positions.size(), app->topology,
+                                  myForces, nm_flags);
   //
   //do first force calculation, and remove non sub-space part
   //Need this or initial error, due to inner integrator energy?
@@ -58,7 +62,7 @@ void NormalModeMori::initialize(ProtoMolApp *app) {
 //****Normal run routine********************************************************
 //******************************************************************************
 
-void NormalModeMori::run(int numTimesteps) {
+void NormalModeLangevin::run(int numTimesteps) {
   Real h = getTimestep() * Constant::INV_TIMEFACTOR;
   Real actTime;
 
@@ -84,24 +88,19 @@ void NormalModeMori::run(int numTimesteps) {
     app->energies.clear();
     //run minimizer if any remaining modes
     //cyclelength
-    if (testRemainingModes()) myNextIntegrator->run(myCycleLength); 
+    if (testRemainingModes()) myNextIntegrator->run(myCycleLength);
     if (*Q == 0) {   //rediagonalize?
       app->topology->time = actTime - (i - numTimesteps) * getTimestep();
       if (myPreviousIntegrator == 0)
         report
-          << error << "[NormalModeMori::Run] Re-diagonalization forced with "
-          "NormalModeMori as outermost Integrator. Aborting." << endr;
+          << error << "[NormalModeLangevin::Run] Re-diagonalization forced "
+          "with NormalModeLangevin as outermost Integrator. Aborting."
+          << endr;
       return;
     }
-    //#################Put averaged force code here#############################
-    //calculate sub space forces, just do this for the energy
+    //calculate sub space forces
     app->energies.clear();
     calculateForces();
-    //transfer the real average force, Note: force fields must be identical
-    for (unsigned int i = 0; i < app->positions.size(); i++) (*myForces)[i] =
-        myBottomNormalMode->tempV3DBlk[i];
-
-    //##########################################################################
     //
     doHalfKick();
     //
@@ -117,7 +116,7 @@ void NormalModeMori::run(int numTimesteps) {
 //****Output int paramiters*****************************************************
 //******************************************************************************
 
-void NormalModeMori::getParameters(vector<Parameter> &parameters) const {
+void NormalModeLangevin::getParameters(vector<Parameter> &parameters) const {
   MTSIntegrator::getParameters(parameters);
   parameters.push_back
     (Parameter("firstmode",
@@ -129,7 +128,7 @@ void NormalModeMori::getParameters(vector<Parameter> &parameters) const {
                Text("Number of modes propagated")));
   parameters.push_back
     (Parameter("gamma", Value(myGamma * (1000 * Constant::INV_TIMEFACTOR),
-                             ConstraintValueType::NotNegative()),
+                              ConstraintValueType::NotNegative()),
                80.0, Text("Langevin Gamma")));
   parameters.push_back
     (Parameter("seed", Value(mySeed, ConstraintValueType::NotNegative()),
@@ -137,17 +136,22 @@ void NormalModeMori::getParameters(vector<Parameter> &parameters) const {
   parameters.push_back
     (Parameter("temperature", Value(myTemp, ConstraintValueType::NotNegative()),
                300.0, Text("Langevin temperature")));
+  parameters.push_back
+    (Parameter("gencompnoise",
+ Value(genCompNoise, ConstraintValueType::NoConstraints()),
+               false, Text("Generate complimentary noise")));
 }
 
-MTSIntegrator *NormalModeMori::doMake(const vector<Value> &values,
-                                      ForceGroup *fg,
-                                      StandardIntegrator *nextIntegrator)
+MTSIntegrator *NormalModeLangevin::doMake(const vector<Value> &values,
+                                          ForceGroup *fg,
+                                          StandardIntegrator *nextIntegrator)
 const {
-  return new NormalModeMori(values[0], values[1], values[2], values[3],
-                            values[4], values[5], fg, nextIntegrator);
+  return new NormalModeLangevin(values[0], values[1], values[2], values[3],
+                                values[4], values[5], values[6], fg,
+                                nextIntegrator);
 }
 
-void NormalModeMori::addModifierAfterInitialize() {
+void NormalModeLangevin::addModifierAfterInitialize() {
   adoptPostForceModifier(new ModifierForceProjection(this));
   MTSIntegrator::addModifierAfterInitialize();
 }

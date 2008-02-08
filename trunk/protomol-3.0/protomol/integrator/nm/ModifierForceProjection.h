@@ -3,7 +3,7 @@
 #define MODIFIERFORCEPROJECTION_H
 
 #include <protomol/modifier/Modifier.h>
-#include <protomol/nm/NormalModeUtilities.h>
+#include <protomol/integrator/nm/NormalModeUtilities.h>
 
 namespace ProtoMol {
   //____ ModifierForceProjection

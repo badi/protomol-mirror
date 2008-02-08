@@ -1,35 +1,33 @@
 /*  -*- c++ -*-  */
-#ifndef NORMALMODEMORI_H
-#define NORMALMODEMORI_H
+#ifndef NORMALMODEMINIMIZER_H
+#define NORMALMODEMINIMIZER_H
 
-#include <protomol/integrator/MTSIntegrator.h>
-#include <protomol/nm/NormalModeUtilities.h>
-
-#include <protomol/type/Vector3DBlock.h>
+#include <protomol/integrator/STSIntegrator.h>
+#include <protomol/integrator/nm/NormalModeUtilities.h>
 
 namespace ProtoMol {
   class ScalarStructure;
   class ForceGroup;
 
-  //____ NormalModeMori
-  class NormalModeMori : public MTSIntegrator, public NormalModeUtilities {
+  //____ NormalModeMinimizer
+  class NormalModeMinimizer : public STSIntegrator,
+    public NormalModeUtilities {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Constructors, destructors, assignment
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    NormalModeMori();
-    NormalModeMori(int cycles, int firstmode, int nummode, Real gamma, int seed,
-                   Real temperature, ForceGroup *overloadedForces,
-                   StandardIntegrator *nextIntegrator);
-    ~NormalModeMori();
+    NormalModeMinimizer();
+    NormalModeMinimizer(Real timestep, int firstmode, int nummode, Real gamma,
+                        int seed, Real temperature,
+                        Real minimlim, bool rforce, bool rediag, bool simplemin,
+                        ForceGroup *overloadedForces);
+    ~NormalModeMinimizer();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // New methods of class NormalModeMori
+    // New methods of class NormalModeMinimizer
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   protected:
-    void drift();
-
-  public:
+    void utilityCalculateForces();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // From class Makeable
@@ -46,26 +44,30 @@ namespace ProtoMol {
     virtual void run(int numTimesteps);
 
   protected:
-    virtual void addModifierAfterInitialize();
+    //virtual void addModifierAfterInitialize();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // From class STSIntegrator
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   private:
-    virtual MTSIntegrator *doMake(const std::vector<Value> &values,
-                                  ForceGroup *fg,
-                                  StandardIntegrator *nextIntegrator) const;
-
-  public:
+    virtual STSIntegrator *doMake(const std::vector<Value> &values,
+                                  ForceGroup *fg) const;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // My data members
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
     static const std::string keyword;
+    int avItrs, itrs, avMinForceCalc, numSteps;
 
   private:
-    NormalModeUtilities *myBottomNormalMode;
+    int minCount, forceCalc;
+    Real minLim;
+    bool randforce;
+    NormalModeUtilities *myPreviousNormalMode;
+    Real lastLambda;
+    bool reDiag, simpleMin;
+    Real randStp;
   };
 }
 

@@ -1,9 +1,9 @@
 /*  -*- c++ -*-  */
-#ifndef NORMALMODELANGEVIN_H
-#define NORMALMODELANGEVIN_H
+#ifndef NORMALMODEMORI_H
+#define NORMALMODEMORI_H
 
 #include <protomol/integrator/MTSIntegrator.h>
-#include <protomol/nm/NormalModeUtilities.h>
+#include <protomol/integrator/nm/NormalModeUtilities.h>
 
 #include <protomol/type/Vector3DBlock.h>
 
@@ -11,21 +11,20 @@ namespace ProtoMol {
   class ScalarStructure;
   class ForceGroup;
 
-  //____ NormalModeLangevin
-  class NormalModeLangevin : public MTSIntegrator, public NormalModeUtilities {
+  //____ NormalModeMori
+  class NormalModeMori : public MTSIntegrator, public NormalModeUtilities {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Constructors, destructors, assignment
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    NormalModeLangevin();
-    NormalModeLangevin(int cycles, int firstmode, int nummode, Real gamma,
-                       int seed, Real temperature, bool gencn,
-                       ForceGroup *overloadedForces,
-                       StandardIntegrator *nextIntegrator);
-    ~NormalModeLangevin();
+    NormalModeMori();
+    NormalModeMori(int cycles, int firstmode, int nummode, Real gamma, int seed,
+                   Real temperature, ForceGroup *overloadedForces,
+                   StandardIntegrator *nextIntegrator);
+    ~NormalModeMori();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // New methods of class NormalModeLangevin
+    // New methods of class NormalModeMori
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   protected:
     void drift();
@@ -66,7 +65,7 @@ namespace ProtoMol {
     static const std::string keyword;
 
   private:
-    bool genCompNoise;
+    NormalModeUtilities *myBottomNormalMode;
   };
 }
 

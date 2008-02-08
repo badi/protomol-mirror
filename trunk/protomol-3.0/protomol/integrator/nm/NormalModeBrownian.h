@@ -1,40 +1,36 @@
 /*  -*- c++ -*-  */
-#ifndef NORMALMODEDIAGONALIZE_H
-#define NORMALMODEDIAGONALIZE_H
+#ifndef NORMALMODEBROWNIAN_H
+#define NORMALMODEBROWNIAN_H
 
-#include <protomol/integrator/MTSIntegrator.h>
-#include <protomol/nm/NormalModeUtilities.h>
-#include <protomol/hessian/Hessian.h>
+#include <protomol/integrator/STSIntegrator.h>
+#include <protomol/integrator/nm/NormalModeUtilities.h>
 
-#include <protomol/type/Vector3DBlock.h>
+//####diagnostics
+#include <protomol/io/XYZTrajectoryWriter.h>
 
 namespace ProtoMol {
   class ScalarStructure;
   class ForceGroup;
 
-  //____ NormalModeDiagonalize
-  class NormalModeDiagonalize : public MTSIntegrator,
-    public NormalModeUtilities {
+  //____ NormalModeBrownian
+  class NormalModeBrownian : public STSIntegrator, public NormalModeUtilities {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Constructors, destructors, assignment
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    NormalModeDiagonalize();
-    NormalModeDiagonalize(int cycles, int avs, Real avss, int redi, int rayf,
-                          int raya, int mins, Real minl,
-                          ForceGroup *overloadedForces,
-                          StandardIntegrator *nextIntegrator);
-    ~NormalModeDiagonalize();
+    NormalModeBrownian();
+    NormalModeBrownian(
+      Real timestep, int firstmode, int nummode, Real gamma, int seed,
+      Real temperature,
+      //####added avff, inff for diagnostics
+      std::string avff, std::string inff,
+      ForceGroup *overloadedForces);
+    ~NormalModeBrownian();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // New methods of class NormalModeDiagonalize
+    // New methods of class NormalModeBrownian
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   protected:
-    void drift();
-
-  private:
-  public:
-
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // From class Makeable
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -50,17 +46,20 @@ namespace ProtoMol {
     virtual void run(int numTimesteps);
 
   protected:
-    //virtual void addModifierAfterInitialize();
+    virtual void addModifierAfterInitialize();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // From class STSIntegrator
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   private:
-    virtual MTSIntegrator *doMake(const std::vector<Value> &values,
-                                  ForceGroup *fg,
-                                  StandardIntegrator *nextIntegrator) const;
+    virtual STSIntegrator *doMake(const std::vector<Value> &values,
+                                  ForceGroup *fg) const;
 
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // New methods of class NormalModeBrownian
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
+    virtual void forceProjection();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // My data members
@@ -69,21 +68,16 @@ namespace ProtoMol {
     static const std::string keyword;
 
   private:
-    Vector3DBlock diagAt;
-    Hessian hsn;
-    double *eigVec, *eigVal;
-    int *eigIndx;
-    bool eigAlloc;
-    int noAvStep;
-    Real avStep;
-    int rediagCount, nextRediag, raylFrequ, raylAverage, nextRayl, raylAvCount;
-    bool raylDo;
-    int minSteps;
-    Real minLim;
-    bool validMaxEigv;
-    NormalModeUtilities *myNextNormalMode;
-    int forceCalc;
-    Real lastLambda;
+    Real randStp;
+    int aveForceCount;
+    //####diagnostics
+    // mean force output:
+    std::string avForceFile;
+    // instantaneous force output:
+    std::string inForceFile;
+
+    XYZTrajectoryWriter *myWriter;
+    XYZTrajectoryWriter *myWriter2;
   };
 }
 

@@ -1,4 +1,4 @@
-#include <protomol/nm/NormalModeUtilities.h>
+#include <protomol/integrator/nm/NormalModeUtilities.h>
 #include <protomol/topology/TopologyUtilities.h>
 #include <protomol/type/ScalarStructure.h>
 

@@ -1,4 +1,4 @@
-#include <protomol/nm/NormalModeDiagonalize.h>
+#include <protomol/integrator/nm/NormalModeDiagonalize.h>
 #include <protomol/base/Report.h>
 #include <protomol/type/ScalarStructure.h>
 #include <protomol/type/Vector3DBlock.h>
