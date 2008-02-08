@@ -13,12 +13,12 @@
 #include <protomol/switch/C2SwitchingFunction.h>
 #include <protomol/switch/C1SwitchingFunction.h>
 
+#include "HessDihedral.h"
 #include "reducedHessBond.h"
 #include "ReducedHessCoulomb.h"
 #include "ReducedHessCoulombDiElec.h"
 #include "ReducedHessCoulombSCPISM.h"
 #include "ReducedHessCoulombBornRadii.h"
-#include "HessDihedral.h"
 #include "ReducedHessLennardJones.h"
 #include "CoulombForceDiElec.h"
 #include "CoulombSCPISMForce.h"
