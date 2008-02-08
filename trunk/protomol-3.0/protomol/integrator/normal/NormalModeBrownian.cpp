@@ -1,4 +1,4 @@
-#include <protomol/integrator/nm/NormalModeBrownian.h>
+#include <protomol/integrator/normal/NormalModeBrownian.h>
 #include <protomol/base/Report.h>
 #include <protomol/type/ScalarStructure.h>
 #include <protomol/type/Vector3DBlock.h>
@@ -8,7 +8,7 @@
 #include <protomol/base/PMConstants.h>
 #include <protomol/base/ProtoMolApp.h>
 
-#include <protomol/integrator/nm/ModifierForceProjection.h>
+#include <protomol/integrator/normal/ModifierForceProjection.h>
 
 using namespace std;
 using namespace ProtoMol::Report;

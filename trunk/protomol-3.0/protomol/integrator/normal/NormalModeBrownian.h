@@ -1,36 +1,36 @@
 /*  -*- c++ -*-  */
-#ifndef NORMALMODEMORI_H
-#define NORMALMODEMORI_H
+#ifndef NORMALMODEBROWNIAN_H
+#define NORMALMODEBROWNIAN_H
 
-#include <protomol/integrator/MTSIntegrator.h>
-#include <protomol/integrator/nm/NormalModeUtilities.h>
+#include <protomol/integrator/STSIntegrator.h>
+#include <protomol/integrator/normal/NormalModeUtilities.h>
 
-#include <protomol/type/Vector3DBlock.h>
+//####diagnostics
+#include <protomol/io/XYZTrajectoryWriter.h>
 
 namespace ProtoMol {
   class ScalarStructure;
   class ForceGroup;
 
-  //____ NormalModeMori
-  class NormalModeMori : public MTSIntegrator, public NormalModeUtilities {
+  //____ NormalModeBrownian
+  class NormalModeBrownian : public STSIntegrator, public NormalModeUtilities {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Constructors, destructors, assignment
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    NormalModeMori();
-    NormalModeMori(int cycles, int firstmode, int nummode, Real gamma, int seed,
-                   Real temperature, ForceGroup *overloadedForces,
-                   StandardIntegrator *nextIntegrator);
-    ~NormalModeMori();
+    NormalModeBrownian();
+    NormalModeBrownian(
+      Real timestep, int firstmode, int nummode, Real gamma, int seed,
+      Real temperature,
+      //####added avff, inff for diagnostics
+      std::string avff, std::string inff,
+      ForceGroup *overloadedForces);
+    ~NormalModeBrownian();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // New methods of class NormalModeMori
+    // New methods of class NormalModeBrownian
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   protected:
-    void drift();
-
-  public:
-
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // From class Makeable
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -52,11 +52,14 @@ namespace ProtoMol {
     // From class STSIntegrator
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   private:
-    virtual MTSIntegrator *doMake(const std::vector<Value> &values,
-                                  ForceGroup *fg,
-                                  StandardIntegrator *nextIntegrator) const;
+    virtual STSIntegrator *doMake(const std::vector<Value> &values,
+                                  ForceGroup *fg) const;
 
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // New methods of class NormalModeBrownian
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
+    virtual void forceProjection();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // My data members
@@ -65,7 +68,16 @@ namespace ProtoMol {
     static const std::string keyword;
 
   private:
-    NormalModeUtilities *myBottomNormalMode;
+    Real randStp;
+    int aveForceCount;
+    //####diagnostics
+    // mean force output:
+    std::string avForceFile;
+    // instantaneous force output:
+    std::string inForceFile;
+
+    XYZTrajectoryWriter *myWriter;
+    XYZTrajectoryWriter *myWriter2;
   };
 }
 

@@ -1,9 +1,9 @@
 /*  -*- c++ -*-  */
-#ifndef NORMALMODERELAX_H
-#define NORMALMODERELAX_H
+#ifndef NORMALMODEMORI_H
+#define NORMALMODEMORI_H
 
 #include <protomol/integrator/MTSIntegrator.h>
-#include <protomol/integrator/nm/NormalModeUtilities.h>
+#include <protomol/integrator/normal/NormalModeUtilities.h>
 
 #include <protomol/type/Vector3DBlock.h>
 
@@ -11,23 +11,23 @@ namespace ProtoMol {
   class ScalarStructure;
   class ForceGroup;
 
-  //____ NormalModeRelax
-  class NormalModeRelax : public MTSIntegrator, public NormalModeUtilities {
+  //____ NormalModeMori
+  class NormalModeMori : public MTSIntegrator, public NormalModeUtilities {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Constructors, destructors, assignment
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    NormalModeRelax();
-    NormalModeRelax(int cycles, Real minimlim, bool rediag, bool simplemin,
-                    ForceGroup *overloadedForces,
-                    StandardIntegrator *nextIntegrator);
-    ~NormalModeRelax();
+    NormalModeMori();
+    NormalModeMori(int cycles, int firstmode, int nummode, Real gamma, int seed,
+                   Real temperature, ForceGroup *overloadedForces,
+                   StandardIntegrator *nextIntegrator);
+    ~NormalModeMori();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // New methods of class NormalModeRelax
+    // New methods of class NormalModeMori
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   protected:
-    void utilityCalculateForces();
+    void drift();
 
   public:
 
@@ -46,7 +46,7 @@ namespace ProtoMol {
     virtual void run(int numTimesteps);
 
   protected:
-    //virtual void addModifierAfterInitialize();
+    virtual void addModifierAfterInitialize();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // From class STSIntegrator
@@ -63,15 +63,9 @@ namespace ProtoMol {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
     static const std::string keyword;
-    int avItrs, itrs, avMinForceCalc, numSteps;
 
   private:
-    int minCount, forceCalc;
-    Real minLim;
-    NormalModeUtilities *myPreviousNormalMode;
-    Real lastLambda;
-    bool reDiag, simpleMin;
-    Real randStp;
+    NormalModeUtilities *myBottomNormalMode;
   };
 }
 
