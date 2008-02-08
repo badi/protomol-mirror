@@ -33,15 +33,6 @@ using namespace ProtoMol::Report;
 
 defineInputValue(InputBoundaryConditions, "boundaryConditions");
 defineInputValue(InputCellManager, "cellManager");
-defineInputValue(InputDoSCPISM, "doscpism");
-defineInputValueWithAliasesAndText
-(InputRemoveLinearMomentum, "removeLinearMomentum", ("comMotion"),
-  "removes linear momentum, where -1 for never, 0 at initialization or at STS "
-  "frequency <n>");
-defineInputValueWithAliasesAndText
-(InputRemoveAngularMomentum, "removeAngularMomentum", ("angularMomentum"),
-  "removes angular momentum, where -1 for never, 0 at initialization or at STS "
-  "frequency <n>");
 
 void TopologyModule::init(ProtoMolApp *app) {
   Configuration *config = &app->config;
@@ -59,9 +50,6 @@ void TopologyModule::init(ProtoMolApp *app) {
   // Register input values
   InputBoundaryConditions::registerConfiguration(config);
   InputCellManager::registerConfiguration(config);
-  InputDoSCPISM::registerConfiguration(config);
-  InputRemoveLinearMomentum::registerConfiguration(config);
-  InputRemoveAngularMomentum::registerConfiguration(config);
 }
 
 void TopologyModule::configure(ProtoMolApp *app) {
@@ -72,45 +60,6 @@ void TopologyModule::configure(ProtoMolApp *app) {
     config[GenericTopology::keyword] =
       config[InputBoundaryConditions::keyword].getString() +
       config[InputCellManager::keyword].getString();
-}
-
-void TopologyModule::buildTopology(ProtoMolApp *app) {
-  Configuration &config = app->config;
-  Vector3DBlock *velocities = &app->velocities;
-  Vector3DBlock *positions = &app->positions;
-  GenericTopology *topo = app->topology;
-
-  // Build topology
-  if ((bool)config[InputDoSCPISM::keyword])
-    topo->doSCPISM = true;
-
-  buildTopology(topo, app->psf, app->par,
-                config[InputDihedralMultPSF::keyword]);
-
-
-  // Remove Linear Momentum
-  if ((int)config[InputRemoveLinearMomentum::keyword] >= 0)
-    report
-      << plain << "Removed linear momentum: "
-      << removeLinearMomentum(velocities, topo) * Constant::INV_TIMEFACTOR
-      << endr;
-
-  else
-    report << plain << "Linear momentum : "
-           << linearMomentum(velocities, topo) * Constant::INV_TIMEFACTOR
-           << endr;
-
-  // Remove Angular Momentum
-  if ((int)config[InputRemoveAngularMomentum::keyword] >= 0)
-    report << plain << "Removed angular momentum : "
-           << removeAngularMomentum(positions, velocities, topo) *
-    Constant::INV_TIMEFACTOR << endr;
-
-  else
-    report << plain << "Angular momentum : "
-           << angularMomentum(positions, velocities, topo) *
-    Constant::INV_TIMEFACTOR << endr;
-
 }
 
 //____findNextNeighbor

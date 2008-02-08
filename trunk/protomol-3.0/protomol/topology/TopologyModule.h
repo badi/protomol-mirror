@@ -16,9 +16,6 @@ namespace ProtoMol {
 
   declareInputValue(InputBoundaryConditions, STRING, NOTEMPTY);
   declareInputValue(InputCellManager, STRING, NOTEMPTY);
-  declareInputValue(InputDoSCPISM, BOOL, NOCONSTRAINTS);
-  declareInputValue(InputRemoveAngularMomentum, INT, NOCONSTRAINTS);
-  declareInputValue(InputRemoveLinearMomentum, INT, NOCONSTRAINTS);
 
   class TopologyModule : public Module {
   public:
@@ -31,13 +28,12 @@ namespace ProtoMol {
     // Module interface
     void init(ProtoMolApp *app);
     void configure(ProtoMolApp *app);
-    void buildTopology(ProtoMolApp *app);
 
-    void buildExclusionTable(GenericTopology *topo,
-                             const ExclusionType &exclusionType);
-    void buildTopology(GenericTopology *topo, const PSF &psf, const PAR &par,
-                       bool dihedralMultPSF);
-    void buildMoleculeTable(GenericTopology *topo);
+    static void buildExclusionTable(GenericTopology *topo,
+                                    const ExclusionType &exclusionType);
+    static void buildTopology(GenericTopology *topo, const PSF &psf,
+                              const PAR &par, bool dihedralMultPSF);
+    static void buildMoleculeTable(GenericTopology *topo);
   };
 };
 

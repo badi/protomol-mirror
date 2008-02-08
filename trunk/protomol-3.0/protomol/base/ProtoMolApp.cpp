@@ -210,12 +210,12 @@ void ProtoMolApp::build() {
     if (!topology) throw e;
   }
 
-
   // Build topology
-  Module *topoMod = modManager->find("Topology");
-  if (!topoMod) THROW("Topology module not found");
+  // TODO this should probably go in a SCPISM Module
+  if ((bool)config[InputDoSCPISM::keyword]) topology->doSCPISM = true;
 
-  topoMod->buildTopology(this);
+  TopologyModule::buildTopology(topology, psf, par,
+                                config[InputDihedralMultPSF::keyword]);
 
 
   // Register Forces
@@ -226,7 +226,7 @@ void ProtoMolApp::build() {
   integrator =
     integratorFactory.make(config[InputIntegrator::keyword], &forceFactory);
 
-  // TODO this should be moved somewhere
+  // TODO this should be moved to NormalModeModule::postBuild()
   // Normal mode?
   if (((string)config[InputIntegrator::keyword]).find("NormMode", 0) !=
       string::npos) {

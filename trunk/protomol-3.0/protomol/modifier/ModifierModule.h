@@ -2,11 +2,15 @@
 #define MODIFIER_MODULE_H
 
 #include <protomol/base/Module.h>
+#include <protomol/config/InputValue.h>
 
 #include <string>
 
 namespace ProtoMol {
   class ProtoMolApp;
+
+  declareInputValue(InputRemoveAngularMomentum, INT, NOCONSTRAINTS);
+  declareInputValue(InputRemoveLinearMomentum, INT, NOCONSTRAINTS);
 
   class ModifierModule : public Module {
   public:
@@ -15,6 +19,7 @@ namespace ProtoMol {
     const std::string getHelp() const {return "";}
 
     void init(ProtoMolApp *app);
+    void postBuild(ProtoMolApp *app);
   };
 };
 

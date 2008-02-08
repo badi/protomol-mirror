@@ -26,6 +26,7 @@ defineInputValue(InputDihedralMultPSF, "dihedralMultPSF");
 defineInputValue(InputIntegrator, "integrator");
 defineInputValue(InputReducedImage, "reducedImage");
 defineInputValue(InputTemperature, "temperature");
+defineInputValue(InputDoSCPISM, "doscpism");
 
 void MainModule::init(ProtoMolApp *app) {
   Configuration *config = &app->config;
@@ -49,6 +50,7 @@ void MainModule::init(ProtoMolApp *app) {
   InputIntegrator::registerConfiguration(config);
   InputReducedImage::registerConfiguration(config);
   InputTemperature::registerConfiguration(config);
+  InputDoSCPISM::registerConfiguration(config);
 }
 
 void MainModule::configure(ProtoMolApp *app) {

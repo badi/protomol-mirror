@@ -21,6 +21,7 @@ namespace ProtoMol {
   declareInputValue(InputIntegrator, INTEGRATOR, NOTEMPTY);
   declareInputValue(InputReducedImage, BOOL, NOCONSTRAINTS);
   declareInputValue(InputTemperature, REAL, NOTNEGATIVE);
+  declareInputValue(InputDoSCPISM, BOOL, NOCONSTRAINTS);
 
   class MainModule : public Module {
   public:
