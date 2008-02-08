@@ -271,8 +271,9 @@ void ProtoMolApp::build() {
   //report << plain << "Virial tensor : "<< scalar.virial()<<endr;
   //report << plain << "Molecular virial tensor : "
   //       << scalar.molecularVirial()<<endr;
-  //topology->time =
-  //  (Real)config[InputFirststep::keyword] * integrator->getTimestep();
+
+  topology->time =
+    (Real)config[InputFirststep::keyword] * integrator->getTimestep();
 
   integrator->initialize(this);
   outputs->initialize(this);
