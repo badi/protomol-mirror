@@ -109,10 +109,8 @@ namespace ProtoMol {
     virtual Force *doMake(std::vector<Value> values) const = 0;
     //< implementation of make and actual instantiation of object
 
-  private:
-    virtual void doSetParameters(std::vector<Value> ) {
-      THROW(string("setParameters not implemented for force ") + getId());
-    }
+    virtual void doSetParameters(std::vector<Value>) {}
+
   protected:
     template<class T>
     void setParametersBySwapping(T *obj, std::vector<Value> values) {

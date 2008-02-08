@@ -1,5 +1,11 @@
 #include "ModifierModule.h"
 
+#include <protomol/modifier/ModifierIncrementTimestep.h>
+#include <protomol/modifier/ModifierRattle.h>
+#include <protomol/modifier/ModifierShake.h>
+#include <protomol/modifier/ModifierRemoveAngularMomentum.h>
+#include <protomol/modifier/ModifierRemoveLinearMomentum.h>
+
 #include <protomol/base/Report.h>
 #include <protomol/base/ProtoMolApp.h>
 #include <protomol/topology/TopologyUtilities.h>
@@ -18,6 +24,8 @@ defineInputValueWithAliasesAndText
   "frequency <n>");
 
 void ModifierModule::init(ProtoMolApp *app) {
+  //app->modifierFactory.registerExemplar();
+
   InputRemoveLinearMomentum::registerConfiguration(&app->config);
   InputRemoveAngularMomentum::registerConfiguration(&app->config);
 }

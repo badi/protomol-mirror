@@ -5,6 +5,7 @@
 #include <protomol/base/StringUtilities.h>
 #include <protomol/topology/GenericTopology.h>
 #include <protomol/io/DCDTrajectoryWriter.h>
+#include <protomol/base/ProtoMolApp.h>
 #include <protomol/base/Exception.h>
 
 using namespace std;
@@ -34,7 +35,7 @@ void OutputDCDTrajectory::doInitialize() {
 
 void OutputDCDTrajectory::doRun(int) {
   const Vector3DBlock *pos =
-    (myMinimalImage ? cache->minimalPositions() : myPositions);
+    (myMinimalImage ? app->outputCache.minimalPositions() : &app->positions);
 
   if (!myDCD->write(*pos))
     THROW(string("Could not write ") + getId() + " '" +

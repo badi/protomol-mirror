@@ -5,6 +5,7 @@
 #include <protomol/base/StringUtilities.h>
 #include <protomol/topology/GenericTopology.h>
 #include <protomol/base/Exception.h>
+#include <protomol/base/ProtoMolApp.h>
 #include <protomol/io/XYZTrajectoryWriter.h>
 
 using namespace std;
@@ -34,9 +35,9 @@ void OutputXYZTrajectoryPos::doInitialize() {
 
 void OutputXYZTrajectoryPos::doRun(int) {
   const Vector3DBlock *pos =
-    (myMinimalImage ? cache->minimalPositions() : myPositions);
+    (myMinimalImage ? app->outputCache.minimalPositions() : &app->positions);
 
-  if (!myXYZ->write(*pos, myTopology->atoms, myTopology->atomTypes))
+  if (!myXYZ->write(*pos, app->topology->atoms, app->topology->atomTypes))
     THROW(string("Could not write ") + getId() + " '" + myXYZ->getFilename() +
           "'.");
 }

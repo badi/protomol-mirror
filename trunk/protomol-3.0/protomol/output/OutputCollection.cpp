@@ -9,12 +9,11 @@
 #include <protomol/base/MathUtilities.h>
 #include <protomol/topology/TopologyUtilities.h>
 #include <protomol/base/ProtoMolApp.h>
+#include <protomol/base/Exception.h>
 
 using namespace ProtoMol;
 //____ OutputCollection
-OutputCollection::OutputCollection() :
-  cache(0), myConfig(0), myTopology(0), myIntegrator(0), myEnergies(0),
-  myPositions(0), myVelocities(0) {}
+OutputCollection::OutputCollection() {}
 
 OutputCollection::~OutputCollection() {
   for (iterator i = begin(); i != end(); ++i)
@@ -22,41 +21,33 @@ OutputCollection::~OutputCollection() {
 }
 
 void OutputCollection::initialize(const ProtoMolApp *app) {
-  cache = &app->outputCache;
-  myConfig = &app->config;
-  myTopology = app->topology;
-  myIntegrator = app->integrator;
-  myEnergies = &app->energies;
-  myPositions = &app->positions;
-  myVelocities = &app->velocities;
+  this->app = app;
 
   for (iterator i = begin(); i != end(); ++i)
     (*i)->initialize(app);
 }
 
 void OutputCollection::run(int step) {
-  cache->uncache();
+  app->outputCache.uncache();
   for (iterator i = begin(); i != end(); ++i)
     (*i)->run(step);
 }
 
 void OutputCollection::updateNextStep(int step) {
-  cache->uncache();
+  app->outputCache.uncache();
   for (iterator i = begin(); i != end(); ++i)
     (*i)->updateNextStep(step);
 }
 
 void OutputCollection::finalize(int step) {
-  cache->uncache();
+  app->outputCache.uncache();
   for (iterator i = begin(); i != end(); ++i)
     (*i)->finalize(step);
 }
 
 void OutputCollection::adoptOutput(Output *output) {
-  if (output != 0) {
-    output->setCache(cache);
-    myOutputList.push_back(output);
-  }
+  if (!output) THROW("null pointer");
+  myOutputList.push_back(output);
 }
 
 int OutputCollection::getNext() const {

@@ -6,6 +6,7 @@
 #include <protomol/topology/GenericTopology.h>
 #include <protomol/io/DCDTrajectoryWriter.h>
 #include <protomol/base/Exception.h>
+#include <protomol/base/ProtoMolApp.h>
 
 using namespace std;
 using namespace ProtoMol::Report;
@@ -33,7 +34,7 @@ void OutputDCDTrajectoryVel::doInitialize() {
 }
 
 void OutputDCDTrajectoryVel::doRun(int) {
-  const Vector3DBlock *vel = myVelocities;
+  const Vector3DBlock *vel = &app->velocities;
   if (!myDCD->write(*vel))
     THROW(string("Could not write ") + getId() + " '" + myDCD->getFilename()  +
           "'.");

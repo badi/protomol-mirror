@@ -62,9 +62,6 @@ namespace ProtoMol {
     virtual std::string getIdNoAlias() const {return getKeyword();}
     virtual void getParameters(std::vector<Parameter> &) const {}
 
-  private:
-    virtual void doSetParameters(std::string &, std::vector<Value> ) {}
-
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // My data members
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

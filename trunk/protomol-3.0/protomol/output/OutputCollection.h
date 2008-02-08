@@ -6,13 +6,7 @@
 
 namespace ProtoMol {
   class Output;
-  class OutputCache;
-  class Configuration;
-  class GenericTopology;
-  class ScalarStructure;
-  class Vector3DBlock;
   class OutputFactory;
-  class Integrator;
   class ProtoMolApp;
   //____ OutputCollection
 
@@ -67,13 +61,7 @@ namespace ProtoMol {
   private:
     Container myOutputList;
 
-    OutputCache *cache;
-    const Configuration *myConfig;
-    const GenericTopology *myTopology;
-    const Integrator *myIntegrator;
-    const ScalarStructure *myEnergies;
-    const Vector3DBlock *myPositions;
-    const Vector3DBlock *myVelocities;
+    const ProtoMolApp *app;
   };
 }
 #endif

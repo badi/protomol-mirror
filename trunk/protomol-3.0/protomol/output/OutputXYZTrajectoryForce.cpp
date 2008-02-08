@@ -5,6 +5,7 @@
 #include <protomol/base/StringUtilities.h>
 #include <protomol/topology/GenericTopology.h>
 #include <protomol/io/XYZTrajectoryWriter.h>
+#include <protomol/base/ProtoMolApp.h>
 #include <protomol/base/Exception.h>
 
 using namespace std;
@@ -32,8 +33,8 @@ void OutputXYZTrajectoryForce::doInitialize() {
 }
 
 void OutputXYZTrajectoryForce::doRun(int) {
-  if (!myXYZ->write(*(myIntegrator->getForces()), myTopology->atoms,
-                    myTopology->atomTypes))
+  if (!myXYZ->write(*(app->integrator->getForces()), app->topology->atoms,
+                    app->topology->atomTypes))
     THROW(string("Could not write ") + getId() + " '" +
           myXYZ->getFilename() + "'.");
 }

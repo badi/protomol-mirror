@@ -4,6 +4,7 @@
 #include <protomol/topology/GenericTopology.h>
 #include <protomol/output/OutputModule.h>
 #include <protomol/base/Exception.h>
+#include <protomol/base/ProtoMolApp.h>
 #include <protomol/io/XYZTrajectoryWriter.h>
 
 using namespace std;
@@ -31,7 +32,7 @@ void OutputXYZTrajectoryVel::doInitialize() {
 }
 
 void OutputXYZTrajectoryVel::doRun(int) {
-  if (!myXYZ->write(*myVelocities, myTopology->atoms, myTopology->atomTypes))
+  if (!myXYZ->write(*&app->velocities, app->topology->atoms, app->topology->atomTypes))
     THROW(string("Could not write ") + getId() + " '" +
           myXYZ->getFilename() + "'.");
 }

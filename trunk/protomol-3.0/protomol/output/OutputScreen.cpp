@@ -6,6 +6,7 @@
 #include <protomol/type/ScalarStructure.h>
 #include <protomol/topology/TopologyUtilities.h>
 #include <protomol/base/MainModule.h>
+#include <protomol/base/ProtoMolApp.h>
 #include <protomol/output/OutputModule.h>
 
 using namespace std;
@@ -22,8 +23,8 @@ OutputScreen::OutputScreen(int freq) :
   Output(freq), myUnit("fs"), myFactor(1.0) {}
 
 void OutputScreen::doInitialize() {
-  Real step = myIntegrator->getTimestep() *
-    max(1, min(myOutputFreq, (int)(*myConfig)[InputNumsteps::keyword]));
+  Real step = app->integrator->getTimestep() *
+    max(1, min(myOutputFreq, (int)app->config[InputNumsteps::keyword]));
 
   if (step >= 1e13) {
     myUnit = "s";
@@ -55,18 +56,18 @@ void OutputScreen::doRun(int step) {
   report.width(18);
   report.setf(ios::showpoint | ios::fixed);
   report.precision(3);
-  report << cache->time() * myFactor << " [" << myUnit << "], TE : ";
+  report << app->outputCache.time() * myFactor << " [" << myUnit << "], TE : ";
   report.precision(4);
   report.width(16);
-  report << cache->totalEnergy() << " [kcal/mol]";
+  report << app->outputCache.totalEnergy() << " [kcal/mol]";
   report << ", T : ";
   report.precision(4);
   report.width(10);
-  report << cache->temperature() << " [K]";
+  report << app->outputCache.temperature() << " [K]";
   report << ", V : ";
   report.precision(2);
   report.width(16);
-  report << cache->volume() << " [AA^3]" << endr;
+  report << app->outputCache.volume() << " [AA^3]" << endr;
   report.reset();
 }
 

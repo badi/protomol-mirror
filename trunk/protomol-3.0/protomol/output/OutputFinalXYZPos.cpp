@@ -5,6 +5,7 @@
 #include <protomol/base/StringUtilities.h>
 #include <protomol/topology/GenericTopology.h>
 #include <protomol/io/XYZWriter.h>
+#include <protomol/base/ProtoMolApp.h>
 #include <protomol/base/Exception.h>
 
 using namespace std;
@@ -25,13 +26,13 @@ void OutputFinalXYZPos::doFinalize(int step) {
   if (!writer.open(filename))
     THROW(string("Can't open ") + getId() + " '" + filename + "'.");
 
-  const Vector3DBlock *pos = (myMinimalImage ? cache->minimalPositions() :
-                              myPositions);
-  writer.setComment("Time : " + toString(cache->time()) + ", step : " +
+  const Vector3DBlock *pos = (myMinimalImage ? app->outputCache.minimalPositions() :
+                              &app->positions);
+  writer.setComment("Time : " + toString(app->outputCache.time()) + ", step : " +
                     toString(step) +
                     (myMinimalImage ? ", minimal Image" : "") + ".");
 
-  if (!writer.write(*pos, myTopology->atoms, myTopology->atomTypes))
+  if (!writer.write(*pos, app->topology->atoms, app->topology->atomTypes))
     THROW(string("Could not write ") + getId() + " '" + filename + "'.");
 }
 

@@ -97,6 +97,9 @@ namespace ProtoMol {
     virtual void doExecute() = 0;
     /// Implemenation of initialize
     virtual void doInitialize() {}
+
+    //virtual Force *doMake(std::vector<Value> &) const = 0;
+
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // data members
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

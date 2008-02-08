@@ -4,6 +4,7 @@
 #include <protomol/base/StringUtilities.h>
 #include <protomol/topology/GenericTopology.h>
 #include <protomol/io/XYZWriter.h>
+#include <protomol/base/ProtoMolApp.h>
 #include <protomol/base/Exception.h>
 
 using namespace std;
@@ -24,10 +25,10 @@ void OutputFinalXYZVel::doFinalize(int step) {
   if (!writer.open(filename))
     THROW(string("Can't open ") + getId() + " '" + filename + "'.");
 
-  writer.setComment("Time : " + toString(cache->time()) + ", step : " +
+  writer.setComment("Time : " + toString(app->outputCache.time()) + ", step : " +
                     toString(step) + ".");
 
-  if (!writer.write(*myVelocities, myTopology->atoms, myTopology->atomTypes))
+  if (!writer.write(*&app->velocities, app->topology->atoms, app->topology->atomTypes))
     THROW(string("Could not write ") + getId() + " '" + filename + "'.");
 }
 

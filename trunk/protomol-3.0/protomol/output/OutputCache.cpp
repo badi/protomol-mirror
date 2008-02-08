@@ -290,7 +290,7 @@ vector<vector<Real> > OutputCache::brentMaxima(vector<int> dihedralset,
     }
 
     //temp hack that allows multiple calls but defeats the purpose of
-    // the cache... please fix me!
+    // the app.outputCache... please fix me!
     //myCachedBrentMaxima= true;
   }
   return *myBrentMaxima;

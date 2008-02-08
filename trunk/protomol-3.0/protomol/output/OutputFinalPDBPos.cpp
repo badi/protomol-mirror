@@ -5,6 +5,7 @@
 #include <protomol/base/StringUtilities.h>
 #include <protomol/topology/GenericTopology.h>
 #include <protomol/io/PDBWriter.h>
+#include <protomol/base/ProtoMolApp.h>
 #include <protomol/base/Exception.h>
 
 using namespace std;
@@ -26,14 +27,14 @@ void OutputFinalPDBPos::doFinalize(int step) {
   if (!writer.open(filename))
     THROW(string("Can't open ") + getId() + " '" + filename + "'.");
 
-  writer.setComment("Time : " + toString(cache->time()) + ", step : " +
+  writer.setComment("Time : " + toString(app->outputCache.time()) + ", step : " +
                     toString(step) +
                     (myMinimalImage ? ", minimal Image" : "") + ".");
 
   const Vector3DBlock *pos =
-    (myMinimalImage ? cache->minimalPositions() : myPositions);
+    (myMinimalImage ? app->outputCache.minimalPositions() : &app->positions);
 
-  if (!writer.write(*pos, cache->pdb()))
+  if (!writer.write(*pos, app->outputCache.pdb()))
     THROW(string("Could not write ") + getId() + " '" + filename + "'.");
 }
 

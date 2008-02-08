@@ -60,10 +60,10 @@ void MainModule::configure(ProtoMolApp *app) {
   report << reportlevel((int)config[InputDebug::keyword]);
 
   // Check if configuration is complete
-  //if (config.hasUndefinedKeywords()) {
-  //  report << plain << "Undefined Keyword(s):" << endl
-  //         << config.printUndefinedKeywords() << endl;
-  //}
+  if (config.hasUndefinedKeywords()) {
+    report << debug(2) << "Undefined Keyword(s):" << endl
+           << config.printUndefinedKeywords() << endr;
+  }
     
   if (!config[InputFirststep::keyword].valid())
     THROW("Firststep undefined.");

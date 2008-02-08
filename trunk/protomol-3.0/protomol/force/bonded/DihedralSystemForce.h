@@ -54,9 +54,6 @@ namespace ProtoMol {
     virtual std::string getIdNoAlias() const {return getKeyword();}
     virtual void getParameters(std::vector<Parameter> &) const {}
 
-  private:
-    virtual void doSetParameters(std::string &, std::vector<Value> ) {}
-
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // My data members
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -66,9 +63,10 @@ namespace ProtoMol {
   //____ INLINES
 
   template<class TBoundaryConditions>
-  inline void DihedralSystemForce<TBoundaryConditions>::evaluate(
-    const GenericTopology *topo, const Vector3DBlock *positions,
-    Vector3DBlock *forces, ScalarStructure *energies) {
+  inline void DihedralSystemForce<TBoundaryConditions>::
+  evaluate(const GenericTopology *topo, const Vector3DBlock *positions,
+           Vector3DBlock *forces, ScalarStructure *energies) {
+
     const TBoundaryConditions &boundary =
       (dynamic_cast<const SemiGenericTopology<TBoundaryConditions> &>(*topo)).
         boundaryConditions;
@@ -78,9 +76,9 @@ namespace ProtoMol {
   }
 
   template<class TBoundaryConditions>
-  inline void DihedralSystemForce<TBoundaryConditions>::parallelEvaluate(
-    const GenericTopology *topo, const Vector3DBlock *positions,
-    Vector3DBlock *forces, ScalarStructure *energies) {
+  inline void DihedralSystemForce<TBoundaryConditions>::
+  parallelEvaluate(const GenericTopology *topo, const Vector3DBlock *positions,
+                   Vector3DBlock *forces, ScalarStructure *energies) {
     const TBoundaryConditions &boundary =
       (dynamic_cast<const SemiGenericTopology<TBoundaryConditions> &>(*topo)).
         boundaryConditions;
@@ -101,8 +99,8 @@ namespace ProtoMol {
   }
 
   template<class TBoundaryConditions>
-  inline unsigned int DihedralSystemForce<TBoundaryConditions>::numberOfBlocks(
-    const GenericTopology *topo, const Vector3DBlock *) {
+  inline unsigned int DihedralSystemForce<TBoundaryConditions>::
+  numberOfBlocks(const GenericTopology *topo, const Vector3DBlock *) {
     return std::min(Parallel::getAvailableNum(),
                     static_cast<int>(topo->dihedrals.size()));
   }

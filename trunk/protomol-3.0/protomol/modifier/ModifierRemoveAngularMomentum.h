@@ -4,6 +4,7 @@
 
 #include <protomol/modifier/Modifier.h>
 #include <protomol/topology/TopologyUtilities.h>
+#include <protomol/base/ProtoMolApp.h>
 
 namespace ProtoMol {
   //____ ModifierRemoveAngularMomentum
@@ -30,7 +31,7 @@ namespace ProtoMol {
   private:
     virtual void doExecute() {
       if (myFreq == 0 || 0 == (myStep = (myStep % myFreq)))
-        removeAngularMomentum(myPositions, myVelocities, myTopology);
+        removeAngularMomentum(&app->positions, &app->velocities, app->topology);
       myStep++;
     }
 

@@ -5,13 +5,6 @@
 #include <protomol/base/Makeable.h>
 
 namespace ProtoMol {
-  class OutputCache;
-  class OutputCollection;
-  class Configuration;
-  class GenericTopology;
-  class ScalarStructure;
-  class Vector3DBlock;
-  class Integrator;
   class ProtoMolApp;
 
   //____ Output
@@ -75,7 +68,6 @@ namespace ProtoMol {
     int getNext() const {return myNextStep;}
     bool first() const {return myFirst;}
     void updateNextStep(int step);
-    void setCache(OutputCache *cache) {this->cache = cache;}
 
   private:
     virtual void doInitialize() = 0;
@@ -103,19 +95,13 @@ namespace ProtoMol {
 
   private:
     int myFirstStep;
-    int myLastStep;
     int myNextStep;
+    int myLastStep;
     bool myFirst;
 
   protected:
     int myOutputFreq;       ///< Output freqeuncy
-    OutputCache *cache;
-    const Configuration *myConfig;
-    const GenericTopology *myTopology;
-    const Integrator *myIntegrator;
-    const ScalarStructure *myEnergies;
-    const Vector3DBlock *myPositions;
-    const Vector3DBlock *myVelocities;
+    const ProtoMolApp *app;
   };
 }
 #endif
