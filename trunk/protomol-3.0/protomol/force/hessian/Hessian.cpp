@@ -1,4 +1,5 @@
-#include <protomol/nm/Hessian.h>
+#include "Hessian.h"
+
 #include <protomol/base/Report.h>
 #include <protomol/type/ScalarStructure.h>
 #include <protomol/type/Vector3DBlock.h>
