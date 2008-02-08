@@ -11,19 +11,17 @@
 
 namespace ProtoMol {
   class ProtoMolApp;
-  class GenericTopology;
-  class ScalarStructure;
-  class Vector3DBlock;
   class ForceGroup;
   class MTSIntegrator;
   class Modifier;
+  class Vector3DBlock;
 
   //________________________________________ Integrator
   /*
      Base class of all integrators.
    */
 
-  class Integrator : public Makeable {
+  class Integrator : public MakeableBase {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Constructors, destructors, assignment
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

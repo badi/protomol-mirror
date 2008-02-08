@@ -1,19 +1,15 @@
 #ifndef PROTOMOLAPP_H
 #define PROTOMOLAPP_H
 
-#include <protomol/base/ModuleManager.h>
-#include <protomol/config/Configuration.h>
-#include <protomol/config/CommandLine.h>
-
 #include <protomol/topology/TopologyFactory.h>
 #include <protomol/force/ForceFactory.h>
 #include <protomol/integrator/IntegratorFactory.h>
-
-#include <protomol/output/OutputCache.h>
 #include <protomol/output/OutputFactory.h>
-
 #include <protomol/modifier/ModifierFactory.h>
 
+#include <protomol/config/Configuration.h>
+#include <protomol/config/CommandLine.h>
+#include <protomol/output/OutputCache.h>
 #include <protomol/type/Vector3DBlock.h>
 #include <protomol/type/EigenvectorInfo.h>
 #include <protomol/type/PSF.h>
@@ -26,6 +22,7 @@ namespace ProtoMol {
   class OutputCollection;
   class Integrator;
   class GenericTopology;
+  class ModuleManager;
 
   class ProtoMolApp {
     ModuleManager *modManager;

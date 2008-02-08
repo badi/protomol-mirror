@@ -47,7 +47,7 @@ namespace ProtoMol {
    * - measurement of distances must be non-virtual
    */
 
-  class GenericTopology : public Makeable {
+  class GenericTopology : public Makeable<GenericTopology> {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Constructors, destructors, assignment
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -116,8 +116,6 @@ namespace ProtoMol {
 
     static const std::string &getKeyword() {return keyword;}
 
-  private:
-    virtual GenericTopology *doMake(std::vector<Value> values) const = 0;
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // From class Makable
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

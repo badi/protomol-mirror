@@ -16,12 +16,12 @@ namespace ProtoMol {
       prototype, normally used together with a Factory.
    */
 
-  class Makeable {
+  class MakeableBase {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Constructors, destructors, assignment
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    virtual ~Makeable() {};
+    virtual ~MakeableBase() {};
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // New methods of class Makeable
@@ -29,8 +29,6 @@ namespace ProtoMol {
   public:
     /// retrieve all parameters
     virtual void getParameters(std::vector<Parameter> &parameters) const = 0;
-    /// retrieve all parameters
-    std::vector<Parameter> getParameters() const;
     virtual MakeableDefinition getDefinition() const;
 
     std::string getId() const;
@@ -76,6 +74,16 @@ namespace ProtoMol {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   private:
     std::string myAlias;
+  };
+
+  
+  template <class T>
+  class Makeable : public MakeableBase {
+  public:
+    virtual ~Makeable() {}
+
+  protected:
+    virtual T *doMake(const std::vector<Value> &values) const = 0;
   };
 }
 #endif

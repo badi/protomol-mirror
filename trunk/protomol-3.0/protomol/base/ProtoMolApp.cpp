@@ -1,5 +1,6 @@
 #include <protomol/base/ProtoMolApp.h>
 
+#include <protomol/base/ModuleManager.h>
 #include <protomol/base/MainModule.h>
 
 #include <protomol/config/CommandLine.h>
@@ -261,6 +262,8 @@ void ProtoMolApp::build() {
   report << plain << "Actual start temperature : "
          << temperature(topology, &velocities) << "K" << endr;
 
+
+  modManager->addModifiers(this);
 
   // Initialize
   //scalar.molecularVirial(config[InputMolVirialCalc::keyword]);

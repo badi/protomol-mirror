@@ -36,7 +36,7 @@ namespace ProtoMol {
                                         const Vector3DBlock *pos);
     virtual void uncache();
   private:
-    virtual Force *doMake(std::vector<Value> values) const;
+    virtual Force *doMake(const std::vector<Value> &values) const;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // From class Makable

@@ -30,3 +30,13 @@ void ModifierMetaRattleShake::doInitialize() {
 
   myListOfConstraints = &(app->topology->bondRattleShakeConstraints);
 }
+
+void ModifierMetaRattleShake::
+getParameters(vector<Parameter> &parameters) const {
+  parameters.push_back
+    (Parameter("-epsilon",
+               Value(myEpsilon, ConstraintValueType::NotNegative())));
+  parameters.push_back
+    (Parameter("-maxIter",
+               Value(myMaxIter, ConstraintValueType::NotNegative())));
+}

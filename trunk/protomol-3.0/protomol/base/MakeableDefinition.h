@@ -18,9 +18,9 @@ namespace ProtoMol {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
     MakeableDefinition() {}
-    MakeableDefinition(const std::string &i,
-                       const std::vector<Parameter> &p) : id(i),
-      parameters(p) {}
+    MakeableDefinition(const std::string &i, const std::vector<Parameter> &p) :
+      id(i), parameters(p) {}
+
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // data members
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

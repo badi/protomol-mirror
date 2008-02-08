@@ -4,7 +4,7 @@
 
 #include <protomol/modifier/Modifier.h>
 #include <protomol/topology/GenericTopology.h>
-#include <protomol/integrator/STSIntegrator.h>
+#include <protomol/integrator/Integrator.h>
 #include <protomol/base/ProtoMolApp.h>
 
 namespace ProtoMol {
@@ -15,14 +15,16 @@ namespace ProtoMol {
     // Constructors, destructors, assignment
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    ModifierIncrementTimestep(STSIntegrator *i) :
-      Modifier(Constant::MAX_INT), myTheIntegrator(i) {}
+    ModifierIncrementTimestep() : Modifier(Constant::MAX_INT) {}
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // From class Makeable
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     virtual void getParameters(std::vector<Parameter> &parameters) const {}
     virtual std::string getIdNoAlias() const {return "IncrementTimestep";}
+    virtual Modifier *doMake(const std::vector<Value> &values) const {
+      return new ModifierIncrementTimestep();
+    }
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // From class Modifier
@@ -30,15 +32,9 @@ namespace ProtoMol {
     virtual bool isInternal() const {return true;}
 
   private:
-    virtual void doExecute() {
-      app->topology->time += myTheIntegrator->getTimestep();
+    virtual void doExecute(Integrator *i) {
+      app->topology->time += i->getTimestep();
     }
-
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // My data members
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  private:
-    STSIntegrator *myTheIntegrator;
   };
 }
 #endif /* MODIFIERINCREMENTTIMESTEP_H */

@@ -24,10 +24,9 @@ namespace ProtoMol {
     virtual void getDependencies(module_deps_t &deps) const {}
 
     virtual void configure(ProtoMolApp *app) {}
-    virtual void buildTopology(ProtoMolApp *app)
-    {THROW("Not implemented in this module");}
     virtual void registerForces(ProtoMolApp *app) {}
     virtual void postBuild(ProtoMolApp *app) {}
+    virtual void addModifiers(ProtoMolApp *app) {}
 
   protected:
     virtual void init(ProtoMolApp *app) = 0;

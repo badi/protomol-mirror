@@ -10,20 +10,16 @@ using namespace ProtoMol::Report;
 using namespace ProtoMol;
 
 //____ ModifierRattle
-ModifierRattle::ModifierRattle(Real eps, int maxIter, const Integrator *i,
-                               int order) :
-  ModifierMetaRattle(eps, maxIter, order), myTheIntegrator(i) {}
+ModifierRattle::ModifierRattle() : ModifierMetaRattle(0, 0, 0) {}
+ModifierRattle::ModifierRattle(Real eps, int maxIter, int order) :
+  ModifierMetaRattle(eps, maxIter, order) {}
 
-Real ModifierRattle::getTimestep() const {
-  return myTheIntegrator->getTimestep();
-}
-
-void ModifierRattle::doExecute() {
+void ModifierRattle::doExecute(Integrator *i) {
   // estimate the current error in all velocity constraints
   Real error = calcError();
 
   // delta_t
-  Real dt = getTimestep() / Constant::TIMEFACTOR;
+  Real dt = i->getTimestep() / Constant::TIMEFACTOR;
 
   int iter = 0;
   while (error > myEpsilon) {

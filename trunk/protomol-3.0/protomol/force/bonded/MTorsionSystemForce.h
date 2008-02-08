@@ -36,10 +36,10 @@ namespace ProtoMol {
 
   //____ INLINES
   template<class TBoundaryConditions>
-  inline void MTorsionSystemForce<TBoundaryConditions>::calcTorsion(
-    const TBoundaryConditions &boundary, const Torsion &currTorsion,
-    const Vector3DBlock *positions, Vector3DBlock *forces, Real &energy,
-    ScalarStructure *energies) {
+  inline void MTorsionSystemForce<TBoundaryConditions>::
+  calcTorsion(const TBoundaryConditions &boundary, const Torsion &currTorsion,
+              const Vector3DBlock *positions, Vector3DBlock *forces,
+              Real &energy, ScalarStructure *energies) {
 
     int a1 = currTorsion.atom1;
     int a2 = currTorsion.atom2;
@@ -203,9 +203,10 @@ namespace ProtoMol {
   }
 
   template<class TBoundaryConditions>
-  inline Real MTorsionSystemForce<TBoundaryConditions>::calcTorsionEnergy(
-    const TBoundaryConditions &boundary, const Torsion &currTorsion,
-    const Vector3DBlock *positions) {
+  inline Real MTorsionSystemForce<TBoundaryConditions>::
+  calcTorsionEnergy(const TBoundaryConditions &boundary,
+                    const Torsion &currTorsion,
+                    const Vector3DBlock *positions) {
     int a1 = currTorsion.atom1;
     int a2 = currTorsion.atom2;
     int a3 = currTorsion.atom3;

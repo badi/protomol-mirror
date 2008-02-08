@@ -20,11 +20,11 @@ const string Integrator::scope("Integrator");
 Real Integrator::myBeta = 0.;
 
 Integrator::Integrator() :
-  Makeable(), myPotEnergy(0), mhQ(0), myForces(0), myForcesToEvaluate(0),
+  myPotEnergy(0), mhQ(0), myForces(0), myForcesToEvaluate(0),
   myForward(true), myOldForces(0) {}
 
 Integrator::Integrator(ForceGroup *forceGroup) :
-  Makeable(), myPotEnergy(0), mhQ(0), myForces(new Vector3DBlock),
+  myPotEnergy(0), mhQ(0), myForces(new Vector3DBlock),
   myForcesToEvaluate(forceGroup), myForward(true),
   myOldForces(new Vector3DBlock) {}
 
@@ -136,7 +136,7 @@ void Integrator::preStepModify() {
 
   for (iterator i = myPreStepModifiers.begin();
        i != myPreStepModifiers.end(); ++i)
-    (*i)->execute();
+    (*i)->execute(this);
 }
 
 void Integrator::preDriftOrNextModify() {
@@ -145,7 +145,7 @@ void Integrator::preDriftOrNextModify() {
 
   for (iterator i = myPreDriftOrNextModifiers.begin();
        i != myPreDriftOrNextModifiers.end(); ++i)
-    (*i)->execute();
+    (*i)->execute(this);
 }
 
 void Integrator::postDriftOrNextModify() {
@@ -156,7 +156,7 @@ void Integrator::postDriftOrNextModify() {
   for (iterator i = myPostDriftOrNextModifiers.begin();
        i != myPostDriftOrNextModifiers.end();
        ++i)
-    (*i)->execute();
+    (*i)->execute(this);
 }
 
 void Integrator::preForceModify() {
@@ -166,7 +166,7 @@ void Integrator::preForceModify() {
   for (iterator i = myPreForceModifiers.begin();
        i != myPreForceModifiers.end();
        ++i)
-    (*i)->execute();
+    (*i)->execute(this);
 }
 
 void Integrator::mediForceModify() {
@@ -176,7 +176,7 @@ void Integrator::mediForceModify() {
   for (iterator i = myMediForceModifiers.begin();
        i != myMediForceModifiers.end();
        ++i)
-    (*i)->execute();
+    (*i)->execute(this);
 }
 
 void Integrator::postForceModify() {
@@ -185,7 +185,7 @@ void Integrator::postForceModify() {
 
   for (iterator i = myPostForceModifiers.begin();
        i != myPostForceModifiers.end(); ++i)
-    (*i)->execute();
+    (*i)->execute(this);
 }
 
 void Integrator::postStepModify() {
@@ -194,7 +194,7 @@ void Integrator::postStepModify() {
 
   for (iterator i = myPostStepModifiers.begin();
        i != myPostStepModifiers.end(); ++i)
-    (*i)->execute();
+    (*i)->execute(this);
 }
 
 void Integrator::adoptPreStepModifier(Modifier *modifier) {

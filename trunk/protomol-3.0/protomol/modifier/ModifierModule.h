@@ -11,6 +11,12 @@ namespace ProtoMol {
 
   declareInputValue(InputRemoveAngularMomentum, INT, NOCONSTRAINTS);
   declareInputValue(InputRemoveLinearMomentum, INT, NOCONSTRAINTS);
+  declareInputValue(InputRattle, BOOL, NOCONSTRAINTS);
+  declareInputValue(InputRattleEpsilon, REAL, NOTNEGATIVE);
+  declareInputValue(InputRattleMaxIter, INT, NOTNEGATIVE);
+  declareInputValue(InputShake, BOOL, NOCONSTRAINTS);
+  declareInputValue(InputShakeEpsilon, REAL, NOTNEGATIVE);
+  declareInputValue(InputShakeMaxIter, INT, NOTNEGATIVE);
 
   class ModifierModule : public Module {
   public:
@@ -20,6 +26,7 @@ namespace ProtoMol {
 
     void init(ProtoMolApp *app);
     void postBuild(ProtoMolApp *app);
+    void addModifiers(ProtoMolApp *app);
   };
 };
 

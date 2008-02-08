@@ -14,7 +14,8 @@ namespace ProtoMol {
   //________________________________________ SystemForce
 
   class SystemForce : virtual public Force {
-    // This class contains the definition of one system force (a force that works only on positions)
+    // This class contains the definition of one system force (a force that 
+    // works only on positions)
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Constructors, destructors, assignment
@@ -56,10 +57,10 @@ namespace ProtoMol {
     // for free (for bonded forces).
     //
     // To the implementor:
-    // Overload this methods to implement a parallel version. Split up the interactions
-    // and distribute them among the nodes. This can by done either by ranges or sequences.
-    // Overload numberOfBlocks() such that the number matches the next() calls inside
-    // parallelEvaluate().
+    // Overload this methods to implement a parallel version. Split up the 
+    // interactions and distribute them among the nodes. This can by done 
+    // either by ranges or sequences. Overload numberOfBlocks() such that the 
+    // number matches the next() calls inside parallelEvaluate().
 
     virtual CompareForce *makeCompareForce(Force *actualForce,
                                            CompareForce *compareForce) const;
@@ -84,7 +85,7 @@ namespace ProtoMol {
                                     Vector3DBlock *forces,
                                     ScalarStructure *energies) {
     evaluate(static_cast<const GenericTopology *>(topo),
-      positions, forces, energies);
+             positions, forces, energies);
   }
 
   inline void SystemForce::parallelEvaluate(const GenericTopology *topo,

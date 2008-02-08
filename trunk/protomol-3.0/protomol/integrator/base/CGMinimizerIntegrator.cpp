@@ -155,7 +155,7 @@ void CGMinimizerIntegrator::getParameters(vector<Parameter> &parameters) const {
 }
 
 STSIntegrator *CGMinimizerIntegrator::doMake(const vector<Value> &values,
-                                   ForceGroup *fg) const {
+                                             ForceGroup *fg) const {
   return new CGMinimizerIntegrator(values[0], values[1], values[2], values[3],
                                    fg);
 }

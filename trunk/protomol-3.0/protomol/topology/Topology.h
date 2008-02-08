@@ -200,8 +200,8 @@ namespace ProtoMol {
       return res;
     }
 
-  private:
-    virtual GenericTopology *doMake(std::vector<Value> values) const {
+  protected:
+    virtual GenericTopology *doMake(const std::vector<Value> &values) const {
       Real csf;
       if (!values[0].get(csf))
         THROW(string(" coulombScalingFactor \'") + values[0].getString() +

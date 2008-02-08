@@ -84,7 +84,14 @@ void ModuleManager::postBuild(ProtoMolApp *app) {
   modules_t::iterator it;
 
   for (it = modules.begin(); it != modules.end(); it++)
-    (*it)->registerForces(app);
+    (*it)->postBuild(app);
+}
+
+void ModuleManager::addModifiers(ProtoMolApp *app) {
+  modules_t::iterator it;
+
+  for (it = modules.begin(); it != modules.end(); it++)
+    (*it)->addModifiers(app);
 }
 
 int ModuleManager::listAction() {

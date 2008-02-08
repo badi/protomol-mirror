@@ -22,7 +22,7 @@ STSIntegrator::STSIntegrator(Real timestep, ForceGroup *overloadedForces) :
   StandardIntegrator(overloadedForces), myTimestep(timestep) {}
 
 void STSIntegrator::addModifierAfterInitialize() {
-  adoptPostForceModifier(new ModifierIncrementTimestep(this));
+  adoptPostForceModifier(new ModifierIncrementTimestep());
 }
 
 void STSIntegrator::doDriftOrNextIntegrator() {

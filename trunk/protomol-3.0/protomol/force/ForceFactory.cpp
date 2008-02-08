@@ -259,7 +259,8 @@ ostream &ForceFactory::print(ostream &stream) const {
       if (!(*j).empty()) stream << "\n" << Constant::PRINTINDENT  << (*j);
 
       string protoName = i->first + ((*j).empty() ? "" : " " + (*j));
-      vector<Parameter> parameters = getPrototype(protoName)->getParameters();
+      vector<Parameter> parameters;
+      getPrototype(protoName)->getParameters(parameters);
       for (unsigned int k = 0; k < parameters.size(); k++){
         stream << endl;
         parameters[k].print(stream);

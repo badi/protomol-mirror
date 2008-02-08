@@ -43,7 +43,7 @@ namespace ProtoMol {
                                         const Vector3DBlock *pos);
 
   private:
-    virtual Force *doMake(std::vector<Value>) const {
+    virtual Force *doMake(const std::vector<Value> &) const {
       return new DihedralSystemForce();
     }
 

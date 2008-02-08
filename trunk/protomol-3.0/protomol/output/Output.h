@@ -21,7 +21,7 @@ namespace ProtoMol {
      to a file you should rather inherit from OutputFile, then inherit
      directly from Output.
    */
-  class Output : public Makeable {
+  class Output : public Makeable<Output> {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Constructors, destructors, assignment
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -77,9 +77,6 @@ namespace ProtoMol {
 
     ///< Hook method of run, implemented in the concrete class
     virtual void doFinalize(int step) = 0;
-
-    ///< Hook method of finalize, implemented in the concrete class
-    virtual Output *doMake(const std::vector<Value> &values) const = 0;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // From class Makable

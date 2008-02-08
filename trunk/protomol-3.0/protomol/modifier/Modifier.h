@@ -10,6 +10,7 @@
 namespace ProtoMol {
   class ProtoMolApp;
   class Vector3DBlock;
+  class Integrator;
 
   //________________________________________ Modifier
   /**
@@ -39,7 +40,10 @@ namespace ProtoMol {
      initialization or not. Furthermore, it is possible to disable and enable
      a modifier.
    */
-  class Modifier : public Makeable {
+  class Modifier : public Makeable<Modifier> {
+  public:
+    static std::string scope;
+
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Constructors, destructors, assignment
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -52,14 +56,14 @@ namespace ProtoMol {
     // From class Makeable
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    virtual std::string getScope() const {return "Modifier";}
+    virtual std::string getScope() const {return scope;}
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // New methods of class Modifier
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
     /// The method, which calls the implemenation
-    void execute();
+    void execute(Integrator *i);
 
     /// If the modifier is internal (added by an integrator) or
     /// external (added by the user)
@@ -94,11 +98,9 @@ namespace ProtoMol {
 
   private:
     /// The method, which does the actual modification
-    virtual void doExecute() = 0;
+    virtual void doExecute(Integrator *i) = 0;
     /// Implemenation of initialize
     virtual void doInitialize() {}
-
-    //virtual Force *doMake(std::vector<Value> &) const = 0;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // data members

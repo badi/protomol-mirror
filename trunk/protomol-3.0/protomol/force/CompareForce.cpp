@@ -146,7 +146,7 @@ string CompareForce::getIdNoAlias() const {
   return string(CompareForce::keyword + " " + myActualForce->getIdNoAlias());
 }
 
-Force *CompareForce::doMake(vector<Value> values) const {
+Force *CompareForce::doMake(const vector<Value> &values) const {
   return myActualForce->make(values);
 }
 

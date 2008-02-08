@@ -9,20 +9,16 @@ using namespace ProtoMol::Report;
 using namespace ProtoMol;
 
 //____ ModifierShake
-ModifierShake::ModifierShake(Real eps, int maxIter, const Integrator *i,
-                             int order) :
-  ModifierMetaShake(eps, maxIter, order), myTheIntegrator(i) {}
+ModifierShake::ModifierShake() : ModifierMetaShake(0, 0, 0) {}
+ModifierShake::ModifierShake(Real eps, int maxIter, int order) :
+  ModifierMetaShake(eps, maxIter, order) {}
 
-Real ModifierShake::getTimestep() const {
-  return myTheIntegrator->getTimestep();
-}
-
-void ModifierShake::doExecute() {
+void ModifierShake::doExecute(Integrator *i) {
   // estimate the current error in all bond constraints
   Real error = calcError();
 
   // delta_t
-  Real dt = getTimestep() / Constant::TIMEFACTOR;
+  Real dt = i->getTimestep() / Constant::TIMEFACTOR;
 
   int iter = 0;
   while (error > myEpsilon) {

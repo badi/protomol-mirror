@@ -12,12 +12,12 @@ using namespace ProtoMol;
 const string Output::scope("Output");
 
 Output::Output() :
-  Makeable(), myFirstStep(0), myNextStep(0), myLastStep(0), myFirst(true),
+  myFirstStep(0), myNextStep(0), myLastStep(0), myFirst(true),
   myOutputFreq(0), app(0)
 {}
 
 Output::Output(int freq) :
-  Makeable(), myFirstStep(0), myNextStep(0), myLastStep(0), myFirst(true),
+  myFirstStep(0), myNextStep(0), myLastStep(0), myFirst(true),
   myOutputFreq(freq), app(0)
 {}
 

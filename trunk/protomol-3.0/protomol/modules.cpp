@@ -6,6 +6,7 @@
 #include <protomol/topology/TopologyModule.h>
 #include <protomol/output/OutputModule.h>
 #include <protomol/force/bonded/BondedForcesModule.h>
+#include <protomol/modifier/ModifierModule.h>
 
 #include <protomol/integrator/base/IntegratorBaseModule.h>
 
@@ -19,6 +20,7 @@ void moduleInitFunction(ModuleManager *manager) {
   manager->add(new ConfigurationModule());
   manager->add(new TopologyModule());
   manager->add(new OutputModule());
+  manager->add(new ModifierModule());
 
   manager->add(new IntegratorBaseModule());
   manager->add(new BondedForcesModule());

@@ -53,7 +53,7 @@ namespace ProtoMol {
     virtual std::string getKeyword() const {return keyword;}
 
   private:
-    virtual Force *doMake(std::vector<Value> values) const;
+    virtual Force *doMake(const std::vector<Value> &values) const;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // From class Makeable
@@ -110,7 +110,7 @@ namespace ProtoMol {
   template<class TCellManager, class TOneAtomPair, class TForce,
            class TImplForce>
   Force *NonbondedCutoffForce<TCellManager, TOneAtomPair, TForce,
-                              TImplForce>::doMake(std::vector<Value> values)
+                              TImplForce>::doMake(const std::vector<Value> &values)
   const {
     return
       new TImplForce(values[values.size() - 1],

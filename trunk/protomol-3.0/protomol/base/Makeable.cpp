@@ -7,16 +7,16 @@ using namespace std;
 using namespace ProtoMol;
 //____ Makeable
 
-string Makeable::getId() const {
+string MakeableBase::getId() const {
   if (!myAlias.empty()) return getAlias();
   else return getIdNoAlias();
 }
 
-string Makeable::getAlias() const {
+string MakeableBase::getAlias() const {
   return myAlias;
 }
 
-string Makeable::setAlias(const string &id) {
+string MakeableBase::setAlias(const string &id) {
   string tmp(myAlias);
 
   if (equalNocase(id, getIdNoAlias())) myAlias = "";
@@ -25,7 +25,7 @@ string Makeable::setAlias(const string &id) {
   return tmp;
 }
 
-void Makeable::assertParameters(const vector<Value> &values) const {
+void MakeableBase::assertParameters(const vector<Value> &values) const {
   string err;
   vector<Parameter> tmp;
   getParameters(tmp);
@@ -51,7 +51,7 @@ void Makeable::assertParameters(const vector<Value> &values) const {
 
 }
 
-bool Makeable::checkParameterTypes(const vector<Value> &values) const {
+bool MakeableBase::checkParameterTypes(const vector<Value> &values) const {
   vector<Parameter> tmp;
   getParameters(tmp);
   if (tmp.size() != values.size())
@@ -64,7 +64,7 @@ bool Makeable::checkParameterTypes(const vector<Value> &values) const {
   return true;
 }
 
-bool Makeable::checkParameters(const vector<Value> &values) const {
+bool MakeableBase::checkParameters(const vector<Value> &values) const {
   vector<Parameter> tmp;
   getParameters(tmp);
   if (tmp.size() != values.size())
@@ -77,13 +77,10 @@ bool Makeable::checkParameters(const vector<Value> &values) const {
   return true;
 }
 
-vector<Parameter> Makeable::getParameters() const {
-  vector<Parameter> p;
-  this->getParameters(p);
-  return p;
-}
+MakeableDefinition MakeableBase::getDefinition() const {
+  vector<Parameter> parameters;
+  getParameters(parameters);
 
-MakeableDefinition Makeable::getDefinition() const {
-  return MakeableDefinition(getId(), getParameters());
+  return MakeableDefinition(getId(), parameters);
 }
 

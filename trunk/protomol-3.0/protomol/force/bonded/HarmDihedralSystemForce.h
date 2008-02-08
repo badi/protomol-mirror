@@ -65,7 +65,7 @@ namespace ProtoMol {
                                         const Vector3DBlock *pos);
 
   private:
-    virtual Force *doMake(std::vector<Value> values) const {
+    virtual Force *doMake(const std::vector<Value> &values) const {
       return new HarmDihedralSystemForce(values[0], values[1], values[2],
                                          values[3]);
     }

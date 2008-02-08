@@ -51,10 +51,8 @@ namespace ProtoMol {
       if (id.empty()) id = exemplar->getId();
 
       if (exemplars.find(id) != exemplars.end())
-        Report::report
-          << Report::hint << "Prototype '" << id << "' already registered in "
-          << Type::scope << "Factory" << Type::scope
-          << ", overwriting." << Report::endr;
+        THROWS("Prototype '" << id << "' already registered in "
+               << Type::scope << "Factory" << Type::scope);
 
       exemplars[id] = exemplar;
       pointers.insert(exemplar);
@@ -122,7 +120,8 @@ namespace ProtoMol {
         if (i == exemplars.begin()) stream << std::endl;
         stream << i->first;
         
-        std::vector<Parameter> parameters(i->second->getParameters());
+        std::vector<Parameter> parameters;
+        i->second->getParameters(parameters);
         for (unsigned int k = 0; k < parameters.size(); k++) {
           stream << std::endl;
           parameters[k].print(stream);

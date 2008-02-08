@@ -18,7 +18,7 @@ namespace ProtoMol {
   class ForceGroup;
   //________________________________________ Force
 
-  class Force : public Makeable {
+  class Force : public Makeable<Force> {
     // This class contains the definition of one force
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -106,9 +106,6 @@ namespace ProtoMol {
     //< update of parameter index with given value
 
   private:
-    virtual Force *doMake(std::vector<Value> values) const = 0;
-    //< implementation of make and actual instantiation of object
-
     virtual void doSetParameters(std::vector<Value>) {}
 
   protected:

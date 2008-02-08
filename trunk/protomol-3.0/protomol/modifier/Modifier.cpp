@@ -10,7 +10,9 @@ using namespace std;
 using namespace ProtoMol::Report;
 using namespace ProtoMol;
 
-void Modifier::execute() {
+string Modifier::scope = "Modifier";
+
+void Modifier::execute(Integrator *i) {
   stringstream str;
   print(str);
   
@@ -19,7 +21,7 @@ void Modifier::execute() {
     << "(" << (long)(this) << ") (enable=" << myEnable << ") at "
     << app->topology->time << endr;
   
-  if (myEnable) doExecute();
+  if (myEnable) doExecute(i);
 }
 
 void Modifier::initialize(ProtoMolApp *app, Vector3DBlock *forces) {

@@ -11,7 +11,8 @@ using namespace ProtoMol::Report;
 void TopologyFactory::
   registerAllExemplarsConfiguration(Configuration *config) const {
   for (const_iterator i = begin(); i != end(); ++i) {
-    vector<Parameter> parameter = (*i)->getParameters();
+    vector<Parameter> parameter;
+    (*i)->getParameters(parameter);
     for (unsigned int i = 0; i < parameter.size(); i++)
       config->registerKeyword(parameter[i].keyword, parameter[i].value);
   }
@@ -25,8 +26,10 @@ GenericTopology *TopologyFactory::make(const Configuration *config) const {
   string id = config->get(GenericTopology::getKeyword()).getString();
   const GenericTopology *prototype = getPrototype(id);
 
-  return make(id, config->get(prototype != NULL ? prototype->getParameters() :
-      vector<Parameter>()));
+  vector<Parameter> parameters;
+  if (prototype) prototype->getParameters(parameters);
+
+  return make(id, config->get(parameters));
 }
 
 GenericTopology *TopologyFactory::make(const string &id,

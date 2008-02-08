@@ -15,7 +15,9 @@ const {
   for (pointers_t::const_iterator itr = pointers.begin();
        itr != pointers.end(); ++itr) {
     const Output *prototype = (*itr);
-    vector<Parameter> parameter(prototype->getParameters());
+    vector<Parameter> parameter;
+    prototype->getParameters(parameter);
+
     for (unsigned int i = 0; i < parameter.size(); i++) {
       config->registerKeyword(parameter[i].keyword, parameter[i].defaultValue);
       if (!parameter[i].text.empty())
@@ -57,7 +59,8 @@ OutputFactory::makeCollection(const Configuration *config) const {
 
       if (prototype != NULL)
         if (prototype->isIdDefined(config)) {
-          vector<Parameter> parameter(prototype->getParameters());
+          vector<Parameter> parameter;
+          prototype->getParameters(parameter);
           vector<Value> values(parameter.size());
 
           for (unsigned int k = 0; k < parameter.size(); k++) {

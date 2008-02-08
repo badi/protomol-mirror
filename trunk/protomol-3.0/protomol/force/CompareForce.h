@@ -45,7 +45,7 @@ namespace ProtoMol {
     virtual unsigned int numberOfBlocks(const GenericTopology *topo,
                                         const Vector3DBlock *pos);
   private:
-    virtual Force *doMake(std::vector<Value> values) const;
+    virtual Force *doMake(const std::vector<Value> &values) const;
     virtual void uncache();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

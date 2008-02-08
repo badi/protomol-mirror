@@ -78,7 +78,7 @@ string TimeForce::getIdNoAlias() const {
   return string(TimeForce::keyword + " " + myActualForce->getIdNoAlias());
 }
 
-Force *TimeForce::doMake(vector<Value> values) const {
+Force *TimeForce::doMake(const vector<Value> &values) const {
   return myActualForce->make(values);
 }
 
