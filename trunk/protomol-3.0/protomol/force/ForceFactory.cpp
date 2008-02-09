@@ -4,12 +4,9 @@
 #include <protomol/type/SimpleTypes.h>
 #include <protomol/force/CompareForce.h>
 #include <protomol/force/TimeForce.h>
+#include <protomol/parallel/Parallel.h>
 #include <algorithm>
 #include <sstream>
-
-#ifdef HAVE_PARALLEL
-#include <protomol/parallel/Parallel.h>
-#endif
 
 using namespace std;
 using namespace ProtoMol;
@@ -116,11 +113,9 @@ Force *ForceFactory::make(const string &idInput, vector<Value> values) const {
                << "\' with \'" << actualForce->getId() << "\'" << endr;
         lastCompareForce = NULL;
 
-#ifdef HAVE_PARALLEL
         if (Parallel::isParallel())
           report << hint << "Comparing forces in parallel environment "
                  << "not supported." << endr;
-#endif
       }
       return compareForce;
     } else if (prototype == NULL &&

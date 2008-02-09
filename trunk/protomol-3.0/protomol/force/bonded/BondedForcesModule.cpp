@@ -1,10 +1,10 @@
-#include "BondedForcesModule.h"
+#include <protomol/force/bonded/BondedForcesModule.h>
 
-#include "DihedralSystemForce.h"
-#include "BondSystemForce.h"
-#include "AngleSystemForce.h"
-#include "ImproperSystemForce.h"
-#include "HarmDihedralSystemForce.h"
+#include <protomol/force/bonded/DihedralSystemForce.h>
+#include <protomol/force/bonded/BondSystemForce.h>
+#include <protomol/force/bonded/AngleSystemForce.h>
+#include <protomol/force/bonded/ImproperSystemForce.h>
+#include <protomol/force/bonded/HarmDihedralSystemForce.h>
 
 #include <protomol/base/ProtoMolApp.h>
 #include <protomol/base/StringUtilities.h>

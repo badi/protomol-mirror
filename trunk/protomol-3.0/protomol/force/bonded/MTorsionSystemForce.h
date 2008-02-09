@@ -2,7 +2,7 @@
 #ifndef MTORSIONSYSTEMFORCE_H
 #define MTORSIONSYSTEMFORCE_H
 
-#include <protomol/force/SystemForce.h>
+#include <protomol/force/system/SystemForce.h>
 #include <protomol/type/ScalarStructure.h>
 #include <protomol/topology/Torsion.h>
 #include <protomol/type/Vector3DBlock.h>

@@ -2,7 +2,7 @@
 #ifndef HARMDIHEDRALSYSTEMFORCE_H
 #define HARMDIHEDRALSYSTEMFORCE_H
 
-#include "MTorsionSystemForce.h"
+#include <protomol/force/bonded/MTorsionSystemForce.h>
 #include <protomol/type/ScalarStructure.h>
 #include <protomol/parallel/Parallel.h>
 #include <protomol/topology/TopologyUtilities.h>

@@ -3,10 +3,7 @@
 #include <protomol/base/MathUtilities.h>
 #include <protomol/type/Vector3DBlock.h>
 #include <protomol/topology/GenericTopology.h>
-
-#ifdef HAVE_PARALLEL
 #include <protomol/parallel/Parallel.h>
-#endif
 
 using namespace std;
 using namespace ProtoMol::Report;
@@ -90,11 +87,7 @@ void CompareForce::postprocess(const GenericTopology *topo,
     forces->intoAdd(*myForces);
     energies->intoAdd(*myEnergies);
 
-#ifdef HAVE_PARALLEL
   } else if (!Parallel::isParallel()) {
-#else
-  } else {
-#endif // HAVE_PARALLEL
        // Compute the error of your choice.
     const ScalarStructure *comparedEnergies = myCompareForce->getEnergies();
     const Vector3DBlock *comparedForces = myCompareForce->getForces();

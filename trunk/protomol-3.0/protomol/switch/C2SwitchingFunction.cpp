@@ -1,4 +1,4 @@
-#include "C2SwitchingFunction.h"
+#include <protomol/switch/C2SwitchingFunction.h>
 #include <protomol/base/MathUtilities.h>
 #include <protomol/base/Exception.h>
 

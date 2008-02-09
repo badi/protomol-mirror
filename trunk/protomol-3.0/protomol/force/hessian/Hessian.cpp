@@ -7,7 +7,7 @@
 #include <protomol/topology/GenericTopology.h>
 #include <protomol/topology/TopologyUtilities.h>
 #include <protomol/base/PMConstants.h>
-#include <protomol/force/ReducedHessAngle.h>
+#include <protomol/force/hessian/ReducedHessAngle.h>
 #include <protomol/force/LennardJonesForce.h>
 #include <protomol/force/CoulombForce.h>
 #include <protomol/switch/CnSwitchingFunction.h>

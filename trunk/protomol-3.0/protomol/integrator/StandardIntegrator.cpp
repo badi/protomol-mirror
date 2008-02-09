@@ -7,10 +7,7 @@
 #include <protomol/topology/TopologyUtilities.h>
 #include <protomol/base/PMConstants.h>
 #include <protomol/base/ProtoMolApp.h>
-
-#ifdef HAVE_PARALLE
 #include <protomol/parallel/Parallel.h>
-#endif // HAVE_PARALLE
 
 using namespace ProtoMol;
 //____ StandardIntegrator
@@ -44,18 +41,14 @@ void StandardIntegrator::calculateForces() {
   myForces->zero();
   preForceModify();
 
-#ifdef HAVE_PARALLEL
   if (!anyMediForceModify())
     Parallel::distribute(&app->energies, myForces);
-#endif // HAVE_PARALLEL
 
   myForcesToEvaluate->evaluateSystemForces(app, myForces);
   mediForceModify();
   myForcesToEvaluate->evaluateExtendedForces(app, myForces);
 
-#ifdef HAVE_PARALLEL
   if (!anyMediForceModify()) Parallel::reduce(&app->energies, myForces);
-#endif // HAVE_PARALLEL
 
   postForceModify();
 

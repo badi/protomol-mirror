@@ -1,7 +1,7 @@
-#include "IntegratorBaseModule.h"
+#include <protomol/integrator/base/IntegratorBaseModule.h>
 
-#include "LangevinImpulseIntegrator.h"
-#include "CGMinimizerIntegrator.h"
+#include <protomol/integrator/base/LangevinImpulseIntegrator.h>
+#include <protomol/integrator/base/CGMinimizerIntegrator.h>
 
 #include <protomol/base/ProtoMolApp.h>
 

@@ -1,21 +1,21 @@
 /* -*- c++ -*- */
-#ifndef EXTENDEDCOMPAREFORCE_H
-#define EXTENDEDCOMPAREFORCE_H
+#ifndef EXTENDEDTIMEFORCE_H
+#define EXTENDEDTIMEFORCE_H
 
-#include <protomol/force/CompareForce.h>
-#include <protomol/force/ExtendedForce.h>
+#include <protomol/force/TimeForce.h>
+#include <protomol/force/extended/ExtendedForce.h>
 
 namespace ProtoMol {
-  //________________________________________ ExtendedCompareForce
+  //________________________________________ ExtendedTimeForce
 
-  class ExtendedCompareForce : public CompareForce, public ExtendedForce {
+  class ExtendedTimeForce : public TimeForce, public ExtendedForce {
     // This class contains the definition of one force
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Constructors, destructors, assignment
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    ExtendedCompareForce(Force *actualForce, CompareForce *compareForce);
+    ExtendedTimeForce(Force *actualForce);
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // From class ExtendedForce
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -34,4 +34,4 @@ namespace ProtoMol {
 
   //________________________________________ INLINES
 }
-#endif /* EXTENDEDCOMPAREFORCE_H */
+#endif /* EXTENDEDTIMEFORCE_H */

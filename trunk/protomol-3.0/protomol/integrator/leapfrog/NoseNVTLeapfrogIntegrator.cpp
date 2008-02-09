@@ -6,7 +6,7 @@
 #include <protomol/base/ProtoMolApp.h>
 #include <protomol/base/PMConstants.h>
 #include <protomol/topology/TopologyUtilities.h>
-#include "ModifierFriction.h"
+#include <protomol/integrator/leapfrog/ModifierFriction.h>
 
 using namespace std;
 using namespace ProtoMol::Report;

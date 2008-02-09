@@ -1,4 +1,4 @@
-#include "ModifierModule.h"
+#include <protomol/modifier/ModifierModule.h>
 
 #include <protomol/modifier/ModifierIncrementTimestep.h>
 #include <protomol/modifier/ModifierRattle.h>

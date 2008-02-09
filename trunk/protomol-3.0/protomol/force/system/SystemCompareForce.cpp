@@ -1,4 +1,4 @@
-#include <protomol/force/SystemCompareForce.h>
+#include <protomol/force/system/SystemCompareForce.h>
 #include <protomol/type/ScalarStructure.h>
 #include <protomol/type/Vector3DBlock.h>
 #include <protomol/topology/GenericTopology.h>

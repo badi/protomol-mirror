@@ -1,37 +1,36 @@
 /* -*- c++ -*- */
-#ifndef EXTENDEDTIMEFORCE_H
-#define EXTENDEDTIMEFORCE_H
+#ifndef SYSTEMCOMPAREFORCE_H
+#define SYSTEMCOMPAREFORCE_H
 
-#include <protomol/force/TimeForce.h>
-#include <protomol/force/ExtendedForce.h>
+#include <protomol/force/CompareForce.h>
+#include <protomol/force/system/SystemForce.h>
+#include <protomol/force/hessian/ReducedHessAngle.h>
 
 namespace ProtoMol {
-  //________________________________________ ExtendedTimeForce
+  //________________________________________ SystemCompareForce
 
-  class ExtendedTimeForce : public TimeForce, public ExtendedForce {
+  class SystemCompareForce : public CompareForce, public SystemForce {
     // This class contains the definition of one force
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Constructors, destructors, assignment
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    ExtendedTimeForce(Force *actualForce);
+    SystemCompareForce(Force *actualForce, CompareForce *compareForce);
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // From class ExtendedForce
+    // From class SystemForce
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     virtual void evaluate(const GenericTopology *topo,
                           const Vector3DBlock *positions,
-                          const Vector3DBlock *velocities,
                           Vector3DBlock *forces,
                           ScalarStructure *energies);
 
     virtual void parallelEvaluate(const GenericTopology *topo,
                                   const Vector3DBlock *positions,
-                                  const Vector3DBlock *velocities,
                                   Vector3DBlock *forces,
                                   ScalarStructure *energies);
   };
 
   //________________________________________ INLINES
 }
-#endif /* EXTENDEDTIMEFORCE_H */
+#endif /* SYSTEMCOMPAREFORCE_H */

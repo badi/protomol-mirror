@@ -1,4 +1,4 @@
-#include "LangevinImpulseIntegrator.h"
+#include <protomol/integrator/base/LangevinImpulseIntegrator.h>
 #include <protomol/base/Report.h>
 #include <protomol/type/ScalarStructure.h>
 #include <protomol/type/Vector3DBlock.h>

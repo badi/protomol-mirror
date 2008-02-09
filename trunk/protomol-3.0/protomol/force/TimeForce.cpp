@@ -3,10 +3,7 @@
 #include <protomol/base/MathUtilities.h>
 #include <protomol/type/Vector3DBlock.h>
 #include <protomol/topology/GenericTopology.h>
-
-#ifdef HAVE_PARALLEL
 #include <protomol/parallel/Parallel.h>
-#endif
 
 using namespace std;
 using namespace ProtoMol::Report;
@@ -38,11 +35,9 @@ TimeForce::~TimeForce() {
   report.precision(5);
   report << allnodesserial << plain
          << "Timing " << myIdNumber
-#ifdef HAVE_PARALLEL
          << (Parallel::isParallel() ? string(" (" +
                toString(Parallel::getId()) + ")") :
              string(""))
-#endif
          << " : " << totalTime << "[s] process time";
   if (myTimeList.size() > 1) {
     double stddev = 0;

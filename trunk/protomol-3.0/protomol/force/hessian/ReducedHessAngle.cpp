@@ -1,4 +1,4 @@
-#include <protomol/force/ReducedHessAngle.h>
+#include <protomol/force/hessian/ReducedHessAngle.h>
 #include <protomol/base/Report.h>
 
 using namespace std;

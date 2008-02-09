@@ -1,16 +1,14 @@
 #include <protomol/force/ForceGroup.h>
 
-#include <protomol/force/SystemForce.h>
+#include <protomol/force/system/SystemForce.h>
 #include <protomol/type/Vector3DBlock.h>
 #include <protomol/topology/GenericTopology.h>
 #include <protomol/type/ScalarStructure.h>
-#include <protomol/force/ExtendedForce.h>
+#include <protomol/force/extended/ExtendedForce.h>
 #include <protomol/force/MollyForce.h>
 #include <protomol/force/MetaForce.h>
 #include <protomol/base/TimerStatistic.h>
 #include <protomol/base/ProtoMolApp.h>
-
-#ifdef HAVE_PARALLEL
 #include <protomol/parallel/Parallel.h>
 
 //____#define DEBUG_OUTSTANDING_MSG
@@ -18,7 +16,6 @@
 #ifdef DEBUG_OUTSTANDING_MSG
 #include <mpi.h>
 #endif
-#endif // HAVE_PARALLEL
 
 using namespace std;
 using namespace ProtoMol;
@@ -55,7 +52,6 @@ void ForceGroup::evaluateSystemForces(ProtoMolApp *app,
   if (mySystemForcesList.empty()) return;
   app->topology->uncacheCellList();
 
-#ifdef HAVE_PARALLEL
   Parallel::distribute(&app->energies, forces);
 
   if (Parallel::isDynamic()) {
@@ -72,23 +68,19 @@ void ForceGroup::evaluateSystemForces(ProtoMolApp *app,
 
   if (Parallel::iAmSlave()) {
     Parallel::resetNext();
-#endif // HAVE_PARALLEL
 
   TimerStatistic::timer[TimerStatistic::FORCES].start();
   list<SystemForce *>::const_iterator currentForce;
   for (currentForce = mySystemForcesList.begin();
        currentForce != mySystemForcesList.end(); ++currentForce)
-#ifdef HAVE_PARALLEL
     if (Parallel::isParallel())
       (*currentForce)->parallelEvaluate(app->topology, &app->positions, forces,
                                         &app->energies);
     else
-#endif // HAVE_PARALLEL
     (*currentForce)->evaluate(app->topology, &app->positions, forces,
                               &app->energies);
 
   TimerStatistic::timer[TimerStatistic::FORCES].stop();
-#ifdef HAVE_PARALLEL
 }
 
 #ifdef DEBUG_OUTSTANDING_MSG
@@ -103,8 +95,7 @@ void ForceGroup::evaluateSystemForces(ProtoMolApp *app,
            << " outstanding msg from " << status.MPI_SOURCE << endr;
 #endif
 
-Parallel::reduce(energies, forces);
-#endif // HAVE_PARALLEL
+  Parallel::reduce(&app->energies, forces);
 }
 //____ Evaluate all system forces in this group.
 
@@ -114,14 +105,13 @@ void ForceGroup::evaluateExtendedForces(ProtoMolApp *app,
 
   app->topology->uncacheCellList();
 
-#ifdef HAVE_PARALLEL
   Parallel::distribute(&app->energies, forces);
 
   if (Parallel::isDynamic()) {
     // Collecting the number of blocks of each force.
     vector<int> blocks;
-    list<ExtendedForce *>::const_iterator currentForce =
-    for (myExtendedForcesList.begin();
+    list<ExtendedForce *>::const_iterator currentForce;
+    for (currentForce = myExtendedForcesList.begin();
          currentForce != myExtendedForcesList.end(); ++currentForce)
       blocks.push_back
         ((*currentForce)->numberOfBlocks(app->topology, &app->positions));
@@ -131,24 +121,20 @@ void ForceGroup::evaluateExtendedForces(ProtoMolApp *app,
 
   if (Parallel::iAmSlave()) {
     Parallel::resetNext();
-#endif // HAVE_PARALLEL
 
   TimerStatistic::timer[TimerStatistic::FORCES].start();
   list<ExtendedForce *>::const_iterator currentForce;
   for (currentForce = myExtendedForcesList.begin();
        currentForce != myExtendedForcesList.end(); ++currentForce)
-#ifdef HAVE_PARALLEL
     if (Parallel::isParallel())
       (*currentForce)->parallelEvaluate(app->topology, &app->positions,
                                         &app->velocities, forces,
                                         &app->energies);
     else
-#endif // HAVE_PARALLEL
       (*currentForce)->evaluate(app->topology, &app->positions,
                                 &app->velocities, forces, &app->energies);
 
   TimerStatistic::timer[TimerStatistic::FORCES].stop();
-#ifdef HAVE_PARALLEL
 }
 
 #ifdef DEBUG_OUTSTANDING_MSG
@@ -165,7 +151,6 @@ void ForceGroup::evaluateExtendedForces(ProtoMolApp *app,
 #endif
 
   Parallel::reduce(&app->energies, forces);
-#endif // HAVE_PARALLEL
 }
 
 void ForceGroup::evaluateMollyForces(GenericTopology *topo,

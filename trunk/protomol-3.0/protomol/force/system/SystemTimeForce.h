@@ -3,7 +3,7 @@
 #define SYSTEMTIMEFORCE_H
 
 #include <protomol/force/TimeForce.h>
-#include <protomol/force/SystemForce.h>
+#include <protomol/force/system/SystemForce.h>
 
 namespace ProtoMol {
   //________________________________________ SystemTimeForce

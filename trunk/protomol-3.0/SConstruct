@@ -102,7 +102,7 @@ if debug:
         env.Append(CCFLAGS = '-g -Wall')
         if strict: env.Append(CCFLAGS = '-Werror')
 
-    env.Append(CPPDEFINES = ['-DDEBUG'])
+    env.Append(CPPDEFINES = ['DEBUG'])
 
 
 # Optimizations

@@ -1,4 +1,4 @@
-#include "Modifier.h"
+#include <protomol/modifier/Modifier.h>
 
 #include <protomol/base/ProtoMolApp.h>
 #include <protomol/base/Report.h>

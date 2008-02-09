@@ -1,4 +1,4 @@
-#include <protomol/force/ExtendedTimeForce.h>
+#include <protomol/force/extended/ExtendedTimeForce.h>
 #include <protomol/type/ScalarStructure.h>
 #include <protomol/type/Vector3DBlock.h>
 #include <protomol/topology/GenericTopology.h>
