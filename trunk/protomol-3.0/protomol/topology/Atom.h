@@ -12,6 +12,7 @@ namespace ProtoMol {
   struct SCPISMAtomParameters {
     SCPISMAtomParameters() : sasaFrac(0.0), polarFrac(0.0) {}
     Real sqrtalphaSCPISM;
+    Real alphaSCPISM;
     ///< For SCPISM calculations
     ///< Parameterized by Atom Type according to Hassan et al. (2002)
     Real sasaFrac;

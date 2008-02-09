@@ -11,6 +11,7 @@ namespace ProtoMol {
 
   struct SCPISMAtomTypeParameters {
     Real sqrt_alpha;        ///< JI: sqrt of alpha i used in CoulombSCPISM
+    Real alpha;             ///< JI: alpha i used in CoulombSCPISM
     Real g_i;               ///< TC: used for polar H+, in addendum
     Hbonded isHbonded;      ///< TC: type of H-bond, none, polar, or acceptor
     Real A_i;               ///< JI: A_i in (2) on SCPISM.impl
