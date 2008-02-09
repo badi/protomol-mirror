@@ -1,7 +1,7 @@
 #include <protomol/modules/LennardJonesNonbondedCutoffC2/LennardJonesNonbondedCutoffC2Module.h>
 
 #include <protomol/switch/C2SwitchingFunction.h>
-#include <protomol/modules/LennardJonesNonbondedCutoffC2/NonbondedCutoffSystemForce.h>
+#include <protomol/force/nonbonded/NonbondedCutoffSystemForce.h>
 #include <protomol/force/LennardJonesForce.h>
 #include <protomol/force/OneAtomPair.h>
 #include <protomol/topology/CubicCellManager.h>
