@@ -129,7 +129,7 @@ namespace ProtoMol {
     }
     
   private:
-    virtual Force *doMake(std::vector<Value> values) const {
+    virtual Force *doMake(const std::vector<Value> &values) const {
       unsigned int blockSize;
       int n = values.size() - 1;
       values[n].get(blockSize);

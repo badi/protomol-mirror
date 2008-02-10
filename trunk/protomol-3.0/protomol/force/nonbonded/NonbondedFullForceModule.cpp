@@ -36,7 +36,7 @@ void NonbondedFullForceModule::registerForces(ProtoMolApp *app) {
 #define FullSystem NonbondedFullSystemForce
 
   if (equalNocase(boundConds, PBC::keyword)) {
-  f.reg(new FullSystem<OneAtomPairFull<PBC, C1, CoulombForce> >());
+    f.reg(new FullSystem<OneAtomPairFull<PBC, C1, CoulombForce> >());
     f.reg(new FullSystem<OneAtomPairFull<PBC, C1, LennardJonesForce> >());
     f.reg(new FullSystem<OneAtomPairFull<PBC, C2, CoulombForce> >());
     f.reg(new FullSystem<OneAtomPairFull<PBC, C2, LennardJonesForce> >());

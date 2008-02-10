@@ -15,6 +15,7 @@
 
 #include <protomol/force/nonbonded/NonbondedCutoffForceModule.h>
 #include <protomol/force/nonbonded/NonbondedFullForceModule.h>
+#include <protomol/force/nonbonded/NonbondedSimpleFullForceModule.h>
 
 using namespace ProtoMol;
 
@@ -36,5 +37,6 @@ void moduleInitFunction(ModuleManager *manager) {
   manager->add(new BondedForcesModule());
   manager->add(new NonbondedCutoffForceModule());
   manager->add(new NonbondedFullForceModule());
+  manager->add(new NonbondedSimpleFullForceModule());
 }
 

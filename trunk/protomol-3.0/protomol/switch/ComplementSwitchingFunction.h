@@ -59,7 +59,7 @@ namespace ProtoMol {
 
     static ComplementSwitchingFunction make(std::vector<Value> values) {
       return ComplementSwitchingFunction(TOriginalSwitchingFunction::
-                                         make(values);
+                                         make(values));
     }
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
