@@ -1,4 +1,4 @@
-#include <protomol/modules/LeapfrogModule.h>
+#include <protomol/module/LeapfrogModule.h>
 
 #include <protomol/ProtoMolApp.h>
 

@@ -2,7 +2,7 @@
 #include <protomol/config/Configuration.h>
 #include <protomol/topology/GenericTopology.h>
 #include <protomol/type/ScalarStructure.h>
-#include <protomol/modules/MainModule.h>
+#include <protomol/module/MainModule.h>
 #include <protomol/ProtoMolApp.h>
 
 using namespace std;

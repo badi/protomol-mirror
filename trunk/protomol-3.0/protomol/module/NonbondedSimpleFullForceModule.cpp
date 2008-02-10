@@ -1,8 +1,8 @@
-#include <protomol/modules/NonbondedSimpleFullForceModule.h>
+#include <protomol/module/NonbondedSimpleFullForceModule.h>
 
 #include <protomol/ProtoMolApp.h>
 #include <protomol/base/StringUtilities.h>
-#include <protomol/modules/TopologyModule.h>
+#include <protomol/module/TopologyModule.h>
 #include <protomol/topology/PeriodicBoundaryConditions.h>
 #include <protomol/topology/VacuumBoundaryConditions.h>
 

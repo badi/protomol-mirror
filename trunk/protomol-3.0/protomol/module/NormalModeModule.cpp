@@ -1,4 +1,4 @@
-#include <protomol/modules/NormalModeModule.h>
+#include <protomol/module/NormalModeModule.h>
 
 #include <protomol/ProtoMolApp.h>
 #include <protomol/base/Exception.h>

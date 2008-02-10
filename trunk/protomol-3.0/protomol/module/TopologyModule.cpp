@@ -1,4 +1,4 @@
-#include <protomol/modules/TopologyModule.h>
+#include <protomol/module/TopologyModule.h>
 
 #include <protomol/topology/Topology.h>
 #include <protomol/factory/TopologyFactory.h>
@@ -7,7 +7,7 @@
 #include <protomol/topology/PeriodicBoundaryConditions.h>
 
 #include <protomol/ProtoMolApp.h>
-#include <protomol/modules/MainModule.h>
+#include <protomol/module/MainModule.h>
 #include <protomol/base/Exception.h>
 
 using namespace std;

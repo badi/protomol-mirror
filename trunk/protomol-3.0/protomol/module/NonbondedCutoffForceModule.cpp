@@ -1,8 +1,8 @@
-#include <protomol/modules/NonbondedCutoffForceModule.h>
+#include <protomol/module/NonbondedCutoffForceModule.h>
 
 #include <protomol/ProtoMolApp.h>
 #include <protomol/base/StringUtilities.h>
-#include <protomol/modules/TopologyModule.h>
+#include <protomol/module/TopologyModule.h>
 #include <protomol/topology/PeriodicBoundaryConditions.h>
 #include <protomol/topology/VacuumBoundaryConditions.h>
 

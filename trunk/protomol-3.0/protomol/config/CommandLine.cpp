@@ -3,7 +3,7 @@
 #include <protomol/base/Exception.h>
 #include <protomol/type/String.h>
 #include <protomol/config/Configuration.h>
-#include <protomol/modules/ConfigurationModule.h>
+#include <protomol/module/ConfigurationModule.h>
 #include <protomol/base/StringUtilities.h>
 #include <protomol/base/SystemUtilities.h>
 

@@ -5,9 +5,9 @@
 #include <protomol/topology/GenericTopology.h>
 #include <protomol/type/ScalarStructure.h>
 #include <protomol/topology/TopologyUtilities.h>
-#include <protomol/modules/MainModule.h>
+#include <protomol/module/MainModule.h>
 #include <protomol/ProtoMolApp.h>
-#include <protomol/modules/OutputModule.h>
+#include <protomol/module/OutputModule.h>
 
 using namespace std;
 using namespace ProtoMol::Report;

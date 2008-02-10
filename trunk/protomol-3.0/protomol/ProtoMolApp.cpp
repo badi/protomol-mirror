@@ -1,12 +1,12 @@
 #include <protomol/ProtoMolApp.h>
 
 #include <protomol/base/ModuleManager.h>
-#include <protomol/modules/MainModule.h>
-#include <protomol/modules/IOModule.h>
+#include <protomol/module/MainModule.h>
+#include <protomol/module/IOModule.h>
 
 #include <protomol/config/CommandLine.h>
 #include <protomol/config/Configuration.h>
-#include <protomol/modules/ConfigurationModule.h>
+#include <protomol/module/ConfigurationModule.h>
 #include <protomol/config/ConfigurationReader.h>
 #include <protomol/base/SystemUtilities.h>
 #include <protomol/base/PMConstants.h>

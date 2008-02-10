@@ -1,4 +1,4 @@
-#include <protomol/modules/IOModule.h>
+#include <protomol/module/IOModule.h>
 
 #include <protomol/io/PosVelReader.h>
 #include <protomol/io/PSFReader.h>
@@ -10,7 +10,7 @@
 #include <protomol/base/PMConstants.h>
 #include <protomol/type/String.h>
 #include <protomol/type/PDB.h>
-#include <protomol/modules/MainModule.h>
+#include <protomol/module/MainModule.h>
 
 using namespace std;
 using namespace ProtoMol;

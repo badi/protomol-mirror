@@ -1,5 +1,5 @@
 #include <protomol/output/OutputXYZTrajectoryPos.h>
-#include <protomol/modules/MainModule.h>
+#include <protomol/module/MainModule.h>
 #include <protomol/output/OutputCache.h>
 #include <protomol/config/Configuration.h>
 #include <protomol/base/StringUtilities.h>

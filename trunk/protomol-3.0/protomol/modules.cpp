@@ -1,22 +1,22 @@
 #include <protomol/base/ModuleManager.h>
 
-#include <protomol/modules/MainModule.h>
-#include <protomol/modules/CommandLineModule.h>
-#include <protomol/modules/ConfigurationModule.h>
-#include <protomol/modules/TopologyModule.h>
-#include <protomol/modules/OutputModule.h>
-#include <protomol/modules/BondedForcesModule.h>
-#include <protomol/modules/ModifierModule.h>
-#include <protomol/modules/IOModule.h>
+#include <protomol/module/MainModule.h>
+#include <protomol/module/CommandLineModule.h>
+#include <protomol/module/ConfigurationModule.h>
+#include <protomol/module/TopologyModule.h>
+#include <protomol/module/OutputModule.h>
+#include <protomol/module/BondedForcesModule.h>
+#include <protomol/module/ModifierModule.h>
+#include <protomol/module/IOModule.h>
 
-#include <protomol/modules/IntegratorBaseModule.h>
-#include <protomol/modules/NormalModeModule.h>
-#include <protomol/modules/LeapfrogModule.h>
-#include <protomol/modules/HessianIntegratorModule.h>
+#include <protomol/module/IntegratorBaseModule.h>
+#include <protomol/module/NormalModeModule.h>
+#include <protomol/module/LeapfrogModule.h>
+#include <protomol/module/HessianIntegratorModule.h>
 
-#include <protomol/modules/NonbondedCutoffForceModule.h>
-#include <protomol/modules/NonbondedFullForceModule.h>
-#include <protomol/modules/NonbondedSimpleFullForceModule.h>
+#include <protomol/module/NonbondedCutoffForceModule.h>
+#include <protomol/module/NonbondedFullForceModule.h>
+#include <protomol/module/NonbondedSimpleFullForceModule.h>
 
 using namespace ProtoMol;
 

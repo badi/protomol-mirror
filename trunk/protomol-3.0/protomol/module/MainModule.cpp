@@ -1,6 +1,6 @@
-#include <protomol/modules/MainModule.h>
+#include <protomol/module/MainModule.h>
 
-#include <protomol/modules/IOModule.h>
+#include <protomol/module/IOModule.h>
 #include <protomol/ProtoMolApp.h>
 #include <protomol/topology/TopologyUtilities.h>
 #include <protomol/config/Configuration.h>
