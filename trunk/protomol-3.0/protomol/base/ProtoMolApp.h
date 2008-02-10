@@ -1,11 +1,10 @@
 #ifndef PROTOMOLAPP_H
 #define PROTOMOLAPP_H
 
-#include <protomol/topology/TopologyFactory.h>
-#include <protomol/force/ForceFactory.h>
-#include <protomol/integrator/IntegratorFactory.h>
-#include <protomol/output/OutputFactory.h>
-#include <protomol/modifier/ModifierFactory.h>
+#include <protomol/factory/TopologyFactory.h>
+#include <protomol/factory/ForceFactory.h>
+#include <protomol/factory/IntegratorFactory.h>
+#include <protomol/factory/OutputFactory.h>
 
 #include <protomol/config/Configuration.h>
 #include <protomol/config/CommandLine.h>
@@ -41,7 +40,6 @@ namespace ProtoMol {
     ForceFactory forceFactory;
     IntegratorFactory integratorFactory;
     OutputFactory outputFactory;
-    ModifierFactory modifierFactory;
 
     // Containers
     CommandLine cmdLine;
