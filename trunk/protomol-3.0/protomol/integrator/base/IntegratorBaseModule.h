@@ -11,9 +11,6 @@ namespace ProtoMol {
   class IntegratorBaseModule : public Module {
   public:
     const std::string getName() const {return "IntegratorBase";}
-    int getPriority() const {return 0;}
-    const std::string getHelp() const {return "";}
-
     void init(ProtoMolApp *app);
   };
 };
