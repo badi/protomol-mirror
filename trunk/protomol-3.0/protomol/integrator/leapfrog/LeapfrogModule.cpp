@@ -1,12 +1,12 @@
-#include "LeapfrogModule.h"
+#include <protomol/integrator/leapfrog/LeapfrogModule.h>
 
 #include <protomol/base/ProtoMolApp.h>
 
-#include "LeapfrogIntegrator.h"
-#include "LeapfrogTruncatedShadow.h"
-#include "DMDLeapfrogIntegrator.h"
-#include "PLeapfrogIntegrator.h"
-#include "NoseNVTLeapfrogIntegrator.h"
+#include <protomol/integrator/leapfrog/LeapfrogIntegrator.h>
+#include <protomol/integrator/leapfrog/LeapfrogTruncatedShadow.h>
+#include <protomol/integrator/leapfrog/DMDLeapfrogIntegrator.h>
+#include <protomol/integrator/leapfrog/PLeapfrogIntegrator.h>
+#include <protomol/integrator/leapfrog/NoseNVTLeapfrogIntegrator.h>
 
 using namespace std;
 using namespace ProtoMol;

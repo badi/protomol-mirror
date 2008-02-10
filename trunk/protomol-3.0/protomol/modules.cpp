@@ -11,6 +11,7 @@
 #include <protomol/integrator/base/IntegratorBaseModule.h>
 #include <protomol/integrator/normal/NormalModeModule.h>
 #include <protomol/integrator/leapfrog/LeapfrogModule.h>
+#include <protomol/integrator/hessian/HessianIntegratorModule.h>
 
 #include <protomol/modules/LennardJonesNonbondedCutoffC2/LennardJonesNonbondedCutoffC2Module.h>
 
@@ -28,6 +29,7 @@ void moduleInitFunction(ModuleManager *manager) {
   manager->add(new IntegratorBaseModule());
   manager->add(new NormalModeModule());
   manager->add(new LeapfrogModule());
+  manager->add(new HessianIntegratorModule());
 
   // Forces
   manager->add(new BondedForcesModule());

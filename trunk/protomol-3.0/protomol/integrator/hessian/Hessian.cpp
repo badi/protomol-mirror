@@ -1,4 +1,4 @@
-#include <protomol/force/hessian/Hessian.h>
+#include <protomol/integrator/hessian/Hessian.h>
 
 #include <protomol/base/Report.h>
 #include <protomol/type/ScalarStructure.h>

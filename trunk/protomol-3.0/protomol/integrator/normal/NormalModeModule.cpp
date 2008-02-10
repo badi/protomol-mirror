@@ -1,13 +1,13 @@
-#include "NormalModeModule.h"
+#include <protomol/integrator/normal/NormalModeModule.h>
 
 #include <protomol/base/ProtoMolApp.h>
 
-#include "NormalModeLangevin.h"
-#include "NormalModeMinimizer.h"
-#include "NormalModeDiagonalize.h"
-#include "NormalModeMori.h"
-#include "NormalModeRelax.h"
-#include "NormalModeBrownian.h"
+#include <protomol/integrator/normal/NormalModeLangevin.h>
+#include <protomol/integrator/normal/NormalModeMinimizer.h>
+#include <protomol/integrator/normal/NormalModeDiagonalize.h>
+#include <protomol/integrator/normal/NormalModeMori.h>
+#include <protomol/integrator/normal/NormalModeRelax.h>
+#include <protomol/integrator/normal/NormalModeBrownian.h>
 
 using namespace std;
 using namespace ProtoMol;

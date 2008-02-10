@@ -1,4 +1,4 @@
-#include "Born.h"
+#include <protomol/force/nonbonded/Born.h>
 
 #include <protomol/topology/GenericTopology.h>
 #include <protomol/type/Vector3DBlock.h>

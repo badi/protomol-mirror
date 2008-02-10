@@ -1,39 +1,43 @@
 /*  -*- c++ -*-  */
-#ifndef NORMALMODEDIAGONALIZE_H
-#define NORMALMODEDIAGONALIZE_H
+#ifndef HESSIANINT_H
+#define HESSIANINT_H
 
-#include <protomol/integrator/MTSIntegrator.h>
-#include <protomol/integrator/normal/NormalModeUtilities.h>
-#include <protomol/integrator/hessian/Hessian.h>
-
+#include <protomol/integrator/STSIntegrator.h>
+#include <protomol/force/Force.h>
 #include <protomol/type/Vector3DBlock.h>
+#include <protomol/integrator/hessian/Hessian.h>
+#include <protomol/type/TypeSelection.h>
+
+using namespace std;
 
 namespace ProtoMol {
   class ScalarStructure;
   class ForceGroup;
+  class ReducedHessAngle;
 
-  //____ NormalModeDiagonalize
-  class NormalModeDiagonalize : public MTSIntegrator,
-    public NormalModeUtilities {
+  //____ HessianInt
+  class HessianInt : public STSIntegrator {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Constructors, destructors, assignment
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    NormalModeDiagonalize();
-    NormalModeDiagonalize(int cycles, int avs, Real avss, int redi, int rayf,
-                          int raya, int mins, Real minl,
-                          ForceGroup *overloadedForces,
-                          StandardIntegrator *nextIntegrator);
-    ~NormalModeDiagonalize();
+    HessianInt();
+    HessianInt(Real timestep, std::string evec_s, std::string eval_s,
+               std::string hess_s, bool sorta, int fm, bool tef, bool masswt,
+               ForceGroup *overloadedForces);
+    ~HessianInt();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // New methods of class NormalModeDiagonalize
+    // New methods of class HessianInt
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  protected:
-    void drift();
-
   private:
-  public:
+    int diagHessian(double *eigVecO, double *eigValO);
+    void outputDiagHess();
+    void absSort();
+
+  protected:
+    void doKickdoDrift();
+    void doHalfKickdoDrift();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // From class Makeable
@@ -49,43 +53,32 @@ namespace ProtoMol {
     virtual void initialize(ProtoMolApp *app);
     virtual void run(int numTimesteps);
 
-  protected:
-    //virtual void addModifierAfterInitialize();
-
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // From class STSIntegrator
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   private:
-    virtual MTSIntegrator *doMake(const std::vector<Value> &values,
-                                  ForceGroup *fg,
-                                  StandardIntegrator *nextIntegrator) const;
+    virtual STSIntegrator *doMake(const std::vector<Value> &values,
+                                  ForceGroup *fg) const;
 
-  public:
+  protected:
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // My data members
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
     static const std::string keyword;
-
   private:
-    Vector3DBlock diagAt;
-    Hessian hsn;
+    typedef TypeSelection::Int<4>::type int32;
     double *eigVec, *eigVal;
     int *eigIndx;
-    bool eigAlloc;
-    int noAvStep;
-    Real avStep;
-    int rediagCount, nextRediag, raylFrequ, raylAverage, nextRayl, raylAvCount;
-    bool raylDo;
-    int minSteps;
-    Real minLim;
-    bool validMaxEigv;
-    NormalModeUtilities *myNextNormalMode;
-    int forceCalc;
-    Real lastLambda;
+    int totStep;
+    unsigned int sz;
+    std::string evecfile, evalfile, hessfile;
+    bool sortOnAbs;
+    unsigned int fixedModes;
+    bool textEig, massWeight;
+    Hessian hsn;
   };
 }
-
 #endif
 

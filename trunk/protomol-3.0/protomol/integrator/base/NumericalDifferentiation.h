@@ -3,7 +3,7 @@
 #define NUMERICALDIFFERENTIATION_H
 
 #include <protomol/integrator/STSIntegrator.h>
-#include <protomol/force/hessian/Hessian.h>
+#include <protomol/integrator/hessian/Hessian.h>
 
 namespace ProtoMol {
   class ScalarStructure;
