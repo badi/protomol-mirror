@@ -1,4 +1,4 @@
-#include <protomol/integrator/numerial/NumericalDifferentiation.h>
+#include <protomol/integrator/base/NumericalDifferentiation.h>
 #include <protomol/base/Report.h>
 #include <protomol/type/ScalarStructure.h>
 #include <protomol/type/Vector3DBlock.h>
