@@ -1,4 +1,4 @@
-#include <protomol/config/ConfigurationModule.h>
+#include <protomol/modules/ConfigurationModule.h>
 #include <protomol/config/Configuration.h>
 #include <protomol/config/ConfigurationReader.h>
 

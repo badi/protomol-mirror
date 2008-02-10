@@ -3,7 +3,7 @@
 #include <protomol/type/ScalarStructure.h>
 
 #if defined (HAVE_LAPACK)
-#include "LapackProtomol.h"
+#include <protomol/integrator/hessian/LapackProtomol.h>
 #else
 #if defined (HAVE_SIMTK_LAPACK)
 #include "SimTKlapack.h"

@@ -1,4 +1,4 @@
-#include <protomol/topology/TopologyModule.h>
+#include <protomol/modules/TopologyModule.h>
 
 #include <protomol/topology/Topology.h>
 #include <protomol/topology/TopologyFactory.h>
@@ -19,7 +19,7 @@
 #include <protomol/base/StringUtilities.h>
 #include <protomol/topology/TopologyUtilities.h>
 
-#include <protomol/base/MainModule.h>
+#include <protomol/modules/MainModule.h>
 
 #include <protomol/base/Exception.h>
 #include <algorithm>

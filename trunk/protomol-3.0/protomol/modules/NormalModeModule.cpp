@@ -1,4 +1,4 @@
-#include <protomol/integrator/normal/NormalModeModule.h>
+#include <protomol/modules/NormalModeModule.h>
 
 #include <protomol/base/ProtoMolApp.h>
 

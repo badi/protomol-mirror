@@ -1,4 +1,4 @@
-#include <protomol/integrator/base/IntegratorBaseModule.h>
+#include <protomol/modules/IntegratorBaseModule.h>
 
 #include <protomol/integrator/base/LangevinImpulseIntegrator.h>
 #include <protomol/integrator/base/CGMinimizerIntegrator.h>

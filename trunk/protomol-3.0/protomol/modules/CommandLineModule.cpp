@@ -1,4 +1,4 @@
-#include <protomol/config/CommandLineModule.h>
+#include <protomol/modules/CommandLineModule.h>
 #include <protomol/config/CommandLine.h>
 
 #include <protomol/base/ProtoMolApp.h>

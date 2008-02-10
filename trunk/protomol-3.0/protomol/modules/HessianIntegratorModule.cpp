@@ -1,5 +1,5 @@
-#include "HessianIntegratorModule.h"
-#include "HessianInt.h"
+#include <protomol/modules/HessianIntegratorModule.h>
+#include <protomol/integrator/hessian/HessianInt.h>
 
 #include <protomol/base/ProtoMolApp.h>
 

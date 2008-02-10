@@ -1,4 +1,4 @@
-#include <protomol/base/MainModule.h>
+#include <protomol/modules/MainModule.h>
 
 #include <protomol/base/ProtoMolApp.h>
 #include <protomol/topology/TopologyUtilities.h>
@@ -27,6 +27,10 @@ defineInputValue(InputIntegrator, "integrator");
 defineInputValue(InputReducedImage, "reducedImage");
 defineInputValue(InputTemperature, "temperature");
 defineInputValue(InputDoSCPISM, "doscpism");
+defineInputValueAndText(InputVirialCalc, "virialCalc",
+                        "Required for constant pressure simulations.");
+defineInputValueAndText(InputMolVirialCalc, "molVirialCalc",
+                        "Required for constant pressure simulations.");
 defineInputValue(InputOutputfreq,"outputfreq");
 defineInputValue(InputOutput,"output");
 defineInputValueAndText(InputMinimalImage, "minimalImage",

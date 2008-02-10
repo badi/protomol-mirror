@@ -1,11 +1,11 @@
 #include <protomol/base/ProtoMolApp.h>
 
 #include <protomol/base/ModuleManager.h>
-#include <protomol/base/MainModule.h>
+#include <protomol/modules/MainModule.h>
 
 #include <protomol/config/CommandLine.h>
 #include <protomol/config/Configuration.h>
-#include <protomol/config/ConfigurationModule.h>
+#include <protomol/modules/ConfigurationModule.h>
 #include <protomol/config/ConfigurationReader.h>
 #include <protomol/base/SystemUtilities.h>
 #include <protomol/base/PMConstants.h>
@@ -21,7 +21,7 @@
 
 #include <protomol/topology/GenericTopology.h>
 #include <protomol/topology/TopologyFactory.h>
-#include <protomol/topology/TopologyModule.h>
+#include <protomol/modules/TopologyModule.h>
 #include <protomol/topology/TopologyUtilities.h>
 
 #include <protomol/output/OutputFactory.h>

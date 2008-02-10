@@ -2,7 +2,7 @@
 #include <protomol/config/Configuration.h>
 #include <protomol/base/StringUtilities.h>
 #include <protomol/topology/GenericTopology.h>
-#include <protomol/base/MainModule.h>
+#include <protomol/modules/MainModule.h>
 #include <protomol/base/Exception.h>
 #include <protomol/base/ProtoMolApp.h>
 #include <protomol/io/XYZTrajectoryWriter.h>

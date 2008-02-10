@@ -1,4 +1,4 @@
-#include <protomol/force/bonded/BondedForcesModule.h>
+#include <protomol/modules/BondedForcesModule.h>
 
 #include <protomol/force/bonded/DihedralSystemForce.h>
 #include <protomol/force/bonded/BondSystemForce.h>
@@ -8,7 +8,7 @@
 
 #include <protomol/base/ProtoMolApp.h>
 #include <protomol/base/StringUtilities.h>
-#include <protomol/topology/TopologyModule.h>
+#include <protomol/modules/TopologyModule.h>
 #include <protomol/topology/PeriodicBoundaryConditions.h>
 #include <protomol/topology/VacuumBoundaryConditions.h>
 
