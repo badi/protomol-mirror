@@ -58,6 +58,9 @@ namespace ProtoMol {
       pointers.insert(exemplar);
       cache = false;
     }
+    void reg(const Type *exemplar, std::string id = "") {
+      registerExemplar(exemplar, id);
+    }
 
     void registerExemplar(const Type *exemplar,
                           const std::vector<std::string> &aliases,
@@ -69,6 +72,10 @@ namespace ProtoMol {
         aliasExemplars[aliases[i]] = exemplar;
 
       cache = false;
+    }
+    void reg(const Type *exemplar, const std::vector<std::string> &aliases,
+             std::string id = "") {
+      registerExemplar(exemplar, aliases, id);
     }
 
     bool unregisterExemplar(const std::string &id) {

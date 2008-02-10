@@ -1,8 +1,9 @@
 #include <protomol/force/hessian/ReducedHessBond.h>
 
 using namespace ProtoMol;
-Matrix3By3 reducedHessBond(const Vector3D &atom_i, const Vector3D &atom_j,
-                           const Real _k, const Real _r0) {
+Matrix3By3 ProtoMol::reducedHessBond(const Vector3D &atom_i,
+                                     const Vector3D &atom_j,
+                                     const Real _k, const Real _r0) {
   Vector3D rij(atom_j - atom_i);
   // the relative position vectors
 

@@ -53,6 +53,9 @@ namespace ProtoMol {
     void getParameters(std::vector<Parameter> &parameters) const {
       myOrigFunc.getParameters(parameters);
     }
+    static unsigned int getParameterSize() {
+      return TOriginalSwitchingFunction::getParameterSize();
+    }
 
     static ComplementSwitchingFunction make(std::vector<Value> values) {
       return ComplementSwitchingFunction(TOriginalSwitchingFunction::

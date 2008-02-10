@@ -52,9 +52,66 @@ namespace ProtoMol {
       initialize(static_cast<const TopologyType *>(topo), pos, f, e);
     }
 
-    void doOneAtomPair(const int i, const int j);
-
     // Computes the force and energy for atom i and j.
+    void doOneAtomPair(const int i, const int j) {
+      if (TConstraint::PRE_CHECK)
+        if (!TConstraint::check(realTopo, i, j))
+          return;
+
+      // Get atom distance.
+      Real distSquared;
+
+      Vector3D diff = realTopo->
+        boundaryConditions.minimalDifference((*positions)[i], (*positions)[j],
+                                             distSquared);
+      // Do switching function rough test, if necessary.
+      if (TSwitchingFunction::USE || TNonbondedForce::CUTOFF)
+        if (distSquared > mySquaredCutoff)
+          return;
+      // Check for an exclusion.
+      int mi = realTopo->atoms[i].molecule;
+      int mj = realTopo->atoms[j].molecule;
+      bool same = (mi == mj);
+      ExclusionClass excl =
+        (same ? realTopo->exclusions.check(i, j) : EXCLUSION_NONE);
+      if (excl == EXCLUSION_FULL)
+        return;
+
+      // Calculate the force and energy.
+      Real energy, force;
+      Real rDistSquared = (TNonbondedForce::DIST_R2 ? 1.0 / distSquared : 1.0);
+      nonbondedForceFunction(energy, force, distSquared, rDistSquared, diff,
+                             realTopo, i, j, excl);
+      // Calculate the switched force and energy.
+      if (TSwitchingFunction::MODIFY) {
+        Real switchingValue, switchingDeriv;
+        switchingFunction(switchingValue, switchingDeriv, distSquared);
+        // This has a - sign because the force is the negative of the
+        // derivative of the energy (divided by the distance between the atoms).
+        force = force * switchingValue - energy * switchingDeriv;
+        energy = energy * switchingValue;
+      }
+
+      // Add this energy into the total system energy.
+      nonbondedForceFunction.accumulateEnergy(energies, energy);
+      // Add this force into the atom forces.
+      Vector3D fij(diff * force);
+      (*forces)[i] -= fij;
+      (*forces)[j] += fij;
+
+      // compute the vector between molecular centers of mass
+      if (!same && energies->molecularVirial())
+        // Add to the atomic and molecular virials
+        energies->
+          addVirial(fij, diff, realTopo->boundaryConditions.
+                    minimalDifference(realTopo->molecules[mi].position,
+                                      realTopo->molecules[mj].position));
+      else if (energies->virial())
+        energies->addVirial(fij, diff);
+      // End of force computation.
+      if (TConstraint::POST_CHECK)
+        TConstraint::check(realTopo, i, j, diff, energy, fij);
+    }
 
     void getParameters(std::vector<Parameter> &parameters) const {
       nonbondedForceFunction.getParameters(parameters);
@@ -73,9 +130,10 @@ namespace ProtoMol {
 
     static std::string getId() {
       return TConstraint::getPrefixId() + TNonbondedForce::getId() +
-             TConstraint::getPostfixId() + std::string(
-               (!TSwitchingFunction::USE) ? std::string("") : std::string(
-                 " -switchingFunction " + TSwitchingFunction::getId()));
+        TConstraint::getPostfixId() +
+        std::string((!TSwitchingFunction::USE) ? std::string("") :
+                    std::string(" -switchingFunction " +
+                                TSwitchingFunction::getId()));
     }
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -97,69 +155,5 @@ namespace ProtoMol {
     TNonbondedForce nonbondedForceFunction;
     Real mySquaredCutoff;
   };
-  //____ INLINES
-
-  template<class TBoundaryConditions, class TSwitchingFunction,
-           class TNonbondedForce, class TConstraint>
-  inline void OneAtomPair<TBoundaryConditions, TSwitchingFunction,
-                          TNonbondedForce, TConstraint>::
-  doOneAtomPair(const int i, const int j) {
-    if (TConstraint::PRE_CHECK)
-      if (!TConstraint::check(realTopo, i, j))
-        return;
-
-    // Get atom distance.
-    Real distSquared;
-
-    Vector3D diff = realTopo->boundaryConditions.minimalDifference(
-      (*positions)[i], (*positions)[j], distSquared);
-    // Do switching function rough test, if necessary.
-    if (TSwitchingFunction::USE || TNonbondedForce::CUTOFF)
-      if (distSquared > mySquaredCutoff)
-        return;
-    // Check for an exclusion.
-    int mi = realTopo->atoms[i].molecule;
-    int mj = realTopo->atoms[j].molecule;
-    bool same = (mi == mj);
-    ExclusionClass excl =
-      (same ? realTopo->exclusions.check(i, j) : EXCLUSION_NONE);
-    if (excl == EXCLUSION_FULL)
-      return;
-
-    // Calculate the force and energy.
-    Real energy, force;
-    Real rDistSquared = (TNonbondedForce::DIST_R2 ? 1.0 / distSquared : 1.0);
-    nonbondedForceFunction(energy, force, distSquared, rDistSquared, diff,
-                           realTopo, i, j, excl);
-    // Calculate the switched force and energy.
-    if (TSwitchingFunction::MODIFY) {
-      Real switchingValue, switchingDeriv;
-      switchingFunction(switchingValue, switchingDeriv, distSquared);
-      // This has a - sign because the force is the negative of the
-      // derivative of the energy (divided by the distance between the atoms).
-      force = force * switchingValue - energy * switchingDeriv;
-      energy = energy * switchingValue;
-    }
-
-    // Add this energy into the total system energy.
-    nonbondedForceFunction.accumulateEnergy(energies, energy);
-    // Add this force into the atom forces.
-    Vector3D fij(diff * force);
-    (*forces)[i] -= fij;
-    (*forces)[j] += fij;
-
-    // compute the vector between molecular centers of mass
-    if (!same && energies->molecularVirial())
-      // Add to the atomic and molecular virials
-      energies->
-        addVirial(fij, diff, realTopo->boundaryConditions.
-                  minimalDifference(realTopo->molecules[mi].position,
-                                    realTopo->molecules[mj].position));
-    else if (energies->virial())
-      energies->addVirial(fij, diff);
-     // End of force computation.
-    if (TConstraint::POST_CHECK)
-      TConstraint::check(realTopo, i, j, diff, energy, fij);
-  }
 }
 #endif /* ONEATOMPAIR_H */

@@ -79,6 +79,7 @@ namespace ProtoMol {
     // Parsing
     static std::string getId() {return keyword;}
     void getParameters(std::vector<Parameter> &) const;
+    static unsigned int getParameterSize() {return 1;}
     static CoulombSCPISMForce make(const std::vector<Value> &);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -53,6 +53,7 @@ namespace ProtoMol {
 
     static const std::string getId() {return "C1";}
     void getParameters(std::vector<Parameter> &parameters) const;
+    static unsigned int getParameterSize() {return 1;}
     static C1SwitchingFunction make(std::vector<Value> values);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

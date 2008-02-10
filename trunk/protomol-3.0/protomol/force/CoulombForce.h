@@ -50,7 +50,7 @@ namespace ProtoMol {
     static unsigned int getParameterSize() {return 0;}
     void getParameters(std::vector<Parameter> &) const {}
 
-    static CoulombForce make(std::string &, const std::vector<Value> &) {
+    static CoulombForce make(const std::vector<Value> &) {
       return CoulombForce();
     }
 

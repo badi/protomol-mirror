@@ -29,7 +29,7 @@ namespace ProtoMol {
     virtual void addModifiers(ProtoMolApp *app) {}
 
   protected:
-    virtual void init(ProtoMolApp *app) = 0;
+    virtual void init(ProtoMolApp *app) {}
 
     friend class ModuleManager;
   };

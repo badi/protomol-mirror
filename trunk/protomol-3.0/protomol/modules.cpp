@@ -13,7 +13,7 @@
 #include <protomol/integrator/leapfrog/LeapfrogModule.h>
 #include <protomol/integrator/hessian/HessianIntegratorModule.h>
 
-#include <protomol/modules/LennardJonesNonbondedCutoffC2/LennardJonesNonbondedCutoffC2Module.h>
+#include <protomol/force/nonbonded/NonbondedCutoffForceModule.h>
 
 using namespace ProtoMol;
 
@@ -33,6 +33,6 @@ void moduleInitFunction(ModuleManager *manager) {
 
   // Forces
   manager->add(new BondedForcesModule());
-  manager->add(new LennardJonesNonbondedCutoffC2Module());
+  manager->add(new NonbondedCutoffForceModule());
 }
 

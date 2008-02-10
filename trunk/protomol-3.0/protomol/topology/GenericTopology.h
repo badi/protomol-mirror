@@ -158,7 +158,7 @@ namespace ProtoMol {
     std::vector<int> iSGNumMols;
 
     // Flag for SCPISM
-    bool doSCPISM;
+    int doSCPISM;
     /**
      * the number of degrees of freedom in the system
      * this number is needed to make sure we are properly computing the 
