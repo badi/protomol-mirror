@@ -8,7 +8,7 @@
 #include <protomol/base/Report.h>
 
 namespace ProtoMol {
-  //_________________________________________________________________ TimerStatistic
+  //____________________________________________________________ TimerStatistic
   /**
    * Simple timer statistic array implemented with Timer class and static's.@n
    *
@@ -51,6 +51,5 @@ public:
 private:
     static bool myIsParallel;
   };
-  //______________________________________________________________________ INLINES
 }
 #endif /* TIMERSTATISTIC_H */

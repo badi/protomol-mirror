@@ -246,24 +246,22 @@ ostream &ForceFactory::print(ostream &stream) const {
 
   forceTypes_t::const_iterator i;
   for (i = forceTypes.begin(); i != forceTypes.end(); ++i) {
-    if (i == forceTypes.begin()) stream << endl;
-    stream << i->first;
+    stream << i->first << endl;
 
     policy_t::const_iterator j;
     for (j = i->second.policies.begin(); j != i->second.policies.end(); ++j) {
-      if (!(*j).empty()) stream << "\n" << Constant::PRINTINDENT  << (*j);
+      if (!(*j).empty())
+        stream << Constant::PRINTINDENT << (*j) << endl;
 
       string protoName = i->first + ((*j).empty() ? "" : " " + (*j));
       vector<Parameter> parameters;
       getPrototype(protoName)->getParameters(parameters);
-      for (unsigned int k = 0; k < parameters.size(); k++){
-        stream << endl;
+      for (unsigned int k = 0; k < parameters.size(); k++)
         parameters[k].print(stream);
-      }
     }
   }
 
-  stream << "\nAlias:";
+  stream << "Aliases:" << endl;
   printAliases(stream);
 
   return stream;

@@ -547,6 +547,31 @@ namespace ProtoMol {
     return res;
   }
 
+  string headerRow(const string &title) {
+    unsigned int len = title.length() + 2;
+    if (len >= 79) return title;
+
+    char result[81];
+    unsigned int i = 0;
+
+    for (; i < (80 - len) / 2; i++)
+      result[i] = i % 2 ? '+' : '=';
+
+    result[i++] = ' ';
+
+    for (unsigned int j = 0; j < title.length(); j++)
+      result[i++] = title[j];
+
+    result[i++] = ' ';
+
+    for (; i < 80; i++)
+      result[i] = i % 2 ? '+' : '=';
+
+    result[i] = 0;
+
+    return result;
+  }
+
   void fillFormat(ostream &stream, const string &str,
                   unsigned int currentColumn, unsigned int indent,
                   unsigned int maxColumn) {

@@ -3,6 +3,8 @@
 #include <protomol/base/ModuleManager.h>
 #include <protomol/base/SystemUtilities.h>
 #include <protomol/base/PMConstants.h>
+#include <protomol/base/TimerStatistic.h>
+#include <protomol/base/Zap.h>
 #include <protomol/base/Report.h>
 
 #include <protomol/module/MainModule.h>
@@ -49,8 +51,8 @@ ProtoMolApp::~ProtoMolApp() {}
 void ProtoMolApp::splash(ostream &stream) {
   const int w = 16;
   stream
-    << PROTOMOL_HR << endl
-    << setw(w) << "ProtoMol: ";
+    << headerRow("ProtoMol") << endl
+    << setw(w) << "Description: ";
   fillFormat(stream, "A rapid PROTOtyping MOLecular dynamics object-oriented "
              "component based framework.", w, w);
   stream 
@@ -182,6 +184,12 @@ void ProtoMolApp::build() {
   // Setup run
   currentStep = config[InputFirststep::keyword];
   lastStep = currentStep + (int)config[InputNumsteps::keyword];
+
+  TimerStatistic::timer[TimerStatistic::RUN].reset();
+  TimerStatistic::timer[TimerStatistic::INTEGRATOR].reset();
+  TimerStatistic::timer[TimerStatistic::FORCES].reset();
+  TimerStatistic::timer[TimerStatistic::COMMUNICATION].reset();
+  TimerStatistic::timer[TimerStatistic::IDLE].reset();
 }
 
 bool ProtoMolApp::step() {
@@ -193,7 +201,9 @@ bool ProtoMolApp::step() {
   inc = std::min(lastStep, currentStep + inc) - currentStep;
   currentStep += inc;
 
+  TimerStatistic::timer[TimerStatistic::INTEGRATOR].start();
   integrator->run(inc);
+  TimerStatistic::timer[TimerStatistic::INTEGRATOR].stop();
 
   return true;
 }
@@ -201,8 +211,70 @@ bool ProtoMolApp::step() {
 void ProtoMolApp::finalize() {
   outputs->finalize(lastStep);
 
+  // Clear all factories
+  topologyFactory.unregisterAllExemplars();
+  integratorFactory.unregisterAllExemplars();
+  forceFactory.unregisterAllExemplars();
+  outputFactory.unregisterAllExemplars();
+
   // Clean up
-  delete topology;
-  delete integrator;
-  delete outputs;
+  zap(topology);
+  zap(integrator);
+  zap(outputs);
+
+  report
+    << allnodesserial << plain << "Timing: " << TimerStatistic() << "." << endr;
+}
+
+void ProtoMolApp::print(ostream &stream) {
+
+  // Output
+  stream << headerRow("Outputs") << endl;
+
+  for (OutputCollection::const_iterator itr =
+         const_cast<const OutputCollection *>(outputs)->begin();
+       itr != const_cast<const OutputCollection*>(outputs)->end(); itr++) {
+
+    stream << "Output " << (*itr)->getId();
+
+    vector<Parameter> parameters;
+    (*itr)->getParameters(parameters);
+    for (unsigned int i = 0; i < parameters.size(); i++)
+      stream << " " << parameters[i].value.getString();
+    stream << "." << endl;
+  }
+
+  if (!((bool)config[InputOutput::keyword]))
+    stream << "All output suppressed!" << endl;
+
+
+  // Integrator
+  stream << headerRow("Integrator") << endl;
+  vector<IntegratorDefinition> inter = integrator->getIntegratorDefinitionAll();
+  stream  << InputIntegrator::keyword << " {" << endl;
+
+  for (int i = inter.size() - 1; i >= 0; i--)
+    stream << Constant::PRINTINDENT << "Level "
+           << i << " " << inter[i].print() << endl;
+
+  stream << "}" << endl;
+
+
+  // Topology
+  stream << headerRow("Topology") << endl;
+  stream << topology->print(&positions) << endl;
+
+
+  // Factories
+  if ((int)config[InputDebug::keyword] >= 5) {
+    stream
+      << headerRow("Factories")     << endl
+      << headerRow("Configuration") << endl << config            << endl
+      << headerRow("Topology")      << endl << topologyFactory   << endl
+      << headerRow("Integrator")    << endl << integratorFactory << endl
+      << headerRow("Force")         << endl << forceFactory      << endl
+      << headerRow("Output")        << endl << outputFactory     << endl;
+  }
+
+  stream << PROTOMOL_HR << endl;
 }

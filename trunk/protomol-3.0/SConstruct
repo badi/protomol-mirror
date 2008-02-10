@@ -13,7 +13,6 @@ opts.AddOptions(
     BoolOption('optimize', 'Set to 1 to force optimizations', 0),
     BoolOption('debug', 'Set to 1 to force debug options', 0),
     BoolOption('strict', 'Set to 0 to disable strict options', 1),
-    BoolOption('boost', 'Set to 0 to disable boost lib', 1),
     BoolOption('depends', 'Set to 1 to output dependency files', 0),
     BoolOption('fah', 'Set to 1 to build library for Folding@Home', 0),
     EnumOption('compiler', 'Select compiler', 'default',
@@ -50,7 +49,6 @@ if env.has_key('debug'): debug = int(env['debug'])
 else: debug = mode == 'debug'
 
 strict = int(env.get('strict', 1))
-boost = int(env.get('boost', 1))
 compiler = env.get('compiler', 0)
 depends = int(env.get('depends', 0))
 fah = int(env.get('fah', 0))
@@ -176,6 +174,7 @@ with open('protomol/package.h', 'w') as f:
 libname = 'protomol'
 libsrc = []
 
+# Folding@Home library
 if fah:
     if os.environ.has_key('LIBFAH_HOME'):
         env.Append(CPPPATH = [os.environ['LIBFAH_HOME']])

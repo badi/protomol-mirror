@@ -24,9 +24,9 @@ namespace ProtoMol {
   class ModuleManager;
 
   class ProtoMolApp {
+  public:
     ModuleManager *modManager;
 
-  public:
     // Data
     Vector3DBlock positions;
     Vector3DBlock velocities;

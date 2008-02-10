@@ -198,24 +198,26 @@ string Configuration::printUndefinedKeywords() const {
   return result;
 }
 
-string Configuration::print() const {
-  string str;
-  str += "Keywords:\n\n";
-  for (const_iterator i = begin(); i != end(); ++i) {
-    str += getRightFill(i->first, Constant::PRINTMAXWIDTH) +
-           i->second.getDefinitionTypeString();
-    if (myTexts.find(i->first) != myTexts.end())
-      str += " \t # " + myTexts.find(i->first)->second;
+ostream &Configuration::print(ostream &stream) const {
 
-    str += "\n";
+  stream << "Keywords:\n\n";
+  for (const_iterator i = begin(); i != end(); ++i) {
+    stream << getRightFill(i->first, Constant::PRINTMAXWIDTH)
+           << i->second.getDefinitionTypeString();
+
+    if (myTexts.find(i->first) != myTexts.end())
+      stream << " \t # " << myTexts.find(i->first)->second;
+
+    stream << "\n";
   }
 
-  str += "\nAliases:\n\n";
+  stream << "\nAliases:\n\n";
   for (AliasMapType::const_iterator i = myAliases.begin();
        i != myAliases.end(); ++i)
-    str += getRightFill(i->first, Constant::PRINTMAXWIDTH) + i->second + "\n";
+    stream << getRightFill(i->first, Constant::PRINTMAXWIDTH)
+           << i->second << "\n";
 
-  return str;
+  return stream;
 }
 
 Configuration::iterator Configuration::find(const string &keyword) {

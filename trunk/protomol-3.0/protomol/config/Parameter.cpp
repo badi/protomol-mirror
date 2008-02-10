@@ -1,4 +1,7 @@
 #include <protomol/config/Parameter.h>
+#include <protomol/base/StringUtilities.h>
+
+#include <iomanip>
 
 using namespace std;
 using namespace ProtoMol;
@@ -35,15 +38,23 @@ Parameter::Parameter(const char *k, const Value &val, const Value &def,
   keyword(string(k)), value(val), defaultValue(def), text(t.text) {}
 
 ostream &Parameter::print(ostream &stream) const {
+  stream.setf(ios::left);
+
   if (!keyword.empty())
     stream << Constant::PRINTINDENT << Constant::PRINTINDENT
-           << getRightFill(keyword, Constant::PRINTMAXWIDTH) << " ";
+           << setw(20) << keyword << " ";
 
+  stream << setw(30);
   if (defaultValue.valid())
     stream << defaultValue.getDefinitionTypeString();
   else stream << value.getDefinitionTypeString();
 
-  if (!text.empty()) stream << "\t # " << text;
+  if (!text.empty()) {
+    stream << " # ";
+    int col = 2 * string(Constant::PRINTINDENT).length() + 54;
+    fillFormat(stream, text, col, col, 100);
+
+  } else stream << endl;
 
   return stream;
 }

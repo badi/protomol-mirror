@@ -76,14 +76,12 @@ namespace ProtoMol {
     }
 
     // MyStreamer
-    //                                                                          Standard Overloads
+    // Standard Overloads
 
     MyStreamer &MyStreamer::operator<<(bool a) {
       if (print())
-        if (a)
-          *myStream << "true";
-        else
-          *myStream << "false";
+        if (a) *myStream << "true";
+        else *myStream << "false";
       return *this;
     }
 

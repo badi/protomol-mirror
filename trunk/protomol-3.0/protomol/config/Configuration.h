@@ -4,6 +4,7 @@
 
 #include <protomol/config/Parameter.h>
 #include <protomol/base/StringUtilities.h>
+#include <ostream>
 #include <vector>
 #include <map>
 
@@ -62,7 +63,9 @@ namespace ProtoMol {
     const Value &operator[](const std::string &keyword) const;
 
     // Global print & test
-    std::string print() const;
+    std::ostream &print(std::ostream &stream) const;
+    friend
+    std::ostream &operator<<(std::ostream &stream, const Configuration &c);
     bool hasUndefinedKeywords() const;
     std::string printUndefinedKeywords() const;
 
@@ -77,7 +80,6 @@ namespace ProtoMol {
     iterator find(const std::string &keyword);
 
   private:
-
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // private data members
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -86,5 +88,10 @@ namespace ProtoMol {
     AliasMapType myAliases;
     TextMapType myTexts;
   };
+
+  inline std::ostream &
+  operator<<(std::ostream &stream, const Configuration &c) {
+    return c.print(stream);
+  }
 }
 #endif

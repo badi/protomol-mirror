@@ -115,8 +115,8 @@ namespace ProtoMol {
     std::ostream &printAliases(std::ostream &stream) const {
       typename exemplars_t::const_iterator i;
       for (i = aliasExemplars.begin(); i != aliasExemplars.end(); i++)
-        stream << "\n" << i->first << " : " << i->second->getId() << " ("
-               << i->second->getIdNoAlias() << ")";
+        stream << i->first << " : " << i->second->getId() << " ("
+               << i->second->getIdNoAlias() << ")" << std::endl;
 
       return stream;
     }
@@ -124,18 +124,15 @@ namespace ProtoMol {
     virtual std::ostream &print(std::ostream &stream) const {
       typename exemplars_t::const_iterator i;
       for (i = exemplars.begin(); i != exemplars.end(); i++) {
-        if (i == exemplars.begin()) stream << std::endl;
-        stream << i->first;
+        stream << i->first << std::endl;
         
         std::vector<Parameter> parameters;
         i->second->getParameters(parameters);
-        for (unsigned int k = 0; k < parameters.size(); k++) {
-          stream << std::endl;
+        for (unsigned int k = 0; k < parameters.size(); k++)
           parameters[k].print(stream);
-        }
       }
       
-      stream << "\nAlias:";
+      stream << "Aliases:\n";
       printAliases(stream);
       
       return stream;
