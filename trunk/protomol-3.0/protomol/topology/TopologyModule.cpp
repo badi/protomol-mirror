@@ -83,8 +83,7 @@ void findNextNeighbor(int a, vector<int> &v, vector<PairInt> &p,
 }
 
 void TopologyModule::buildTopology(GenericTopology *topo, const PSF &psf,
-                                   const PAR &par,
-                                   bool dihedralMultPSF) {
+                                   const PAR &par, bool dihedralMultPSF) {
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // First, generate the array of atomtypes
   // Each time a new atom comes up, we need to check if it is
@@ -424,12 +423,9 @@ void TopologyModule::buildTopology(GenericTopology *topo, const PSF &psf,
     } else if (dihedralMultPSF) {
       Torsion &tmp = topo->dihedrals[topo->dihedrals.size() - 1];
       if (tmp.multiplicity > torsion.multiplicity)
-        THROWS(
-          "PSF multiplicity definition of dihedral (" << dihedral1 << ","
-                                                      << dihedral2 <<
-          "," << dihedral3 << "," << dihedral4
-                                                      <<
-          ") exceeded PAR definition.")
+        THROWS("PSF multiplicity definition of dihedral (" << dihedral1 << ","
+               << dihedral2 << "," << dihedral3 << "," << dihedral4 
+               << ") exceeded PAR definition.");
 
         tmp.periodicity.push_back(torsion.periodicity[tmp.multiplicity]);
       tmp.forceConstant.push_back(torsion.forceConstant[tmp.multiplicity]);
@@ -695,7 +691,6 @@ void TopologyModule::buildTopology(GenericTopology *topo, const PSF &psf,
 //____  buildMoleculeTable
 //____
 //____~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 void TopologyModule::buildMoleculeTable(GenericTopology *topo) {
   // *** First we clear all molecules ***
   topo->molecules.clear();
@@ -912,8 +907,8 @@ void TopologyModule::buildExclusionTable(GenericTopology *topo,
   if (exclusionType == ExclusionType::NONE) return;
 
   const int numBonds = topo->bonds.size(),
-            numAngles = topo->angles.size(),
-            numDihedrals = topo->dihedrals.size();
+    numAngles = topo->angles.size(),
+    numDihedrals = topo->dihedrals.size();
 
   //  Add excluded bonds.
   for (int i = 0; i < numBonds; i++)
