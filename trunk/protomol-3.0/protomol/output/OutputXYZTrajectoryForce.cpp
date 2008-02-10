@@ -1,5 +1,5 @@
 #include <protomol/output/OutputXYZTrajectoryForce.h>
-#include <protomol/output/OutputModule.h>
+#include <protomol/base/MainModule.h>
 #include <protomol/config/Configuration.h>
 #include <protomol/integrator/Integrator.h>
 #include <protomol/base/StringUtilities.h>

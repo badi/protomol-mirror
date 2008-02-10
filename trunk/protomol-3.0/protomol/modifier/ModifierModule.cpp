@@ -30,8 +30,8 @@ defineInputValue(InputRattleEpsilon, "rattleEpsilon");
 defineInputValue(InputRattleMaxIter, "rattleMaxIter");
 
 void ModifierModule::init(ProtoMolApp *app) {
-  InputRemoveLinearMomentum::registerConfiguration(&app->config);
-  InputRemoveAngularMomentum::registerConfiguration(&app->config);
+  InputRemoveLinearMomentum::registerConfiguration(&app->config, -1);
+  InputRemoveAngularMomentum::registerConfiguration(&app->config, -1);
   InputShake::registerConfiguration(&app->config, false);
   InputShakeEpsilon::registerConfiguration(&app->config, 1e-5);
   InputShakeMaxIter::registerConfiguration(&app->config, 30);

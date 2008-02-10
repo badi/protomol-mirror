@@ -14,15 +14,8 @@
 #include <protomol/output/OutputXYZTrajectoryPos.h>
 #include <protomol/output/OutputXYZTrajectoryVel.h>
 
-
 using namespace std;
 using namespace ProtoMol;
-
-defineInputValue(InputOutputfreq,"outputfreq");
-defineInputValue(InputOutput,"output");
-defineInputValueAndText(InputMinimalImage, "minimalImage",
-                        "global default flag whether the coordinates should be "
-                        "transformed to minimal image or not");
 
 void OutputModule::init(ProtoMolApp *app) {
   OutputFactory &f = app->outputFactory;
@@ -35,9 +28,4 @@ void OutputModule::init(ProtoMolApp *app) {
   f.registerExemplar(new OutputXYZTrajectoryForce());
   f.registerExemplar(new OutputXYZTrajectoryPos());
   f.registerExemplar(new OutputXYZTrajectoryVel());
-
-
-  InputOutput::registerConfiguration(&app->config);
-  InputOutputfreq::registerConfiguration(&app->config);
-  InputMinimalImage::registerConfiguration(&app->config, false);
 }

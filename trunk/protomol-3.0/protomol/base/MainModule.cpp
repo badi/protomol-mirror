@@ -14,7 +14,7 @@ defineInputValue(InputSeed, "seed");
 defineInputValue(InputFirststep, "firststep");
 defineInputValue(InputNumsteps, "numsteps");
 defineInputValueAndText(InputDebug, "debug", "report level, suppresses all "
-                                             "output with higher output level");
+                        "output with higher output level");
 defineInputValueWithAliases(InputPositions, "posfile",
   ("coords")("coordinates"));
 defineInputValue(InputVelocities, "velfile");
@@ -27,11 +27,16 @@ defineInputValue(InputIntegrator, "integrator");
 defineInputValue(InputReducedImage, "reducedImage");
 defineInputValue(InputTemperature, "temperature");
 defineInputValue(InputDoSCPISM, "doscpism");
+defineInputValue(InputOutputfreq,"outputfreq");
+defineInputValue(InputOutput,"output");
+defineInputValueAndText(InputMinimalImage, "minimalImage",
+                        "global default flag whether the coordinates should be "
+                        "transformed to minimal image or not");
 
 void MainModule::init(ProtoMolApp *app) {
   Configuration *config = &app->config;
 
-  InputSeed::registerConfiguration(config);
+  InputSeed::registerConfiguration(config, getTimerSeed());
   InputFirststep::registerConfiguration(config, 0);
   InputNumsteps::registerConfiguration(config);
 #ifdef DEBUG
@@ -50,7 +55,12 @@ void MainModule::init(ProtoMolApp *app) {
   InputIntegrator::registerConfiguration(config);
   InputReducedImage::registerConfiguration(config);
   InputTemperature::registerConfiguration(config);
-  InputDoSCPISM::registerConfiguration(config);
+  InputDoSCPISM::registerConfiguration(config, 0);
+  InputVirialCalc::registerConfiguration(config, false);
+  InputMolVirialCalc::registerConfiguration(config, false);
+  InputOutput::registerConfiguration(&app->config, true);
+  InputOutputfreq::registerConfiguration(&app->config, 1);
+  InputMinimalImage::registerConfiguration(&app->config, false);
 }
 
 void MainModule::configure(ProtoMolApp *app) {

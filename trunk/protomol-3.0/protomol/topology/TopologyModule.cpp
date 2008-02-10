@@ -105,8 +105,15 @@ void TopologyModule::buildTopology(GenericTopology *topo, const PSF &psf,
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   CoulombSCPISMParameterTable *mySCPISM = 0;
   if (topo->doSCPISM) {
+    if (topo->doSCPISM < 1 || topo->doSCPISM > 3)
+      THROW("doscpism should be between 1 and 3");
     mySCPISM = new CoulombSCPISMParameterTable();
     mySCPISM->populateTable();
+    if (topo->doSCPISM == 3) {
+      // Quartic parameters
+      mySCPISM->myData["H"].hbond_factor = 0.4695;
+      mySCPISM->myData["HC"].hbond_factor = 7.2560;
+    }
     mySCPISM->displayTable();
   }
 
@@ -136,6 +143,8 @@ void TopologyModule::buildTopology(GenericTopology *topo, const PSF &psf,
       // atom type exists in SCPISM parameters
       tempatomtype.mySCPISM->sqrt_alpha =
         mySCPISM->myData[tempatomtype.name].sqrt_alpha_i;
+      tempatomtype.mySCPISM->alpha =
+        mySCPISM->myData[tempatomtype.name].alpha_i;
       tempatomtype.mySCPISM->g_i =
         mySCPISM->myData[tempatomtype.name].hbond_factor;
       tempatomtype.mySCPISM->isHbonded =
@@ -170,6 +179,7 @@ void TopologyModule::buildTopology(GenericTopology *topo, const PSF &psf,
       tempatom.mySCPISM->R_p =
         tempatom.mySCPISM->R_iw + tempatom.mySCPISM->R_w;
       tempatom.mySCPISM->sqrtalphaSCPISM = tempatomtype.mySCPISM->sqrt_alpha;
+      tempatom.mySCPISM->alphaSCPISM = tempatomtype.mySCPISM->alpha;
       tempatom.mySCPISM->sasaFrac = 0.0;
       tempatom.mySCPISM->polarFrac = 0.0;
       tempatom.mySCPISM->bornRadius = 0.0;

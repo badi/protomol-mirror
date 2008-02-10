@@ -9,10 +9,6 @@
 namespace ProtoMol {
   class ProtoMolApp;
   
-  declareInputValue(InputOutputfreq, INT, NOTNEGATIVE);
-  declareInputValue(InputOutput, BOOL, NOCONSTRAINTS);
-  declareInputValue(InputMinimalImage, BOOL, NOCONSTRAINTS);
-
   class OutputModule : public Module {
   public:
     const std::string getName() const {return "Output";}

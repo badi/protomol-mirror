@@ -24,7 +24,6 @@
 #include <protomol/topology/TopologyModule.h>
 #include <protomol/topology/TopologyUtilities.h>
 
-#include <protomol/output/OutputModule.h>
 #include <protomol/output/OutputFactory.h>
 #include <protomol/output/OutputCollection.h>
 

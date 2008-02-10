@@ -1,7 +1,7 @@
 #include <protomol/output/OutputFinalXYZPos.h>
 #include <protomol/config/Configuration.h>
 #include <protomol/output/OutputCache.h>
-#include <protomol/output/OutputModule.h>
+#include <protomol/base/MainModule.h>
 #include <protomol/base/StringUtilities.h>
 #include <protomol/topology/GenericTopology.h>
 #include <protomol/io/XYZWriter.h>
