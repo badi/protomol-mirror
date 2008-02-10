@@ -143,6 +143,8 @@ namespace ProtoMol {
     std::vector<PairUInt> myFromRange;
     std::vector<PairUInt> myToRange;
     std::vector<Vector3D> myLattice;
+
+    static const unsigned int defaultBlockSize = 64;
   };
 }
 #endif /* NONBONDEDFULLSYSTEMFORCE_H */

@@ -25,12 +25,10 @@ namespace ProtoMol {
     // Constructors, destructors, assignment
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    NonbondedSimpleFullBornForce() :
-      SystemForce(), myBlockSize(0), myCached(false) {};
+    NonbondedSimpleFullBornForce() : myBlockSize(0), myCached(false) {}
     NonbondedSimpleFullBornForce(TOneAtomPair oneAtomPair,
                                  unsigned int blockSize = defaultBlockSize) :
-      SystemForce(), myOneAtomPair(oneAtomPair), myBlockSize(blockSize),
-      myCached(false) {}
+      myOneAtomPair(oneAtomPair), myBlockSize(blockSize), myCached(false) {}
 
     virtual ~NonbondedSimpleFullBornForce() {};
 
@@ -65,12 +63,9 @@ namespace ProtoMol {
       }
     }
 
-    void doEvaluate(GenericTopology *, const Vector3DBlock *, Vector3DBlock *,
-                    ScalarStructure *, int i0, int i1, int j0,
-                    int j1) {
-      GenericTopology *topo, const Vector3DBlock *positions,
-        Vector3DBlock *forces,
-        ScalarStructure *energies, int i0, int i1, int j0, int j1) {
+    void doEvaluate(GenericTopology *topo, const Vector3DBlock *positions,
+                    Vector3DBlock *forces, ScalarStructure *energies, int i0,
+                    int i1, int j0, int j1) {
       doEvaluate(const_cast<GenericTopology *>
                  (static_cast<const GenericTopology *>(topo)), positions,
                  forces, energies);
@@ -82,8 +77,7 @@ namespace ProtoMol {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
     virtual void evaluate(const GenericTopology *topo, const Vector3DBlock *pos,
-                          Vector3DBlock *f,
-                          ScalarStructure *e) {
+                          Vector3DBlock *f, ScalarStructure *e) {
       if (!topo->doSCPISM)
         THROW("To use SCPISM forces, please set doscpism in the configuration "
               "file");
@@ -129,10 +123,11 @@ namespace ProtoMol {
                    Value(myBlockSize, ConstraintValueType::Positive()),
                    defaultBlockSize));
     }
+
     virtual std::string getIdNoAlias() const {
       return TOneAtomPair::getId() + " -algorithm " + getKeyword();
     }
-
+    
   private:
     virtual Force *doMake(std::vector<Value> values) const {
       unsigned int blockSize;
@@ -142,10 +137,10 @@ namespace ProtoMol {
         THROW(getKeyword() + " algorithm: 0 < blocksize (=" +
               values[n].getString() + ").");
 
-      std::vector<Value> OAPValues(values.begin(), values.end() - 1));
-
+      std::vector<Value> OAPValues(values.begin(), values.end() - 1);
+      
       return new NonbondedSimpleFullBornForce(TOneAtomPair::make(OAPValues,
-                                                                 blockSize);
+                                                                 blockSize));
     }
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -157,6 +152,8 @@ namespace ProtoMol {
     std::vector<PairUInt> myFromRange;
     std::vector<PairUInt> myToRange;
     bool myCached;
+    
+    static const unsigned int defaultBlockSize = 64;
   };
 }
-#endif /* NONBONDEDSIMPLEFULLSYSTEMFORCE_H */
+#endif /* NONBONDEDSIMPLEFULLBORNFORCE_H */

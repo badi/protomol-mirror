@@ -75,21 +75,22 @@ namespace ProtoMol {
                  (static_cast<const GenericTopology *>(topo)), positions,
                  forces, energies);
 
-      if (born) evaluateBorn(myOneAtomPair, topo, forces, energies);
+      evaluateBorn(myOneAtomPair, topo, forces, energies);
     }
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // From class SystemForce
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    virtual void evaluate(const GenericTopology *to, const Vector3DBlock *pos,
-                          Vector3DBlock *f, ScalarStructure *e) {
+    virtual void evaluate(const GenericTopology *topo,
+                          const Vector3DBlock *positions, Vector3DBlock *forces,
+                          ScalarStructure *energies) {
       if (!topo->doSCPISM)
         THROW("To use SCPISM forces, please set doscpism in the configuration "
               "file");
 
-      doEvaluate(to, pos, f, e, 0, (int)to->atoms.size(), 0,
-                 (int)to->atoms.size());
+      doEvaluate(topo, positions, forces, energies, 0, (int)topo->atoms.size(),
+                 0, (int)topo->atoms.size());
     }
 
     virtual void parallelEvaluate(const GenericTopology *topo,
@@ -121,11 +122,11 @@ namespace ProtoMol {
   private:
     virtual Force *doMake(std::vector<Value> values) const {
       int n = values.size() - 2;
-      std::vector<Value>OAPValues(values.begin(), values.end() - 2));
+      std::vector<Value>OAPValues(values.begin(), values.end() - 2);
       
       return new NonbondedFullBornForce(values[n],
                                         TOneAtomPair::make(OAPValues,
-                                                           values[n + 1]);
+                                                           values[n + 1]));
     }
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -162,6 +163,8 @@ namespace ProtoMol {
     std::vector<PairUInt> myFromRange;
     std::vector<PairUInt> myToRange;
     std::vector<Vector3D> myLattice;
+
+    static const unsigned int defaultBlockSize = 64;
   };
 }
 #endif /* NONBONDEDFULLSYSTEMFORCE_H */

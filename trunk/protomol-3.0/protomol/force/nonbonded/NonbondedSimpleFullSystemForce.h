@@ -142,6 +142,8 @@ namespace ProtoMol {
     std::vector<PairUInt> myFromRange;
     std::vector<PairUInt> myToRange;
     bool myCached;
+
+    static const unsigned int defaultBlockSize = 64;
   };
 }
 #endif /* NONBONDEDSIMPLEFULLSYSTEMFORCE_H */
