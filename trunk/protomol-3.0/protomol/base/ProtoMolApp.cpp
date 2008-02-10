@@ -15,11 +15,11 @@
 #include <protomol/type/String.h>
 
 #include <protomol/topology/GenericTopology.h>
-#include <protomol/topology/TopologyFactory.h>
+#include <protomol/factory/TopologyFactory.h>
 #include <protomol/topology/BuildTopology.h>
 #include <protomol/topology/TopologyUtilities.h>
 
-#include <protomol/output/OutputFactory.h>
+#include <protomol/factory/OutputFactory.h>
 #include <protomol/output/OutputCollection.h>
 
 using namespace std;
