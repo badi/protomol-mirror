@@ -7,6 +7,7 @@
 #include <protomol/modules/OutputModule.h>
 #include <protomol/modules/BondedForcesModule.h>
 #include <protomol/modules/ModifierModule.h>
+#include <protomol/modules/IOModule.h>
 
 #include <protomol/modules/IntegratorBaseModule.h>
 #include <protomol/modules/NormalModeModule.h>
@@ -26,6 +27,7 @@ void moduleInitFunction(ModuleManager *manager) {
   manager->add(new TopologyModule());
   manager->add(new OutputModule());
   manager->add(new ModifierModule());
+  manager->add(new IOModule());
 
   // Integrators
   manager->add(new IntegratorBaseModule());

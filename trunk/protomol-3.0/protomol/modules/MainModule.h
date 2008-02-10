@@ -11,13 +11,6 @@ namespace ProtoMol {
   declareInputValue(InputFirststep, INT, NOCONSTRAINTS);
   declareInputValue(InputSeed, INT, NOTNEGATIVE);
   declareInputValue(InputDebug, INT, NOCONSTRAINTS);
-  declareInputValue(InputPositions, STRING, NOTEMPTY);
-  declareInputValue(InputVelocities, STRING, NOTEMPTY);
-  declareInputValue(InputEigenVectors, STRING, NOTEMPTY);
-  declareInputValue(InputPSF, STRING, NOTEMPTY);
-  declareInputValue(InputPAR, STRING, NOTEMPTY);
-  declareInputValue(InputPDBScaling, BOOL, NOCONSTRAINTS);
-  declareInputValue(InputDihedralMultPSF, BOOL, NOCONSTRAINTS);
   declareInputValue(InputIntegrator, INTEGRATOR, NOTEMPTY);
   declareInputValue(InputReducedImage, BOOL, NOCONSTRAINTS);
   declareInputValue(InputTemperature, REAL, NOTNEGATIVE);

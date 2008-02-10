@@ -31,7 +31,8 @@ namespace ProtoMol {
                       unsigned int seed = 1234);
 
   //________________________________________randomVelocity
-  /// Gaussian random distributed velocities rescaled to the given interval with optional re-movements of linear and/or angular momentum
+  /// Gaussian random distributed velocities rescaled to the given interval
+  /// with optional re-movements of linear and/or angular momentum
   void randomVelocity(Real temperatureFrom,
                       Real temperatureTo,
                       const GenericTopology *topology,

@@ -1,5 +1,6 @@
 #include <protomol/modules/MainModule.h>
 
+#include <protomol/modules/IOModule.h>
 #include <protomol/base/ProtoMolApp.h>
 #include <protomol/topology/TopologyUtilities.h>
 #include <protomol/config/Configuration.h>
@@ -15,14 +16,6 @@ defineInputValue(InputFirststep, "firststep");
 defineInputValue(InputNumsteps, "numsteps");
 defineInputValueAndText(InputDebug, "debug", "report level, suppresses all "
                         "output with higher output level");
-defineInputValueWithAliases(InputPositions, "posfile",
-  ("coords")("coordinates"));
-defineInputValue(InputVelocities, "velfile");
-defineInputValue(InputEigenVectors, "eigfile");
-defineInputValueWithAliases(InputPSF, "psffile", ("structure"));
-defineInputValueWithAliases(InputPAR, "parfile", ("parameters"));
-defineInputValue(InputPDBScaling, "pdbScaling");
-defineInputValue(InputDihedralMultPSF, "dihedralMultPSF");
 defineInputValue(InputIntegrator, "integrator");
 defineInputValue(InputReducedImage, "reducedImage");
 defineInputValue(InputTemperature, "temperature");
@@ -49,13 +42,6 @@ void MainModule::init(ProtoMolApp *app) {
   InputDebug::registerConfiguration(config, 0);
 #endif
 
-  InputPositions::registerConfiguration(config);
-  InputVelocities::registerConfiguration(config);
-  InputEigenVectors::registerConfiguration(config);
-  InputPSF::registerConfiguration(config);
-  InputPAR::registerConfiguration(config);
-  InputPDBScaling::registerConfiguration(config);
-  InputDihedralMultPSF::registerConfiguration(config);
   InputIntegrator::registerConfiguration(config);
   InputReducedImage::registerConfiguration(config);
   InputTemperature::registerConfiguration(config);

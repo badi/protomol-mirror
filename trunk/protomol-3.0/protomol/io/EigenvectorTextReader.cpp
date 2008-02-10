@@ -72,8 +72,8 @@ bool EigenvectorTextReader::read(EigenvectorInfo &ei) {
   return true;
 }
 
-EigenvectorTextReader &operator>>(EigenvectorTextReader &eigenvectorReader,
-                                  EigenvectorInfo &info) {
+EigenvectorTextReader &ProtoMol::
+operator>>(EigenvectorTextReader &eigenvectorReader, EigenvectorInfo &info) {
   eigenvectorReader.read(info);
   return eigenvectorReader;
 }

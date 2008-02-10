@@ -60,7 +60,6 @@ namespace ProtoMol {
 
     void configure(const std::string &configfile);
     bool configure(int argc = 0, char *argv[] = 0);
-    void read();
     void build();
     void print(std::ostream &stream);
     bool step();

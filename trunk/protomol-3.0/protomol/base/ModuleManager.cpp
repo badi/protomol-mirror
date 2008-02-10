@@ -73,6 +73,13 @@ void ModuleManager::configure(ProtoMolApp *app) {
     (*it)->configure(app);
 }
 
+void ModuleManager::read(ProtoMolApp *app) {
+  modules_t::iterator it;
+
+  for (it = modules.begin(); it != modules.end(); it++)
+    (*it)->read(app);
+}
+
 void ModuleManager::registerForces(ProtoMolApp *app) {
   modules_t::iterator it;
 

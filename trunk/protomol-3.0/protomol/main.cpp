@@ -18,7 +18,6 @@ int main(int argc, char *argv[]) {
 
     if (!app.configure(argc, argv)) return 0;
 
-    app.read();
     app.build();
 
     while (app.step())
