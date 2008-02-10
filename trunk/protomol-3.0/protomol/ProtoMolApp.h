@@ -56,6 +56,7 @@ namespace ProtoMol {
     ProtoMolApp(ModuleManager *modManager);
     ~ProtoMolApp();
 
+    static void splash(std::ostream &stream);
     void configure(const std::string &configfile);
     bool configure(int argc = 0, char *argv[] = 0);
     void build();

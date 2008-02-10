@@ -30,9 +30,5 @@ using namespace ProtoMol;
 unsigned int Exception::causePrintLevel = 10;
 
 #ifdef HAVE_STACK_TRACE
-#ifdef DEBUG
-bool Exception::enableStackTraces = true;
-#else
 bool Exception::enableStackTraces = false;
-#endif
 #endif

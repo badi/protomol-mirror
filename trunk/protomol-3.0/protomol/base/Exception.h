@@ -157,10 +157,10 @@ namespace ProtoMol {
                         bool printLocations = true,
                         unsigned int printLevel = 0) const {
 
-      if (printLocations && !location.isEmpty())
-        stream << "@ " << location << " ";
+      stream << message << std::endl;
 
-      stream << message;
+      if (printLocations && !location.isEmpty())
+        stream << "@ " << location << std::endl;
 
 #ifdef HAVE_STACK_TRACE
       if (enableStackTraces && !trace.isNull()) {

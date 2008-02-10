@@ -160,7 +160,7 @@ bool PDBReader::read(Vector3DBlock &coords, vector<PDB::Atom> &atoms,
           removeBeginEndBlanks(record.substr(PDB::Ter::S_I_CODE,
               PDB::Ter::L_I_CODE))));
     } else
-      report << recoverable << "[PDB::read] Record unknow:\'" <<
+      report << recoverable << "[PDB::read] Record unknown:\'" <<
       removeBeginEndBlanks(record) << "\'." << endr;
   } while (!(file.eof()));
 

@@ -13,6 +13,7 @@
 #include <protomol/output/OutputXYZTrajectoryForce.h>
 #include <protomol/output/OutputXYZTrajectoryPos.h>
 #include <protomol/output/OutputXYZTrajectoryVel.h>
+#include <protomol/output/OutputEnergies.h>
 
 using namespace std;
 using namespace ProtoMol;
@@ -28,4 +29,5 @@ void OutputModule::init(ProtoMolApp *app) {
   f.registerExemplar(new OutputXYZTrajectoryForce());
   f.registerExemplar(new OutputXYZTrajectoryPos());
   f.registerExemplar(new OutputXYZTrajectoryVel());
+  f.registerExemplar(new OutputEnergies());
 }

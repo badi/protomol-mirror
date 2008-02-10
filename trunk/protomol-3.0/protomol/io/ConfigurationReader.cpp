@@ -1,4 +1,4 @@
-#include <protomol/config/ConfigurationReader.h>
+#include <protomol/io/ConfigurationReader.h>
 
 #include <protomol/base/Report.h>
 #include <protomol/base/StringUtilities.h>

@@ -47,7 +47,7 @@ namespace ProtoMol {
     const Real EPSILON = 1.0e-14;
     const Real TINY = 1.0e-20;
 
-    const Real TIMEFACTOR = 48.88821290839616;   // TIMEUNIT is 1 / sqrt(4.184e-4)
+    const Real TIMEFACTOR = 48.88821290839616; // TIMEUNIT is 1 / sqrt(4.184e-4)
     const Real INV_TIMEFACTOR = 0.02045482828087295; //  1 / TIMEFACTOR
 
     const Real PERIODIC_BOUNDARY_TOLERANCE = 3.0;
@@ -55,15 +55,17 @@ namespace ProtoMol {
     const Real EPS_GOURAUD_THRESHOLD = 0.1;
     const Real EPS_SMOOTH_LINE_FACTOR = 0.06;
 
-    const string PROTOMOL_HR(
-      "=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=");
+    const string PROTOMOL_HR
+    ("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+="
+     "+=+=+=+");
     const string PRINTINDENT("  ");
     const unsigned int PRINTMAXWIDTH = 30;
 
     const int FASTDELTAMAX = 32;
 
     const Real SQRTCOULOMBCONSTANT = 18.2226123264;
-    const Real PRESSUREFACTOR = 69478.0593635551; // ENERGY_TO_SI/(LENGTH_TO_SI*LENGTH_TO_SI*LENGTH_TO_SI)*1e-5; // bar
+    // ENERGY_TO_SI/(LENGTH_TO_SI*LENGTH_TO_SI*LENGTH_TO_SI)*1e-5; // bar
+    const Real PRESSUREFACTOR = 69478.0593635551;
     const Real BOLTZMANN = 0.001987191;
     const Real PDBVELSCALINGFACTOR = 20.45482706;
 

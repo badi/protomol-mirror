@@ -1,26 +1,34 @@
 #include <protomol/ProtoMolApp.h>
 
 #include <protomol/base/ModuleManager.h>
-#include <protomol/module/MainModule.h>
-#include <protomol/module/IOModule.h>
-
-#include <protomol/config/CommandLine.h>
-#include <protomol/config/Configuration.h>
-#include <protomol/module/ConfigurationModule.h>
-#include <protomol/config/ConfigurationReader.h>
 #include <protomol/base/SystemUtilities.h>
 #include <protomol/base/PMConstants.h>
 #include <protomol/base/Report.h>
 
+#include <protomol/module/MainModule.h>
+#include <protomol/module/IOModule.h>
+#include <protomol/module/ConfigurationModule.h>
+
 #include <protomol/type/String.h>
 
-#include <protomol/topology/GenericTopology.h>
+#include <protomol/config/CommandLine.h>
+#include <protomol/config/Configuration.h>
+
+#include <protomol/io/ConfigurationReader.h>
+
 #include <protomol/factory/TopologyFactory.h>
+#include <protomol/factory/OutputFactory.h>
+
+#include <protomol/topology/GenericTopology.h>
 #include <protomol/topology/BuildTopology.h>
 #include <protomol/topology/TopologyUtilities.h>
 
-#include <protomol/factory/OutputFactory.h>
 #include <protomol/output/OutputCollection.h>
+
+#include <iomanip>
+#ifdef HAVE_PACKAGE_H
+#include <protomol/package.h>
+#endif
 
 using namespace std;
 using namespace ProtoMol;
@@ -37,6 +45,36 @@ ProtoMolApp::ProtoMolApp(ModuleManager *modManager) :
 }
 
 ProtoMolApp::~ProtoMolApp() {}
+
+void ProtoMolApp::splash(ostream &stream) {
+  const int w = 16;
+  stream
+    << PROTOMOL_HR << endl
+    << setw(w) << "ProtoMol: ";
+  fillFormat(stream, "A rapid PROTOtyping MOLecular dynamics object-oriented "
+             "component based framework.", w, w);
+  stream 
+#ifdef HAVE_PACKAGE_H
+    << setw(w) << "Version: " << PACKAGE_VERSION << endl
+    << setw(w) << "SVN revision: " << PACKAGE_REVISION << endl
+    << setw(w) << "Repository: " << PACKAGE_SOURCE_REPO << endl
+    << setw(w) << "Homepage: " << PACKAGE_HOMEPAGE << endl
+    << setw(w) << "Report bugs to: " << PACKAGE_BUGREPORT << endl
+    << setw(w) << "Compiler: " << PACKAGE_COMPILER << " "
+    << PACKAGE_COMPILER_VERSION << endl
+    << setw(w) << "Flags: " << PACKAGE_COMPILER_FLAGS << endl
+    << setw(w) << "Extra libs: " << PACKAGE_COMPILER_LIBS << endl
+    << setw(w) << "Built by: " << PACKAGE_BUILT_BY << endl
+    << setw(w) << "Build platform: " << PACKAGE_PLATFORM << endl
+#endif // HAVE_PACKAGE_H
+    << setw(w) << "Build date: " <<  __DATE__ << ", " << __TIME__ << endl
+#ifdef HAVE_PACKAGE_H
+    << setw(w) << "Please cite: ";
+  fillFormat(stream, PACKAGE_CITE, w, w);
+  stream
+#endif // HAVE_PACKAGE_H
+    << PROTOMOL_HR << endl;
+}
 
 void ProtoMolApp::configure(const string &configfile) {
   const char *argv[] = {"ProtoMol", configfile.c_str(), 0};

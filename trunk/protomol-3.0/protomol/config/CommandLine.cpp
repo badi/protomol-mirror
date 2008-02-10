@@ -6,6 +6,7 @@
 #include <protomol/module/ConfigurationModule.h>
 #include <protomol/base/StringUtilities.h>
 #include <protomol/base/SystemUtilities.h>
+#include <protomol/ProtoMolApp.h>
 
 #include <stdlib.h>
 
@@ -170,6 +171,11 @@ void CommandLine::usage(ostream &stream, const string &name) {
 
     fillFormat(stream, options[i]->help, count, 40);
   }
+}
+
+int CommandLine::splashAction(const std::vector<std::string> &args) {
+  ProtoMolApp::splash(cout);
+  return -1;
 }
 
 #ifdef DEBUG

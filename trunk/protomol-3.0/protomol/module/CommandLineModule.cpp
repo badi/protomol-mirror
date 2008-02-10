@@ -15,6 +15,11 @@ void CommandLineModule::init(ProtoMolApp *app) {
                                                &CommandLine::usageAction);
   cmdLine.add('h', "help", action, "Print this help screen.");
 
+  action =
+    new CommandLineOption::Action<CommandLine>(&cmdLine,
+                                               &CommandLine::splashAction);
+  cmdLine.add(0, "splash", action, "Print splash screen and exit.");
+
 #ifdef DEBUG
   action =
     new CommandLineOption::

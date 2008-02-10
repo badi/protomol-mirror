@@ -36,6 +36,7 @@ namespace ProtoMol {
 
     int usageAction(const std::vector<std::string> &args);
     void usage(std::ostream &stream, const std::string &name);
+    int splashAction(const std::vector<std::string> &args);
 
 #ifdef DEBUG
     int enableStackTraceAction(const std::vector<std::string> &args);

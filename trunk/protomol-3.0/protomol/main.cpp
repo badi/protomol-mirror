@@ -18,6 +18,8 @@ int main(int argc, char *argv[]) {
 
     if (!app.configure(argc, argv)) return 0;
 
+    app.splash(cout);
+
     app.build();
 
     while (app.step())
@@ -27,10 +29,7 @@ int main(int argc, char *argv[]) {
 
     return 0;
   } catch (const Exception &e) {
-    cerr << "ERROR: " << e.getMessage() << endl;
-#ifdef DEBUG
-    cerr << e << endl;
-#endif
+    cerr << "ERROR: " << e << endl;
   }
 
   return 1;
