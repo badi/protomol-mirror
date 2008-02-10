@@ -14,6 +14,7 @@
 #include <protomol/integrator/hessian/HessianIntegratorModule.h>
 
 #include <protomol/force/nonbonded/NonbondedCutoffForceModule.h>
+#include <protomol/force/nonbonded/NonbondedFullForceModule.h>
 
 using namespace ProtoMol;
 
@@ -34,5 +35,6 @@ void moduleInitFunction(ModuleManager *manager) {
   // Forces
   manager->add(new BondedForcesModule());
   manager->add(new NonbondedCutoffForceModule());
+  manager->add(new NonbondedFullForceModule());
 }
 

@@ -102,7 +102,7 @@ namespace ProtoMol {
     }
 
   private:
-    virtual Force *doMake(std::vector<Value> values) const {
+    virtual Force *doMake(const std::vector<Value> &values) const {
       int n = values.size() - 2;
       std::vector<Value> atomPairValues(values.begin(), values.end() - 2);
 
