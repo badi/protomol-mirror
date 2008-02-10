@@ -8,7 +8,7 @@
 #include <protomol/force/MollyForce.h>
 #include <protomol/force/MetaForce.h>
 #include <protomol/base/TimerStatistic.h>
-#include <protomol/base/ProtoMolApp.h>
+#include <protomol/ProtoMolApp.h>
 #include <protomol/parallel/Parallel.h>
 
 //____#define DEBUG_OUTSTANDING_MSG

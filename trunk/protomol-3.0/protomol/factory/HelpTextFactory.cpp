@@ -1,4 +1,4 @@
-#include <protomol/config/HelpTextFactory.h>
+#include <protomol/factory/HelpTextFactory.h>
 #include <protomol/config/Configuration.h>
 
 using namespace std;

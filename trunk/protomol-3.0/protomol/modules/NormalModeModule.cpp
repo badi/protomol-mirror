@@ -1,6 +1,6 @@
 #include <protomol/modules/NormalModeModule.h>
 
-#include <protomol/base/ProtoMolApp.h>
+#include <protomol/ProtoMolApp.h>
 #include <protomol/base/Exception.h>
 #include <protomol/base/StringUtilities.h>
 #include <protomol/type/String.h>

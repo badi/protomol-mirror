@@ -1,7 +1,7 @@
 #include <protomol/modules/HessianIntegratorModule.h>
 #include <protomol/integrator/hessian/HessianInt.h>
 
-#include <protomol/base/ProtoMolApp.h>
+#include <protomol/ProtoMolApp.h>
 
 using namespace std;
 using namespace ProtoMol;

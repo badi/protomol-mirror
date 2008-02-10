@@ -1,6 +1,6 @@
 #include <protomol/modules/LeapfrogModule.h>
 
-#include <protomol/base/ProtoMolApp.h>
+#include <protomol/ProtoMolApp.h>
 
 #include <protomol/integrator/leapfrog/LeapfrogIntegrator.h>
 #include <protomol/integrator/leapfrog/LeapfrogTruncatedShadow.h>

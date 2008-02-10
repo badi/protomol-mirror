@@ -1,7 +1,7 @@
 #include <protomol/modifier/ModifierMetaRattleShake.h>
 #include <protomol/topology/Topology.h>
 #include <protomol/topology/TopologyUtilities.h>
-#include <protomol/base/ProtoMolApp.h>
+#include <protomol/ProtoMolApp.h>
 
 using namespace std;
 using namespace ProtoMol;

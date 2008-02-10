@@ -1,6 +1,6 @@
 #include <protomol/modifier/Modifier.h>
 
-#include <protomol/base/ProtoMolApp.h>
+#include <protomol/ProtoMolApp.h>
 #include <protomol/base/Report.h>
 #include <protomol/topology/GenericTopology.h>
 

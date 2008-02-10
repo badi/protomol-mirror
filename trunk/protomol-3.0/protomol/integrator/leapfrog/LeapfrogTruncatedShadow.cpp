@@ -21,7 +21,7 @@
 #include <protomol/switch/CnSwitchingFunction.h>
 #include <protomol/switch/C2SwitchingFunction.h>
 #include <protomol/switch/C1SwitchingFunction.h>
-#include <protomol/base/ProtoMolApp.h>
+#include <protomol/ProtoMolApp.h>
 
 using namespace std;
 using namespace ProtoMol::Report;

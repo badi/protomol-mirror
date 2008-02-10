@@ -3,7 +3,7 @@
 #include <protomol/type/Vector3DBlock.h>
 #include <protomol/force/ForceGroup.h>
 #include <protomol/topology/GenericTopology.h>
-#include <protomol/base/ProtoMolApp.h>
+#include <protomol/ProtoMolApp.h>
 #include <protomol/base/PMConstants.h>
 #include <protomol/topology/TopologyUtilities.h>
 #include <protomol/integrator/leapfrog/ModifierFriction.h>

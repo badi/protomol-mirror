@@ -2,7 +2,7 @@
 #include <protomol/integrator/Integrator.h>
 #include <protomol/topology/Topology.h>
 #include <protomol/type/ScalarStructure.h>
-#include <protomol/base/ProtoMolApp.h>
+#include <protomol/ProtoMolApp.h>
 #include <protomol/base/PMConstants.h>
 
 using namespace ProtoMol::Report;

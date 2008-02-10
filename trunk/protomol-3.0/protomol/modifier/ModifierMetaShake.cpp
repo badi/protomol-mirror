@@ -1,6 +1,6 @@
 #include <protomol/modifier/ModifierMetaShake.h>
 #include <protomol/topology/Topology.h>
-#include <protomol/base/ProtoMolApp.h>
+#include <protomol/ProtoMolApp.h>
 
 using namespace ProtoMol;
 

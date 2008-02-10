@@ -6,7 +6,7 @@
 #include <protomol/force/bonded/ImproperSystemForce.h>
 #include <protomol/force/bonded/HarmDihedralSystemForce.h>
 
-#include <protomol/base/ProtoMolApp.h>
+#include <protomol/ProtoMolApp.h>
 #include <protomol/base/StringUtilities.h>
 #include <protomol/modules/TopologyModule.h>
 #include <protomol/topology/PeriodicBoundaryConditions.h>

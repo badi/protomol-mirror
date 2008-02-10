@@ -1,8 +1,8 @@
-#include <protomol/output/OutputFactory.h>
+#include <protomol/factory/OutputFactory.h>
 #include <protomol/output/OutputCollection.h>
 #include <protomol/config/Configuration.h>
 #include <protomol/base/StringUtilities.h>
-#include <protomol/config/HelpTextFactory.h>
+#include <protomol/factory/HelpTextFactory.h>
 #include <algorithm>
 
 using namespace std;

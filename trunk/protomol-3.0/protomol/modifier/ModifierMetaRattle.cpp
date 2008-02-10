@@ -1,5 +1,5 @@
 #include <protomol/modifier/ModifierMetaRattle.h>
-#include <protomol/base/ProtoMolApp.h>
+#include <protomol/ProtoMolApp.h>
 #include <protomol/topology/Topology.h>
 
 using namespace std;

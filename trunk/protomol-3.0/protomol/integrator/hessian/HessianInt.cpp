@@ -6,7 +6,7 @@
 #include <protomol/topology/GenericTopology.h>
 #include <protomol/topology/TopologyUtilities.h>
 #include <protomol/base/SystemUtilities.h>
-#include <protomol/base/ProtoMolApp.h>
+#include <protomol/ProtoMolApp.h>
 #include <protomol/base/Exception.h>
 #include <protomol/base/PMConstants.h>
 #include <fstream>

@@ -12,7 +12,7 @@
 #include <protomol/topology/TopologyUtilities.h>
 #include <protomol/base/PMConstants.h>
 
-#include <protomol/base/ProtoMolApp.h>
+#include <protomol/ProtoMolApp.h>
 
 #include <protomol/base/Zap.h>
 #include <protomol/base/Exception.h>

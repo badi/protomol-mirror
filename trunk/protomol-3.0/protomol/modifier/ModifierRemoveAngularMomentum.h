@@ -4,7 +4,7 @@
 
 #include <protomol/modifier/Modifier.h>
 #include <protomol/topology/TopologyUtilities.h>
-#include <protomol/base/ProtoMolApp.h>
+#include <protomol/ProtoMolApp.h>
 
 namespace ProtoMol {
   //____ ModifierRemoveAngularMomentum

@@ -1,7 +1,7 @@
 #include <protomol/modules/MainModule.h>
 
 #include <protomol/modules/IOModule.h>
-#include <protomol/base/ProtoMolApp.h>
+#include <protomol/ProtoMolApp.h>
 #include <protomol/topology/TopologyUtilities.h>
 #include <protomol/config/Configuration.h>
 #include <protomol/base/Report.h>

@@ -10,4 +10,6 @@ for d in glob.glob('*'):
       for s in src:
         allsrc.append(d + '/' + s)
 
+allsrc.append('ProtoMolApp.cpp')
+
 Return('allsrc')

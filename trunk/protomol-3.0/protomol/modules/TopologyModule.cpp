@@ -1,12 +1,12 @@
 #include <protomol/modules/TopologyModule.h>
 
 #include <protomol/topology/Topology.h>
-#include <protomol/topology/TopologyFactory.h>
+#include <protomol/factory/TopologyFactory.h>
 #include <protomol/topology/CubicCellManager.h>
 #include <protomol/topology/VacuumBoundaryConditions.h>
 #include <protomol/topology/PeriodicBoundaryConditions.h>
 
-#include <protomol/base/ProtoMolApp.h>
+#include <protomol/ProtoMolApp.h>
 #include <protomol/modules/MainModule.h>
 #include <protomol/base/Exception.h>
 

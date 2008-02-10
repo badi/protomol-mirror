@@ -1,4 +1,4 @@
-#include <protomol/force/ForceFactory.h>
+#include <protomol/factory/ForceFactory.h>
 #include <protomol/base/StringUtilities.h>
 #include <protomol/base/Report.h>
 #include <protomol/type/SimpleTypes.h>

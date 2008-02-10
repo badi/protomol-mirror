@@ -5,7 +5,7 @@
 #include <protomol/force/ForceGroup.h>
 #include <protomol/topology/GenericTopology.h>
 #include <protomol/topology/TopologyUtilities.h>
-#include <protomol/base/ProtoMolApp.h>
+#include <protomol/ProtoMolApp.h>
 #include <protomol/base/PMConstants.h>
 
 using namespace std; 

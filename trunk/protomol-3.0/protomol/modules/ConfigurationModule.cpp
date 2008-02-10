@@ -3,7 +3,7 @@
 #include <protomol/config/ConfigurationReader.h>
 
 #include <protomol/config/CommandLine.h>
-#include <protomol/base/ProtoMolApp.h>
+#include <protomol/ProtoMolApp.h>
 #include <protomol/config/InputValue.h>
 
 #include <iostream>

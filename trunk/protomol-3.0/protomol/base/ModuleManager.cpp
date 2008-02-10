@@ -2,7 +2,7 @@
 #include <protomol/base/Module.h>
 
 #include <protomol/base/Exception.h>
-#include <protomol/base/ProtoMolApp.h>
+#include <protomol/ProtoMolApp.h>
 #include <protomol/config/CommandLine.h>
 #include <protomol/base/StringUtilities.h>
 

@@ -4,7 +4,7 @@
 #include <protomol/integrator/base/CGMinimizerIntegrator.h>
 #include <protomol/integrator/base/NumericalDifferentiation.h>
 
-#include <protomol/base/ProtoMolApp.h>
+#include <protomol/ProtoMolApp.h>
 
 using namespace std;
 using namespace ProtoMol;

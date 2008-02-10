@@ -8,7 +8,7 @@
 #include <protomol/base/Report.h>
 #include <protomol/base/MathUtilities.h>
 #include <protomol/topology/TopologyUtilities.h>
-#include <protomol/base/ProtoMolApp.h>
+#include <protomol/ProtoMolApp.h>
 #include <protomol/base/Exception.h>
 
 using namespace ProtoMol;

@@ -6,7 +6,7 @@
 #include <protomol/topology/GenericTopology.h>
 #include <protomol/topology/TopologyUtilities.h>
 #include <protomol/base/PMConstants.h>
-#include <protomol/base/ProtoMolApp.h>
+#include <protomol/ProtoMolApp.h>
 
 #include <protomol/integrator/normal/ModifierForceProjection.h>
 

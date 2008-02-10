@@ -7,7 +7,7 @@
 #include <protomol/modifier/ModifierRemoveLinearMomentum.h>
 
 #include <protomol/base/Report.h>
-#include <protomol/base/ProtoMolApp.h>
+#include <protomol/ProtoMolApp.h>
 #include <protomol/topology/TopologyUtilities.h>
 
 using namespace std;

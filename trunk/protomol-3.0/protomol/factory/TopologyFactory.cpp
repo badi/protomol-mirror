@@ -1,7 +1,7 @@
-#include <protomol/topology/TopologyFactory.h>
+#include <protomol/factory/TopologyFactory.h>
 
 #include <protomol/config/Configuration.h>
-#include <protomol/config/HelpTextFactory.h>
+#include <protomol/factory/HelpTextFactory.h>
 
 using namespace std;
 using namespace ProtoMol;

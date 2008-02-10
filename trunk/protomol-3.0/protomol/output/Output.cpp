@@ -3,7 +3,7 @@
 #include <protomol/topology/GenericTopology.h>
 #include <protomol/type/ScalarStructure.h>
 #include <protomol/modules/MainModule.h>
-#include <protomol/base/ProtoMolApp.h>
+#include <protomol/ProtoMolApp.h>
 
 using namespace std;
 using namespace ProtoMol;

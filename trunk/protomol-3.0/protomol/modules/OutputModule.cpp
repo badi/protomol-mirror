@@ -1,8 +1,8 @@
 #include <protomol/modules/OutputModule.h>
 
-#include <protomol/base/ProtoMolApp.h>
+#include <protomol/ProtoMolApp.h>
 #include <protomol/config/Configuration.h>
-#include <protomol/output/OutputFactory.h>
+#include <protomol/factory/OutputFactory.h>
 
 #include <protomol/output/OutputDCDTrajectory.h>
 #include <protomol/output/OutputDCDTrajectoryVel.h>

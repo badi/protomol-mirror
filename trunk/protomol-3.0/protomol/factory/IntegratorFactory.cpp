@@ -1,13 +1,13 @@
-#include <protomol/integrator/IntegratorFactory.h>
+#include <protomol/factory/IntegratorFactory.h>
 
 #include <protomol/integrator/STSIntegrator.h>
 #include <protomol/integrator/MTSIntegrator.h>
 #include <protomol/integrator/NonStandardIntegrator.h>
 #include <protomol/base/StringUtilities.h>
-#include <protomol/force/ForceFactory.h>
+#include <protomol/factory/ForceFactory.h>
 #include <protomol/force/ForceGroup.h>
 #include <protomol/base/Report.h>
-#include <protomol/config/HelpTextFactory.h>
+#include <protomol/factory/HelpTextFactory.h>
 
 using namespace std;
 using namespace ProtoMol;

@@ -5,7 +5,7 @@
 #include <protomol/modifier/Modifier.h>
 #include <protomol/topology/GenericTopology.h>
 #include <protomol/integrator/Integrator.h>
-#include <protomol/base/ProtoMolApp.h>
+#include <protomol/ProtoMolApp.h>
 
 namespace ProtoMol {
   class ModifierIncrementTimestep : public Modifier {
