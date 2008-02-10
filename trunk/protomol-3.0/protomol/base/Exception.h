@@ -197,7 +197,7 @@ namespace ProtoMol {
         // This means stack traces for optimized code will often
         // be incomplete. 
 #ifdef __OPTIMIZE__
-        trace->push_front("Warning: Optimization can cause incomplete traces.");
+        trace->push_back("Warning: Optimization can cause incomplete traces.");
 #endif
 
 #if defined(HAVE_DEBUGGER) && defined(HAVE_BACKTRACE)
