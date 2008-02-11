@@ -172,11 +172,12 @@ with open('protomol/package.h', 'w') as f:
 
 
 libname = 'protomol'
+if fah: libname = libname + '-fah'
 libsrc = []
 
 # Add libprotomol
 env.Append(LIBPATH = '.')
-env.Append(LIBS = 'protomol')
+env.Append(LIBS = libname)
 
 
 # libFAH
@@ -203,7 +204,6 @@ if fah:
     # Look for boost iostreams
     env.Append(CPPDEFINES = ['BUILD_FOR_FAH'])
 
-    libname = 'protomol-fah'
     libsrc.append('#/protomol/modules.cpp')
 
 # Build
@@ -215,11 +215,10 @@ for s in subsrc:
 env.Library(libname, libsrc)
 
 
-if not fah:
-    # Build Protomol
-    src = ['protomol/main.cpp', 'protomol/modules.cpp']
-    protomol = env.Program('ProtoMol', src)
-    Default(protomol)
+# Build Protomol
+src = ['protomol/main.cpp', 'protomol/modules.cpp']
+protomol = env.Program('ProtoMol', src)
+Default(protomol)
 
 
 # Tidy

@@ -642,7 +642,6 @@ Real LeapfrogTruncatedShadow::calcPairInteractionHess(Real doSwitch,
 void LeapfrogTruncatedShadow::TorsionHess(const Torsion &currTorsion,
                                           double *hessD) {
   //
-  //ofstream myFile;
   int a1 = currTorsion.atom1;
   int a2 = currTorsion.atom2;
   int a3 = currTorsion.atom3;

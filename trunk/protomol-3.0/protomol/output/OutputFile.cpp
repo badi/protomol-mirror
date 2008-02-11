@@ -31,7 +31,7 @@ bool OutputFile::open() {
 
 bool OutputFile::close() {
   flushCache();
-  myFile.close();
+  if (myFile.is_open()) myFile.close();
   myTimer.reset();
   myTimer.start();
   if (!myFilename.empty())

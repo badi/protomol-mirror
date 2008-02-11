@@ -52,14 +52,12 @@ Output *OutputFAHFile::doMake(const vector<Value> &values) const {
 }
 
 bool OutputFAHFile::isIdDefined(const Configuration *config) const {
-  return config->valid("outputFreq") && !config->empty(getId()) &&
-    (!config->valid(getId()) || ((*config)[getId()] == true));
+  return config->valid(getId());
 }
 
 void OutputFAHFile::getParameters(vector<Parameter> &parameter) const {
   parameter.push_back
-    (Parameter(keyword + "filename",
-               Value(filename, ConstraintValueType::NotEmpty())));
+    (Parameter(getId(), Value(filename, ConstraintValueType::NotEmpty())));
   parameter.push_back
     (Parameter(keyword + "OutputFreq",
                Value(myOutputFreq, ConstraintValueType::Positive())));
@@ -70,8 +68,8 @@ bool OutputFAHFile::adjustWithDefaultParameters(vector<Value> &values,
 const {
   if (!checkParameterTypes(values)) return false;
 
-  if (config->valid(InputOutputfreq::keyword) && !values[0].valid())
-    values[0] = (*config)[InputOutputfreq::keyword];
+  if (config->valid(InputOutputfreq::keyword) && !values[1].valid())
+    values[1] = (*config)[InputOutputfreq::keyword];
 
   return checkParameters(values);
 }

@@ -9,9 +9,16 @@
 #include <protomol/ProtoMolApp.h>
 #include <protomol/base/Exception.h>
 #include <protomol/base/PMConstants.h>
-#include <fstream>
 #include <iostream>
 #include <stdio.h>
+
+#ifdef BUILD_FOR_FAH
+#include <boost/iostreams/stream.hpp>
+#include <fah/core/ChecksumDevice.h>
+
+#else
+#include <fstream>
+#endif
 
 #if defined (HAVE_LAPACK)
 #include <protomol/integrator/hessian/LapackProtomol.h>
@@ -154,9 +161,13 @@ void HessianInt::run(int numTimesteps) {
 
 void HessianInt::outputDiagHess() {
   unsigned int i;
-  ofstream myFile;
+#ifdef BUILD_FOR_FAH
+    boost::iostreams::stream<FAH::ChecksumDevice> myFile;
+#else
+    ofstream myFile;
+#endif
 
-  if (hessfile != "") {  //ofstream myFile;
+  if (hessfile != "") {
     myFile.open(hessfile.c_str(), ofstream::out);
     myFile.precision(10);
     //output hessian matrix to sparse form

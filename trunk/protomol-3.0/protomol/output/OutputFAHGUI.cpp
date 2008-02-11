@@ -64,13 +64,12 @@ Output *OutputFAHGUI::doMake(const vector<Value> &values) const {
 }
 
 bool OutputFAHGUI::isIdDefined(const Configuration *config) const {
-  return config->valid("outputFreq") && !config->empty(getId()) &&
-    (!config->valid(getId()) || ((*config)[getId()] == true));
+  return config->valid(getId());
 }
 
 void OutputFAHGUI::getParameters(vector<Parameter> &parameter) const {
   parameter.push_back
-    (Parameter(keyword + "Name", Value(name, ConstraintValueType::NotEmpty())));
+    (Parameter(getId(), Value(name, ConstraintValueType::NotEmpty())));
   parameter.push_back
     (Parameter(keyword + "OutputFreq",
                Value(myOutputFreq, ConstraintValueType::Positive())));

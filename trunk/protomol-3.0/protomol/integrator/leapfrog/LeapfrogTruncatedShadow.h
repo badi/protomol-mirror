@@ -4,7 +4,6 @@
 
 #include <protomol/integrator/STSIntegrator.h>
 #include <protomol/force/Force.h>
-#include <fstream>
 #include <protomol/type/Vector3DBlock.h>
 using namespace std;
 
