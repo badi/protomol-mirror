@@ -518,7 +518,7 @@ int NormalModeUtilities::diagHessian(double *eigVecO, double *eigValO,
   //Recomended abstol for max precision
   char *cmach = "safe min";
 #endif
-  int info;                 /* output 0=success */
+  int info = 0;                 /* output 0=success */
   //call LAPACK
   //
 #if defined ( HAVE_LAPACK )
