@@ -78,8 +78,8 @@ if env['PLATFORM'] != 'win32' and have_libfah:
 
 # Folding@Home library version
 if fah:
-    if not conf.CheckCXXHeader('fah/core/ChecksumDevice.h'):
-        print 'Folding@Home needed please set LIBFAH_HOME'
+    #if not conf.CheckCXXHeader('fah/core/ChecksumDevice.h'):
+        #print 'Folding@Home needed please set LIBFAH_HOME'
         #Exit(1)
 
     # Look for boost::iostreams
