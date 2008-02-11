@@ -551,7 +551,7 @@ namespace ProtoMol {
     unsigned int len = title.length() + 2;
     if (len >= maxColumn - 1) return title;
 
-    char result[maxColumn + 1];
+    string result(maxColumn + 1, ' ');
     unsigned int i = 0;
 
     for (; i < (maxColumn - len) / 2; i++)
