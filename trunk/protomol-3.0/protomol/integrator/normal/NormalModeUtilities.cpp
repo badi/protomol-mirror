@@ -108,7 +108,8 @@ bool NormalModeUtilities::testRemainingModes() {
   else return false;
 }
 
-//Setup string of integrators so that all point to the top integrator 'Eigenpointers' :-)
+//Setup string of integrators so that all point to the top integrator
+// 'Eigenpointers' :-)
 void NormalModeUtilities::setIntegratorSetPointers(Integrator *integrator,
                                                    EigenvectorInfo *eipt,
                                                    bool eiValid) {
@@ -547,7 +548,7 @@ int NormalModeUtilities::diagHessian(double *eigVecO, double *eigValO,
   return info;
 }
 
-//sort vectors for absolute value*******************************************************//
+//sort vectors for absolute value*********************************************//
 void NormalModeUtilities::absSort(double *eigVec, double *eigVal,
                                   int *eigIndx) {
   int i;

@@ -29,7 +29,8 @@ namespace ProtoMol {
 
   //________________________________________________________ Vector
   /**
-   * Vector enables to initialize a STL std::vector with arbitrary number of elements@n
+   * Vector enables to initialize a STL std::vector with arbitrary number of
+   * elements@n
    *
    * static const std::vector<std::string> @n
    * months(Vector<std::string>("Jan")("Feb")("Mar")("Apr")("May")

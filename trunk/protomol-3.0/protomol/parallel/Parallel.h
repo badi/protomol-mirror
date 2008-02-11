@@ -17,8 +17,10 @@ namespace ProtoMol {
   class Parallel  {
     ///< Enum specifing the actual working state of the node
     enum WorkState {
-      DONE,        ///< next() always false, when slave has nothing more to compute
-      SEQUENTIAL,  ///< next() always true, traps calls of next() when running with 1 node (should not happen!)
+      DONE,        ///< next() always false, when slave has nothing more to
+                    ///<compute
+      SEQUENTIAL,  ///< next() always true, traps calls of next() when running
+                   ///< with 1 node (should not happen!)
       STATIC,      ///< next() based on modulo, simple load balancing
       SLAVE,       ///< slave
       MASTER       ///< master
@@ -39,8 +41,9 @@ namespace ProtoMol {
     // New methods of class Parallel
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    static void init(int &argc, char ** &argv); ///< MPI_Init and sets id and number of process.
-    static void finalize();                    ///< MPI_Finialize.
+    static void init(int &argc, char ** &argv); ///< MPI_Init and sets id and
+                                                ///< number of process.
+    static void finalize();                     ///< MPI_Finialize.
 
     static bool initialized()          {return myInitialized;}
 
@@ -122,7 +125,8 @@ namespace ProtoMol {
     /// Recieves a Vector3DBlock from a node.
     static void recv(Vector3DBlock *vect, int address);
 
-    /// Sends a Vector3DBlock, to one node, and overwrites it with one recieved from another node
+    /// Sends a Vector3DBlock, to one node, and overwrites it with one recieved
+    /// from another node
     static void sendrecv_replace(Vector3DBlock *Vect, int sendaddr,
                                  int recvaddr);
 
@@ -132,19 +136,23 @@ namespace ProtoMol {
     /// Recieves a Real (or array of Reals) from another node
     static void recv(Real *data, int num, int address);
 
-    /// Sends one real and receives another real from one or two nodes (sends to one, recieves to the other)
+    /// Sends one real and receives another real from one or two nodes (sends
+    ///  to one, recieves to the other)
     static void sendrecv(Real *senddata, int sendnum, int sendaddr,
                          Real *recvdata, int recvnum,
                          int recvaddr);
 
-    /// Sends a Real (or array of Reals) to one node and overwrites it with data from another node.
+    /// Sends a Real (or array of Reals) to one node and overwrites it with
+    ///  data from another node.
     static void sendrecv_replace(Real *data, int num, int sendaddr,
                                  int recvaddr);
 
-    /// Gathers a vector of Reals from the compute nodes and stores it in an array.
+    /// Gathers a vector of Reals from the compute nodes and stores it in an
+    /// array.
     static void gather(Real *data, int num, Real *data_array, int address);
 
-    /// Gathers a vector of Reals from the compute nodes and stores it in an array, distributed to all the nodes.
+    /// Gathers a vector of Reals from the compute nodes and stores it in an
+    /// array, distributed to all the nodes.
     static void allgather(Real *data, int num, Real *data_array);
 
     // Partitioning
@@ -194,26 +202,32 @@ namespace ProtoMol {
     static ParallelType myMode;          ///< Parallelization scheme
     static WorkState myWorkState;     ///< Actual work state
 
-    static int myPipeSize;      ///< Number of add. work packages to push to slaves
+    static int myPipeSize;      ///< Number of add. work packages to push to
+                                ///< slaves
     static bool myUseBarrier;    ///< Flag to signal usage of MPI_Barrier
     static int myMaxPackages;   ///< Number of max. packages per node per force
 
     static int *myBuffer;        ///< Bsend buffer
     static int myNext;          ///< Counter of next() calls
     static int myNextRange[2];  ///< Actual work package to work on [from,to]
-    static std::vector<int> myDone;          ///< Master, keeps track of slave have got already their work
-    static std::vector<int> myBlockList;     ///< List of of the force partitioning
+    static std::vector<int> myDone;          ///< Master, keeps track of slave
+                                             ///< have got already their work
+    static std::vector<int> myBlockList;     ///< List of of the force
+                                             ///< partitioning
 
     static int myRecv;          ///< Number of outstanding receives
-    static int myI;             ///< Index of the actual work package (only master)
+    static int myI;             ///< Index of the actual work package (only
+                                ///< master)
     static int myP;             ///< Node number
 
     static Parallel *obj;             ///< Instance
 
     static bool myIsolated;      ///< Saves isolation state
     static int myOldId;         ///< Saves processor id when switching MPI off
-    static int myOldNum;        ///< Saves number of processors when switching MPI off
-    static ParallelType myOldMode;       ///< Saves parallelization scheme when switching MPI off
+    static int myOldNum;        ///< Saves number of processors when switching
+                                ///< MPI off
+    static ParallelType myOldMode;  ///< Saves parallelization scheme when
+                                    ///< switching MPI off
   };
   //____ INLINES
 }

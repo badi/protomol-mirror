@@ -29,6 +29,5 @@ namespace ProtoMol {
   private:
     mutable int myCount;
   };
-  //______________________________________________________________________ INLINES
 }
 #endif /* PROXY_H */

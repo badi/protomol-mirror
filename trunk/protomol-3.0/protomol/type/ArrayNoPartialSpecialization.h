@@ -7,9 +7,9 @@
 #include <assert.h>
 
 namespace ProtoMol {
-  //*****************************************************************************
-  // Class Template for a Generic Resizable N Dimensional Array        (for N>=2)
-  // By Giovanni Bavestrelli                  Copyright 1999 Giovanni Bavestrelli
+  //****************************************************************************
+  // Class Template for a Generic Resizable N Dimensional Array       (for N>=2)
+  // By Giovanni Bavestrelli                 Copyright 1999 Giovanni Bavestrelli
   // Any feedback is welcome, you can contact me at gbavestrelli@yahoo.com
   //
   // This is the version for Microsoft Visual C++ 6.0, and perhaps for other
@@ -21,12 +21,12 @@ namespace ProtoMol {
   // specialization, be sure to use the other version of these classes.
   // Thanks to Andrei Alexandrescu for suggesting this trick, which makes my
   // classes work well with Visual C++, although the solution is not standard.
-  //*****************************************************************************
+  //****************************************************************************
 
 
-  //=============================================================================
-  // Classes for passing a typesafe vector of dimensions to the Array constructor
-  //=============================================================================
+  //============================================================================
+  //Classes for passing a typesafe vector of dimensions to the Array constructor
+  //============================================================================
 
   template<unsigned int N>
   class ArraySize {
@@ -43,7 +43,6 @@ namespace ProtoMol {
       Vector.push_back(dim);
       return ArraySize < N + 1 > (Vector);
     }
-
     const std::vector<unsigned int> &Vect() const {
       assert(Vector.size() == N);
       return Vector;
@@ -69,17 +68,17 @@ namespace ProtoMol {
     }
   };
 
-  //=============================================================================
+  //============================================================================
   // Class Template for a Generic Resizable N Dimensional Array
-  //=============================================================================
+  //============================================================================
 
   template<typename T, unsigned int N>
   class Array {
   public:
 
-    //-----------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Class Template for N Dimensional SubArrays within an Array
-    //-----------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
 
     template<unsigned int N>
     class RefArray {
@@ -179,9 +178,9 @@ namespace ProtoMol {
     };
 
 
-    //-----------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Partial Specialization for Monodimensional SubArray within an Array
-    //-----------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
 
     template<>
     class RefArray<1> {
@@ -211,7 +210,8 @@ namespace ProtoMol {
                   const size_type * pSubArrayLen)
         : m_pElements(pElements), m_pNDimensions(pNDimensions) {
         assert(m_pElements && m_pNDimensions && pSubArrayLen);
-        assert(m_pNDimensions[0] > 0 && pSubArrayLen[0] == 1); // We found the elements
+        // We found the elements
+        assert(m_pNDimensions[0] > 0 && pSubArrayLen[0] == 1);
       }
 
     public:
@@ -277,9 +277,9 @@ namespace ProtoMol {
     };
 
 
-    //-----------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Class Template for a Generic Resizable N Dimensional Array
-    //-----------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
 
   public:
 
@@ -379,7 +379,7 @@ namespace ProtoMol {
     }
 
     // Set the size of each array dimension
-    // Visual C++ does not accept parameter defined so: const unsigned int (&)[N]
+    //Visual C++ does not accept parameter defined so: const unsigned int (&)[N]
     // so I accepted a solution which is not type-safe: use it judiciously
     bool resize(const unsigned int *Dimensions,
                 const T &Init = T(), bool PreserveElems = false) {

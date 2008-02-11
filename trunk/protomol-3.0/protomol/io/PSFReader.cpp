@@ -108,7 +108,8 @@ bool PSFReader::read(PSF &psf) {
       if (equalStartNocase("!NTITLE", keyword)) {  // title
         comment = "";
         for (int counter = 0; counter < numrecords; ++counter) {
-          line = removeBeginEndBlanks(getline());   // lines of title + one empty line
+          // lines of title + one empty line
+          line = removeBeginEndBlanks(getline());
           if (!line.empty())
             comment += (comment.empty() ? "" : "\n") + line;
         }
@@ -117,15 +118,16 @@ bool PSFReader::read(PSF &psf) {
       } else if (equalStartNocase("!NATOM", keyword)) {
         for (int counter = 1; counter <= numrecords; ++counter) {
           PSF::Atom temp_atom;
-          file >> temp_atom.number     // read atom number
-          >> temp_atom.seg_id        // read segment identifier
-          >> str                     // read in residue sequence
-          >> temp_atom.residue_name   // read in residue name
-          >> temp_atom.atom_name   // read in atom name
-          >> temp_atom.atom_type   // read in name of the second atom
-          >> temp_atom.charge     // read in charge
-          >> temp_atom.mass       // read in mass
-          >> temp_atom.identity;   // atom's chemical identity (used only by iSGProtomol)
+          file >> temp_atom.number  // read atom number
+          >> temp_atom.seg_id       // read segment identifier
+          >> str                    // read in residue sequence
+          >> temp_atom.residue_name // read in residue name
+          >> temp_atom.atom_name    // read in atom name
+          >> temp_atom.atom_type    // read in name of the second atom
+          >> temp_atom.charge       // read in charge
+          >> temp_atom.mass         // read in mass
+          >> temp_atom.identity;    // atom's chemical identity (used only by
+                                    // iSGProtomol)
           temp_atom.residue_sequence = toInt(str);
           if (!isInt(str))
             report << recoverable

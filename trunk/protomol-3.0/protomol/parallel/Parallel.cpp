@@ -34,7 +34,8 @@ using namespace ProtoMol;
 
 //____ static
 #ifdef HAVE_MPI
-static MPI_Comm slaveComm = MPI_COMM_NULL;   // Not data member to avoid dependcies
+// Not data member to avoid dependcies
+static MPI_Comm slaveComm = MPI_COMM_NULL;
 const int NEED_RANGE = 1;
 const int SEND_RANGE = 2;
 #endif
@@ -357,10 +358,8 @@ void Parallel::setMode(ParallelType mode) {
   myIAmSlave = (mode == ParallelType::MASTERSLAVE ? (!myIAmMaster) :
                 true);
   myAvailableId =
-    (myNum ==
-     myAvailableNum ? myId : (myId ==
-                              myMasterId ? -1 : (myId <
-                                                 myMasterId ? myId : myId - 1)));
+    (myNum == myAvailableNum ? myId :
+     (myId == myMasterId ? -1 : (myId < myMasterId ? myId : myId - 1)));
 #ifdef HAVE_MPI
   if (slaveComm != MPI_COMM_NULL)
     MPI_Comm_free(&slaveComm);
@@ -447,7 +446,9 @@ void Parallel::syncSlave() {
 // Senda a vector 3DBlock over MPI as an array.
 #ifdef HAVE_MPI
 void Parallel::send(Vector3DBlock *vect, int address) {
-  /* Create a C-style array large enough to hold all the real values (3 / Vector3D) */
+  /* Create a C-style array large enough to hold all the real values
+   * (3 / Vector3D)
+   */
   int size = vect->size();
   Real *vectArray = new Real[3 * size];
   if (vectArray == 0) {
@@ -455,7 +456,9 @@ void Parallel::send(Vector3DBlock *vect, int address) {
     MPI_Abort(MPI_COMM_WORLD, 1);
   }
 
-  /* Start dumping the Vector3D into the array.  This keeps us from having to create an MPI struct, pack it,     * and in general, mess with all that.  It's inefficient, but it's at least a start. It's designed such that
+  /* Start dumping the Vector3D into the array.  This keeps us from having to
+   * create an MPI struct, pack it,     * and in general, mess with all that.
+   * It's inefficient, but it's at least a start. It's designed such that
    * the array looks like {x1 y1 z1 x2 y2 z2 ... xN yN zN} for N Vector3D's */
   for (int i = 0; i < size; i++) {
     vectArray[3 * i] = (*vect)[i][0];
@@ -463,7 +466,8 @@ void Parallel::send(Vector3DBlock *vect, int address) {
     vectArray[3 * i + 2] = (*vect)[i][2];
   }
 
-  /* Since it's an array of Reals, we can use the plain old Parallel::send routine since MPI can handle
+  /* Since it's an array of Reals, we can use the plain old Parallel::send
+   * routine since MPI can handle
    * both single values and arrays with the same function call */
   send(vectArray, 3 * size, address);
   delete[] vectArray;
@@ -484,9 +488,11 @@ void Parallel::recv(Vector3DBlock *vect, int address) {
     cout << "Can't create Parallel::recv() array!  Quitting!" << endl;
     MPI_Abort(MPI_COMM_WORLD, 1);
   }
-  /* Since it's an array, the Parallel::recv() call is sufficient (don't you just love function overloading?) */
+  /* Since it's an array, the Parallel::recv() call is sufficient (don't you
+   * just love function overloading?) */
   recv(vectArray, 3 * size, address);
-  /* Map the vector back onto an actual Vector3DBlock.  The array looks like this: {x1 y1 z1 x2 y2 z2 ... xN yN zN} */
+  /* Map the vector back onto an actual Vector3DBlock.  The array looks like
+   * this: {x1 y1 z1 x2 y2 z2 ... xN yN zN} */
   for (int i = 0; i < size; i++) {
     (*vect)[i][0] = vectArray[3 * i];
     (*vect)[i][1] = vectArray[3 * i + 1];
@@ -520,7 +526,8 @@ void Parallel::sendrecv_replace(Vector3DBlock *vect, int sendaddr,
 
   // Reuse of function calls to actually handle the MPI calls
   sendrecv_replace(vectArray, 3 * size, sendaddr, recvaddr);
-  // Map it back in to the Vector3D and nobody will ever know we mucked with it... 8-)
+  // Map it back in to the Vector3D and nobody will ever know we mucked with
+  // it... 8-)
   for (int i = 0; i < size; i++) {
     (*vect)[i][0] = vectArray[3 * i];
     (*vect)[i][1] = vectArray[3 * i + 1];
@@ -537,7 +544,8 @@ void Parallel::sendrecv_replace(Vector3DBlock *, int, int) {}
 
 #ifdef HAVE_MPI
 void Parallel::send(Real *data, int num, int address) {
-  // Just a nice wrapper that automatically selects the MPI datatype for you and handles all the annoying things
+  // Just a nice wrapper that automatically selects the MPI datatype for you
+  // and handles all the annoying things
   MPI_Send(data, num, MPITypeTraits<Real>::datatype, address, 0,
            MPI_COMM_WORLD);
 }
@@ -706,8 +714,8 @@ void Parallel::bcastSlaves(Real *, Real *) {}
 #endif
 
 unsigned int Parallel::getNumberOfPackages(unsigned int n) {
-  if (getMaxPackages() < 1 || static_cast<unsigned int>(getAvailableNum()) >=
-      n)
+  if (getMaxPackages() < 1 ||
+      static_cast<unsigned int>(getAvailableNum()) >= n)
     return n;
   return min(n / getAvailableNum(),
              static_cast<unsigned int>(getMaxPackages()))

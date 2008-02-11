@@ -26,10 +26,10 @@ void OutputFinalXYZPos::doFinalize(int step) {
   if (!writer.open(filename))
     THROW(string("Can't open ") + getId() + " '" + filename + "'.");
 
-  const Vector3DBlock *pos = (myMinimalImage ? app->outputCache.minimalPositions() :
-                              &app->positions);
-  writer.setComment("Time : " + toString(app->outputCache.time()) + ", step : " +
-                    toString(step) +
+  const Vector3DBlock *pos =
+    (myMinimalImage ? app->outputCache.minimalPositions() : &app->positions);
+  writer.setComment("Time : " + toString(app->outputCache.time()) +
+                    ", step : " + toString(step) +
                     (myMinimalImage ? ", minimal Image" : "") + ".");
 
   if (!writer.write(*pos, app->topology->atoms, app->topology->atomTypes))

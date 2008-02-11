@@ -25,10 +25,11 @@ void OutputFinalXYZVel::doFinalize(int step) {
   if (!writer.open(filename))
     THROW(string("Can't open ") + getId() + " '" + filename + "'.");
 
-  writer.setComment("Time : " + toString(app->outputCache.time()) + ", step : " +
-                    toString(step) + ".");
+  writer.setComment("Time : " + toString(app->outputCache.time()) +
+                    ", step : " + toString(step) + ".");
 
-  if (!writer.write(*&app->velocities, app->topology->atoms, app->topology->atomTypes))
+  if (!writer.write(*&app->velocities, app->topology->atoms,
+                    app->topology->atomTypes))
     THROW(string("Could not write ") + getId() + " '" + filename + "'.");
 }
 

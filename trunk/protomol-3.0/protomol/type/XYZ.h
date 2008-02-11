@@ -31,7 +31,5 @@ namespace ProtoMol {
     Vector3DBlock coords;
     std::vector<std::string> names;
   };
-
-  //____________________________________________________________________________INLINES
 }
 #endif /* XYZ_H */

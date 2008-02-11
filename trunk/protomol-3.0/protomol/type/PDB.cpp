@@ -7,18 +7,17 @@ using namespace ProtoMol;
 //____PDB
 PDB::Atom::Atom() :
   elementType(""), elementNum(0), elementName(""), altLoc(""), residueName(""),
-  chainID(""), residueNum(0), insertionCode(""), occupancy(0.0), tempFactor(0.0),
-  segID(""), symbol(""), charge(""), hvyAtomGrpsize(0) {}
+  chainID(""), residueNum(0), insertionCode(""), occupancy(0.0),
+  tempFactor(0.0), segID(""), symbol(""), charge(""), hvyAtomGrpsize(0) {}
 
 PDB::Atom::Atom(string etype, int anum, string ename, string altloc,
                 string rname, string chain, int rnum, string insertion,
-                Real occ, Real tf,
-                string segname, string symname, string c,
+                Real occ, Real tf, string segname, string symname, string c,
                 int ha) :
   elementType(etype), elementNum(anum), elementName(ename), altLoc(altloc),
-  residueName(rname), chainID(chain), residueNum(rnum), insertionCode(insertion),
-  occupancy(occ), tempFactor(tf), segID(segname), symbol(symname), charge(c),
-  hvyAtomGrpsize(ha) {}
+  residueName(rname), chainID(chain), residueNum(rnum),
+  insertionCode(insertion), occupancy(occ), tempFactor(tf), segID(segname),
+  symbol(symname), charge(c), hvyAtomGrpsize(ha) {}
 
 PDB::Ter::Ter() :
   elementType(""), elementNum(0), residueName(""), chainID(""), residueNum(0),

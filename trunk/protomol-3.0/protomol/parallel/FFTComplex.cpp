@@ -54,7 +54,7 @@ namespace ProtoMol {
   // Define the right implementation of FFTInternal
   //
 #if defined(HAVE_FFT_SGI) || !defined(HAVE_FFT)
-  //_________________________________________________________________ FFTInternal
+  //________________________________________________________________ FFTInternal
   //
   // complib.sgimath and ZFFT
   //
@@ -97,14 +97,16 @@ namespace ProtoMol {
 
 #else
 #  ifdef HAVE_FFT_FFTW3
-  //_________________________________________________________________ FFTInternal
+  //________________________________________________________________ FFTInternal
   //
   // FFTW3
   //
   class FFTInternal {
 
   public:
-    FFTInternal():myNX(0),myNY(0),myNZ(0),myArray(NULL),myPlanForward(NULL),myPlanBackward(NULL){}
+    FFTInternal():
+      myNX(0),myNY(0),myNZ(0),myArray(NULL),myPlanForward(NULL),
+      myPlanBackward(NULL){}
     ~FFTInternal();
 
     void initialize(int x, int y, int z,zomplex* a);
@@ -143,15 +145,17 @@ namespace ProtoMol {
       fftw_destroy_plan(myPlanForward);
     if(myPlanBackward != NULL)
       fftw_destroy_plan(myPlanBackward);
-    myPlanForward  = fftw_plan_dft_3d(myNX,myNY,myNZ,myArray,myArray,FFTW_FORWARD,  FFTW_MEASURE);
-    myPlanBackward = fftw_plan_dft_3d(myNX,myNY,myNZ,myArray,myArray,FFTW_BACKWARD, FFTW_MEASURE);
+    myPlanForward  = fftw_plan_dft_3d(myNX,myNY,myNZ,myArray,myArray,
+                                      FFTW_FORWARD,  FFTW_MEASURE);
+    myPlanBackward = fftw_plan_dft_3d(myNX,myNY,myNZ,myArray,myArray,
+                                      FFTW_BACKWARD, FFTW_MEASURE);
     t.stop();
     report << hint <<"FFTW3 Initialization: "<<t.getTime()<<"."<<endr;
   }
 
 #  else
 #     ifdef HAVE_FFT_ESSL
-  //_________________________________________________________________ FFTInternal
+  //________________________________________________________________ FFTInternal
   //
   // ESSL
   // 
@@ -162,8 +166,14 @@ namespace ProtoMol {
     ~FFTInternal();
 
     void initialize(int x, int y, int z,zomplex* a);
-    void forward(){ dcft3(myArray, myNZ, myNY*myNZ, myArray, myNZ, myNY*myNZ, myNZ, myNY, myNX,  1, 1.0, myAux, myNaux);}
-    void backward(){dcft3(myArray, myNZ, myNY*myNZ, myArray, myNZ, myNY*myNZ, myNZ, myNY, myNX, -1, 1.0, myAux, myNaux);}
+    void forward(){
+      dcft3(myArray, myNZ, myNY*myNZ, myArray, myNZ, myNY*myNZ,
+            myNZ, myNY, myNX,  1, 1.0, myAux, myNaux);
+    }
+    void backward(){
+      dcft3(myArray, myNZ, myNY*myNZ, myArray, myNZ, myNY*myNZ, myNZ, myNY,
+            myNX, -1, 1.0, myAux, myNaux);
+    }
   private:
     int case1(int n1,int n2, int n3);
     int case2(int n1,int n2, int n3);
@@ -215,22 +225,26 @@ namespace ProtoMol {
   }
 
   int FFTInternal::case2(int n1,int n2, int n3){
-    return static_cast<int>(60000+(2*n2+256)*(std::min(64, n1)+4.56) + (n1 <= 2048 ? 0 : 4.56*n1));
+    return static_cast<int>(60000+(2*n2+256)*(std::min(64, n1)+4.56) +
+                            (n1 <= 2048 ? 0 : 4.56*n1));
   }
 
   int FFTInternal::case3(int n1,int n2, int n3){
-    return static_cast<int>(60000+(2*n3+256)*(std::min(64, n1*n2)+4.56) + (n1 <= 2048 ? 0 : 4.56*n1));
+    return static_cast<int>(60000+(2*n3+256)*(std::min(64, n1*n2)+4.56) +
+                            (n1 <= 2048 ? 0 : 4.56*n1));
   }
 #     else
 #       ifdef HAVE_FFT_FFTW2
-  //_________________________________________________________________ FFTInternal
+  //________________________________________________________________ FFTInternal
   //
   // FFTW2
   //
   class FFTInternal {
 
   public:
-    FFTInternal():myNX(0),myNY(0),myNZ(0),myArray(NULL),myPlanForward(NULL),myPlanBackward(NULL){}
+    FFTInternal():
+      myNX(0),myNY(0),myNZ(0),myArray(NULL),
+      myPlanForward(NULL),myPlanBackward(NULL){}
     ~FFTInternal();
 
     void initialize(int x, int y, int z,zomplex* a);
@@ -269,14 +283,16 @@ namespace ProtoMol {
       fftwnd_destroy_plan(myPlanForward);
     if(myPlanBackward != NULL)
       fftwnd_destroy_plan(myPlanBackward);
-    myPlanForward  = fftw3d_create_plan(myNX,myNY,myNZ,FFTW_FORWARD,  FFTW_MEASURE|FFTW_IN_PLACE);
-    myPlanBackward = fftw3d_create_plan(myNX,myNY,myNZ,FFTW_BACKWARD, FFTW_MEASURE|FFTW_IN_PLACE);
+    myPlanForward  = fftw3d_create_plan(myNX,myNY,myNZ,FFTW_FORWARD,
+                                        FFTW_MEASURE|FFTW_IN_PLACE);
+    myPlanBackward = fftw3d_create_plan(myNX,myNY,myNZ,FFTW_BACKWARD,
+                                        FFTW_MEASURE|FFTW_IN_PLACE);
     t.stop();
     report << hint <<"FFTW2 Initialization: "<<t.getTime()<<"."<<endr;
   }
 #       else
 #         ifdef HAVE_FFT_FFTW2_MPI
-  //_________________________________________________________________ FFTInternal
+  //________________________________________________________________ FFTInternal
   //
   // FFTW2 MPI
   //
@@ -293,8 +309,10 @@ namespace ProtoMol {
   class FFTInternal {
 
   public:
-    FFTInternal():myNX(0),myNY(0),myNZ(0),myArray(NULL),myArrayTmp(NULL),myLocalComm(MPI_COMM_NULL),
-		  myPlanForward(NULL),myPlanBackward(NULL),data(NULL),work(NULL){}
+    FFTInternal():
+      myNX(0),myNY(0),myNZ(0),myArray(NULL),myArrayTmp(NULL),
+      myLocalComm(MPI_COMM_NULL),
+      myPlanForward(NULL),myPlanBackward(NULL),data(NULL),work(NULL){}
     ~FFTInternal();
 
     void initialize(int x, int y, int z,zomplex* a);
@@ -314,7 +332,8 @@ namespace ProtoMol {
     int myNZ;
     fftw_complex* myArray;
     fftw_complex* myArrayTmp;
-    static MPI_Comm myComm;  // All possible available nodes, master exlcuded if master-slave
+    // All possible available nodes, master exlcuded if master-slave
+    static MPI_Comm myComm;
     int myNum;
 
     MPI_Comm myLocalComm;    // Nodes to be used by FFT
@@ -337,7 +356,8 @@ namespace ProtoMol {
 	fftwnd_mpi_destroy_plan(myPlanForward);
       if(myPlanBackward != NULL)
 	fftwnd_mpi_destroy_plan(myPlanBackward);     
-      if(myLocalComm != MPI_COMM_NULL && myLocalComm != MPI_COMM_WORLD && myLocalComm != myComm )
+      if(myLocalComm != MPI_COMM_NULL && myLocalComm !=
+         MPI_COMM_WORLD && myLocalComm != myComm )
 	MPI_Comm_free(&myLocalComm);    
     }
     if(work != NULL)
@@ -379,7 +399,8 @@ namespace ProtoMol {
       delete [] myArrayTmp;
       myArrayTmp = NULL;
     }
-    if(myLocalComm != MPI_COMM_NULL && myLocalComm != MPI_COMM_WORLD && myLocalComm != myComm )
+    if(myLocalComm != MPI_COMM_NULL &&
+       myLocalComm != MPI_COMM_WORLD && myLocalComm != myComm )
       MPI_Comm_free(&myLocalComm);    
 
 
@@ -410,8 +431,12 @@ namespace ProtoMol {
       myArrayTmp = new  fftw_complex [myNX*myNY*myNZ];
 
     if(myLocalComm != MPI_COMM_NULL){
-      myPlanForward  = fftw3d_mpi_create_plan(myLocalComm,myNX,myNY,myNZ,FFTW_FORWARD,  FFTW_MEASURE|FFTW_IN_PLACE);
-      myPlanBackward = fftw3d_mpi_create_plan(myLocalComm,myNX,myNY,myNZ,FFTW_BACKWARD, FFTW_MEASURE|FFTW_IN_PLACE);
+      myPlanForward  =
+        fftw3d_mpi_create_plan(myLocalComm,myNX,myNY,myNZ,FFTW_FORWARD,
+                               FFTW_MEASURE|FFTW_IN_PLACE);
+      myPlanBackward =
+        fftw3d_mpi_create_plan(myLocalComm,myNX,myNY,myNZ,FFTW_BACKWARD,
+                               FFTW_MEASURE|FFTW_IN_PLACE);
       if(myNum > 1){
 	fftwnd_mpi_local_sizes(myPlanForward, &local_nx, &local_x_start,
 			       &local_ny_after_transpose,
@@ -423,13 +448,15 @@ namespace ProtoMol {
 	if(local_nx == 0){
 	  int n;
 	  MPI_Comm_rank(MPI_COMM_WORLD,&n);
-	  report << allnodes << hint << "FFTW2 MPI: Node "<<n<<" does nothing."<<endr; 
+	  report << allnodes << hint << "FFTW2 MPI: Node "<<n
+             <<" does nothing."<<endr; 
 	}
       }
     }
     t.stop();
     if(rank == 0){
-      report << allnodes << hint <<"FFTW2 MPI Initialization with "<<myNum<<" node(s) of "<<size<<": "<<t.getTime()<<"."<<endr;
+      report << allnodes << hint <<"FFTW2 MPI Initialization with "
+             <<myNum<<" node(s) of "<<size<<": "<<t.getTime()<<"."<<endr;
     }
   }
 
@@ -442,7 +469,8 @@ namespace ProtoMol {
 	for (int x = 0; x < local_nx; ++x)
 	  for (int y = 0; y < myNY; ++y)
 	    for (int z = 0; z < myNZ; ++z)
-	      data[(x*myNY + y)*myNZ + z] = myArray[((x + local_x_start)*myNY +  y)*myNZ + z];
+	      data[(x*myNY + y)*myNZ + z] =
+            myArray[((x + local_x_start)*myNY +  y)*myNZ + z];
 
 	fftwnd_mpi(myPlanForward, 1,data,work,FFTW_TRANSPOSED_ORDER);
 
@@ -453,14 +481,17 @@ namespace ProtoMol {
 	for (int y = 0; y < local_ny_after_transpose; ++y)
 	  for (int x = 0; x < myNX; ++x)
 	    for (int z = 0; z < myNZ; ++z)
-	      myArrayTmp[(x*myNY + local_y_start_after_transpose +  y)*myNZ + z] = data[(y*myNX + x) * myNZ + z];
+	      myArrayTmp[(x*myNY + local_y_start_after_transpose +  y)*myNZ + z] =
+            data[(y*myNX + x) * myNZ + z];
 
 	// Split up allreduce if not all nodes were used for FFT
 	if(myComm != myLocalComm){
-	  MPI_Reduce((Real*)myArrayTmp, (Real*)myArray, 2*myNX*myNY*myNZ, MY_MPI_REAL, MPI_SUM, 0, myLocalComm);
+	  MPI_Reduce((Real*)myArrayTmp, (Real*)myArray,
+                 2*myNX*myNY*myNZ, MY_MPI_REAL, MPI_SUM, 0, myLocalComm);
 	}
 	else {
-	  MPI_Allreduce((Real*)myArrayTmp, (Real*)myArray, 2*myNX*myNY*myNZ, MY_MPI_REAL, MPI_SUM, myLocalComm);  
+	  MPI_Allreduce((Real*)myArrayTmp, (Real*)myArray,
+                    2*myNX*myNY*myNZ, MY_MPI_REAL, MPI_SUM, myLocalComm);  
 	}
       }
     }
@@ -479,7 +510,8 @@ namespace ProtoMol {
 	for (int x = 0; x < local_nx; ++x)
 	  for (int y = 0; y < myNY; ++y)
 	    for (int z = 0; z < myNZ; ++z)
-	      data[(x*myNY + y)*myNZ + z] = myArray[((x + local_x_start)*myNY +  y)*myNZ + z];
+	      data[(x*myNY + y)*myNZ + z] =
+            myArray[((x + local_x_start)*myNY +  y)*myNZ + z];
 
 	fftwnd_mpi(myPlanBackward, 1,data,work,FFTW_TRANSPOSED_ORDER);
 
@@ -490,14 +522,17 @@ namespace ProtoMol {
 	for (int y = 0; y < local_ny_after_transpose; ++y)
 	  for (int x = 0; x < myNX; ++x)
 	    for (int z = 0; z < myNZ; ++z)
-	      myArrayTmp[(x*myNY + local_y_start_after_transpose +  y)*myNZ + z] = data[(y*myNX + x) * myNZ + z];
+	      myArrayTmp[(x*myNY + local_y_start_after_transpose +  y)*myNZ + z] =
+            data[(y*myNX + x) * myNZ + z];
 
 	// Split up allreduce if not all nodes were used for FFT
 	if(myComm != myLocalComm){
-	  MPI_Reduce((Real*)myArrayTmp, (Real*)myArray, 2*myNX*myNY*myNZ, MY_MPI_REAL, MPI_SUM, 0, myLocalComm);
+	  MPI_Reduce((Real*)myArrayTmp, (Real*)myArray, 2*myNX*myNY*myNZ,
+                 MY_MPI_REAL, MPI_SUM, 0, myLocalComm);
 	}
 	else {
-	  MPI_Allreduce((Real*)myArrayTmp, (Real*)myArray, 2*myNX*myNY*myNZ, MY_MPI_REAL, MPI_SUM, myLocalComm);  
+	  MPI_Allreduce((Real*)myArrayTmp, (Real*)myArray, 2*myNX*myNY*myNZ,
+                    MY_MPI_REAL, MPI_SUM, myLocalComm);  
 	}
       }
     }
@@ -543,7 +578,7 @@ namespace ProtoMol {
 #endif
 
 
-  //_________________________________________________________________ FFTComplex
+  //_______________________________________________________________ FFTComplex
   FFTComplex::FFTComplex():myFFTInternal(NULL){
     myFFTInternal = new FFTInternal();
   }

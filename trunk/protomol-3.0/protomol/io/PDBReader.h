@@ -56,8 +56,5 @@ namespace ProtoMol {
     std::vector<PDB::Atom>* myAtoms;
     std::vector<PDB::Ter>* myTers;
   };
-
-  //____________________________________________________________________________INLINES
-
 }
 #endif /* PDBREADER_H */

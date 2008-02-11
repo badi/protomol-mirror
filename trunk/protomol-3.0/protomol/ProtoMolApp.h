@@ -59,6 +59,7 @@ namespace ProtoMol {
     static void splash(std::ostream &stream);
     void configure(const std::string &configfile);
     bool configure(int argc = 0, char *argv[] = 0);
+    bool configure(const std::vector<std::string> &args);
     void build();
     void print(std::ostream &stream);
     bool step();

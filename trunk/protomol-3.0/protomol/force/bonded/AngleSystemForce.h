@@ -102,9 +102,9 @@ namespace ProtoMol {
     Vector3D r12(boundary.minimalDifference(atom2, atom1));
     Vector3D r32(boundary.minimalDifference(atom2, atom3));
     Vector3D r13(boundary.minimalDifference(atom3, atom1));
-    Real d12 = r12.norm();                        // Distance between atom 1 and 2.
-    Real d32 = r32.norm();                        // Distance between atom 3 and 2.
-    Real d13 = r13.norm();                        // Distance between atom 1 and 3.
+    Real d12 = r12.norm();                     // Distance between atom 1 and 2.
+    Real d32 = r32.norm();                     // Distance between atom 3 and 2.
+    Real d13 = r13.norm();                     // Distance between atom 1 and 3.
 
     // Calculate theta.
     Real theta = atan2((r12.cross(r32)).norm(), r12.dot(r32));

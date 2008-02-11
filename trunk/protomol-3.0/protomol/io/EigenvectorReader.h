@@ -49,7 +49,5 @@ namespace ProtoMol {
     EigenvectorInfo *myEigenvectorInfo;
     bool mySwapEndian;
   };
-
-  //____________________________________________________________________________INLINES
 }
 #endif /* EIGENVECTORREADER_H */

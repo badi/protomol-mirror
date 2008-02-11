@@ -46,7 +46,5 @@ namespace ProtoMol {
   private:
     PSF *myPSF;
   };
-
-  //____________________________________________________________________________INLINES
 }
 #endif /* PSFREADER_H */

@@ -1,5 +1,6 @@
 #include <protomol/ProtoMolApp.h>
 #include <protomol/base/ModuleManager.h>
+#include <protomol/module/MainModule.h>
 #include <protomol/base/TimerStatistic.h>
 #include <protomol/base/Exception.h>
 
@@ -23,7 +24,7 @@ int main(int argc, char *argv[]) {
 
     app.splash(cout);
     app.build();
-    app.print(cout);
+    if ((int)app.config[InputDebug::keyword]) app.print(cout);
 
     TimerStatistic::timer[TimerStatistic::RUN].start();
     while (app.step())

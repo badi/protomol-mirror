@@ -61,8 +61,9 @@ namespace ProtoMol {
 
       // Get atom distance.
       Real distSquared;
-      Vector3D diff(realTopo->boundaryConditions.minimalDifference(
-                                                                   (*positions)[i], (*positions)[j], distSquared));
+      Vector3D diff(realTopo->boundaryConditions.
+                    minimalDifference((*positions)[i], (*positions)[j],
+                                      distSquared));
       // Do switching function rough test, if necessary.
       if ((TSwitchingFunctionFirst::USE || TSwitchingFunctionSecond::USE ||
            TNonbondedForceFirst::CUTOFF ||
@@ -84,11 +85,9 @@ namespace ProtoMol {
           TNonbondedForceSecond::DIST_R2) ? 1.0 / distSquared : 1.0);
       Real energy1, force1, energy2, force2;
       nonbondedForceFunctionFirst(energy1, force1, distSquared, rDistSquared,
-                                  diff, realTopo, i, j,
-                                  excl);
+                                  diff, realTopo, i, j, excl);
       nonbondedForceFunctionSecond(energy2, force2, distSquared, rDistSquared,
-                                   diff, realTopo, i, j,
-                                   excl);
+                                   diff, realTopo, i, j, excl);
       //Report::report << "\t"<<i << "\t"<<j<<Report::endr;
       // Calculate the switched force and energy.
       if (TSwitchingFunctionFirst::MODIFY || TSwitchingFunctionSecond::MODIFY) {
@@ -114,12 +113,10 @@ namespace ProtoMol {
       // compute the vector between molecular centers of mass
       if (!same && energies->molecularVirial())
         // Add to the atomic and molecular virials
-        energies->addVirial(
-                            fij, diff,
-                            realTopo->boundaryConditions.minimalDifference(realTopo->molecules[mi].
-                                                                           position,
-                                                                           realTopo->molecules[mj].
-                                                                           position));
+        energies->
+          addVirial(fij, diff, realTopo->boundaryConditions.
+                    minimalDifference(realTopo->molecules[mi].position,
+                                      realTopo->molecules[mj].position));
       else if (energies->virial())
         energies->addVirial(fij, diff);
       // End of force computation.

@@ -41,41 +41,45 @@ CommandLineOption *CommandLine::add(const char shortName, const string longName,
 }
 
 int CommandLine::parse(int argc, char *argv[]) {
-  name = argv[0];
+  return parse(vector<string>(argv, argv + argc));
+}
+
+int CommandLine::parse(const vector<string> &args) {
+  name = args[0];
   bool configSet = false;
 
-  for (int i = 1; i < argc;) {
-    string optionStr = argv[i];
+  for (unsigned int i = 1; i < args.size();) {
+    string optionStr = args[i];
     CommandLineOption *option = optionMap[optionStr];
 
     if (option) {
-      vector<string> args;
+      vector<string> cmdArgs;
 
       // Self arg
-      args.push_back(argv[i++]);
+      cmdArgs.push_back(args[i++]);
 
       // Required args
       for (unsigned int j = 0; j < option->requiredArgs.size(); j++) {
-        if (argc <= i)
+        if (args.size() <= i)
           THROW(string("Missing required argument for option ") + optionStr);
 
-        args.push_back(argv[i++]);
+        cmdArgs.push_back(args[i++]);
       }
 
       // Optional args
       for (unsigned int j = 0; j < option->optionalArgs.size(); j++) {
-        if (argc <= i || argv[i][0] == '-') break;
+        if (args.size() <= i || args[i][0] == '-') break;
 
-        args.push_back(argv[i++]);
+        cmdArgs.push_back(args[i++]);
       }
 
       // Call action
       if (option->action) {
-        int ret = (*option->action)(args);
+        int ret = (*option->action)(cmdArgs);
         if (ret == -1) return -1;
       }
-    } else if (argv[i][0] == '-' && argv[i][1] == '-') {
-      string key = &argv[i++][2];
+    } else if (args[i][0] == '-' && args[i][1] == '-') {
+      string key = &args[i++][2];
 
       const Configuration *const_config = config;
       Configuration::const_iterator it = const_config->find(key);
@@ -87,21 +91,21 @@ int CommandLine::parse(int argc, char *argv[]) {
         THROW(string("Keyword '") + key +
           "' with Vector type cannot be set from the command line.");
 
-      if (i == argc)
+      if (i == args.size())
         THROW(string("Missing argument for keyword '") + key + "'.");
-      string val = argv[i++];
+      string val = args[i++];
 
       if (!config->set(key, val))
         THROW(string("Invalid value '") + val + "' for keyword '" + key + "'.");
     } else if (!configSet) {
-      vector<string> args;
+      vector<string> cmdArgs;
 
-      args.push_back("--config");
-      args.push_back(argv[i++]);
+      cmdArgs.push_back("--config");
+      cmdArgs.push_back(args[i++]);
 
-      (*optionMap["--config"]->action)(args);
+      (*optionMap["--config"]->action)(cmdArgs);
       configSet = true;
-    } else THROW(string("Invalid argument '") + argv[i] + "'");
+    } else THROW(string("Invalid argument '") + args[i] + "'");
   }
 
   return 0;

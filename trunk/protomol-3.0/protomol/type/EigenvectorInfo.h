@@ -40,7 +40,5 @@ namespace ProtoMol {
     Real myMaxEigenvalue;
     Real *myEigenvectors;
   };
-
-  //____________________________________________________________________________INLINES
 }
 #endif /* EIGENVECTORINFO_H */

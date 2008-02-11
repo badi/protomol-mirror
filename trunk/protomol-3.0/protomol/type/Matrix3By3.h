@@ -84,7 +84,8 @@ namespace ProtoMol {
     // negate operator that returns (- (*this)).
 
     void transpose(); // transpose 'this'.
-    void transpose(const Matrix3By3 &tm); // Set 'this' to tm transposed, leave tm unchanged.
+    // Set 'this' to tm transposed, leave tm unchanged.
+    void transpose(const Matrix3By3 &tm);
     Matrix3By3 transposed() const;
     // Return the transposed matrix, leave the original unchanged.
     // Matrix transpose

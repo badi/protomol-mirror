@@ -40,9 +40,9 @@ namespace ProtoMol {
   /**
    * Defines the table of exclusions. ExclusionTable assumes that
    * most exclusions have a difference (delta) of the indices's of the two atoms
-   * less than Constant::FASTDELTAMAX, it keeps also track of the maximum difference.
-   * If the distance is less than Constant::FASTDELTAMAX a simple array look-up
-   * table is used, otherwise a map will be used.
+   * less than Constant::FASTDELTAMAX, it keeps also track of the maximum
+   * difference. If the distance is less than Constant::FASTDELTAMAX a simple
+   * array look-up table is used, otherwise a map will be used.
    */
   class ExclusionTable {
   public:
@@ -59,7 +59,8 @@ namespace ProtoMol {
   public:
     /**
      * Set the number of atoms in the system (not the number of exclusions).
-     * This invalidates the data, so a clear must be performed after this before the table is used again.
+     * This invalidates the data, so a clear must be performed after this 
+     * before the table is used again.
      */
     void resize(int count);
 
@@ -85,7 +86,8 @@ namespace ProtoMol {
 
     const std::vector<ExclusionPair> &getTable() const {return myTable;}
 
-    /// Clean up temporaries and optimize space, to be called after the exclusion table is build
+    /// Clean up temporaries and optimize space, to be called after the
+    /// exclusion table is build
     void optimize();
 
     /// Maximal distance between two excluded atom pair

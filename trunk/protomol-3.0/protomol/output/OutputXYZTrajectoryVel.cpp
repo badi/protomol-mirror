@@ -32,7 +32,8 @@ void OutputXYZTrajectoryVel::doInitialize() {
 }
 
 void OutputXYZTrajectoryVel::doRun(int) {
-  if (!myXYZ->write(*&app->velocities, app->topology->atoms, app->topology->atomTypes))
+  if (!myXYZ->write(*&app->velocities, app->topology->atoms,
+                    app->topology->atomTypes))
     THROW(string("Could not write ") + getId() + " '" +
           myXYZ->getFilename() + "'.");
 }

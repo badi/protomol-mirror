@@ -37,18 +37,23 @@ namespace ProtoMol {
     int atom3;         ///< The third atom in this interaction.
     int atom4;         ///< The fourth atom in this interaction.
 
-    int multiplicity;                  ///< The number of terms describing the potential energy of this torsion.
-    std::vector<Real> forceConstant; ///< The force constant ($k$ value) for this interaction.
-    std::vector<Real> phaseShift;    ///< The phase shift ($\delta$ value) for this interaction, in radians.
-    std::vector<int> periodicity;    ///< The periodicity ($n$ value) for this interaction.
+    int multiplicity;                ///< The number of terms describing the
+                                     ///< potential energy of this torsion.
+    std::vector<Real> forceConstant; ///< The force constant ($k$ value) for
+                                     ///< this interaction.
+    std::vector<Real> phaseShift;    ///< The phase shift ($\delta$ value) for
+                                     ///< this interaction, in radians.
+    std::vector<int> periodicity;    ///< The periodicity ($n$ value) for this
+                                     ///< interaction.
 
 
-    int iSGmodifierIndex;              ///< The index # of this torsion type in the ModifierISG angle structure.
+    int iSGmodifierIndex;              ///< The index # of this torsion type
+                                       ///< in the ModifierISG angle structure.
 
     /**
      * difference in spring constant and rest angle for two different
-     * torsion identities.  This is needed to compute the chemical potential (or free energy)
-     * difference between the identities.
+     * torsion identities.  This is needed to compute the chemical potential
+     *  (or free energy) difference between the identities.
      */
     std::vector<Real> DeltaK, DeltaPhase;
   };

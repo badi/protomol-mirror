@@ -20,18 +20,15 @@ namespace ProtoMol {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
     bool operator<(const CubicCellLocation &) const;
-    bool operator==(const CubicCellLocation &c) const {return x == c.x && y ==
-                                                              c.y && z == c.z;}
-    CubicCellLocation operator-(const CubicCellLocation &b) const {return
-                                                                          CubicCellLocation(
-                                                                     x - b.x,
-                                                                     y - b.y,
-                                                                     z - b.z);}
-    CubicCellLocation operator+(const CubicCellLocation &b) const {return
-                                                                          CubicCellLocation(
-                                                                     x + b.x,
-                                                                     y + b.y,
-                                                                     z + b.z);}
+    bool operator==(const CubicCellLocation &c) const {
+      return x == c.x && y == c.y && z == c.z;
+    }
+    CubicCellLocation operator-(const CubicCellLocation &b) const {
+      return CubicCellLocation(x - b.x, y - b.y, z - b.z);
+    }
+    CubicCellLocation operator+(const CubicCellLocation &b) const {
+      return CubicCellLocation(x + b.x, y + b.y, z + b.z);
+    }
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // My data members

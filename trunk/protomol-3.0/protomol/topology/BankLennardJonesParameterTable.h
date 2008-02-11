@@ -35,7 +35,8 @@ namespace ProtoMol {
     /// determine the proper index # into to the bank
     const LennardJonesParameters &operator()(int i, int j, int type1,
                                              int type2) const {
-      // **TIM** look over notes and add a comment explaining why bankIndex is always = i*NumComps+j
+      // **TIM** look over notes and add a comment explaining why bankIndex
+      // is always = i*NumComps+j
 
       // get the LJ parameters for this pair
       return lennardJonesBank[i * numComps + j](type1, type2);

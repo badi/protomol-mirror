@@ -27,8 +27,8 @@ void OutputFinalPDBPos::doFinalize(int step) {
   if (!writer.open(filename))
     THROW(string("Can't open ") + getId() + " '" + filename + "'.");
 
-  writer.setComment("Time : " + toString(app->outputCache.time()) + ", step : " +
-                    toString(step) +
+  writer.setComment("Time : " + toString(app->outputCache.time()) +
+                    ", step : " + toString(step) +
                     (myMinimalImage ? ", minimal Image" : "") + ".");
 
   const Vector3DBlock *pos =

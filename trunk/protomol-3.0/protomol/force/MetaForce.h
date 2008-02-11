@@ -9,7 +9,8 @@ namespace ProtoMol {
   //________________________________________ MetaForce
 
   class MetaForce : public Force {
-    // This class contains the definition of one Meta force (a force that works only on positions)
+    // This class contains the definition of one Meta force (a force that
+    // works only on positions)
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Constructors, destructors, assignment

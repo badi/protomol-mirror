@@ -113,10 +113,9 @@ namespace ProtoMol {
     void next() {
       if (i != the_end) {
         j = the_end;
-        while (the_counter != the_last &&
-               the_end ==
-               (j =
-                  myCellListStruct->find(i->first + myDeltaList[the_counter++]))) ;
+        while (the_counter != the_last && the_end ==
+               (j = myCellListStruct->find(i->first +
+                                           myDeltaList[the_counter++]))) ;
 
         if (j == the_end) {
           ++i;
@@ -134,7 +133,7 @@ namespace ProtoMol {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   private:
     CubicCellManager::CellListStructure::const_iterator i, j, the_beginning,
-                                                        the_end;
+      the_end;
     Real myCutoff;
     std::vector<CubicCellManager::Cell> myDeltaList;
     int the_first, the_last, the_counter;

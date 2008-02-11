@@ -19,8 +19,7 @@ using namespace std;
 namespace ProtoMol {
 //____randomVelocity
   void randomVelocity(Real temperature, const GenericTopology *topology,
-                      Vector3DBlock *velocities,
-                      unsigned int seed) {
+                      Vector3DBlock *velocities, unsigned int seed) {
     // Argument tests
     if (temperature < 0) {
       report << error << "[randomVelocity] : "
@@ -792,19 +791,11 @@ namespace ProtoMol {
         if (atom1 == atomID)
           if (atomSet->find(atom2) == atomSet->end())
             getAtomsBondedtoDihedral(topology,
-              atomSet,
-              atom2,
-              inAtomID,
-              outAtomID,
-              exclAtomID);
+              atomSet, atom2, inAtomID, outAtomID, exclAtomID);
           else
           if (atomSet->find(atom1) == atomSet->end())
             getAtomsBondedtoDihedral(topology,
-              atomSet,
-              atom1,
-              inAtomID,
-              outAtomID,
-              exclAtomID);
+              atomSet, atom1, inAtomID, outAtomID, exclAtomID);
     }
   }
 
@@ -817,38 +808,27 @@ namespace ProtoMol {
     int atomID = topology->dihedrals[dihedralID].atom4;
     vector<AngleInfo> angles;
 
-    build_angle_list(topology,
-      atomID,
-      innerAtomID1,
-      innerAtomID2,
-      exclusionAtomID,
-      angle,
-      &angles);
-    general_rotation(innerAtomID1, innerAtomID2, positions, velocities, &angles);
+    build_angle_list(topology, atomID, innerAtomID1, innerAtomID2,
+                     exclusionAtomID, angle, &angles);
+    general_rotation(innerAtomID1, innerAtomID2, positions, velocities,
+                     &angles);
   }
 
   void rotateDihedral(const GenericTopology *topology, Vector3DBlock *positions,
-                      const int dihedralID,
-                      Real angle) {
+                      const int dihedralID, Real angle) {
     int exclusionAtomID = topology->dihedrals[dihedralID].atom1;
     int innerAtomID1 = topology->dihedrals[dihedralID].atom2;
     int innerAtomID2 = topology->dihedrals[dihedralID].atom3;
     int atomID = topology->dihedrals[dihedralID].atom4;
     vector<AngleInfo> angles;
 
-    build_angle_list(topology,
-      atomID,
-      innerAtomID1,
-      innerAtomID2,
-      exclusionAtomID,
-      angle,
-      &angles);
+    build_angle_list(topology, atomID, innerAtomID1, innerAtomID2,
+                     exclusionAtomID, angle, &angles);
     general_rotation(innerAtomID1, innerAtomID2, positions, &angles);
   }
 
   void set_angles(Stack<unsigned int> *nodeStack, vector<AngleInfo> *angles,
-                  bool lastIsInnerAtom,
-                  Real wholeAngle) {
+                  bool lastIsInnerAtom, Real wholeAngle) {
     Real startAngle = 0.0;
     Real finishAngle = 0.0;
     bool done = false;
@@ -939,7 +919,8 @@ namespace ProtoMol {
             set_angles(&nodeStack, angles, false, rotAngle);
             nodeStack.popElement();
             index++;
-          } else if ((*angles)[(*angles)[curElement].getBond(index)].isVisited())
+          } else if ((*angles)[(*angles)[curElement].getBond(index)].
+                     isVisited())
           {
             if ((*angles)[curElement].getBond(index) !=
                 nodeStack.getElement(nodeStack.getNumElements() - 2)) {
@@ -1002,8 +983,7 @@ namespace ProtoMol {
 
 //____
   Real computePhiDihedral(const GenericTopology *topo,
-                          const Vector3DBlock *positions,
-                          int index) {
+                          const Vector3DBlock *positions, int index) {
     int a1 = topo->dihedrals[index].atom1;
     int a2 = topo->dihedrals[index].atom2;
     int a3 = topo->dihedrals[index].atom3;

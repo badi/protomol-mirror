@@ -33,6 +33,7 @@ namespace ProtoMol {
                            const std::string help = "");
 
     int parse(int argc, char *argv[]);
+    int parse(const std::vector<std::string> &args);
 
     int usageAction(const std::vector<std::string> &args);
     void usage(std::ostream &stream, const std::string &name);

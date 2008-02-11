@@ -15,8 +15,8 @@ namespace ProtoMol {
    *  now a more compact form is used to compute each elements.
    *  See Appendix B in Qun Ma's dissertation for details.@n
    *
-   *  It can compute the whole Hessian or only the blocks of (0,0), (0,2), (2,0),
-   *  (2,2) for the "reduced" form when the Heavy atom is "anchored."
+   *  It can compute the whole Hessian or only the blocks of (0,0), (0,2),
+   *  (2,0), (2,2) for the "reduced" form when the Heavy atom is "anchored."
    */
   class ReducedHessAngle {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

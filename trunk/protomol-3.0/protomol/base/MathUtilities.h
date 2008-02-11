@@ -27,7 +27,7 @@
 #endif /* HAVE_NO_LIMITS */
 namespace ProtoMol {
 #ifdef _MSC_VER
-  //_____________________________________________________________________ isnan()
+  //___________________________________________________________________ isnan()
 
   inline int isnan(Real x) {
     bool b1 = (x < 0.0);
@@ -36,12 +36,12 @@ namespace ProtoMol {
   }
 #endif
 
-  //_____________________________________________________________________ square()
+  //___________________________________________________________________ square()
   inline Real square(Real x) {
     return x * x;
   }
 
-  //_____________________________________________________________________ power()
+  //___________________________________________________________________ power()
 #if defined (NO_GLOBAL_TEMPLATE_SPECIALIZATION)
   namespace Private {
     template<int _power>
@@ -88,7 +88,7 @@ namespace ProtoMol {
   template<> inline Real power < -1 > (Real x){return 1. / x;}
 #endif
 
-  //_____________________________________________________________________ power()
+  //___________________________________________________________________ power()
   Real power(Real x, int n);
 
   //_____________________________________________________________________ fact()
@@ -118,23 +118,23 @@ namespace ProtoMol {
     enum {N = Private::BinaryExponentHelper < P <= 1, P / 2 > ::N};
   };
 
-  //_____________________________________________________________________ lowerboundExp2
+  //_____________________________________________________________ lowerboundExp2
   Real lowerboundExp2(Real r);
-  //__________________________________________________________ Radians <-> Degrees
+  //_______________________________________________________ Radians <-> Degrees
   inline Real dtor(Real degree) {
     return degree * M_PI / 180.0;
   }
 
-  //__________________________________________________________ Radians <-> Degrees
+  //________________________________________________________ Radians <-> Degrees
   inline Real rtod(Real rad) {
     return rad * 180.0 / M_PI;
   }
-  //__________________________________________________________ Radians <-> Degrees
+  //__________________________________________________________ Radians <-> Degre
   std::vector<Real> rtod(const std::vector<Real> &rad);
-  //__________________________________________________________ Radians <-> Degrees
+  //________________________________________________________ Radians <-> Degrees
   std::vector<Real> dtor(const std::vector<Real> &deg);
 
-  //_____________________________________________________________________ sincos()
+  //___________________________________________________________________ sincos()
   /**
    * Computes sine and cosine of angle similar to the
    * sincos(Real, Real*, Real*) function. Checkes if
@@ -159,15 +159,16 @@ namespace ProtoMol {
 #endif
 
   //_____________________________________________________________________ poly()
-  /// Polynomial constants used in evaluation of the complementary error function
+  /// Polynomial constants used in evaluation of the complementary error
+  /// function
   Real poly5(Real ar);
 
-  //_____________________________________________________________________ equal()
+  //___________________________________________________________________ equal()
   inline bool equal(Real x, Real y) {
     return fabs(x - y) < Constant::EPSILON;
   }
 
-  //_____________________________________________________________________ equal()
+  //____________________________________________________________________ equal()
   inline bool equal(Real x, Real y, Real epsilon) {
     return fabs(x - y) < epsilon;
   }
@@ -194,20 +195,21 @@ namespace ProtoMol {
   Real norm(Real a, Real b);
 
 
-  //_____________________________________________________________________ randomNumber()
+  //_____________________________________________________________ randomNumber()
   Real randomNumber(unsigned int seed = 1234);
-  //_____________________________________________________________________ randomGaussian()
+  //___________________________________________________________ randomGaussian()
   Real randomGaussian(Real sdv, unsigned int seed = 1234);
-  //_____________________________________________________________________ randomGaussianNumber()
+  //_____________________________________________________ randomGaussianNumber()
   Real randomGaussianNumber(unsigned int seed = 1234);
-  //_____________________________________________________________________ randomGaussianNumber()
-  /// Generates a number from a near-Gaussian distribution using the Box-Muller method
+  //_____________________________________________________ randomGaussianNumber()
+  /// Generates a number from a near-Gaussian distribution using the Box-Muller
+  ///  method
   Real randomGaussianNumber(Real mean, Real stdev, unsigned int seed = 1234);
-  //_____________________________________________________________________ getTimerSeed()
+  //_____________________________________________________________ getTimerSeed()
   /// Computes a seed based on the actual time
   int getTimerSeed();
 
-  //_____________________________________________________________________ splitRangeQuadratic()
+  //______________________________________________________ splitRangeQuadratic()
   /**
    * Splits indices of a diagonal quadratic (sub) matrix (from,from)-(to,to)
    * into p(p-1)/2 quadratic sub matrices.
@@ -217,10 +219,10 @@ namespace ProtoMol {
                            unsigned int to,
                            std::vector<PairUInt> &fromRange,
                            std::vector<PairUInt> &toRange);
-  //_____________________________________________________________________ splitRangeArea()
+  //___________________________________________________________ splitRangeArea()
   /**
-   * Splits indices of a diagonal quadratic (sub) matrix (from,from)-(to,to) into p
-   * sub matrices of equal area
+   * Splits indices of a diagonal quadratic (sub) matrix (from,from)-(to,to)
+   * into p sub matrices of equal area
    */
   void splitRangeArea(unsigned int p,
                       unsigned int from,
@@ -243,12 +245,8 @@ namespace ProtoMol {
   /// return the largest of the numbers a, b, c, and d
   template<class T>
   inline T max(const T &a, const T &b, const T &c, const T &d) {
-    return (a >
-            b) ? ((a > c) ? (a > d ? a : d) : (c > d ? c : d)) : ((b >
-                                                                   c) ?  (b >
-                                                                          d
-                                                                          ? b :
-                                                                          d) : (c > d ? c : d));
+    return (a > b) ? ((a > c) ? (a > d ? a : d) : (c > d ? c : d)) :
+      ((b > c) ?  (b > d ? b : d) : (c > d ? c : d));
   }
 
   //_____________________________________________________________________ min()
@@ -266,12 +264,8 @@ namespace ProtoMol {
   /// return the smallest of the numbers a, b, c, and d
   template<class T>
   inline T min(const T &a, const T &b, const T &c, const T &d) {
-    return (a <
-            b) ? ((a < c) ? (a < d ? a : d) : (c < d ? c : d)) : ((b <
-                                                                   c) ?  (b <
-                                                                          d
-                                                                          ? b :
-                                                                          d) : (c < d ? c : d));
+    return (a < b) ? ((a < c) ? (a < d ? a : d) : (c < d ? c : d)) :
+      ((b < c) ?  (b < d ? b : d) : (c < d ? c : d));
   }
 
   //  ________________________________________________________  Class WindowAve

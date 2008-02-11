@@ -50,8 +50,8 @@ namespace ProtoMol {
 
     /**
      *  difference in spring constant and rest length for two different
-     * bond identities.  This is needed to compute the chemical potential (or free energy)
-     * difference between the identities.
+     * bond identities.  This is needed to compute the chemical potential
+     * (or free energy) difference between the identities.
      */
     Real DeltaK, DeltaR0;
   };

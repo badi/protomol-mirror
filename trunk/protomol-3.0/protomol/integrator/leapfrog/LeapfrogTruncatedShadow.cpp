@@ -459,15 +459,14 @@ Real LeapfrogTruncatedShadow::calcNearHamiltonian() {
   Real h = getTimestep() * Constant::INV_TIMEFACTOR;
   gl2 *= h * h / 24.0;
   //add in rest of energy
-  gl2 += kineticEnergy(app->topology, &app->velocities) + app->energies.potentialEnergy();
+  gl2 += kineticEnergy(app->topology, &app->velocities) +
+    app->energies.potentialEnergy();
   return gl2;
 }
 
-Real LeapfrogTruncatedShadow::calcPairInteractionHess(Real doSwitch,
-                                                      Real switchon,
-                                                      Real cutoff, Real order,
-                                                      Real switchoff,
-                                                      int lj) {
+Real LeapfrogTruncatedShadow::
+calcPairInteractionHess(Real doSwitch, Real switchon, Real cutoff, Real order,
+                        Real switchoff, int lj) {
   Real accum;
   Matrix3By3 rha;
   Vector3D v[3], sm, zerov(0.0, 0.0, 0.0);

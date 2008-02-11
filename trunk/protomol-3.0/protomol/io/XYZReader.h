@@ -51,7 +51,5 @@ namespace ProtoMol {
     Vector3DBlock *myCoords;
     std::vector<std::string> *myNames;
   };
-
-  //____________________________________________________________________________INLINES
 }
 #endif /* XYZREADER_H */

@@ -178,7 +178,8 @@ XYZBinReader &ProtoMol::operator>>(XYZBinReader &xyzbinReader, XYZ &xyz) {
   return xyzbinReader;
 }
 
-XYZBinReader &ProtoMol::operator>>(XYZBinReader &xyzbinReader, Vector3DBlock &coords) {
+XYZBinReader &ProtoMol::operator>>(XYZBinReader &xyzbinReader,
+                                   Vector3DBlock &coords) {
   xyzbinReader.read(coords);
   return xyzbinReader;
 }

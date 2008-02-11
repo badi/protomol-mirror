@@ -59,7 +59,5 @@ namespace ProtoMol {
   private:
     FFTInternal* myFFTInternal;
   };
-  //______________________________________________________________________ INLINES
-
 }
 #endif /* FFTCOMPLEX_H */

@@ -14,8 +14,8 @@ namespace ProtoMol {
 
   /**
      This class defines the information for one molecule.  It contains the mass
-     of the molecule, its center of mass position and momentum, and a list of the
-     atoms on the molecule.
+     of the molecule, its center of mass position and momentum, and a list of
+     the atoms on the molecule.
    */
   struct Molecule {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -76,7 +76,8 @@ namespace ProtoMol {
     std::vector<int> dihedralList;
     std::vector<int> improperList;
     ///< list of the index #s of each bond, angle, dihedral,
-    ///< and improper on this molecule...may not need this because of pairs above!!!!
+    ///< and improper on this molecule...may not need this because of pairs 
+    ///< above!!!!
   };
 }
 #endif /* MOLECULE_H */

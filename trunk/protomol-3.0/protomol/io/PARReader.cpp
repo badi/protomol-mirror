@@ -229,7 +229,8 @@ bool PARReader::read(PAR &par) {
         "\' in X-Plor parameter file at line " << (*line) << "." << endr;
         continue;
       }
-      // Increment array pointer and remove first signature since the first entry is a Charmm19 keyword
+      // Increment array pointer and remove first signature since the first
+      // entry is a Charmm19 keyword
       ++j;
       s = s.substr(1, s.size() - 1);
     } else {   // Charmm28

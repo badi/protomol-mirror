@@ -6,9 +6,9 @@
 #include <assert.h>
 
 namespace ProtoMol {
-  //*****************************************************************************
-  // Class Template for a Generic Resizable N Dimensional Array        (for N>=2)
-  // By Giovanni Bavestrelli                  Copyright 1999 Giovanni Bavestrelli
+  //****************************************************************************
+  // Class Template for a Generic Resizable N Dimensional Array       (for N>=2)
+  // By Giovanni Bavestrelli                 Copyright 1999 Giovanni Bavestrelli
   // Any feedback is welcome, you can contact me at gbavestrelli@yahoo.com
   //
   // http://www.cuj.com/documents/s=8032/cuj0012bavestre/
@@ -30,23 +30,24 @@ namespace ProtoMol {
   // I suggest you use one of the other versions in multithreaded applications,
   // and anyway test your application very well if you dare to use this version.
   //
-  // TM: resize() will check first if the dimesions are the same and call doResize()
-  //     if re-size is really needed.
+  // TM: resize() will check first if the dimesions are the same and call
+  //  doResize()
+  //    if re-size is really needed.
   //
-  //     All unsigned int changed to size_t
+  //    All unsigned int changed to size_t
   //
-  //     Further optimization by removing asserts. Use '#define DEBUG_USE_ASSERT'
-  //     to make use of asserts.
+  //    Further optimization by removing asserts. Use '#define DEBUG_USE_ASSERT'
+  //    to make use of asserts.
   //
-  //*****************************************************************************
+  //****************************************************************************
 
   // Forward declaration needed for friend declarations
   template<typename T, size_t N>
   class Array;
 
-  //=============================================================================
-  // Classes for passing a typesafe vector of dimensions to the Array constructor
-  //=============================================================================
+  //============================================================================
+  // lasses for passing a typesafe vector of dimensions to the Array constructor
+  //============================================================================
 
   // Class that encapsulates a const size_t (&)[N]
   template<size_t N>
@@ -91,9 +92,9 @@ namespace ProtoMol {
     }
   };
 
-  //-----------------------------------------------------------------------------
+  //----------------------------------------------------------------------------
   // Class Template for N Dimensional SubArrays within an Array
-  //-----------------------------------------------------------------------------
+  //----------------------------------------------------------------------------
 
   template<typename T, size_t N>
   class RefArray : public RefArray < T, N - 1 > {
@@ -222,9 +223,9 @@ namespace ProtoMol {
   };
 
 
-  //-----------------------------------------------------------------------------
+  //----------------------------------------------------------------------------
   // Partial Specialization for Monodimensional SubArray within an Array
-  //-----------------------------------------------------------------------------
+  //----------------------------------------------------------------------------
 
   template<typename T>
   class RefArray<T, 1> {
@@ -259,7 +260,8 @@ namespace ProtoMol {
     void SetupDimensions(const size_type *pNDimensions,
                          const size_type *pSubArrayLen) {
       assert(pNDimensions && pSubArrayLen); pSubArrayLen = pSubArrayLen;
-      assert(pNDimensions[0] > 0 && pSubArrayLen[0] == 1); // We found the elements
+      // We found the elements
+      assert(pNDimensions[0] > 0 && pSubArrayLen[0] == 1);
 
       m_NDimensions = pNDimensions[0];
       m_pElements = NULL;
@@ -333,9 +335,9 @@ namespace ProtoMol {
   };
 
 
-  //-----------------------------------------------------------------------------
+  //----------------------------------------------------------------------------
   // Class Template for a Generic Resizable N Dimensional Array
-  //-----------------------------------------------------------------------------
+  //----------------------------------------------------------------------------
 
   template<typename T, size_t N>
   class Array {

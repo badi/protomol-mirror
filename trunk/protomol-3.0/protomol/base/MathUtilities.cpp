@@ -15,14 +15,15 @@ namespace ProtoMol {
     if (x < 9.0) {
       Real z = fabs(x);
       Real t = 1.0 / (1.0 + 0.5 * z);
-      erfcc = t *
-              exp(-z * z - 1.26551223 + t *
-        (1.00002368 + t *
-         (.37409196 + t *
-          (.09678418 + t *
-         (-.18628806 + t *
-          (.27886807 + t *
-           (-1.13520398 + t * (1.48851587 + t * (-.82215223 + t * .17087277)))))))));
+      erfcc = t * exp(-z * z - 1.26551223 + t *
+                      (1.00002368 + t *
+                       (.37409196 + t *
+                        (.09678418 + t *
+                         (-.18628806 + t *
+                          (.27886807 + t *
+                           (-1.13520398 + t *
+                            (1.48851587 + t *
+                             (-.82215223 + t * .17087277)))))))));
       if (x < 0.0)
         erfcc = 2.0 - erfcc;
     }
@@ -289,32 +290,32 @@ namespace ProtoMol {
 
     if (p > 2) {
       for (unsigned int i = 0; i < p; i++) {
-        fromRange.push_back(PairUInt(static_cast<unsigned int>(from +
-                                                               (size * i) / p),
+        fromRange.push_back
+          (PairUInt(static_cast<unsigned int>(from + (size * i) / p),
             static_cast<unsigned int>(from + (size * (i + 1.0)) / p)));
-        toRange.push_back(PairUInt(static_cast<unsigned int>(from +
-                                                             (size * i) / p),
+        toRange.push_back
+          (PairUInt(static_cast<unsigned int>(from + (size * i) / p),
             static_cast<unsigned int>(from + (size * (i + 1.0)) / p)));
       }
 
       for (unsigned int i = 0; i < p; i++)
         for (unsigned int j = i + 1; j < p; j++) {
-          fromRange.push_back(PairUInt(static_cast<unsigned int>(from +
-                                                                 (size * i) / p),
+          fromRange.push_back
+            (PairUInt(static_cast<unsigned int>(from + (size * i) / p),
               static_cast<unsigned int>(from + (size * (i + 1.0)) / p)));
-          toRange.push_back(PairUInt(static_cast<unsigned int>(from +
-                                                               (size * j) / p),
+          toRange.push_back
+            (PairUInt(static_cast<unsigned int>(from + (size * j) / p),
               static_cast<unsigned int>(from + (size * (j + 1.0)) / p)));
         }
 
     } else
       for (unsigned int i = 0; i < p; i++)
         for (unsigned int j = i; j < p; j++) {
-          fromRange.push_back(PairUInt(static_cast<unsigned int>(from +
-                                                                 (size * i) / p),
+          fromRange.push_back
+            (PairUInt(static_cast<unsigned int>(from + (size * i) / p),
               static_cast<unsigned int>(from + (size * (i + 1.0)) / p)));
-          toRange.push_back(PairUInt(static_cast<unsigned int>(from +
-                                                               (size * j) / p),
+          toRange.push_back
+            (PairUInt(static_cast<unsigned int>(from + (size * j) / p),
               static_cast<unsigned int>(from + (size * (j + 1.0)) / p)));
         }
 
@@ -334,9 +335,9 @@ namespace ProtoMol {
     for (unsigned int i = 0; i < p; i++) {
       second =
         static_cast<int>(size - 0.5 *
-                         sqrt(power<2>(1.0 + size *
-                             2.0) -
-                           (4.0 * (i + 1.0) * size * (size + 1.0)) / p) + 0.5);
+                         sqrt(power<2>(1.0 + size * 2.0) -
+                              (4.0 * (i + 1.0) * size * (size + 1.0)) / p)
+                         + 0.5);
       fromRange.push_back(PairUInt(from + first, from + second));
       toRange.push_back(PairUInt(from + first, to));
       first = second;

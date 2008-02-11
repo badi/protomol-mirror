@@ -9,10 +9,11 @@
 #include <protomol/topology/Topology.h>
 #include <set>
 namespace ProtoMol {
-  //________________________________________ CellListEnumeratorPeriodicBoundaries
+  //_______________________________________ CellListEnumeratorPeriodicBoundaries
 
   /**
-   * Specialization of the cell enumerator for periodic boundary conditions and cubic cell manager
+   * Specialization of the cell enumerator for periodic boundary conditions
+   * and cubic cell manager
    */
   template<>
   class CellListEnumerator<PeriodicBoundaryConditions, CubicCellManager> {

@@ -15,7 +15,8 @@ namespace ProtoMol {
   //________________________________________ MollyForce
 
   class MollyForce : public Force {
-    // This class contains the definition of one Molly force (a force that works only on positions)
+    // This class contains the definition of one Molly force (a force that
+    // works only on positions)
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Constructors, destructors, assignment
@@ -49,10 +50,10 @@ namespace ProtoMol {
     // for free (for bonded forces).
     //
     // To the implementor:
-    // Overload this methods to implement a parallel version. Split up the interactions
-    // and distribute them among the nodes. This can by done either by ranges or sequences.
-    // Overload numberOfBlocks() such that the number matches the next() calls inside
-    // parallelEvaluate().
+    // Overload this methods to implement a parallel version. Split up the
+    // interactions and distribute them among the nodes. This can by done
+    // either by ranges or sequences. Overload numberOfBlocks() such that the
+    // number matches the next() calls inside parallelEvaluate().
 
     virtual void addToForceGroup(ForceGroup *forceGroup);
   };

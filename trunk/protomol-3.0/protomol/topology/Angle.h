@@ -49,8 +49,8 @@ namespace ProtoMol {
 
     /**
      * difference in spring constant and rest angle for two different
-     * angle identities.  This is needed to compute the chemical potential (or free energy)
-     * difference between the identities.
+     * angle identities.  This is needed to compute the chemical potential
+     * (or free energy) difference between the identities.
      */
     Real DeltaK, DeltaTheta0, Delta_ubK, Delta_ubR0;
   };

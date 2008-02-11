@@ -112,7 +112,7 @@ bool PDBReader::read(Vector3DBlock &coords, vector<PDB::Atom> &atoms,
           removeBeginEndBlanks(record.substr(PDB::Atom::S_ALT_LOC,
               PDB::Atom::L_ALT_LOC)),
           removeBeginEndBlanks(record.substr(PDB::Atom::S_RES_NAME,
-              PDB::Atom::L_RES_NAME + 1)),                                                            // enable to read TIP3
+              PDB::Atom::L_RES_NAME + 1)),   // enable to read TIP3
           removeBeginEndBlanks(record.substr(PDB::Atom::S_CHAIN_ID,
               PDB::Atom::L_CHAIN_ID)),
           resSeq,
@@ -153,7 +153,7 @@ bool PDBReader::read(Vector3DBlock &coords, vector<PDB::Atom> &atoms,
                 S_RECORD_NAME, PDB::Ter::L_RECORD_NAME)),
           toInt(record.substr(PDB::Ter::S_SERIAL, PDB::Ter::L_SERIAL)),
           removeBeginEndBlanks(record.substr(PDB::Ter::S_RES_NAME,
-              PDB::Ter::L_RES_NAME + 1)),                                                         // enable to read TIP3
+              PDB::Ter::L_RES_NAME + 1)),  // enable to read TIP3
           removeBeginEndBlanks(record.substr(PDB::Ter::S_CHAIN_ID,
               PDB::Ter::L_CHAIN_ID)),
           resSeq,

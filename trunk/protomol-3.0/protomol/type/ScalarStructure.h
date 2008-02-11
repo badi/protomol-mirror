@@ -7,7 +7,7 @@
 #include <protomol/base/PMConstants.h>
 
 namespace ProtoMol {
-  //_________________________________________________________________ ScalarStructure
+  //____________________________________________________________ ScalarStructure
 
   /**
    * Container holding energies and all kind of scalar values of interest.
@@ -57,7 +57,8 @@ namespace ProtoMol {
       DELTATIME,            ///< needed for iSG and oSG simulations
       LAMBDA_TEMPERATURE,   ///< needed for iSG and oSG simulations
       INTEGRATOR,
-      LASTREDUCE,           ///< Last value to be reduced in parallel environment, only internal purpose
+      LASTREDUCE,           ///< Last value to be reduced in parallel
+                            ///< environment, only internal purpose
       SHADOW = LASTREDUCE,
       LAST             // Only internal purpose
     };
@@ -101,7 +102,8 @@ namespace ProtoMol {
     ///  Add molecular viral term for one force pair.
     void addMolVirial(const Vector3D &force12, const Vector3D &diff);
 
-    ///  Add viral term for one force pair and molecular viral term for one force pair.
+    ///  Add viral term for one force pair and molecular viral term for one
+    ///  force pair.
     void addVirial(const Vector3D &force12,
                    const Vector3D &diff,
                    const Vector3D &comDiff);
@@ -128,13 +130,14 @@ namespace ProtoMol {
     bool myDoMolecularVirial;
     bool myDoOutput;
 
-    // flag telling when to write out the coordinate or velocity trajectory for oSGMD
-    // (grand canonical or semigrand canonical) simulations.  For these types of simulations
-    // it is best to output every 100 transformation attempts, instead of every 100 timesteps -- TIM
+    // flag telling when to write out the coordinate or velocity trajectory for
+    // oSGMD (grand canonical or semigrand canonical) simulations.  For these
+    // types of simulations it is best to output every 100 transformation
+    // attempts, instead of every 100 timesteps -- TIM
     bool myDoTrajectory;
   };
 
-  //______________________________________________________________________ INLINES
+  //___________________________________________________________________ INLINES
   inline Real ScalarStructure::potentialEnergy() const {
     return myTable[COULOMB] +
            myTable[LENNARDJONES] +

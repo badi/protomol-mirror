@@ -70,6 +70,10 @@ void ProtoMolApp::splash(ostream &stream) {
     << setw(w) << "Build platform: " << PACKAGE_PLATFORM << endl
 #endif // HAVE_PACKAGE_H
     << setw(w) << "Build date: " <<  __DATE__ << ", " << __TIME__ << endl
+#ifdef BUILD_FOR_FAH
+    << setw(w) << "Checksumming: "
+    << "Enabled for Folding@Home file protection." << endl
+#endif // BUILD_FOR_FAH
 #ifdef HAVE_PACKAGE_H
     << setw(w) << "Please cite: ";
   fillFormat(stream, PACKAGE_CITE, w, w);
@@ -79,14 +83,21 @@ void ProtoMolApp::splash(ostream &stream) {
 }
 
 void ProtoMolApp::configure(const string &configfile) {
-  const char *argv[] = {"ProtoMol", configfile.c_str(), 0};
+  vector<string> args;
 
-  configure(2, (char **)argv);
+  args.push_back("ProtoMol");
+  args.push_back(configfile);
+  configure(args);
 }
 
+
 bool ProtoMolApp::configure(int argc, char *argv[]) {
+  return configure(vector<string>(argv, argv + argc));
+}
+
+bool ProtoMolApp::configure(const vector<string> &args) {
   // Parse command line
-  if (cmdLine.parse(argc, argv)) return false;
+  if (cmdLine.parse(args)) return false;
 
   // Read Config file
   if (config.valid(InputConfig::keyword))

@@ -12,7 +12,8 @@
 namespace ProtoMol {
   //________________________________________ ArrayCellListStructure
   /**
-   * Implements a cell list with an array, providing STL alike iterators and access
+   * Implements a cell list with an array, providing STL alike iterators and
+   * access
    */
   class ArrayCellListStructure {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

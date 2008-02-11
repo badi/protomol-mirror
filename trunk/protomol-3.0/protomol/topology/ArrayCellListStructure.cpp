@@ -9,9 +9,9 @@ using namespace ProtoMol;
 
 //____ ArrayCellListStructure
 ArrayCellListStructure::ArrayCellListStructure() :
-  valid(false), myArray(ArraySizes(0) (0) (0)), myCellSize(Vector3D(0.0, 0.0,
-                                                                    0.0)),
-  myNX(0), myNY(0), myNZ(0), myBegin(myArray.begin()), myEnd(myArray.end()),
+  valid(false), myArray(ArraySizes(0) (0) (0)),
+  myCellSize(Vector3D(0.0, 0.0, 0.0)), myNX(0), myNY(0), myNZ(0),
+  myBegin(myArray.begin()), myEnd(myArray.end()),
   myBeginConst(myArray.begin()), myEndConst(myArray.end()), mySize(0) {}
 
 void ArrayCellListStructure::initialize(const Vector3D &max,
@@ -48,7 +48,8 @@ void ArrayCellListStructure::initialize(const Vector3D &max,
     if (!myArray.resize(ArraySizes(myNX) (myNY) (myNZ)))
       report << error
              <<
-      "[ArrayCellListStructure::initialize] Could not allocate memory for CellListStructure["
+        "[ArrayCellListStructure::initialize] Could not allocate memory for "
+        "CellListStructure["
              << myNX << "][" << myNY << "][" << myNZ << "]." << endr;
 
     int max2 = Constant::MAX_INT_2;

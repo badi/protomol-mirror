@@ -11,9 +11,9 @@ ReducedHessAngle::ReducedHessAngle() {
   // user should take care of it by calling clear() to init it to zero.
 }
 
-ReducedHessAngle::ReducedHessAngle(const Vector3D &atom_i,   //position of atom i
-                                   const Vector3D &atom_j,   //position of atom j
-                                   const Vector3D &atom_k,   //position of atom k
+ReducedHessAngle::ReducedHessAngle(const Vector3D &atom_i,  //position of atom i
+                                   const Vector3D &atom_j,  //position of atom j
+                                   const Vector3D &atom_k,  //position of atom k
                                    const Real k_t,   //angluar spring constant
                                    const Real theta0,   //rest angle
                                    bool computeReduced) {
@@ -55,10 +55,13 @@ void ReducedHessAngle::evaluate(const Vector3D &atom_i,   //position of atom i
   Real h = -1. / (2 * nanb);
   //constants computed from \alpha, \beta, \gamma
 
-  Real f_a = (-a + 3 * b - 3 * c) / (8 * a * a * nanb);   // derivative of f w.r.t. \alpha
-  Real f_b = (-a - b - c) / (8 * a * b * nanb);   // derivative of f w.r.t. \beta
+  // derivative of f w.r.t. \alpha
+  Real f_a = (-a + 3 * b - 3 * c) / (8 * a * a * nanb);
+  // derivative of f w.r.t. \beta
+  Real f_b = (-a - b - c) / (8 * a * b * nanb);
   Real f_c = 1. / (4 * a * nanb);    // derivative of f w.r.t. \gamma
-  Real g_b = (3 * a - b - 3 * c) / (8 * nanb * b * b);   //derivative of g w.r.t. \beta
+  //derivative of g w.r.t. \beta
+  Real g_b = (3 * a - b - 3 * c) / (8 * nanb * b * b);
   Real g_c = 1. / (4 * b * nanb);   //derivative of g w.r.t. \gamma
 
   Real t1 = 2 * (f + h) * E_c, t2 = -2 * h * E_c;

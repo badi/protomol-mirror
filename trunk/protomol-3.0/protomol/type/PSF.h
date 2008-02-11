@@ -17,8 +17,8 @@ namespace ProtoMol {
     //___________________________________________________________________PsfAtom
     /**
      * This class holds data for a basic .psf atom.  The data stored includes:
-     * atom number, segment identifier, residue sequence, residue name, atom name,
-     * atom2 name, charge and mass.
+     * atom number, segment identifier, residue sequence, residue name, atom 
+     * name, atom2 name, charge and mass.
      */
     struct Atom {
       Atom() : number(0), seg_id(""), residue_sequence(0), residue_name(""),
@@ -32,8 +32,8 @@ namespace ProtoMol {
            Real g,
            Real h,
            unsigned int i) :
-        number(a), seg_id(b), residue_sequence(c), residue_name(d), atom_name(e),
-        atom_type(f), charge(g), mass(h), identity(i) {}
+        number(a), seg_id(b), residue_sequence(c), residue_name(d),
+        atom_name(e), atom_type(f), charge(g), mass(h), identity(i) {}
 
       int number;               ///< atom number
       std::string seg_id;       ///< segment identifier
@@ -49,8 +49,8 @@ namespace ProtoMol {
 
     //___________________________________________________________________Bond
     /**
-     * This structure holds data for a basic .psf bond.  The data stored includes
-     * the bond number and the numbers of the two atoms involved.
+     * This structure holds data for a basic .psf bond.  The data stored
+     * includes the bond number and the numbers of the two atoms involved.
      */
     struct Bond {
       Bond() : number(0), atom1(0), atom2(0) {}
@@ -64,8 +64,8 @@ namespace ProtoMol {
 
     //___________________________________________________________________Angle
     /**
-     * This structure holds data for a basic .psf angle.  The data stored includes
-     * the angle number and the numbers of the three atoms involved.
+     * This structure holds data for a basic .psf angle.  The data stored
+     * includes the angle number and the numbers of the three atoms involved.
      */
     struct Angle {
       Angle() : number(0), atom1(0), atom2(0), atom3(0) {}
@@ -115,8 +115,8 @@ namespace ProtoMol {
 
     //_____________________________________________________________________Donor
     /**
-     * This structure holds data for a basic .psf donor.  The data stored includes
-     * the donor number and the numbers of the two donors involved
+     * This structure holds data for a basic .psf donor.  The data stored
+     * includes the donor number and the numbers of the two donors involved
      */
     struct Donor {
       Donor() : number(0), atom1(0), atom2(0) {}
@@ -144,8 +144,8 @@ namespace ProtoMol {
     //_________________________________________________________________Nonbonded
     /**
      * This structure holds data for a basic .psf nonbonded.  The data stored
-     * includes the number of the nonbonded structure as well as the number of the
-     * nonbonded atom.
+     * includes the number of the nonbonded structure as well as the number of
+     * the nonbonded atom.
      */
     struct Nonbonded {
       Nonbonded() : number(0), atom1(0) {}
@@ -157,8 +157,9 @@ namespace ProtoMol {
 
     //______________________________________________________________________Ngrp
     /**
-     * This structure holds data for a basic .psf ngrp.  The data stored includes
-     * the number of the ngrp as well as the numbers of the three atoms involved.
+     * This structure holds data for a basic .psf ngrp.  The data stored
+     * includes the number of the ngrp as well as the numbers of the three
+     * atoms involved.
      */
     struct Ngrp {
       Ngrp() : number(0), atom1(0), atom2(0), atom3(0) {}
@@ -188,8 +189,6 @@ namespace ProtoMol {
     std::vector<Nonbonded> nonbondeds;
     std::vector<Ngrp> ngrp;
   };
-
-  //_______________________________________________________________________________INLINES
 }
 
 #endif /* PSF_H */

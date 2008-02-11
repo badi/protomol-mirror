@@ -41,24 +41,17 @@ namespace ProtoMol {
                                             const Bond &p);
     };
 
-    //_____________________________________________________________________Angle
+    //___________________________________________________________________Angle
     /**
-     * This structure holds data for an angle.  There is the angle number, the three
-     * atoms involved, the force constant, the actual value of the angle, and
-     * the Urey-Bradley constants if they exist.  The ub_flag will be 1 if they
-     * exist and 0 otherwise.
+     * This structure holds data for an angle.  There is the angle number, the
+     * three atoms involved, the force constant, the actual value of the angle,
+     * and the Urey-Bradley constants if they exist.  The ub_flag will be 1 if
+     *  they exist and 0 otherwise.
      */
     struct Angle {
       Angle() {}
-      Angle(int a,
-            std::string b,
-            std::string c,
-            std::string d,
-            Real e,
-            Real f,
-            bool g,
-            Real h,
-            Real i) :
+      Angle(int a, std::string b, std::string c, std::string d, Real e,
+            Real f, bool g, Real h, Real i) :
         number(a), atom1(b), atom2(c), atom3(d), forceConstant(e), angleval(f),
         ub_flag(g), k_ub(h), r_ub(i) {}
 
@@ -82,36 +75,22 @@ namespace ProtoMol {
     };
 
 
-    //__________________________________________________________________Dihedral
-    /** This structure holds data for a dihedral, consisting of the number, the four
-     * atoms involved, the multiplicity (default = 1), and the force constant,
-     * the periodicity, and the phase shift
+    //_______________________________________________________________Dihedral
+    /** This structure holds data for a dihedral, consisting of the number, the
+     * four atoms involved, the multiplicity (default = 1), and the force
+     * constant, the periodicity, and the phase shift
      */
     struct Dihedral {
       Dihedral() {}
-      Dihedral(int a,
-               std::string b,
-               std::string c,
-               std::string d,
-               std::string e,
-               Real f,
-               int g,
-               Real h) :
+      Dihedral(int a, std::string b, std::string c, std::string d,
+               std::string e, Real f, int g, Real h) :
         number(a), atom1(b), atom2(c), atom3(d), atom4(e), multiplicity(1),
-        forceConstant(std::vector<Real>(1,
-                                                       f)),
-        periodicity(std::vector<int>(1,
-                                                       g)),
+        forceConstant(std::vector<Real>(1, f)),
+        periodicity(std::vector<int>(1, g)),
         phaseShift(std::vector<Real>(1, h)) {}
 
-      Dihedral(int a,
-               std::string b,
-               std::string c,
-               std::string d,
-               std::string e,
-               int f,
-               std::vector<Real> g,
-               std::vector<int> h,
+      Dihedral(int a, std::string b, std::string c, std::string d,
+               std::string e, int f, std::vector<Real> g, std::vector<int> h,
                std::vector<Real> i) :
         number(a), atom1(b), atom2(c), atom3(d), atom4(e), multiplicity(f),
         forceConstant(g), periodicity(h), phaseShift(i) {}
@@ -133,20 +112,14 @@ namespace ProtoMol {
 
 
     //__________________________________________________________________Improper
-    /** This structure holds data for an improper.  The data held is the same as that
-     * for a dihedral - the number, four atoms involved, the force constant,
-     * the periodicity, and the phase shift
+    /** This structure holds data for an improper.  The data held is the same 
+     * as that for a dihedral - the number, four atoms involved, the force
+     * constant, the periodicity, and the phase shift
      */
     struct Improper {
       Improper() {}
-      Improper(int a,
-               std::string b,
-               std::string c,
-               std::string d,
-               std::string e,
-               Real f,
-               int g,
-               Real h) :
+      Improper(int a, std::string b, std::string c, std::string d,
+               std::string e, Real f, int g, Real h) :
         number(a), atom1(b), atom2(c), atom3(d), atom4(e), forceConstant(f),
         periodicity(g), phaseShift(h) {}
 
@@ -167,29 +140,23 @@ namespace ProtoMol {
     /// This structure holds data for a nonbonded - including
     struct Nonbonded {
       Nonbonded() {}
-      Nonbonded(int a,
-                std::string b,
-                Real c,
-                Real d,
-                Real e,
-                bool f,
-                bool g,
-                Real h,
-                Real i,
-                Real j,
-                bool k) :
-        number(a), atom(b), polarizability(c), epsilon(d), sigma(e), negative(f),
-        vdw(g), polarizability2(h), epsilon14(i), sigma14(j), negative2(k) {}
+      Nonbonded(int a, std::string b, Real c, Real d, Real e, bool f, bool g,
+                Real h, Real i, Real j, bool k) :
+        number(a), atom(b), polarizability(c), epsilon(d), sigma(e),
+        negative(f), vdw(g), polarizability2(h), epsilon14(i), sigma14(j),
+        negative2(k) {}
 
       int number;          ///< nonbonded number
       std::string atom;    ///< atom number
-      Real polarizability; ///< polarizability or ignore (see description of negative below), default to zero
-      Real epsilon;        ///< well depth or number of effective electrons (see description of negative below)
+      Real polarizability; ///< polarizability or ignore (see description of
+                           ///<negative below), default to zero
+      Real epsilon;        ///< well depth or number of effective electrons
+                           ///<(see description of negative below)
       Real sigma;          ///< minimum radius divided by 2
       /**
-       * flag for if the second term is negative - if so, second_term = epsilon or well-depth and
-       * the first term is ignored, otherwise second_term = number of effective electrons and the first
-       * term is the polarizability
+       * flag for if the second term is negative - if so, second_term = epsilon
+       * or well-depth and the first term is ignored, otherwise second_term =
+       * number of effective electrons and the first term is the polarizability
        * default to true
        */
       bool negative;
@@ -199,9 +166,11 @@ namespace ProtoMol {
        */
       bool vdw;
       Real polarizability2; ///< VDW parameter polarizability, default to zero
-      Real epsilon14;       ///< VDW parameter well depth or number of effective electrons (see above)
+      Real epsilon14;       ///< VDW parameter well depth or number of effective
+                            ///<electrons (see above)
       Real sigma14;         ///< VDW parameter minimum radius divided by 2
-      bool negative2;       ///< flag for a negative VDW paramenter second term (see above), default to true
+      bool negative2;       ///< flag for a negative VDW paramenter second term
+                            ///< (see above), default to true
 
 
       static const Real SIGMA_CHARMM19_TO_CHARMM28;
@@ -213,19 +182,15 @@ namespace ProtoMol {
 
     //_________________________________________________________________Nbfix
     /**
-     * This structure holds data for atom pairs with modifiable VDW interactions.
-     * Data includes the number, two atoms, epsilon, sigma, epsilon 14, and sigma 14.
+     * This structure holds data for atom pairs with modifiable VDW
+     *  interactions. Data includes the number, two atoms, epsilon, sigma,
+     *  epsilon 14, and sigma 14.
      */
     struct Nbfix {
       Nbfix() {}
-      Nbfix(int a_,
-            std::string b_,
-            std::string c,
-            Real d,
-            Real e,
-            Real f,
-            Real g) : number(a_), atom1(b_), atom2(c), a(d), b(e), a14(f),
-        b14(g) {}
+      Nbfix(int a_, std::string b_, std::string c, Real d, Real e, 
+            Real f, Real g)
+        : number(a_), atom1(b_), atom2(c), a(d), b(e), a14(f), b14(g) {}
 
       int number;         ///< nbfi number
       std::string atom1;  ///< atom 1 number
@@ -239,7 +204,8 @@ namespace ProtoMol {
                                             const Nbfix &p);
     };
     //_________________________________________________________________Hbond
-    /// This structure holds data for hydrogen bonds, including the well depth and the minimum radius
+    /// This structure holds data for hydrogen bonds, including the well depth
+    /// and the minimum radius
     struct Hbond {
       Hbond() {}
       Hbond(int a, std::string b, std::string c, Real d,
@@ -284,7 +250,5 @@ namespace ProtoMol {
     std::vector<Nbfix> nbfixs;
     std::vector<Hbond> hbonds;
   };
-
-  //____________________________________________________________________________INLINES
 }
 #endif /* PAR_H */

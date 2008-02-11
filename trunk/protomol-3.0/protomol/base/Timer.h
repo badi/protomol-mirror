@@ -40,7 +40,7 @@
 #include <protomol/base/Report.h>
 
 namespace ProtoMol {
-  //_____________________________________________________________________ TimeRep
+  //____________________________________________________________________ TimeRep
   /**
    * Class representation and container of Time
    */
@@ -77,7 +77,7 @@ private:
     void reset();
   };
 
-  //______________________________________________________________ INLINE TimerRep
+  //____________________________________________________________ INLINE TimerRep
 
   inline double TimeRep::getRealTime() const {
     return myRealTime;
@@ -95,7 +95,7 @@ private:
     return myUserTime + mySystemTime;
   }
 
-  //________________________________________________________________________ Timer
+  //______________________________________________________________________ Timer
 
   class Timer {
 public:
