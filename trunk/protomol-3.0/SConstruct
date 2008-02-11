@@ -63,6 +63,8 @@ if os.environ.has_key('LIBFAH_HOME'):
     env.Append(LIBPATH = [os.environ['LIBFAH_HOME']])
 if conf.CheckLib('fah'):
     env.Append(CPPDEFINES = ['HAVE_LIBFAH'])
+    if env['PLATFORM'] == 'win32':
+        env.Append(LIBS = ['wsock32'])
     have_libfah=1
 
 
