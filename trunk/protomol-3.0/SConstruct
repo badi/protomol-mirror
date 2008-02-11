@@ -9,7 +9,7 @@ opts = Options('options.py')
 Export('opts')
 
 opts.AddOptions(
-    BoolOption('dofah', 'Set to 1 to build library for Folding@Home', 0),
+    BoolOption('fah', 'Set to 1 to build library for Folding@Home', 0),
     )
 
 compiler_add_opts()
@@ -28,7 +28,7 @@ Export('conf')
 subsrc = SConscript('protomol/SConscript')
 
 # Get options
-dofah = int(env.get('dofah', 0))
+fah = int(env.get('fah', 0))
 
 
 # Configure compiler
@@ -49,7 +49,7 @@ execfile('package_h.py')
 
 # libprotomol
 libname = 'protomol'
-if dofah: libname = libname + '-fah'
+if fah: libname = libname + '-fah'
 libsrc = []
 
 env.Append(LIBPATH = '.')
@@ -77,11 +77,19 @@ if env['PLATFORM'] != 'win32' and have_libfah:
 
 
 # Folding@Home library version
-if dofah:
+if fah:
     if not conf.CheckCXXHeader('fah/core/ChecksumDevice.h'):
         print 'Folding@Home needed please set LIBFAH_HOME'
         #Exit(1)
-    # Look for boost iostreams
+
+    # Look for boost::iostreams
+    if os.environ.has_key('BOOST_HOME'):
+        env.Append(CPPPATH = [os.environ['BOOST_HOME']])
+
+    if not conf.CheckCXXHeader('boost/iostreams/device/file.hpp'):
+        print 'boost::iostreams not found.  Please set BOOST_HOME'
+        Exit(1)
+
     env.Append(CPPDEFINES = ['BUILD_FOR_FAH'])
 
     libsrc.append('#/protomol/modules.cpp')

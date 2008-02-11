@@ -147,6 +147,8 @@ bool XYZBinReader::read(Vector3DBlock &coords) {
     return false;
   }
 
+  cout << "Success reading XYZBin" << endl;
+
   close();
   return !file.fail();
 }
