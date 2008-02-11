@@ -79,6 +79,10 @@ def compiler_configure():
 
         env.Append(CPPDEFINES = ['DEBUG'])
 
+    else:
+        if env['CC'] == 'gcc':
+            env.Append(LINKFLAGS = '--strip-all')
+
 
     # Optimizations
     if optimize:

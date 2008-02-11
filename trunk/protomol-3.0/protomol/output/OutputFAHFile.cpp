@@ -2,8 +2,7 @@
 #include <protomol/ProtoMolApp.h>
 #include <protomol/module/MainModule.h>
 #include <protomol/module/OutputModule.h>
-
-#include <sstream>
+#include <protomol/type/String.h>
 
 using namespace std;
 using namespace ProtoMol::Report;
@@ -23,22 +22,19 @@ void OutputFAHFile::doRun(int step) {
   open(filename.c_str(), ios::out | ios::trunc);
 
   if (is_open()) {
-    stringstream str;
-    str << app->positions.size() << '\t' << "Alanine" << endl;
-    file.write(str.str().c_str(), str.str().length());
+    string str;
+    str = String(app->positions.size()) + '\t' + "Alanine" + "\n";
+    file.write(str.c_str(), str.length());
 
     for (unsigned int i = 0; i < app->positions.size(); i++) {
-      str.clear();
+      str = String(i + 1) + '\t' +
+        app->topology->atomTypes[app->topology->atoms[i].type].name + '\t' +
+        String(app->positions[i].x) + '\t' +
+        String(app->positions[i].y) + '\t' +
+        String(app->positions[i].z) + '\t' +
+        String(1) + "\n";
 
-      str << i + 1 << '\t'
-          << app->topology->atomTypes[app->topology->atoms[i].type].name
-          << '\t'
-          << app->positions[i].x << '\t'
-          << app->positions[i].y << '\t'
-          << app->positions[i].z << '\t' << 1
-          << endl;
-
-      file.write(str.str().c_str(), str.str().length());
+      file.write(str.c_str(), str.length());
     }
     
     close();
