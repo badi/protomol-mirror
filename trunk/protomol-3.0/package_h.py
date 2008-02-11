@@ -1,12 +1,16 @@
 REV="unknown"
 REPO="unknown"
-with open('.svn/entries') as f:
+
+f = open('.svn/entries')
+try:
     i = 0
     for line in f:
         i = i + 1
         if i > 5: break
         if i == 4: REV = line.strip()
         if i == 5: REPO = line.strip()
+finally:
+    f.close()
 
 execfile('tags.py')
 
@@ -21,7 +25,8 @@ computed_tags = [
     ['PLATFORM', env.subst('$PLATFORM')],
 ]
 
-with open('protomol/package.h', 'w') as f:
+f = open('protomol/package.h', 'w')
+try:
     f.write('#ifndef PROTOMOL_PACKAGE_H\n')
     f.write('#define PROTOMOL_PACKAGE_H\n\n')
     f.write('/************************************************************\n')
@@ -45,3 +50,6 @@ with open('protomol/package.h', 'w') as f:
 
     f.write('\n#endif // PROTOMOL_PACKAGE_H\n')
     env.Append(CPPDEFINES = ['HAVE_PACKAGE_H'])
+
+finally:
+    f.close()
