@@ -123,7 +123,7 @@ void OutputFAHGUI::setBonds() {
 void OutputFAHGUI::setAtoms() {
   int element;
   float mass;
-  float radius;
+  float radius = 0;
 
   for (unsigned int i = 0; i < (app->topology->atoms).size(); i++) {
     // Determine element by mass

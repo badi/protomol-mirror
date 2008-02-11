@@ -13,18 +13,14 @@ XYZBinReader::XYZBinReader() :
   Reader(ios::binary), myCoords(NULL) {}
 
 XYZBinReader::XYZBinReader(const string &filename) :
-  Reader(ios::
-           binary,
-         filename), myCoords(NULL) {}
+  Reader(ios::binary, filename), myCoords(NULL) {}
 
 XYZBinReader::~XYZBinReader() {
-  if (myCoords != NULL)
-    delete myCoords;
+  if (myCoords != NULL) delete myCoords;
 }
 
 bool XYZBinReader::tryFormat() {
-  if (!open())
-    return false;
+  if (!open()) return false;
 
   file.seekg(0, ios::end);
   ios::pos_type size = file.tellg();
@@ -58,10 +54,8 @@ bool XYZBinReader::read() {
 }
 
 bool XYZBinReader::read(Vector3DBlock &coords) {
-  if (!tryFormat())
-    return false;
-  if (!open())
-    return false;
+  if (!tryFormat()) return false;
+  if (!open()) return false;
 
   file.seekg(0, ios::end);
   ios::pos_type size = file.tellg();
