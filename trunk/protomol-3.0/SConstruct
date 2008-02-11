@@ -52,9 +52,6 @@ libname = 'protomol'
 if fah: libname = libname + '-fah'
 libsrc = []
 
-env.Append(LIBPATH = '.')
-env.Append(LIBS = libname)
-
 
 # libFAH
 have_libfah=0
@@ -78,9 +75,9 @@ if env['PLATFORM'] != 'win32' and have_libfah:
 
 # Folding@Home library version
 if fah:
-    #if not conf.CheckCXXHeader('fah/core/ChecksumDevice.h'):
-        #print 'Folding@Home needed please set LIBFAH_HOME'
-        #Exit(1)
+    if not conf.CheckCXXHeader('fah/core/ChecksumDevice.h'):
+        print 'Folding@Home needed please set LIBFAH_HOME'
+        Exit(1)
 
     # Look for boost::iostreams
     if os.environ.has_key('BOOST_HOME'):
@@ -105,6 +102,8 @@ env.Library(libname, libsrc)
 
 
 # Build Protomol
+env.Append(LIBPATH = '.')
+env.Append(LIBS = libname)
 src = ['protomol/main.cpp', 'protomol/modules.cpp']
 protomol = env.Program('ProtoMol', src)
 Default(protomol)
