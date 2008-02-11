@@ -255,7 +255,7 @@ int HessianInt::diagHessian(double *eigVecO, double *eigValO) {   //
   isuppz = new int[2 * sz];
   iwork = new int[10 * sz];
   //Diagonalize
-  int info;                 /* output 0=success */
+  int info = 0;                 /* output 0=success */
 #if defined (HAVE_LAPACK) || defined (HAVE_SIMTK_LAPACK)
   /* LAPACK checks only first character N/V */
   char *jobz = "V"; char *range = "A"; char *uplo = "U";
