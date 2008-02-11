@@ -89,6 +89,7 @@ def compiler_configure():
                        '-O9 -ffast-math -finline-functions -funroll-loops')
         elif env['CC'] == 'cl':
             env.Append(CCFLAGS = '/Ox /GL')
+            env.Append(LINKFLAGS = '/LTCG')
 
 
     # Dependency files
