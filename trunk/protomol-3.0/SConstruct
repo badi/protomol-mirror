@@ -58,6 +58,7 @@ libs.append(libname)
 # libbip2
 if os.environ.has_key('LIBBZ2_HOME'):
   env.Append(LIBPATH = [os.environ['LIBBZ2_HOME']])
+  env.Append(CPPPATH = [os.environ['LIBBZ2_HOME'] + '/src'])
 
 if not conf.CheckLib('bz2'):
   print 'libbzip2 not found.  Please set LIBBZ2_HOME'
@@ -98,7 +99,6 @@ if fah:
         Exit(1)
 
     env.Append(CPPDEFINES = ['BUILD_FOR_FAH'])
-
     libsrc.append('#/protomol/modules.cpp')
 
 env = conf.Finish()
@@ -113,8 +113,8 @@ env.Library(libname, libsrc)
 
 
 # Build Protomol
-env.Append(LIBPATH = '.')
-env.Prepend(LIBS = libname)
+env.Append(LIBPATH = ['.'])
+env.Prepend(LIBS = [libname])
 src = ['protomol/main.cpp', 'protomol/modules.cpp']
 protomol = env.Program('ProtoMol', src)
 Default(protomol)
