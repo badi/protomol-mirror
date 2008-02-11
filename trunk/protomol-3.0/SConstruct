@@ -80,7 +80,7 @@ if env['PLATFORM'] != 'win32' and have_libfah:
 if dofah:
     if not conf.CheckCXXHeader('fah/core/ChecksumDevice.h'):
         print 'Folding@Home needed please set LIBFAH_HOME'
-        Exit(1)
+        #Exit(1)
     # Look for boost iostreams
     env.Append(CPPDEFINES = ['BUILD_FOR_FAH'])
 
