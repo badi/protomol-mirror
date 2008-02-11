@@ -42,7 +42,7 @@ ostream &Parameter::print(ostream &stream) const {
 
   if (!keyword.empty())
     stream << Constant::PRINTINDENT << Constant::PRINTINDENT
-           << setw(20) << keyword << " ";
+           << setw(25) << keyword << " ";
 
   stream << setw(30);
   if (defaultValue.valid())
@@ -51,8 +51,8 @@ ostream &Parameter::print(ostream &stream) const {
 
   if (!text.empty()) {
     stream << " # ";
-    int col = 2 * string(Constant::PRINTINDENT).length() + 54;
-    fillFormat(stream, text, col, col, 100);
+    int col = 2 * string(Constant::PRINTINDENT).length() + 59;
+    fillFormat(stream, text, col, col, 120);
 
   } else stream << endl;
 

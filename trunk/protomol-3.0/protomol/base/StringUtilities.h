@@ -159,7 +159,7 @@ namespace ProtoMol {
   //_________________________________________________________________ tailString
   std::string tailString(const std::string &str);
 
-  std::string headerRow(const std::string &title);
+  std::string headerRow(const std::string &title, unsigned int maxColumn = 80);
   void fillFormat(std::ostream &stream, const std::string &str,
                   unsigned int currentColumn = 0, unsigned int indent = 0,
                   unsigned int maxColumn = 80);

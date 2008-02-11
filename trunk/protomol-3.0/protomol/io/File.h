@@ -40,6 +40,7 @@ namespace ProtoMol {
     std::fstream file;
 #endif
 
+    File();
     File(std::ios::openmode mode);
     File(std::ios::openmode mode, const std::string &filename);
 

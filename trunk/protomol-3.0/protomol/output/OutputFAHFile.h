@@ -1,20 +1,22 @@
 /*  -*- c++ -*-  */
-#ifndef OUTPUTSCREEN_H
-#define OUTPUTSCREEN_H
+#ifndef OUTPUT_FAH_FILE_H
+#define OUTPUT_FAH_FILE_H
 
 #include <protomol/output/Output.h>
+#include <protomol/io/File.h>
+#include <string>
 
 namespace ProtoMol {
   class Configuration;
 
-  //____ OutputScreen
-  class OutputScreen : public Output {
+  //____ OutputFAHFile
+  class OutputFAHFile : public Output, public File {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Constructors, destructors, assignment
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
-    OutputScreen();
-    OutputScreen(int freq);
+    OutputFAHFile();
+    OutputFAHFile(const std::string &filename, int freq);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //  From class Output
@@ -23,7 +25,7 @@ namespace ProtoMol {
     virtual Output *doMake(const std::vector<Value> &values) const;
     virtual void doInitialize();
     virtual void doRun(int step);
-    virtual void doFinalize(int) {}
+    virtual void doFinalize(int);
     virtual bool isIdDefined(const Configuration *config) const;
     virtual bool addDoKeyword() const {return false;}
 
@@ -41,9 +43,10 @@ namespace ProtoMol {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   public:
     static const std::string keyword;
+
   private:
-    std::string myUnit;
-    Real myFactor;
+    std::string filename;
   };
 }
+
 #endif

@@ -10,6 +10,7 @@ using namespace ProtoMol;
 #include <iostream>
 
 //____ File
+File::File() : mode(ios::in | ios::out) {}
 File::File(std::ios::openmode mode) : mode(mode) {}
 
 File::File(std::ios::openmode mode, const std::string &filename) :

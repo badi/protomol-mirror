@@ -14,6 +14,8 @@
 #include <protomol/output/OutputXYZTrajectoryPos.h>
 #include <protomol/output/OutputXYZTrajectoryVel.h>
 #include <protomol/output/OutputEnergies.h>
+#include <protomol/output/OutputFAHGUI.h>
+#include <protomol/output/OutputFAHFile.h>
 
 using namespace std;
 using namespace ProtoMol;
@@ -30,4 +32,8 @@ void OutputModule::init(ProtoMolApp *app) {
   f.registerExemplar(new OutputXYZTrajectoryPos());
   f.registerExemplar(new OutputXYZTrajectoryVel());
   f.registerExemplar(new OutputEnergies());
+#ifdef HAVE_LIBFAH
+  f.registerExemplar(new OutputFAHGUI());
+#endif
+  f.registerExemplar(new OutputFAHFile());
 }

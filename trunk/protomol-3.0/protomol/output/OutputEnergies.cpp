@@ -27,8 +27,14 @@ OutputEnergies::OutputEnergies(const string &filename, int freq,
   myDoShadow(doShadow) {}
 
 void OutputEnergies::doInitialize() {
-  ofstream allEnergiesHeaderFile(string(myFilename + ".header").c_str(),
-                                 ios::out | ios::trunc);
+#ifdef BUILD_FOR_FAH
+    boost::iostreams::ostream<FAH::ChecksumDevice> allEnergiesHeaderFile;
+#else
+    ofstream allEnergiesHeaderFile;
+#endif
+
+  allEnergiesHeaderFile.open(string(myFilename + ".header").c_str(),
+                             ios::out | ios::trunc);
   if (!allEnergiesHeaderFile)
     report << error << " Can not open \'" << myFilename <<
     ".header\' for " << getId() << "." << endr;

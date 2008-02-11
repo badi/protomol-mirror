@@ -547,14 +547,14 @@ namespace ProtoMol {
     return res;
   }
 
-  string headerRow(const string &title) {
+  string headerRow(const string &title, unsigned int maxColumn) {
     unsigned int len = title.length() + 2;
-    if (len >= 79) return title;
+    if (len >= maxColumn - 1) return title;
 
-    char result[81];
+    char result[maxColumn + 1];
     unsigned int i = 0;
 
-    for (; i < (80 - len) / 2; i++)
+    for (; i < (maxColumn - len) / 2; i++)
       result[i] = i % 2 ? '+' : '=';
 
     result[i++] = ' ';
@@ -564,7 +564,7 @@ namespace ProtoMol {
 
     result[i++] = ' ';
 
-    for (; i < 80; i++)
+    for (; i < maxColumn; i++)
       result[i] = i % 2 ? '+' : '=';
 
     result[i] = 0;

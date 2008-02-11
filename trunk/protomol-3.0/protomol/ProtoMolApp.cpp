@@ -177,9 +177,27 @@ void ProtoMolApp::build() {
   outputCache.initialize(this);
 
   // Init cache
-  //outputs->addToCache(pdbAtoms);
+  //outputs->addToCache(pdbAtoms); // TODO fix this
   outputCache.add(psf);
   outputCache.add(par);
+
+  // Print Factories
+  if ((int)config[InputDebug::keyword] >= 5) {
+    cout
+      << headerRow("Factories")     << endl
+      << headerRow("Configuration") << endl << config            << endl
+      << headerRow("Topology")      << endl << topologyFactory   << endl
+      << headerRow("Integrator")    << endl << integratorFactory << endl
+      << headerRow("Force")         << endl << forceFactory      << endl
+      << headerRow("Output")        << endl << outputFactory     << endl;
+  }
+
+   // Clear all factories
+  topologyFactory.unregisterAllExemplars();
+  integratorFactory.unregisterAllExemplars();
+  forceFactory.unregisterAllExemplars();
+  outputFactory.unregisterAllExemplars();
+ 
 
   // Setup run
   currentStep = config[InputFirststep::keyword];
@@ -210,12 +228,6 @@ bool ProtoMolApp::step() {
 
 void ProtoMolApp::finalize() {
   outputs->finalize(lastStep);
-
-  // Clear all factories
-  topologyFactory.unregisterAllExemplars();
-  integratorFactory.unregisterAllExemplars();
-  forceFactory.unregisterAllExemplars();
-  outputFactory.unregisterAllExemplars();
 
   // Clean up
   zap(topology);
@@ -263,18 +275,6 @@ void ProtoMolApp::print(ostream &stream) {
   // Topology
   stream << headerRow("Topology") << endl;
   stream << topology->print(&positions) << endl;
-
-
-  // Factories
-  if ((int)config[InputDebug::keyword] >= 5) {
-    stream
-      << headerRow("Factories")     << endl
-      << headerRow("Configuration") << endl << config            << endl
-      << headerRow("Topology")      << endl << topologyFactory   << endl
-      << headerRow("Integrator")    << endl << integratorFactory << endl
-      << headerRow("Force")         << endl << forceFactory      << endl
-      << headerRow("Output")        << endl << outputFactory     << endl;
-  }
 
   stream << PROTOMOL_HR << endl;
 }

@@ -174,10 +174,29 @@ with open('protomol/package.h', 'w') as f:
 libname = 'protomol'
 libsrc = []
 
-# Folding@Home library
+# Add libprotomol
+env.Append(LIBPATH = '.')
+env.Append(LIBS = 'protomol')
+
+
+# libFAH
+have_libfah=0
+if os.environ.has_key('LIBFAH_HOME'):
+    env.Append(CPPPATH = [os.environ['LIBFAH_HOME']])
+    env.Append(LIBPATH = [os.environ['LIBFAH_HOME']])
+if conf.CheckLib('fah'):
+    env.Append(CPPDEFINES = ['HAVE_LIBFAH'])
+    have_libfah=1
+
+# pthreads
+if env['PLATFORM'] != 'win32' and have_libfah:
+    if not conf.CheckLib('pthread'):
+        print ('Need libpthreads for Folding@Home GUI server on non-win32 ' +
+               'platforms')
+        Exit(1)
+
+# Folding@Home library version
 if fah:
-    if os.environ.has_key('LIBFAH_HOME'):
-        env.Append(CPPPATH = [os.environ['LIBFAH_HOME']])
     if not conf.CheckCXXHeader('fah/core/ChecksumDevice.h'):
         print 'Folding@Home needed please set LIBFAH_HOME'
         Exit(1)
@@ -195,10 +214,6 @@ for s in subsrc:
 # Build libprotomol
 env.Library(libname, libsrc)
 
-
-# Add subdir libs
-env.Append(LIBPATH = '.')
-env.Append(LIBS = 'protomol')
 
 if not fah:
     # Build Protomol
