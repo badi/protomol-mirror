@@ -91,9 +91,9 @@ def compiler_configure():
         elif env['CC'] == 'gcc':
             env.Append(CCFLAGS =
                        '-O9 -ffast-math -finline-functions -funroll-loops')
-            env.Append(CCFLAGS = '-msse2 -mfpmath=sse');
+            #env.Append(CCFLAGS = '-msse2 -mfpmath=sse');
         elif env['CC'] == 'cl':
-            env.Append(CCFLAGS = '/Ox /GL /arch:SSE')
+            env.Append(CCFLAGS = '/Ox /GL') # /arch:SSE')
             env.Append(LINKFLAGS = '/LTCG')
 
 
