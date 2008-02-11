@@ -31,10 +31,6 @@ Export('conf')
 subsrc = SConscript('protomol/SConscript')
 
 
-# Generate Help
-Help(opts.GenerateHelpText(env))
-
-
 # Get options
 mode = env.get('mode', 'debug')
 
@@ -48,15 +44,22 @@ strict = int(env.get('strict', 1))
 depends = int(env.get('depends', 0))
 fah = int(env.get('fah', 0))
 
+
 # Configure compiler
 execfile('compiler.py')
+
 
 # Dependency files
 if depends and env['CC'] == 'gcc':
     env.Append(CCFLAGS = '-MMD -MF ${TARGET}.d')
 
+
 # Include protomol
 env.Append(CPPPATH = '#')
+
+
+# Generate Help
+Help(opts.GenerateHelpText(env))
 
 
 # config.h
