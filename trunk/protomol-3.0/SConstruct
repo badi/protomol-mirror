@@ -48,8 +48,7 @@ strict = int(env.get('strict', 1))
 depends = int(env.get('depends', 0))
 fah = int(env.get('fah', 0))
 
-
-
+# Configure compiler
 execfile('compiler.py')
 
 # Dependency files
