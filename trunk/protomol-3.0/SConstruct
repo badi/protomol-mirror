@@ -51,6 +51,8 @@ execfile('package_h.py')
 libname = 'protomol'
 if fah: libname = libname + '-fah'
 libsrc = []
+libs = []
+libs.append(libname)
 
 
 # libFAH
@@ -63,7 +65,6 @@ if conf.CheckLib('fah'):
     if env['PLATFORM'] == 'win32':
         env.Append(LIBS = ['wsock32'])
     have_libfah=1
-
 
 # pthreads
 if env['PLATFORM'] != 'win32' and have_libfah:
@@ -91,6 +92,7 @@ if fah:
 
     libsrc.append('#/protomol/modules.cpp')
 
+env = conf.Finish()
 
 # Build
 for s in subsrc:
@@ -103,7 +105,7 @@ env.Library(libname, libsrc)
 
 # Build Protomol
 env.Append(LIBPATH = '.')
-env.Append(LIBS = libname)
+env.Prepend(LIBS = libname)
 src = ['protomol/main.cpp', 'protomol/modules.cpp']
 protomol = env.Program('ProtoMol', src)
 Default(protomol)
