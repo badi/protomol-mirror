@@ -9,7 +9,7 @@ opts = Options('options.py')
 Export('opts')
 
 opts.AddOptions(
-    BoolOption('fah', 'Set to 1 to build library for Folding@Home', 0),
+    BoolOption('dofah', 'Set to 1 to build library for Folding@Home', 0),
     )
 
 compiler_add_opts()
@@ -28,7 +28,7 @@ Export('conf')
 subsrc = SConscript('protomol/SConscript')
 
 # Get options
-dofah = int(env.get('fah', 0))
+dofah = int(env.get('dofah', 0))
 
 
 # Configure compiler
