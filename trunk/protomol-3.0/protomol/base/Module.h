@@ -36,7 +36,7 @@ namespace ProtoMol {
   };
 
   struct moduleLess {
-    bool operator()(const Module *m1, const Module *m2) {
+    bool operator()(const Module *m1, const Module *m2) const {
       if (!m1 || !m2) THROW("null pointer");
 
       if (m1->getPriority() < m2->getPriority()) return true;
