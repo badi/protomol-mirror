@@ -27,8 +27,7 @@ int main(int argc, char *argv[]) {
     if ((int)app.config[InputDebug::keyword]) app.print(cout);
 
     TimerStatistic::timer[TimerStatistic::RUN].start();
-    while (app.step())
-      cout << "Step: " << app.currentStep << endl;
+    while (app.step()) continue;
     TimerStatistic::timer[TimerStatistic::RUN].stop();
 
     app.finalize();

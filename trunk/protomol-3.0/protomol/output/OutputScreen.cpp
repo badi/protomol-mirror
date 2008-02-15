@@ -51,14 +51,14 @@ void OutputScreen::doInitialize() {
 void OutputScreen::doRun(int step) {
   report << plain << "Step : ";
   report.setf(ios::right);
-  report.width(10);
+  report.width(7);
   report << step << ", Time : ";
-  report.width(18);
+  report.width(10);
   report.setf(ios::showpoint | ios::fixed);
   report.precision(3);
   report << app->outputCache.time() * myFactor << " [" << myUnit << "], TE : ";
   report.precision(4);
-  report.width(16);
+  report.width(12);
   report << app->outputCache.totalEnergy() << " [kcal/mol]";
   report << ", T : ";
   report.precision(4);
@@ -66,7 +66,7 @@ void OutputScreen::doRun(int step) {
   report << app->outputCache.temperature() << " [K]";
   report << ", V : ";
   report.precision(2);
-  report.width(16);
+  report.width(12);
   report << app->outputCache.volume() << " [AA^3]" << endr;
   report.reset();
 }

@@ -16,6 +16,7 @@
 #include <protomol/output/OutputEnergies.h>
 #include <protomol/output/OutputFAHGUI.h>
 #include <protomol/output/OutputFAHFile.h>
+#include <protomol/output/OutputScreen.h>
 
 using namespace std;
 using namespace ProtoMol;
@@ -23,6 +24,7 @@ using namespace ProtoMol;
 void OutputModule::init(ProtoMolApp *app) {
   OutputFactory &f = app->outputFactory;
 
+  f.registerExemplar(new OutputScreen());
   f.registerExemplar(new OutputDCDTrajectory());
   f.registerExemplar(new OutputDCDTrajectoryVel());
   f.registerExemplar(new OutputFinalPDBPos());
