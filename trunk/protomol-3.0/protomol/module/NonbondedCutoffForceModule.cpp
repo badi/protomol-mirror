@@ -12,14 +12,15 @@
 #include <protomol/force/LennardJonesForce.h>
 #include <protomol/force/coulomb/CoulombSCPISMForce.h>
 #include <protomol/force/coulomb/CoulombBornRadiiForce.h>
+#include <protomol/force/nonbonded/NonbondedCutoffSystemForce.h>
+#include <protomol/force/nonbonded/NonbondedCutoffBornForce.h>
+#include <protomol/force/table/LennardJonesTableForce.h>
 
 #include <protomol/switch/C1SwitchingFunction.h>
 #include <protomol/switch/C2SwitchingFunction.h>
 #include <protomol/switch/CmpCnCnSwitchingFunction.h>
 #include <protomol/switch/CnSwitchingFunction.h>
-
-#include <protomol/force/nonbonded/NonbondedCutoffSystemForce.h>
-#include <protomol/force/nonbonded/NonbondedCutoffBornForce.h>
+#include <protomol/switch/UniversalSwitchingFunction.h>
 
 #include <protomol/topology/CellListEnumeratorPeriodicBoundaries.h>
 #include <protomol/topology/CellListEnumeratorStandard.h>
@@ -39,6 +40,7 @@ void NonbondedCutoffForceModule::registerForces(ProtoMolApp *app) {
   typedef C2SwitchingFunction C2;
   typedef CnSwitchingFunction Cn;
   typedef CmpCnCnSwitchingFunction CmpCnCn;
+  typedef UniversalSwitchingFunction Universal;
 #define CutoffSystem NonbondedCutoffSystemForce
 #define CutoffBorn NonbondedCutoffBornForce
 
@@ -55,6 +57,12 @@ void NonbondedCutoffForceModule::registerForces(ProtoMolApp *app) {
     f.reg(new CutoffSystem<CCM, OneAtomPair<PBC, Cn, LennardJonesForce> >());
     f.reg(new CutoffSystem<CCM, OneAtomPair<PBC, CmpCnCn,
           LennardJonesForce> >());
+    f.reg(new CutoffSystem<CCM, OneAtomPair<PBC, Universal,
+          LennardJonesTableForce<C2, 7 ,Real> > >());
+    f.reg(new CutoffSystem<CCM, OneAtomPair<PBC, Universal,
+          LennardJonesTableForce<Cn, 7 ,Real> > >());
+    f.reg(new CutoffSystem<CCM, OneAtomPair<PBC, Universal,
+          LennardJonesTableForce<CmpCnCn, 7 ,Real> > >());
     
     // NonbondedCutoffSystemForce LennardJonesForce CoulombForce
     f.reg(new CutoffSystem<CCM, OneAtomPairTwo<PBC, C2, LennardJonesForce,
@@ -80,6 +88,12 @@ void NonbondedCutoffForceModule::registerForces(ProtoMolApp *app) {
     f.reg(new CutoffSystem<CCM, OneAtomPair<VBC, Cn, LennardJonesForce> >());
     f.reg(new CutoffSystem<CCM, OneAtomPair<VBC, CmpCnCn,
           LennardJonesForce> >());
+    f.reg(new CutoffSystem<CCM, OneAtomPair<VBC, Universal,
+          LennardJonesTableForce<C2, 7 ,Real> > >());
+    f.reg(new CutoffSystem<CCM, OneAtomPair<VBC, Universal,
+          LennardJonesTableForce<Cn, 7 ,Real> > >());
+    f.reg(new CutoffSystem<CCM, OneAtomPair<VBC, Universal,
+          LennardJonesTableForce<CmpCnCn, 7 ,Real> > >());
     
     // NonbondedCutoffSystemForce LennardJonesForce CoulombForce
     f.reg(new CutoffSystem<CCM, OneAtomPairTwo<VBC, C2, LennardJonesForce, C1,

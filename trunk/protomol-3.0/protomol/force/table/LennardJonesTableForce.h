@@ -115,6 +115,11 @@ namespace ProtoMol {
                      Text("cutoff for table look up")));
     }
 
+    static unsigned int getParameterSize() {
+      return TSwitchingFunction::getParameterSize() +
+        (TSwitchingFunction::CUTOFF ? 0 : 1);
+    }
+
     static LennardJonesTableForce make(const std::vector<Value> &values) {
       if (!TSwitchingFunction::CUTOFF) {
         std::vector<Value> sValues(values.begin(), values.end() - 1);

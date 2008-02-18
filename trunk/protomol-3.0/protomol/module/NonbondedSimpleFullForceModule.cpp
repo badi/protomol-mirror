@@ -19,6 +19,7 @@
 #include <protomol/switch/CmpCnCnSwitchingFunction.h>
 #include <protomol/switch/CnSwitchingFunction.h>
 #include <protomol/switch/ComplementSwitchingFunction.h>
+#include <protomol/switch/UniversalSwitchingFunction.h>
 
 #include <protomol/force/nonbonded/NonbondedSimpleFullSystemForce.h>
 
@@ -38,12 +39,14 @@ void NonbondedSimpleFullForceModule::registerForces(ProtoMolApp *app) {
   typedef C2SwitchingFunction C2;
   typedef CnSwitchingFunction Cn;
   typedef CmpCnCnSwitchingFunction CmpCnCn;
+  typedef UniversalSwitchingFunction Universal;
 #define Complement ComplementSwitchingFunction 
 #define SimpleFullSystem NonbondedSimpleFullSystemForce
 
   if (equalNocase(boundConds, PeriodicBoundaryConditions::keyword)) {
 
     // NonbondedSimpleFullSystemForce CoulombForce
+    f.reg(new SimpleFullSystem<OneAtomPair<PBC, Universal, CoulombForce> >());
     f.reg(new SimpleFullSystem<OneAtomPair<PBC, C1, CoulombForce> >());
     f.reg(new SimpleFullSystem<OneAtomPair<PBC, Complement<C1>,
           CoulombForce> >());
@@ -53,6 +56,8 @@ void NonbondedSimpleFullForceModule::registerForces(ProtoMolApp *app) {
           CoulombForce> >());
     
     // NonbondedSimpleFullSystemForce LennardJonesForce
+    f.reg(new SimpleFullSystem<OneAtomPair<PBC, Universal,
+          LennardJonesForce> >());
     f.reg(new SimpleFullSystem<OneAtomPair<PBC, C2, LennardJonesForce> >());
     f.reg(new SimpleFullSystem<OneAtomPair<PBC, Cn, LennardJonesForce> >());
     f.reg(new SimpleFullSystem<OneAtomPair<PBC, Complement<C1>,
@@ -63,14 +68,21 @@ void NonbondedSimpleFullForceModule::registerForces(ProtoMolApp *app) {
           LennardJonesForce> >());
     
     // NonbondedSimpleFullSystemForce LennardJonesForce CoulombForce
+    f.reg(new SimpleFullSystem<OneAtomPairTwo<PBC, Universal,
+          LennardJonesForce, Universal, CoulombForce> >());
     f.reg(new SimpleFullSystem<OneAtomPairTwo<PBC, Complement<C2>,
           LennardJonesForce, Complement<C1>, CoulombForce> >());
     f.reg(new SimpleFullSystem<OneAtomPairTwo<PBC, Complement<Cn>,
           LennardJonesForce, Complement<C1>, CoulombForce> >());
+    f.reg(new SimpleFullSystem<OneAtomPairTwo<PBC, C2, LennardJonesForce,
+          Universal, CoulombForce> >());
+    f.reg(new SimpleFullSystem<OneAtomPairTwo<PBC, Cn, LennardJonesForce,
+          Universal, CoulombForce> >());
 
   } else if (equalNocase(boundConds,  VacuumBoundaryConditions::keyword)) {
 
     // NonbondedSimpleFullSystemForce CoulombForce
+    f.reg(new SimpleFullSystem<OneAtomPair<VBC, Universal, CoulombForce> >());
     f.reg(new SimpleFullSystem<OneAtomPair<VBC, C1, CoulombForce> >());
     f.reg(new SimpleFullSystem<OneAtomPair<VBC, Complement<C1>,
           CoulombForce> >());
@@ -80,6 +92,8 @@ void NonbondedSimpleFullForceModule::registerForces(ProtoMolApp *app) {
           CoulombForce> >());
 
     // NonbondedSimpleFullSystemForce CoulombForceDiElec
+    f.reg(new SimpleFullSystem<OneAtomPair<VBC, Universal,
+          CoulombForceDiElec> >());
     f.reg(new SimpleFullSystem<OneAtomPair<VBC, C1, CoulombForceDiElec> >());
     f.reg(new SimpleFullSystem<OneAtomPair<VBC, Complement<C1>,
           CoulombForceDiElec> >());
@@ -89,6 +103,8 @@ void NonbondedSimpleFullForceModule::registerForces(ProtoMolApp *app) {
           CoulombForceDiElec> >());
 
     // NonbondedSimpleFullSystemForce LennardJonesForce
+    f.reg(new SimpleFullSystem<OneAtomPair<VBC, Universal,
+          LennardJonesForce> >());
     f.reg(new SimpleFullSystem<OneAtomPair<VBC, C2, LennardJonesForce> >());
     f.reg(new SimpleFullSystem<OneAtomPair<VBC, Cn, LennardJonesForce> >());
     f.reg(new SimpleFullSystem<OneAtomPair<VBC, Complement<C1>,
@@ -99,12 +115,16 @@ void NonbondedSimpleFullForceModule::registerForces(ProtoMolApp *app) {
           LennardJonesForce> >());
 
     // NonbondedSimpleFullSystemForce LennardJonesForce CoulombForce
+    f.reg(new SimpleFullSystem<OneAtomPairTwo<VBC, Universal,
+          LennardJonesForce, Universal, CoulombForce> >());
     f.reg(new SimpleFullSystem<OneAtomPairTwo<VBC, Complement<C2>,
           LennardJonesForce, Complement<C1>, CoulombForce> >());
     f.reg(new SimpleFullSystem<OneAtomPairTwo<VBC, Complement<Cn>,
           LennardJonesForce, Complement<C1>, CoulombForce> >());
 
     // NonbondedSimpleFullSystemForce LennardJonesForce CoulombForceDiElec
+    f.reg(new SimpleFullSystem<OneAtomPairTwo<VBC, Universal,
+          LennardJonesForce, Universal, CoulombForceDiElec> >());
     f.reg(new SimpleFullSystem<OneAtomPairTwo<VBC, Complement<C2>,
           LennardJonesForce, Complement<C1>, CoulombForceDiElec> >());
     f.reg(new SimpleFullSystem<OneAtomPairTwo<VBC, Complement<Cn>,
