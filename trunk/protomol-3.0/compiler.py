@@ -11,7 +11,7 @@ def compiler_add_opts():
                                      'linux-mingw', 'aix', 'posix', 'hp', 'sgi',
                                      'sun')))
 
-def compiler_configure():
+def compiler_configure(c99_mode = 1):
     # Get options
     mode = env.get('mode', 'debug')
 
@@ -39,7 +39,7 @@ def compiler_configure():
             env.Replace(CC = 'i586-mingw32msvc-gcc')
             env.Replace(CXX = 'i586-mingw32msvc-g++')
             env.Replace(RANLIB = 'i586-mingw32msvc-ranlib')
-            env.Replace(PROGSUFFIX = '.exe')
+            env.Replace(PROGSUFFIX = ['.exe'])
 
         elif compiler == 'posix':
             Tool('cc')(env)
@@ -66,44 +66,47 @@ def compiler_configure():
 
     # Options
     if env['CC'] == 'cl':
-        env.Append(CCFLAGS = '-EHsc')
+        env.Append(CCFLAGS = ['-EHsc'])
 
 
     # Debug flags
     if debug:
         if env['CC'] == 'cl':
-            env.Append(CCFLAGS = '-W1 /MDd')
+            env.Append(CCFLAGS = ['-W1 /MTd'])
         elif env['CC'] == 'gcc':
-            env.Append(CCFLAGS = '-g -Wall')
-            if strict: env.Append(CCFLAGS = '-Werror')
+            env.Append(CCFLAGS = ['-g -Wall'])
+            if strict: env.Append(CCFLAGS = ['-Werror'])
 
         env.Append(CPPDEFINES = ['DEBUG'])
 
     else:
         if env['CC'] == 'gcc':
-            env.Append(LINKFLAGS = '--strip-all')
+            env.Append(LINKFLAGS = ['--strip-all'])
+        elif env['CC'] == 'cl':
+            env.Append(CCFLAGS = ['/MT'])
 
 
     # Optimizations
     if optimize:
         if env['CC'] in ['icc', 'icpc']:
-            env.Append(CCFLAGS = '-O -finline-functions -funroll-loops')
+            env.Append(CCFLAGS = ['-O -finline-functions -funroll-loops'])
         elif env['CC'] == 'gcc':
             env.Append(CCFLAGS =
-                       '-O9 -ffast-math -finline-functions -funroll-loops')
-            #env.Append(CCFLAGS = '-msse2 -mfpmath=sse');
+                       ['-O9 -ffast-math -finline-functions -funroll-loops'])
+            #env.Append(CCFLAGS = ['-msse2 -mfpmath=sse']);
         elif env['CC'] == 'cl':
-            env.Append(CCFLAGS = '/Ox /GL') # /arch:SSE')
-            env.Append(LINKFLAGS = '/LTCG')
+            env.Append(CCFLAGS = ['/Ox /GL'])
+            env.Append(LINKFLAGS = ['/LTCG'])
 
 
     # Dependency files
     if depends and env['CC'] == 'gcc':
-        env.Append(CCFLAGS = '-MMD -MF ${TARGET}.d')
+        env.Append(CCFLAGS = ['-MMD -MF ${TARGET}.d'])
 
 
     # C mode
-    if env['CC'] == 'gcc':
-        env.Append(CFLAGS = '-std=gnu99')
-    elif env['CC'] == 'cl':
-        env.Append(CFLAGS = '/TP') # C++ mode
+    if c99_mode:
+        if env['CC'] == 'gcc':
+            env.Append(CFLAGS = ['-std=gnu99'])
+        elif env['CC'] == 'cl':
+            env.Append(CFLAGS = ['/TP']) # C++ mode
