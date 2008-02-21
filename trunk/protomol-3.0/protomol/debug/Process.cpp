@@ -75,7 +75,7 @@ Process::~Process() {
 }
 
 void Process::exec(list<string> &args) {
-  SmartPointer<char *, SP_ARRAY> argv = new char *[args.size() + 1];
+  SmartPointer<char *>::Array argv = new char *[args.size() + 1];
   list<string>::iterator it;
   unsigned int i = 0;
 

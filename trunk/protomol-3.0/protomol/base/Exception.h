@@ -49,7 +49,7 @@
 
 namespace ProtoMol {
   // Forward Declarations
-  template <class T, sp_alloc_t alloc_t>
+  template <class T, class DEALLOC_T>
   class SmartPointer;
 
   /**

@@ -22,20 +22,32 @@
 
 \*******************************************************************/
 
-#include <protomol/base/Exception.h>
+#include "Exception.h"
 
 #ifndef SMARTPOINTER_H
 #define SMARTPOINTER_H
 
-#include <protomol/base/Counter.h>
+#include "Counter.h"
 
 #include <stdlib.h>
+
 
 namespace ProtoMol {
   // Forward Delcarations
   class Exception;
 
-  typedef enum {SP_NEW, SP_ARRAY, SP_MALLOC} sp_alloc_t;
+  // Deallocators
+  template <class T>
+  struct SP_NEW {void operator()(T *ptr) const {delete ptr;}};
+
+  template <class T>
+  struct SP_ARRAY {void operator()(T *ptr) const {delete [] ptr;}};
+
+  struct SP_MALLOC {void operator()(void *ptr) const {free(ptr);}};
+
+#ifdef GLIB_MAJOR_VERSION
+  struct SP_GLIB {void operator()(void *ptr) const {g_free(ptr);}};
+#endif
 
   /** 
    * This class is an implementation of a smart pointer.  IT IS NOT
@@ -61,10 +73,20 @@ namespace ProtoMol {
    * Now the dynamic instance of A will not be destructed until both
    * aPtr and anotherPtr go out of scope.
    *
+   * Correct deallocation can vary depending on the type of resource being
+   * protected by the smart pointer.  The DEALLOC_T template parameter selects
+   * the deallocator.  The default deallocator is used for any data allocated
+   * with the 'new' operator.  SP_ARRAY is necessary for arrays allocated with
+   * the 'new []' operator.  SP_MALLOC will correctly deallocate data allocated
+   * with calls to 'malloc', 'calloc', 'realloc', et.al.
+   *
+   * You can also create your own deallocators for other resources.  The
+   * managed resources need not even be memory.
+   *
    * See http://ootips.org/yonat/4dev/smart-pointers.html for more information
    * about smart pointers and why to use them.
    */
-  template <class T, sp_alloc_t alloc_t = SP_NEW>
+  template <class T, class DEALLOC_T = SP_NEW<T> >
   class SmartPointer {
     /// A pointer to the reference counter.
     Counter *refCounter;
@@ -73,6 +95,9 @@ namespace ProtoMol {
     T *ptr;
 
   public:
+    typedef SmartPointer<T, DEALLOC_T> SmartPointer_T;
+    typedef SmartPointer<T, SP_ARRAY<T> > Array;
+
     /** 
      * Create a NULL smart pointer
      *
@@ -85,7 +110,7 @@ namespace ProtoMol {
      * 
      * @param smartPtr The pointer to copy.
      */
-    SmartPointer(const SmartPointer<T, alloc_t> &smartPtr) :
+    SmartPointer(const SmartPointer_T &smartPtr) :
       refCounter(0), ptr(0) {
       *this = smartPtr;
     }
@@ -124,7 +149,7 @@ namespace ProtoMol {
      * 
      * @return True if the smart pointers are equal. False otherwise.
      */
-    const bool operator==(const SmartPointer<T, alloc_t> &smartPtr) const {
+    const bool operator==(const SmartPointer_T &smartPtr) const {
       return ptr == smartPtr.ptr;
     }
 
@@ -137,7 +162,7 @@ namespace ProtoMol {
      * 
      * @return True if the smart pointers are not equal. False otherwise.
      */
-    const bool operator!=(const SmartPointer<T, alloc_t> &smartPtr) const {
+    const bool operator!=(const SmartPointer_T &smartPtr) const {
       return ptr != smartPtr.ptr;
     }
 
@@ -161,8 +186,7 @@ namespace ProtoMol {
      * 
      * @return A reference to this smart pointer.
      */
-    SmartPointer<T, alloc_t> &
-    operator=(const SmartPointer<T, alloc_t> &smartPtr) {
+    SmartPointer_T &operator=(const SmartPointer_T &smartPtr) {
       if (*this == smartPtr) return *this;
 
       release();
@@ -217,11 +241,7 @@ namespace ProtoMol {
     void release() {
       if (refCounter && !refCounter->dec()) {
         delete refCounter;
-        switch (alloc_t) {
-        case SP_NEW: delete ptr; break;
-        case SP_ARRAY: delete [] ptr; break;
-        case SP_MALLOC: free(ptr); break;
-        }
+        DEALLOC_T()(ptr);
       }
 
       refCounter = 0;
@@ -240,8 +260,8 @@ namespace ProtoMol {
      */
     T *adopt() {
       if (refCounter && refCounter->getCount() > 1)
-        throw Exception(std::string("SmartPointer: Cannot adopt a") +
-                        "pointer with multiple references!");
+        throw Exception
+          ("SmartPointer: Cannot adopt a pointer with multiple references!");
 
       if (refCounter) {
         delete refCounter;
@@ -273,9 +293,8 @@ namespace ProtoMol {
   protected:
     void checkPtr() const {
       if (!ptr)
-        throw 
-          Exception("SmartPointer: Can't dereference a NULL pointer!");
+        throw Exception("SmartPointer: Can't dereference a NULL pointer!");
     }
   };
 }
-#endif
+#endif // SMARTPOINTER_H
