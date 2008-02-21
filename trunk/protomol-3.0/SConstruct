@@ -87,16 +87,19 @@ if not env.GetOption('clean'):
 
   # Folding@Home library version
   if fah:
-    if not conf.CheckCXXHeader('fah/core/ChecksumDevice.h'):
-      print 'Folding@Home needed please set LIBFAH_HOME'
-      if env['PLATFORM'] != 'win32': Exit(1)
-
     # Look for boost::iostreams
     if os.environ.has_key('BOOST_HOME'):
       env.Append(CPPPATH = [os.environ['BOOST_HOME']])
 
     if not conf.CheckCXXHeader('boost/iostreams/device/file.hpp'):
       print 'boost::iostreams not found.  Please set BOOST_HOME'
+      Exit(1)
+
+    if not conf.CheckCXXHeader('fah/core/ChecksumDevice.h'):
+      print 'Folding@Home needed please set LIBFAH_HOME'
+      # There seems to be a bug on windows that causes this to always fail.
+      # So just let it pass on windows.
+      #if env['PLATFORM'] != 'win32':
       Exit(1)
 
     env.Append(CPPDEFINES = ['BUILD_FOR_FAH'])
