@@ -97,9 +97,6 @@ if not env.GetOption('clean'):
 
     if not conf.CheckCXXHeader('fah/core/ChecksumDevice.h'):
       print 'Folding@Home needed please set LIBFAH_HOME'
-      # There seems to be a bug on windows that causes this to always fail.
-      # So just let it pass on windows.
-      #if env['PLATFORM'] != 'win32':
       Exit(1)
 
     env.Append(CPPDEFINES = ['BUILD_FOR_FAH'])
