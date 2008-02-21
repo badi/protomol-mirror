@@ -87,7 +87,7 @@ if not env.GetOption('clean'):
   if fah:
     if not conf.CheckCXXHeader('fah/core/ChecksumDevice.h'):
       print 'Folding@Home needed please set LIBFAH_HOME'
-      #Exit(1)
+      Exit(1)
 
     # Look for boost::iostreams
     if os.environ.has_key('BOOST_HOME'):
