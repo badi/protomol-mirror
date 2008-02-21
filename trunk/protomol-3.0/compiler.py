@@ -96,7 +96,6 @@ def compiler_configure(c99_mode = 1):
             #env.Append(CCFLAGS = ['-msse2 -mfpmath=sse']);
         elif env['CC'] == 'cl':
             env.Append(CCFLAGS = '/Ox /GL')
-            env.Append(LINKFLAGS = '/LTCG')
 
 
     # Dependency files
