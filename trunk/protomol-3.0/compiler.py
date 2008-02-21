@@ -12,6 +12,9 @@ def compiler_add_opts():
                                      'sun')))
 
 def compiler_configure(c99_mode = 1):
+    if env.GetOption('clean'):
+        return
+
     # Get options
     mode = env.get('mode', 'debug')
 
