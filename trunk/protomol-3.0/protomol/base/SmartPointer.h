@@ -38,16 +38,15 @@ namespace ProtoMol {
 
   // Deallocators
   template <class T>
-  struct SP_NEW {void operator()(T *ptr) const {delete ptr;}};
+  struct SP_NEW {static void dealloc(T *ptr) {delete ptr;}};
 
   template <class T>
-  struct SP_ARRAY {void operator()(T *ptr) const {delete [] ptr;}};
+  struct SP_ARRAY {static void dealloc(T *ptr) {delete [] ptr;}};
 
-  struct SP_MALLOC {void operator()(void *ptr) const {free(ptr);}};
+  struct SP_MALLOC {static void dealloc(void *ptr) {free(ptr);}};
 
-#ifdef GLIB_MAJOR_VERSION
-  struct SP_GLIB {void operator()(void *ptr) const {g_free(ptr);}};
-#endif
+  template <void (*Func)(void *)>
+  struct SP_FUNC {static void dealloc(void *ptr) {Func(ptr);}};
 
   /** 
    * This class is an implementation of a smart pointer.  IT IS NOT
@@ -241,7 +240,7 @@ namespace ProtoMol {
     void release() {
       if (refCounter && !refCounter->dec()) {
         delete refCounter;
-        DEALLOC_T()(ptr);
+        DEALLOC_T::dealloc(ptr);
       }
 
       refCounter = 0;
