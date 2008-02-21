@@ -42,10 +42,6 @@ env.Append(CPPPATH = '#')
 Help(opts.GenerateHelpText(env))
 
 
-# package.h
-execfile('package_h.py')
-
-
 # libprotomol
 libname = 'protomol'
 if fah: libname = libname + '-fah'
@@ -54,53 +50,59 @@ libs = []
 libs.append(libname)
 
 
-# libbip2
-if os.environ.has_key('LIBBZ2_HOME'):
-  env.Append(LIBPATH = [os.environ['LIBBZ2_HOME']])
-  env.Append(CPPPATH = [os.environ['LIBBZ2_HOME'] + '/src'])
+if not env.GetOption('clean'):
+  # package.h
+  execfile('package_h.py')
 
-if not conf.CheckLib('bz2'):
-  print 'libbzip2 not found.  Please set LIBBZ2_HOME'
-  Exit(1)
+  # libbip2
+  if os.environ.has_key('LIBBZ2_HOME'):
+    env.Append(LIBPATH = [os.environ['LIBBZ2_HOME']])
+    env.Append(CPPPATH = [os.environ['LIBBZ2_HOME'] + '/src'])
+
+  if not conf.CheckLib('bz2'):
+    print 'libbzip2 not found.  Please set LIBBZ2_HOME'
+    Exit(1)
 
 
-# libFAH
-have_libfah=0
-if os.environ.has_key('LIBFAH_HOME'):
+  # libFAH
+  have_libfah=0
+  if os.environ.has_key('LIBFAH_HOME'):
     env.Append(CPPPATH = [os.environ['LIBFAH_HOME']])
     env.Append(LIBPATH = [os.environ['LIBFAH_HOME']])
-if conf.CheckLib('fah'):
+  if conf.CheckLib('fah'):
     env.Append(CPPDEFINES = ['HAVE_LIBFAH'])
     if env['PLATFORM'] == 'win32':
-        env.Append(LIBS = ['wsock32'])
+      env.Append(LIBS = ['wsock32'])
     have_libfah=1
 
-# pthreads
-if env['PLATFORM'] != 'win32' and have_libfah:
+  # pthreads
+  if env['PLATFORM'] != 'win32' and have_libfah:
     if not conf.CheckLib('pthread'):
-        print ('Need libpthreads for Folding@Home GUI server on non-win32 ' +
-               'platforms')
-        Exit(1)
+      print ('Need libpthreads for Folding@Home GUI server on non-win32 ' +
+             'platforms')
+      Exit(1)
 
 
-# Folding@Home library version
-if fah:
+  # Folding@Home library version
+  if fah:
     if not conf.CheckCXXHeader('fah/core/ChecksumDevice.h'):
-        print 'Folding@Home needed please set LIBFAH_HOME'
-        #Exit(1)
+      print 'Folding@Home needed please set LIBFAH_HOME'
+      #Exit(1)
 
     # Look for boost::iostreams
     if os.environ.has_key('BOOST_HOME'):
-        env.Append(CPPPATH = [os.environ['BOOST_HOME']])
+      env.Append(CPPPATH = [os.environ['BOOST_HOME']])
 
     if not conf.CheckCXXHeader('boost/iostreams/device/file.hpp'):
-        print 'boost::iostreams not found.  Please set BOOST_HOME'
-        Exit(1)
+      print 'boost::iostreams not found.  Please set BOOST_HOME'
+      Exit(1)
 
     env.Append(CPPDEFINES = ['BUILD_FOR_FAH'])
-    libsrc.append('#/protomol/modules.cpp')
 
-env = conf.Finish()
+  env = conf.Finish()
+
+if fah:
+  libsrc.append('#/protomol/modules.cpp')
 
 # Build
 for s in subsrc:
