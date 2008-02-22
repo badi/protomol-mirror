@@ -55,13 +55,15 @@ if not env.GetOption('clean'):
   execfile('package_h.py')
 
   # libbip2
+  have_bzip2=0
   if os.environ.has_key('LIBBZ2_HOME'):
     env.Append(LIBPATH = [os.environ['LIBBZ2_HOME']])
     env.Append(CPPPATH = [os.environ['LIBBZ2_HOME'] + '/src'])
 
   if not conf.CheckLib('bz2'):
     print 'libbzip2 not found.  Please set LIBBZ2_HOME'
-    Exit(1)
+
+  else: have_bzip2 = 1
 
 
   # libFAH
@@ -70,7 +72,7 @@ if not env.GetOption('clean'):
     env.Append(CPPPATH = [os.environ['LIBFAH_HOME']])
     env.Append(LIBPATH = [os.environ['LIBFAH_HOME']])
 
-  if conf.CheckLib('fah'):
+  if have_bzip2 and conf.CheckLib('fah'):
     env.Append(CPPDEFINES = ['HAVE_LIBFAH'])
 
     if env['PLATFORM'] == 'win32':
@@ -87,6 +89,10 @@ if not env.GetOption('clean'):
 
   # Folding@Home library version
   if fah:
+    if not have_libfah:
+      print 'Need libfah and libbzip2 for Folding@Home build'
+      Exit(1)
+
     # Look for boost::iostreams
     if os.environ.has_key('BOOST_HOME'):
       env.Append(CPPPATH = [os.environ['BOOST_HOME']])
