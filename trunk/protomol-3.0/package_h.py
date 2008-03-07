@@ -1,14 +1,19 @@
 REV="unknown"
 REPO="unknown"
 
+def c_str_escape(str):
+   return str.replace('\\', '\\\\').replace('"', '\\"').replace('\n', '\\n')
+
 f = open('.svn/entries')
 try:
     i = 0
     for line in f:
-        i = i + 1
-        if i > 5: break
-        if i == 4: REV = line.strip()
-        if i == 5: REPO = line.strip()
+        l = c_str_escape(line.strip())
+        if l.startswith("http"):
+            REPO = line.strip()
+            break
+        else:
+            REV = line.strip()
 finally:
     f.close()
 
