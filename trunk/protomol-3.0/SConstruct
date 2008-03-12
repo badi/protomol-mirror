@@ -142,7 +142,7 @@ protomol = env.Program('ProtoMol', src)
 Default(protomol)
 
 
-if env['PLATFORM'] != 'win32':
+if env['PLATFORM'] == 'win32':
   # Build MSVC project
   env.Replace(MSVS_VERSION = '7.0')
   if not os.path.exists('MSVC'): os.mkdir('MSVC')
