@@ -66,18 +66,32 @@ if not env.GetOption('clean'):
   else: have_bzip2 = 1
 
 
+  # Look for boost::iostreams
+  if os.environ.has_key('BOOST_HOME'):
+    env.Append(CPPPATH = [os.environ['BOOST_HOME']])
+
+  have_boost_iostreams=0
+  if (conf.CheckLib('boost_iostreams') and
+      conf.CheckCXXHeader('boost/iostreams/device/file.hpp')):
+    have_boost_iostreams=1
+
+
   # libFAH
+  if env['PLATFORM'] == 'win32':
+    env.Append(LIBS = 'wsock32')
+  else:
+    env.Append(LIBS = 'pthread')
+
   have_libfah=0
   if os.environ.has_key('LIBFAH_HOME'):
     env.Append(CPPPATH = [os.environ['LIBFAH_HOME']])
     env.Append(LIBPATH = [os.environ['LIBFAH_HOME']])
 
-  if have_bzip2 and conf.CheckLib('fah'):
+  if (have_bzip2 and have_boost_iostreams and conf.CheckLib('fah') and
+      conf.CheckCXXHeader('fah/core/ChecksumDevice.h')):
     env.Append(CPPDEFINES = ['HAVE_LIBFAH'])
-
-    if env['PLATFORM'] == 'win32':
-      env.Append(LIBS = ['wsock32'])
     have_libfah=1
+
 
   # pthreads
   if env['PLATFORM'] != 'win32' and have_libfah:
@@ -90,24 +104,23 @@ if not env.GetOption('clean'):
   # Folding@Home library version
   if fah:
     if not have_libfah:
-      print 'Need libfah and libbzip2 for Folding@Home build'
-      Exit(1)
-
-    # Look for boost::iostreams
-    if os.environ.has_key('BOOST_HOME'):
-      env.Append(CPPPATH = [os.environ['BOOST_HOME']])
-
-    if not conf.CheckCXXHeader('boost/iostreams/device/file.hpp'):
-      print 'boost::iostreams not found.  Please set BOOST_HOME'
-      Exit(1)
-
-    if not conf.CheckCXXHeader('fah/core/ChecksumDevice.h'):
-      print 'Folding@Home needed please set LIBFAH_HOME'
+      print 'Need libfah, boost iostreams and libbzip2 for Folding@Home build'
       Exit(1)
 
     env.Append(CPPDEFINES = ['BUILD_FOR_FAH'])
 
+
+  # LAPACK
+  if os.environ.has_key('LAPACK_HOME'):
+    env.Append(CPPPATH = [os.environ['LAPACK_HOME']])
+    env.Append(LIBPATH = [os.environ['LAPACK_HOME']])
+  
+  if conf.CheckLib('lapack'):
+    env.Append(CPPDEFINES = ['HAVE_LAPACK'])
+
+
   env = conf.Finish()
+
 
 if fah:
   libsrc.append('#/protomol/modules.cpp')
@@ -127,6 +140,13 @@ env.Prepend(LIBS = [libname])
 src = ['protomol/main.cpp', 'protomol/modules.cpp']
 protomol = env.Program('ProtoMol', src)
 Default(protomol)
+
+
+if env['PLATFORM'] != 'win32':
+  # Build MSVC project
+  env.Replace(MSVS_VERSION = '7.0')
+  if not os.path.exists('MSVC'): os.mkdir('MSVC')
+  env.MSVSProject('MSVC/ProtoMol')
 
 
 # Tidy
