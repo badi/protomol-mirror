@@ -147,6 +147,7 @@ if env['PLATFORM'] == 'win32':
   if debug: variant = 'Debug'
   else: variant = 'Release'
   env.MSVSProject(target = 'ProtoMol' + env['MSVSPROJECTSUFFIX'],
+                  srcs = src, buildtarget = protomol,
                   auto_build_solution = 0, variant = variant)
 
 
