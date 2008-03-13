@@ -146,8 +146,8 @@ if env['PLATFORM'] == 'win32':
   if not os.path.exists('MSVC'): os.mkdir('MSVC')
   if debug: variant = 'Debug'
   else: variant = 'Release'
-  Default(env.MSVSProject(target = 'MSVC/ProtoMol', auto_build_solution = 0,
-                          variant = variant))
+  env.MSVSProject(target = 'ProtoMol' + env['MSVSPROJECTSUFFIX'],
+                  auto_build_solution = 0, variant = variant)
 
 
 # Tidy
