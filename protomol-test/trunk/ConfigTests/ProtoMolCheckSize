@@ -4,7 +4,6 @@ import os
 import sys
 
 name = sys.argv[1]
-
 test = name + 'Test'
 cmd = 'ProtoMol data' + os.sep + test + '.conf'
 

@@ -56,6 +56,8 @@ TEST_POSTFIX="Test"
 SUITE_POSTFIX="Tests"
 
 VALGRIND_CMD="valgrind -q --trace-children=yes"
+PYTHON_INTERPRETER_STRING='#!/usr/bin/python'
+PYTHON_CMD='python'
 
 
 # Get screen width
@@ -79,11 +81,11 @@ otherFail = False
 
 
 # Test result codes
-PASSED=0
-FAILED=1
-UNINITED=2
-INITED=3
-DISABLED=4
+PASSED   = 0
+FAILED   = 1
+UNINITED = 2
+INITED   = 3
+DISABLED = 4
 
 
 def makeDataName(path, ext = ''):
@@ -150,7 +152,13 @@ def doTest(path):
     # Run test
     if os.path.exists(disable_file): return DISABLED
 
-    cmd = [os.getcwd() + os.sep + path]
+    testFile = os.getcwd() + os.sep + path
+    cmd = [testFile]
+
+    f = open(testFile)
+    if PYTHON_INTERPRETER_STRING == f.read(len(PYTHON_INTERPRETER_STRING)):
+        cmd = [PYTHON_CMD] + cmd
+    f.close()
 
     if os.path.exists(args_file):
         args = open(args_file).read()
@@ -166,10 +174,15 @@ def doTest(path):
     stdout = open(std_file, 'w')
     stderr = open(err_file, 'w')
 
-    if dir == '': dir = None
-    p = subprocess.Popen(cmd, shell = True, stdin = input, stdout = stdout,
-                         stderr = stderr, cwd = dir)
+    if options.verbosity:
+        print
+        for arg in cmd: print arg,
+        print
+        sys.stdout.flush()
 
+    if dir == '': dir = None
+    p = subprocess.Popen(' '.join(cmd), shell = True, stdin = input,
+                         stdout = stdout, stderr = stderr, cwd = dir)
     p.wait()
 
     # Close files
@@ -332,14 +345,14 @@ def runTestInteractive(test):
 
     result = runTest(test)
 
+    if not (result == PASSED or result == DISABLED):
+        result = interact(test, result)
+
     if result == PASSED: passed += 1
     if result == FAILED: failed += 1
     if result == UNINITED: uninited += 1
     if result == INITED: inited += 1
     if result == DISABLED: disabled += 1        
-
-    if not (result == PASSED or result == DISABLED):
-        return interact(test, result)
 
     return result
 
@@ -545,6 +558,8 @@ parser.add_option("-I", "--interactive", help="run tests in interactive mode",
                   default=False, action="store_true", dest="interactive")
 parser.add_option("-V", "--valgrind", help="run tests under valgrind",
                   default=False, action="store_true", dest="valgrind")
+parser.add_option("-v", None, help="increase verbosity",
+                  default=False, action="count", dest="verbosity")
 parser.add_option("-C", "--disable-color", help="disable color output",
                   default=True, action="store_false", dest="color")
 
