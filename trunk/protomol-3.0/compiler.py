@@ -12,6 +12,8 @@ def compiler_add_opts():
                                      'sun')))
 
 def compiler_configure(c99_mode = 1):
+    global strict, depends, compiler, debug
+
     if env.GetOption('clean'):
         return
 
